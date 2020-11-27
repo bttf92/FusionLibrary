@@ -55,6 +55,8 @@
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Extensions\OtherExtensions.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
+    <Compile Include="Prop\AnimateProp2.cs" />
+    <Compile Include="Prop\AnimatePropsHandler2.cs" />
     <Compile Include="Prop\PTFX.cs" />
     <Compile Include="GUI\RenderTarget.cs" />
     <Compile Include="GUI\ScaleformGui.cs" />
