@@ -1,0 +1,8 @@
+D:\BackToTheFutureV\CustomCamera\bin\Release\CustomCamera.dll
+D:\BackToTheFutureV\CustomCamera\bin\Release\CustomCamera.pdb
+D:\BackToTheFutureV\CustomCamera\bin\Release\ScriptHookVDotNet3.dll
+D:\BackToTheFutureV\CustomCamera\bin\Release\ScriptHookVDotNet3.xml
+D:\BackToTheFutureV\CustomCamera\obj\Release\CustomCamera.csproj.CoreCompileInputs.cache
+D:\BackToTheFutureV\CustomCamera\obj\Release\CustomCamera.csproj.CopyComplete
+D:\BackToTheFutureV\CustomCamera\obj\Release\CustomCamera.dll
+D:\BackToTheFutureV\CustomCamera\obj\Release\CustomCamera.pdb
