@@ -55,8 +55,8 @@
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Extensions\OtherExtensions.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
-    <Compile Include="Prop\AnimateProp2.cs" />
-    <Compile Include="Prop\AnimatePropsHandler2.cs" />
+    <Compile Include="Prop\AnimateProp.cs" />
+    <Compile Include="Prop\AnimatePropsHandler.cs" />
     <Compile Include="Prop\PTFX.cs" />
     <Compile Include="GUI\RenderTarget.cs" />
     <Compile Include="GUI\ScaleformGui.cs" />
@@ -80,8 +80,6 @@
     <Compile Include="Memory\VehicleBone.cs" />
     <Compile Include="Memory\VehicleControl.cs" />
     <Compile Include="Other\CustomStopwatch.cs" />
-    <Compile Include="Prop\AnimateProp.cs" />
-    <Compile Include="Prop\AnimatePropsHandler.cs" />
     <Compile Include="Camera\CustomCamera.cs" />
     <Compile Include="Camera\CustomCameraHandler.cs" />
     <Compile Include="Input\ControlInfo.cs" />

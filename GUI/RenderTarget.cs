@@ -47,7 +47,7 @@ namespace FusionLibrary
 
         public void DeleteProp()
         {
-            Prop.DeleteProp();
+            Prop.Delete();
         }
 
         public void Dispose()

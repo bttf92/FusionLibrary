@@ -49,14 +49,19 @@ namespace FusionLibrary
 
         public static Model LoadAndRequestModel(string modelName)
         {
-            Model ret = new Model(modelName);
+            Model model = new Model(modelName);
 
-            ret.Request();
+            return LoadAndRequestModel(model);
+        }
 
-            while (ret.IsLoaded == false)
+        public static Model LoadAndRequestModel(Model model)
+        {
+            model.Request();
+
+            while (!model.IsLoaded)
                 Script.Yield();
 
-            return ret;
+            return model;
         }
 
         public static void ClearWorld()
