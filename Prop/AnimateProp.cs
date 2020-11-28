@@ -7,8 +7,12 @@ using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
+    public delegate void AnimationStopped(AnimateProp animateProp, Coordinate coordinate, CoordinateSetting coordinateSetting, bool IsRotation);    
+
     public class AnimateProp
     {
+        public AnimationStopped AnimationStopped;
+
         public Prop Prop { get; private set; }
         public Model Model { get; set; }
         private EntityBone Bone;
@@ -90,7 +94,7 @@ namespace FusionLibrary
             Attach();
         }
 
-        public void SpawnProp(Vector3 pOffset, Vector3 pRotation, bool deletePreviousProp = true)
+        public void MoveProp(Vector3 pOffset, Vector3 pRotation, bool deletePreviousProp = true)
         {
             if (deletePreviousProp)
                 Delete();
@@ -160,6 +164,17 @@ namespace FusionLibrary
             Attach();
         }
 
+        public void SwapModel(Model model)
+        {
+            Model = model;
+            
+            if (IsSpawned)
+            {
+                Delete();
+                SpawnProp();
+            }
+        }
+
         public void SetState(bool state)
         {
             if (state)
@@ -206,7 +221,7 @@ namespace FusionLibrary
         /// Gets or sets offset of the prop.
         /// </summary>
         /// <returns></returns>
-        public Vector3 Position
+        public Vector3 Offset
         {
             get
             {
@@ -603,10 +618,15 @@ namespace FusionLibrary
                     if (cPos[0].isIncreasing)
                     {
                         pOffset.X += cPos[0].Step * cPos[0].StepRatio;
+
                         if (pOffset.X > cPos[0].Maximum * cPos[0].MaxMinRatio)
                         {
-                            if (cPos[0].Stop)
+                            if (cPos[0].Stop) 
+                            {
                                 cPos[0].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.X, cPos[0], false);
+                            }
+                                
                             cPos[0].isIncreasing = false;
                             pOffset.X = cPos[0].Maximum * cPos[0].MaxMinRatio;
                         }
@@ -614,10 +634,15 @@ namespace FusionLibrary
                     else
                     {
                         pOffset.X -= cPos[0].Step * cPos[0].StepRatio;
+
                         if (pOffset.X < cPos[0].Minimum * cPos[0].MaxMinRatio)
                         {
                             if (cPos[0].Stop)
+                            {
                                 cPos[0].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.X, cPos[0], false);
+                            }
+
                             cPos[0].isIncreasing = true;
                             pOffset.X = cPos[0].Minimum * cPos[0].MaxMinRatio;
                         }
@@ -631,10 +656,15 @@ namespace FusionLibrary
                     if (cPos[1].isIncreasing)
                     {
                         pOffset.Y += cPos[1].Step * cPos[1].StepRatio;
+
                         if (pOffset.Y > cPos[1].Maximum * cPos[1].MaxMinRatio)
                         {
                             if (cPos[1].Stop)
+                            {
                                 cPos[1].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.Y, cPos[1], false);
+                            }
+
                             cPos[1].isIncreasing = false;
                             pOffset.Y = cPos[1].Maximum * cPos[1].MaxMinRatio;
                         }
@@ -642,10 +672,15 @@ namespace FusionLibrary
                     else
                     {
                         pOffset.Y -= cPos[1].Step * cPos[1].StepRatio;
+
                         if (pOffset.Y < cPos[1].Minimum * cPos[1].MaxMinRatio)
                         {
                             if (cPos[1].Stop)
+                            {
                                 cPos[1].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.Y, cPos[1], false);
+                            }
+
                             cPos[1].isIncreasing = true;
                             pOffset.Y = cPos[1].Minimum * cPos[1].MaxMinRatio;
                         }
@@ -659,10 +694,15 @@ namespace FusionLibrary
                     if (cPos[2].isIncreasing)
                     {
                         pOffset.Z += cPos[2].Step * cPos[2].StepRatio;
+
                         if (pOffset.Z > cPos[2].Maximum * cPos[2].MaxMinRatio)
                         {
                             if (cPos[2].Stop)
+                            {
                                 cPos[2].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.Z, cPos[2], false);
+                            }
+
                             cPos[2].isIncreasing = false;
                             pOffset.Z = cPos[2].Maximum * cPos[2].MaxMinRatio;
                         }
@@ -670,10 +710,15 @@ namespace FusionLibrary
                     else
                     {
                         pOffset.Z -= cPos[2].Step * cPos[2].StepRatio;
+
                         if (pOffset.Z < cPos[2].Minimum * cPos[2].MaxMinRatio)
                         {
                             if (cPos[2].Stop)
+                            {
                                 cPos[2].Update = false;
+                                AnimationStopped?.Invoke(this, Coordinate.Z, cPos[2], false);
+                            }
+
                             cPos[2].isIncreasing = true;
                             pOffset.Z = cPos[2].Minimum * cPos[2].MaxMinRatio;
                         }
@@ -687,6 +732,7 @@ namespace FusionLibrary
                     if (cRot[0].isIncreasing)
                     {
                         pRotation.X += cRot[0].Step * cRot[0].StepRatio;
+
                         if (pRotation.X > cRot[0].Maximum * cRot[0].MaxMinRatio)
                         {
                             if (cRot[0].isFullCircle)
@@ -696,7 +742,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[0].Stop)
+                                {
                                     cRot[0].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.X, cRot[0], true);
+                                }
+
                                 cRot[0].isIncreasing = false;
                                 pRotation.X = cRot[0].Maximum * cRot[0].MaxMinRatio;
                             }
@@ -705,6 +755,7 @@ namespace FusionLibrary
                     else
                     {
                         pRotation.X -= cRot[0].Step * cRot[0].StepRatio;
+
                         if (pRotation.X < cRot[0].Minimum * cRot[0].MaxMinRatio)
                         {
                             if (cRot[0].isFullCircle)
@@ -714,7 +765,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[0].Stop)
+                                {
                                     cRot[0].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.X, cRot[0], true);
+                                }
+
                                 cRot[0].isIncreasing = true;
                                 pRotation.X = cRot[0].Minimum * cRot[0].MaxMinRatio;
                             }
@@ -729,6 +784,7 @@ namespace FusionLibrary
                     if (cRot[1].isIncreasing)
                     {
                         pRotation.Y += cRot[1].Step * cRot[1].StepRatio;
+
                         if (pRotation.Y > cRot[1].Maximum * cRot[1].MaxMinRatio)
                         {
                             if (cRot[1].isFullCircle)
@@ -738,7 +794,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[1].Stop)
+                                {
                                     cRot[1].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.Y, cRot[1], true);
+                                }
+
                                 cRot[1].isIncreasing = false;
                                 pRotation.Y = cRot[1].Maximum * cRot[1].MaxMinRatio;
                             }
@@ -747,6 +807,7 @@ namespace FusionLibrary
                     else
                     {
                         pRotation.Y -= cRot[1].Step * cRot[1].StepRatio;
+
                         if (pRotation.Y < cRot[1].Minimum * cRot[1].MaxMinRatio)
                         {
                             if (cRot[1].isFullCircle)
@@ -756,7 +817,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[1].Stop)
+                                {
                                     cRot[1].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.Y, cRot[1], true);
+                                }
+
                                 cRot[1].isIncreasing = true;
                                 pRotation.Y = cRot[1].Minimum * cRot[1].MaxMinRatio;
                             }
@@ -780,7 +845,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[2].Stop)
+                                {
                                     cRot[2].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.Z, cRot[2], true);
+                                }
+
                                 cRot[2].isIncreasing = false;
                                 pRotation.Z = cRot[2].Maximum * cRot[2].MaxMinRatio;
                             }
@@ -798,7 +867,11 @@ namespace FusionLibrary
                             else
                             {
                                 if (cRot[2].Stop)
+                                {
                                     cRot[2].Update = false;
+                                    AnimationStopped?.Invoke(this, Coordinate.Z, cRot[2], true);
+                                }
+
                                 cRot[2].isIncreasing = true;
                                 pRotation.Z = cRot[2].Minimum * cRot[2].MaxMinRatio;
                             }

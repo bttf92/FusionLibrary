@@ -17,6 +17,8 @@ namespace FusionLibrary
 
         public List<AnimateProp> Props = new List<AnimateProp>();
 
+        public bool IsSpawned => Props[0].IsSpawned;
+
         public bool IsAnimationOn
         {
             get
@@ -33,6 +35,11 @@ namespace FusionLibrary
         public void SpawnProp(bool deletePreviousProp = true)
         {
             Props.ForEach(x => x.SpawnProp(deletePreviousProp));
+        }
+
+        public void MoveProp(Vector3 pOffset, Vector3 pRotation, bool deletePreviousProp = true)
+        {
+            Props.ForEach(x => x.MoveProp(pOffset, pRotation, deletePreviousProp));
         }
 
         public void CheckExists()
@@ -63,6 +70,7 @@ namespace FusionLibrary
         public void Dispose()
         {
             Props.ForEach(x => x.Dispose());
+            Props.Clear();
         }
 
         public void TransferTo(Entity newEntity)
@@ -103,14 +111,14 @@ namespace FusionLibrary
             }
         }
         
-        public Vector3 get_Position(int index)
+        public Vector3 get_Offset(int index)
         {
-            return Props[index].Position;
+            return Props[index].Offset;
         }
 
-        public void set_Position(int index, Vector3 value)
+        public void set_Offset(int index, Vector3 value)
         {
-            Props[index].Position = value;
+            Props[index].Offset = value;
         }
 
         public bool get_PositionUpdate(Coordinate pCord)
