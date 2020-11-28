@@ -168,9 +168,9 @@ namespace FusionLibrary
             return true;
         }
 
-        public static float Lerp(float firstFloat, float secondFloat, float by)
+        public static float Lerp(float minValue, float maxValue, float by)
         {
-            return firstFloat + (secondFloat - firstFloat) * by;
+            return minValue + (maxValue - minValue) * by;
         }
 
         public static int Lerp(int firstFloat, int secondFloat, float by)

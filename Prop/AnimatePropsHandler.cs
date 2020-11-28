@@ -10,12 +10,14 @@ namespace FusionLibrary
     {
         public static List<AnimateProp> GlobalPropsList = new List<AnimateProp>();
 
-        public static void Process()
+        public static void ProcessAll()
         {
             GlobalPropsList.ForEach(x => x.Play());
         }
 
         public List<AnimateProp> Props = new List<AnimateProp>();
+
+        public AnimationStopped AnimationStopped;
 
         public bool IsSpawned => Props[0].IsSpawned;
 
@@ -32,14 +34,43 @@ namespace FusionLibrary
             }
         }
 
-        public void SpawnProp(bool deletePreviousProp = true)
+        public void Process()
         {
-            Props.ForEach(x => x.SpawnProp(deletePreviousProp));
+            List<AnimateProp> animateProps = Props.Where(x =>
+            {
+                for(int i = 0;i < 4;i++)
+                {
+                    if (x.OffsetSettings[i].isSetted)
+                        return true;
+
+                    if (x.RotationSettings[i].isSetted)
+                        return true;
+                }
+
+                return false;
+            }).ToList();
+
+
         }
 
-        public void MoveProp(Vector3 pOffset, Vector3 pRotation, bool deletePreviousProp = true)
+        public void SpawnProp()
         {
-            Props.ForEach(x => x.MoveProp(pOffset, pRotation, deletePreviousProp));
+            Props.ForEach(x => x.SpawnProp());
+        }
+
+        public void MoveProp(Vector3 pOffset, Vector3 pRotation)
+        {
+            Props.ForEach(x => x.MoveProp(pOffset, pRotation));
+        }
+
+        public void MoveOffset(Coordinate coordinate, float value) 
+        {
+            Props.ForEach(x => x.MoveOffset(coordinate, value));
+        }
+
+        public void MoveRotation(Coordinate coordinate, float value)
+        {
+            Props.ForEach(x => x.MoveRotation(coordinate, value));
         }
 
         public void CheckExists()
@@ -88,14 +119,14 @@ namespace FusionLibrary
             Props.ForEach(x => x.SetState(state));
         }
 
-        public void setPositionSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cStep, float cStepRatio = 1f)
+        public void setOffsetSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cMaxMinRatio, float cStep, float cStepRatio, bool cStop = false, bool cSimulateAcceleration = false)
         {
-            Props.ForEach(x => x.setPositionSettings(pCord, cUpdate, cIncreasing, cMinimum, cMaximum, cStep, cStepRatio));
+            Props.ForEach(x => x.setOffsetSettings(pCord, cUpdate, cIncreasing, cMinimum, cMaximum, cMaxMinRatio, cStep, cStepRatio, cStop, cSimulateAcceleration));
         }
 
-        public void setRotationSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cStep, bool cFullCircle, float cStepRatio = 1f)
+        public void setRotationSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cMaxMinRatio, float cStep, float cStepRatio, bool cStop = false, bool cSimulateAcceleration = false)
         {
-            Props.ForEach(x => x.setRotationSettings(pCord, cUpdate, cIncreasing, cMinimum, cMaximum, cStep, cFullCircle, cStepRatio));
+            Props.ForEach(x => x.setRotationSettings(pCord, cUpdate, cIncreasing, cMinimum, cMaximum, cMaxMinRatio, cStep, cStepRatio, cStop, cSimulateAcceleration));
         }
 
         public bool Visible
@@ -111,184 +142,200 @@ namespace FusionLibrary
             }
         }
         
-        public Vector3 get_Offset(int index)
+        public Vector3 getOffset(int index)
         {
             return Props[index].Offset;
         }
 
-        public void set_Offset(int index, Vector3 value)
+        public void setOffset(int index, Vector3 value)
         {
             Props[index].Offset = value;
         }
 
-        public bool get_PositionUpdate(Coordinate pCord)
+        public bool getOffsetUpdate(Coordinate pCord)
         {
-            return Props[0].get_PositionUpdate(pCord);
+            return Props.TrueForAll(x => x.getOffsetUpdate(pCord));
         }
 
-        public void set_PositionUpdate(Coordinate pCord, bool value)
+        public void setOffsetUpdate(Coordinate pCord, bool value)
         {
-            Props.ForEach(x => x.set_PositionUpdate(pCord, value));
+            Props.ForEach(x => x.setOffsetUpdate(pCord, value));
         }
 
-        public float get_PositionMaximum(Coordinate pCord)
+        public float getOffsetMaximum(Coordinate pCord)
         {
-            return Props[0].get_PositionMaximum(pCord);
+            return Props[0].getOffsetMaximum(pCord);
         }
 
-        public void set_PositionMaximum(Coordinate pCord, float value)
+        public void setOffsetMaximum(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_PositionMaximum(pCord, value));
+            Props.ForEach(x => x.setOffsetMaximum(pCord, value));
         }
 
-        public float get_PositionMinimum(Coordinate pCord)
+        public float getOffsetMinimum(Coordinate pCord)
         {
-            return Props[0].get_PositionMinimum(pCord);
+            return Props[0].getOffsetMinimum(pCord);
         }
 
-        public void set_PositionMinimum(Coordinate pCord, float value)
+        public void setOffsetMinimum(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_PositionMinimum(pCord, value));
+            Props.ForEach(x => x.setOffsetMinimum(pCord, value));
         }
 
-        public float get_PositionStep(Coordinate pCord)
+        public float getOffsetStep(Coordinate pCord)
         {
-            return Props[0].get_PositionStep(pCord);
+            return Props[0].getOffsetStep(pCord);
         }
 
-        public void set_PositionStep(Coordinate pCord, float value)
+        public void setOffsetStep(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_PositionStep(pCord, value));
+            Props.ForEach(x => x.setOffsetStep(pCord, value));
         }
 
-        public float get_PositionStepRatio(Coordinate pCord)
+        public float getOffsetStepRatio(Coordinate pCord)
         {
-            return Props[0].get_PositionStepRatio(pCord);
+            return Props[0].getOffsetStepRatio(pCord);
         }
 
-        public void set_PositionStepRatio(Coordinate pCord, float value)
+        public void setOffsetStepRatio(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_PositionStepRatio(pCord, value));
+            Props.ForEach(x => x.setOffsetStepRatio(pCord, value));
         }
 
-        public bool get_PositionIncreasing(Coordinate pCord)
+        public bool getOffsetIncreasing(Coordinate pCord)
         {
-            return Props[0].get_PositionIncreasing(pCord);
+            return Props.TrueForAll(x => x.getOffsetIncreasing(pCord));
         }
 
-        public void set_PositionIncreasing(Coordinate pCord, bool value)
+        public void setOffsetIncreasing(Coordinate pCord, bool value)
         {
-            Props.ForEach(x => x.set_PositionIncreasing(pCord, value));
+            Props.ForEach(x => x.setOffsetIncreasing(pCord, value));
         }
 
-        public float get_PositionMaxMinRatio(Coordinate pCord)
+        public float getOffsetMaxMinRatio(Coordinate pCord)
         {
-            return Props[0].get_PositionMaxMinRatio(pCord);
+            return Props[0].getOffsetMaxMinRatio(pCord);
         }
 
-        public void set_PositionMaxMinRatio(Coordinate pCord, float value)
+        public void setOffsetMaxMinRatio(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_PositionMaxMinRatio(pCord, value));
+            Props.ForEach(x => x.setOffsetMaxMinRatio(pCord, value));
         }
                 
-        public float get_AllRotation(Coordinate pCord)
+        public float getAllRotation(Coordinate pCord)
         {
-            return Props[0].get_Rotation(pCord);
+            return Props[0].getRotation(pCord);
         }
 
-        public void set_AllRotation(Coordinate pCord, float value)
+        public void setAllRotation(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_Rotation(pCord, value));
+            Props.ForEach(x => x.setRotation(pCord, value));
         }
 
-        public Vector3 get_Rotation(int index)
+        public Vector3 getRotation(int index)
         {
             return Props[index].Rotation;
         }
 
-        public void set_Rotation(int index, Vector3 value)
+        public void setRotation(int index, Vector3 value)
         {
             Props[index].Rotation = value;
         }
 
-        public bool get_RotationUpdate(Coordinate pCord)
+        public bool getRotationUpdate(Coordinate pCord)
         {
-            return Props[0].get_RotationUpdate(pCord);
+            return Props.TrueForAll(x => x.getRotationUpdate(pCord));
         }
 
-        public void set_RotationUpdate(Coordinate pCord, bool value)
+        public void setRotationUpdate(Coordinate pCord, bool value)
         {
-            Props.ForEach(x => x.set_RotationUpdate(pCord, value));
+            Props.ForEach(x => x.setRotationUpdate(pCord, value));
         }
 
-        public float get_RotationMaximum(Coordinate pCord)
+        public float getRotationMaximum(Coordinate pCord)
         {
-            return Props[0].get_RotationMaximum(pCord);
+            return Props[0].getRotationMaximum(pCord);
         }
 
-        public void set_RotationMaximum(Coordinate pCord, float value)
+        public void setRotationMaximum(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_RotationMaximum(pCord, value));
+            Props.ForEach(x => x.setRotationMaximum(pCord, value));
         }
 
-        public float get_RotationMinimum(Coordinate pCord)
+        public float getRotationMinimum(Coordinate pCord)
         {
-            return Props[0].get_RotationMinimum(pCord);
+            return Props[0].getRotationMinimum(pCord);
         }
 
-        public void set_RotationMinimum(Coordinate pCord, float value)
+        public void setRotationMinimum(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_RotationMinimum(pCord, value));
+            Props.ForEach(x => x.setRotationMinimum(pCord, value));
         }
 
-        public float get_RotationStep(Coordinate pCord)
+        public float getRotationStep(Coordinate pCord)
         {
-            return Props[0].get_RotationStep(pCord);
+            return Props[0].getRotationStep(pCord);
         }
 
-        public void set_RotationStep(Coordinate pCord, float value)
+        public void setRotationStep(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_RotationStep(pCord, value));
+            Props.ForEach(x => x.setRotationStep(pCord, value));
         }
 
-        public float get_RotationStepRatio(Coordinate pCord)
+        public float getRotationStepRatio(Coordinate pCord)
         {
-            return Props[0].get_RotationStepRatio(pCord);
+            return Props[0].getRotationStepRatio(pCord);
         }
 
-        public void set_RotationStepRatio(Coordinate pCord, float value)
+        public void setRotationStepRatio(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_RotationStepRatio(pCord, value));
+            Props.ForEach(x => x.setRotationStepRatio(pCord, value));
         }
 
-        public bool get_RotationIncreasing(Coordinate pCord)
+        public bool getRotationIncreasing(Coordinate pCord)
         {
-            return Props[0].get_RotationIncreasing(pCord);
+            return Props.TrueForAll(x => x.getRotationIncreasing(pCord));
         }
 
-        public void set_RotationIncreasing(Coordinate pCord, bool value)
+        public void setRotationIncreasing(Coordinate pCord, bool value)
         {
-            Props.ForEach(x => x.set_RotationIncreasing(pCord, value));
+            Props.ForEach(x => x.setRotationIncreasing(pCord, value));
         }
 
-        public bool get_RotationFullCircle(Coordinate pCord)
+        public float getRotationMaxMinRatio(Coordinate pCord)
         {
-            return Props[0].get_RotationFullCircle(pCord);
+            return Props[0].getRotationMaxMinRatio(pCord);
         }
 
-        public void set_RotationFullCircle(Coordinate pCord, bool value)
+        public void setRotationMaxMinRatio(Coordinate pCord, float value)
         {
-            Props.ForEach(x => x.set_RotationFullCircle(pCord, value));
+            Props.ForEach(x => x.setRotationMaxMinRatio(pCord, value));
         }
 
-        public float get_RotationMaxMinRatio(Coordinate pCord)
+        public void setOffsetAtMaximum(Coordinate coordinate)
         {
-            return Props[0].get_RotationMaxMinRatio(pCord);
+            Props.ForEach(x => x.setOffsetAtMaximum(coordinate));
         }
 
-        public void set_RotationMaxMinRatio(Coordinate pCord, float value)
+        public void setOffsetAtMinimum(Coordinate coordinate)
         {
-            Props.ForEach(x => x.set_RotationMaxMinRatio(pCord, value));
-        }        
+            Props.ForEach(x => x.setOffsetAtMinimum(coordinate));
+        }
+
+        public void setRotationAtMaximum(Coordinate coordinate)
+        {
+            Props.ForEach(x => x.setRotationAtMaximum(coordinate));
+        }
+
+        public void setRotationAtMinimum(Coordinate coordinate)
+        {
+            Props.ForEach(x => x.setRotationAtMinimum(coordinate));
+        }
+
+        public AnimateProp this[int propIndex]
+        {
+            get { return Props[propIndex]; }
+            set { Props[propIndex] = value; }
+        }
     }
 }

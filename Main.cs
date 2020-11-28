@@ -17,8 +17,8 @@ namespace FusionLibrary
                 return;
 
             TimeHandler.Process();
-            AnimatePropsHandler.Process();
-            AnimatePropsHandler.Process();
+            AnimatePropsHandler.ProcessAll();
+            AnimatePropsHandler.ProcessAll();
             CustomNativeMenu.ObjectPool.Process();
             CustomNativeMenu.ProcessAll();
             ScreenFlash.Process();

@@ -143,9 +143,9 @@ namespace FusionLibrary.Extensions
             return Math.Atan(-X / Math.Sqrt(-X * X + 1)) + 2 * Math.Atan(1);
         }
 
-        public static bool MostlyNear(this float src, float to)
+        public static bool Near(this float src, float to, float by = 5)
         {
-            return (to - 5) <= src && src <= (to + 5);
+            return (to - by) <= src && src <= (to + by);
         }
 
         public static Vector3 DirectionToRotation(this Vector3 dir, float roll)

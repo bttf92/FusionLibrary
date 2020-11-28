@@ -25,9 +25,29 @@ namespace FusionLibrary.Extensions
             return entity.RelativeVelocity().Y >= 0;
         }
 
+        //public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
+        //{
+        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);
+        //}
+
+        //public static void AttachTo(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation)
+        //{
+        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, 0, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);
+        //}
+
         public static void AttachToPhysically(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation)
         {
             Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, 0, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
+        }
+
+        public static void AttachToPhysically(this Entity entity1, Entity toEntity, int boneIndex, Vector3 offset, Vector3 rotation)
+        {
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, boneIndex, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
+        }
+
+        public static void AttachToPhysically(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
+        {
+            AttachToPhysically(entity1, toEntity, toEntity.Bones[boneName].Index, offset, rotation);
         }
 
         public static float GetKineticEnergy(this Vehicle vehicle)
@@ -84,7 +104,7 @@ namespace FusionLibrary.Extensions
 
         public static bool SameDirection(this Vehicle vehicle, Vehicle vehicle1)
         {
-            return vehicle.Rotation.Z.MostlyNear(vehicle1.Rotation.Z);
+            return vehicle.Rotation.Z.Near(vehicle1.Rotation.Z);
         }
 
         public static void DeleteCompletely(this Vehicle vehicle)

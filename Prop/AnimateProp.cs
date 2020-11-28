@@ -15,20 +15,26 @@ namespace FusionLibrary
 
         public Prop Prop { get; private set; }
         public Model Model { get; set; }
-        private EntityBone Bone;
         public Entity Entity { get; set; }
-        private Vector3 pOffset;
-        private Vector3 pRotation;
-        public bool IsAnimationOn;
-        private CoordinateSetting[] cPos = new CoordinateSetting[4];
-        private CoordinateSetting[] cRot = new CoordinateSetting[4];
-        private bool ToBone;
-        private bool IsDetached = false;
-        private float _currentTime = 0;
 
-        public bool IsSpawned => Prop.NotNullAndExists();
+        public bool IsAnimationOn { get; set; }
+        public bool UsePhysicalAttach { get; set; }
 
         public float Duration { get; set; } = 0;
+        public Vector3 AdjustOffset = Vector3.Zero;
+        public Vector3 AdjustRotation = Vector3.Zero;
+
+        public bool IsSpawned => Prop.NotNullAndExists();
+        
+        private bool ToBone;
+        private EntityBone Bone;
+        private Vector3 pOffset;
+        private Vector3 pRotation;
+        
+        public CoordinateSetting[] OffsetSettings = new CoordinateSetting[4];
+        public CoordinateSetting[] RotationSettings = new CoordinateSetting[4];
+        private bool IsDetached = false;
+        private float _currentTime = 0;        
 
         /// <summary>
         /// Spawns a new prop with <paramref name="pModel"/> attached to <paramref name="boneName"/> of <paramref name="pEntity"/> with <paramref name="pOffset"/> and <paramref name="pRotation"/>
@@ -38,7 +44,7 @@ namespace FusionLibrary
         /// <param name="boneName">Bone's name of the <paramref name="pEntity"/>.</param>
         /// <param name="pOffset">A <seealso cref="GTA.Vector3"/> indicating offset of the prop relative to the <paramref name="boneName"/>'s position.</param>
         /// <param name="pRotation">A <seealso cref="GTA.Vector3"/> indicating rotation of the prop.</param>
-        public AnimateProp(Model pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool cAnimationOn = false, bool doNotSpawn = false)
+        public AnimateProp(Model pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool cAnimationOn = false, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             this.Model = pModel;
             this.Entity = pEntity;
@@ -47,6 +53,7 @@ namespace FusionLibrary
             this.pRotation = pRotation;
             ToBone = true;
             IsAnimationOn = cAnimationOn;
+            UsePhysicalAttach = usePhysicalAttach;
 
             if (!doNotSpawn)
                 SpawnProp();
@@ -54,7 +61,7 @@ namespace FusionLibrary
             AnimatePropsHandler.GlobalPropsList.Add(this);
         }
 
-        public AnimateProp(Model pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool cAnimationOn = false, bool doNotSpawn = false)
+        public AnimateProp(Model pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool cAnimationOn = false, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             this.Model = pModel;
             this.Entity = pEntity;            
@@ -62,6 +69,7 @@ namespace FusionLibrary
             this.pRotation = pRotation;
             ToBone = false;
             IsAnimationOn = cAnimationOn;
+            UsePhysicalAttach = usePhysicalAttach;
 
             if (!doNotSpawn)
                 SpawnProp();
@@ -69,21 +77,18 @@ namespace FusionLibrary
             AnimatePropsHandler.GlobalPropsList.Add(this);
         }
 
-        public AnimateProp(Entity pEntity, Model pModel, Vector3 pOffset, Vector3 pRotation) : this(pModel, pEntity, pOffset, pRotation, false, true)
+        public AnimateProp(Entity pEntity, Model pModel, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pOffset, pRotation, true, true, usePhysicalAttach)
         {
 
         }
 
-        public AnimateProp(Entity pEntity, Model pModel, string boneName) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, false, true)
+        public AnimateProp(Entity pEntity, Model pModel, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, true, true, usePhysicalAttach)
         {
 
         }
 
-        public void SpawnProp(bool deletePreviousProp = true)
+        public void SpawnProp()
         {
-            if (deletePreviousProp)
-                Delete();
-
             if (!IsSpawned)
             {
                 Utils.LoadAndRequestModel(Model);
@@ -94,14 +99,6 @@ namespace FusionLibrary
             Attach();
         }
 
-        public void MoveProp(Vector3 pOffset, Vector3 pRotation, bool deletePreviousProp = true)
-        {
-            if (deletePreviousProp)
-                Delete();
-
-            Attach(this.pOffset + pOffset, this.pRotation + pRotation);
-        }
-
         private void Attach()
         {
             if (IsDetached)
@@ -110,32 +107,67 @@ namespace FusionLibrary
             if (!IsSpawned)
                 SpawnProp();
 
+            Vector3 pOffset = this.pOffset + AdjustOffset;
+            Vector3 pRotation = this.pRotation + AdjustRotation;
+
             if (ToBone)
             {
-                Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, Bone.Index, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
-            }
+                if (UsePhysicalAttach)
+                    Prop.AttachToPhysically(Entity, Bone.Index, pOffset, pRotation);
+                else
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, Bone.Index, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
+            }                
             else
             {
-                Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
+                if (UsePhysicalAttach)
+                    Prop.AttachToPhysically(Entity, pOffset, pRotation);
+                else
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
             }
         }
 
-        private void Attach(Vector3 pOffset, Vector3 pRotation)
+        public void MoveOffset(Coordinate coordinate, float value)
         {
-            if (IsDetached)
-                return;
-
-            if (!IsSpawned)
-                SpawnProp();
-
-            if (ToBone)
+            switch (coordinate)
             {
-                Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, Bone.Index, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
+                case Coordinate.X:
+                    AdjustOffset.X = value;
+                    break;
+                case Coordinate.Y:
+                    AdjustOffset.Y = value;
+                    break;
+                default:
+                    AdjustOffset.Z = value;
+                    break;
             }
-            else
+
+            Attach();
+        }
+
+        public void MoveRotation(Coordinate coordinate, float value)
+        {
+            switch (coordinate)
             {
-                Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, pOffset.X, pOffset.Y, pOffset.Z, pRotation.X, pRotation.Y, pRotation.Z, false, false, true, false, 2, true);
+                case Coordinate.X:
+                    AdjustRotation.X = value;
+                    break;
+                case Coordinate.Y:
+                    AdjustRotation.Y = value;
+                    break;
+                default:
+                    AdjustRotation.Z = value;
+                    break;
             }
+
+            Attach();
+        }
+
+        public void MoveProp(Vector3 pOffset, Vector3 pRotation)
+        {
+            AdjustOffset = pOffset;
+            AdjustRotation = pRotation;
+
+            Attach();
         }
 
         public void Detach()
@@ -161,7 +193,6 @@ namespace FusionLibrary
         public void TransferTo(Entity newEntity)
         {
             Entity = newEntity;
-            Attach();
         }
 
         public void SwapModel(Model model)
@@ -263,17 +294,18 @@ namespace FusionLibrary
         /// <param name="cMaximum">Maximum value should reach.</param>
         /// <param name="cStep">Delta value that is added or substract.</param>
         /// <param name="cStepRatio">From 0.0 to 1.0. Ratio of maximum and minimum values.</param>
-        public void setPositionSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cStep, float cStepRatio = 1f, bool Stop = false, float cMaxMinRatio = 1f)
+        public void setOffsetSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cMaxMinRatio, float cStep, float cStepRatio, bool Stop = false, bool simulateAcceleration = false)
         {
-            cPos[(int)pCord].Update = cUpdate;
-            cPos[(int)pCord].isIncreasing = cIncreasing;
-            cPos[(int)pCord].Minimum = cMinimum;
-            cPos[(int)pCord].Maximum = cMaximum;
-            cPos[(int)pCord].Step = cStep;
-            cPos[(int)pCord].StepRatio = cStepRatio;
-            cPos[(int)pCord].isFullCircle = false;
-            cPos[(int)pCord].Stop = Stop;
-            cPos[(int)pCord].MaxMinRatio = cMaxMinRatio;
+            OffsetSettings[(int)pCord].isSetted = true;
+            OffsetSettings[(int)pCord].Update = cUpdate;
+            OffsetSettings[(int)pCord].isIncreasing = cIncreasing;
+            OffsetSettings[(int)pCord].Minimum = cMinimum;
+            OffsetSettings[(int)pCord].Maximum = cMaximum;
+            OffsetSettings[(int)pCord].Step = cStep;
+            OffsetSettings[(int)pCord].StepRatio = cStepRatio;
+            OffsetSettings[(int)pCord].Stop = Stop;
+            OffsetSettings[(int)pCord].MaxMinRatio = cMaxMinRatio;
+            OffsetSettings[(int)pCord].SimulateAcceleration = simulateAcceleration;
         }
 
         /// <summary>
@@ -287,20 +319,20 @@ namespace FusionLibrary
         /// <param name="cStep">Delta value that is added or substract.</param>
         /// <param name="cFullCircle">If true disables maximum\minimum and the prop will continue to rotate indefinitely.</param>
         /// <param name="cStepRatio">From 0.0 to 1.0. Ratio of maximum and minimum values.</param>
-        public void setRotationSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cStep, bool cFullCircle, float cStepRatio = 1f, bool Stop = false, float cMaxMinRatio = 1f)
+        public void setRotationSettings(Coordinate pCord, bool cUpdate, bool cIncreasing, float cMinimum, float cMaximum, float cMaxMinRatio, float cStep, float cStepRatio, bool Stop = false, bool simulateAcceleration = false)
         {
-            cRot[(int)pCord].Update = cUpdate;
-            cRot[(int)pCord].isIncreasing = cIncreasing;
-            cRot[(int)pCord].Minimum = cMinimum;
-            cRot[(int)pCord].Maximum = cMaximum;
-            cRot[(int)pCord].Step = cStep;
-            cRot[(int)pCord].StepRatio = cStepRatio;
-            cRot[(int)pCord].isFullCircle = cFullCircle;
-            cRot[(int)pCord].Stop = Stop;
-            cRot[(int)pCord].MaxMinRatio = cMaxMinRatio;
+            RotationSettings[(int)pCord].isSetted = true;
+            RotationSettings[(int)pCord].Update = cUpdate;
+            RotationSettings[(int)pCord].isIncreasing = cIncreasing;
+            RotationSettings[(int)pCord].Minimum = cMinimum;
+            RotationSettings[(int)pCord].Maximum = cMaximum;
+            RotationSettings[(int)pCord].Step = cStep;
+            RotationSettings[(int)pCord].StepRatio = cStepRatio;
+            RotationSettings[(int)pCord].Stop = Stop;
+            RotationSettings[(int)pCord].MaxMinRatio = cMaxMinRatio;
+            RotationSettings[(int)pCord].SimulateAcceleration = simulateAcceleration;
         }
-
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
+        
         public Vector3 RelativePosition
         {
             get
@@ -317,7 +349,7 @@ namespace FusionLibrary
             }
         }
 
-        public float get_Position(Coordinate pCord)
+        public float getOffset(Coordinate pCord)
         {
             switch (pCord)
             {
@@ -338,7 +370,7 @@ namespace FusionLibrary
             }
         }
 
-        public void set_Position(Coordinate pCord, float value)
+        public void setOffset(Coordinate pCord, float value)
         {
             switch (pCord)
             {
@@ -364,88 +396,87 @@ namespace FusionLibrary
             Attach();
         }
 
-        public bool get_PositionUpdate(Coordinate pCord)
+        public bool getOffsetUpdate(Coordinate pCord)
         {
-            return cPos[(int)pCord].Update;
+            return OffsetSettings[(int)pCord].Update;
         }
 
-        public void set_PositionUpdate(Coordinate pCord, bool value)
+        public void setOffsetUpdate(Coordinate pCord, bool value)
         {
-            cPos[(int)pCord].Update = value;
+            OffsetSettings[(int)pCord].Update = value;
         }
 
-        public float get_PositionMaximum(Coordinate pCord)
+        public float getOffsetMaximum(Coordinate pCord)
         {
-            return cPos[(int)pCord].Maximum;
+            return OffsetSettings[(int)pCord].Maximum;
         }
 
-        public void set_PositionMaximum(Coordinate pCord, float value)
+        public void setOffsetMaximum(Coordinate pCord, float value)
         {
-            cPos[(int)pCord].Maximum = value;
+            OffsetSettings[(int)pCord].Maximum = value;
         }
 
-        public float get_PositionMinimum(Coordinate pCord)
+        public float getOffsetMinimum(Coordinate pCord)
         {
-            return cPos[(int)pCord].Minimum;
+            return OffsetSettings[(int)pCord].Minimum;
         }
 
-        public void set_PositionMinimum(Coordinate pCord, float value)
+        public void setOffsetMinimum(Coordinate pCord, float value)
         {
-            cPos[(int)pCord].Minimum = value;
+            OffsetSettings[(int)pCord].Minimum = value;
         }
 
-        public float get_PositionStep(Coordinate pCord)
+        public float getOffsetStep(Coordinate pCord)
         {
-            return cPos[(int)pCord].Step;
+            return OffsetSettings[(int)pCord].Step;
         }
 
-        public void set_PositionStep(Coordinate pCord, float value)
+        public void setOffsetStep(Coordinate pCord, float value)
         {
-            cPos[(int)pCord].Step = value;
+            OffsetSettings[(int)pCord].Step = value;
         }
 
-        public float get_PositionStepRatio(Coordinate pCord)
+        public float getOffsetStepRatio(Coordinate pCord)
         {
-            return cPos[(int)pCord].StepRatio;
+            return OffsetSettings[(int)pCord].StepRatio;
         }
 
-        public void set_PositionStepRatio(Coordinate pCord, float value)
+        public void setOffsetStepRatio(Coordinate pCord, float value)
         {
-            cPos[(int)pCord].StepRatio = value;
+            OffsetSettings[(int)pCord].StepRatio = value;
         }
 
-        public bool get_PositionIncreasing(Coordinate pCord)
+        public bool getOffsetIncreasing(Coordinate pCord)
         {
-            return cPos[(int)pCord].isIncreasing;
+            return OffsetSettings[(int)pCord].isIncreasing;
         }
 
-        public void set_PositionIncreasing(Coordinate pCord, bool value)
+        public void setOffsetIncreasing(Coordinate pCord, bool value)
         {
-            cPos[(int)pCord].isIncreasing = value;
+            OffsetSettings[(int)pCord].isIncreasing = value;
         }
 
-        public bool get_PositionStop(Coordinate pCord)
+        public bool getOffsetStop(Coordinate pCord)
         {
-            return cPos[(int)pCord].Stop;
+            return OffsetSettings[(int)pCord].Stop;
         }
 
-        public void set_PositionStop(Coordinate pCord, bool value)
+        public void setOffsetStop(Coordinate pCord, bool value)
         {
-            cPos[(int)pCord].Stop = value;
+            OffsetSettings[(int)pCord].Stop = value;
         }
 
-        public float get_PositionMaxMinRatio(Coordinate pCord)
+        public float getOffsetMaxMinRatio(Coordinate pCord)
         {
-            return cPos[(int)pCord].MaxMinRatio;
+            return OffsetSettings[(int)pCord].MaxMinRatio;
         }
 
-        public void set_PositionMaxMinRatio(Coordinate pCord, float value)
+        public void setOffsetMaxMinRatio(Coordinate pCord, float value)
         {
-            cPos[(int)pCord].MaxMinRatio = value;
-        }
-        /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
-        /* TODO ERROR: Skipped RegionDirectiveTrivia */
-        public float get_Rotation(Coordinate pCord)
+            OffsetSettings[(int)pCord].MaxMinRatio = value;
+        }       
+        
+        public float getRotation(Coordinate pCord)
         {
             switch (pCord)
             {
@@ -466,7 +497,7 @@ namespace FusionLibrary
             }
         }
 
-        public void set_Rotation(Coordinate pCord, float value)
+        public void setRotation(Coordinate pCord, float value)
         {
             switch (pCord)
             {
@@ -492,94 +523,84 @@ namespace FusionLibrary
             Attach();
         }
 
-        public bool get_RotationUpdate(Coordinate pCord)
+        public bool getRotationUpdate(Coordinate pCord)
         {
-            return cRot[(int)pCord].Update;
+            return RotationSettings[(int)pCord].Update;
         }
 
-        public void set_RotationUpdate(Coordinate pCord, bool value)
+        public void setRotationUpdate(Coordinate pCord, bool value)
         {
-            cRot[(int)pCord].Update = value;
+            RotationSettings[(int)pCord].Update = value;
         }
 
-        public float get_RotationMaximum(Coordinate pCord)
+        public float getRotationMaximum(Coordinate pCord)
         {
-            return cRot[(int)pCord].Maximum;
+            return RotationSettings[(int)pCord].Maximum;
         }
 
-        public void set_RotationMaximum(Coordinate pCord, float value)
+        public void setRotationMaximum(Coordinate pCord, float value)
         {
-            cRot[(int)pCord].Maximum = value;
+            RotationSettings[(int)pCord].Maximum = value;
         }
 
-        public float get_RotationMinimum(Coordinate pCord)
+        public float getRotationMinimum(Coordinate pCord)
         {
-            return cRot[(int)pCord].Minimum;
+            return RotationSettings[(int)pCord].Minimum;
         }
 
-        public void set_RotationMinimum(Coordinate pCord, float value)
+        public void setRotationMinimum(Coordinate pCord, float value)
         {
-            cRot[(int)pCord].Minimum = value;
+            RotationSettings[(int)pCord].Minimum = value;
         }
 
-        public float get_RotationStep(Coordinate pCord)
+        public float getRotationStep(Coordinate pCord)
         {
-            return cRot[(int)pCord].Step;
+            return RotationSettings[(int)pCord].Step;
         }
 
-        public void set_RotationStep(Coordinate pCord, float value)
+        public void setRotationStep(Coordinate pCord, float value)
         {
-            cRot[(int)pCord].Step = value;
+            RotationSettings[(int)pCord].Step = value;
         }
 
-        public float get_RotationStepRatio(Coordinate pCord)
+        public float getRotationStepRatio(Coordinate pCord)
         {
-            return cRot[(int)pCord].StepRatio;
+            return RotationSettings[(int)pCord].StepRatio;
         }
 
-        public void set_RotationStepRatio(Coordinate pCord, float value)
+        public void setRotationStepRatio(Coordinate pCord, float value)
         {
-            cRot[(int)pCord].StepRatio = value;
+            RotationSettings[(int)pCord].StepRatio = value;
         }
 
-        public bool get_RotationIncreasing(Coordinate pCord)
+        public bool getRotationIncreasing(Coordinate pCord)
         {
-            return cRot[(int)pCord].isIncreasing;
+            return RotationSettings[(int)pCord].isIncreasing;
         }
 
-        public void set_RotationIncreasing(Coordinate pCord, bool value)
+        public void setRotationIncreasing(Coordinate pCord, bool value)
         {
-            cRot[(int)pCord].isIncreasing = value;
+            RotationSettings[(int)pCord].isIncreasing = value;
         }
 
-        public bool get_RotationFullCircle(Coordinate pCord)
+        public bool getRotationStop(Coordinate pCord)
         {
-            return cRot[(int)pCord].isFullCircle;
+            return RotationSettings[(int)pCord].Stop;
         }
 
-        public void set_RotationFullCircle(Coordinate pCord, bool value)
+        public void setRotationStop(Coordinate pCord, bool value)
         {
-            cRot[(int)pCord].isFullCircle = value;
+            RotationSettings[(int)pCord].Stop = value;
         }
 
-        public bool get_RotationStop(Coordinate pCord)
+        public float getRotationMaxMinRatio(Coordinate pCord)
         {
-            return cRot[(int)pCord].Stop;
+            return RotationSettings[(int)pCord].MaxMinRatio;
         }
 
-        public void set_RotationStop(Coordinate pCord, bool value)
+        public void setRotationMaxMinRatio(Coordinate pCord, float value)
         {
-            cRot[(int)pCord].Stop = value;
-        }
-
-        public float get_RotationMaxMinRatio(Coordinate pCord)
-        {
-            return cRot[(int)pCord].MaxMinRatio;
-        }
-
-        public void set_RotationMaxMinRatio(Coordinate pCord, float value)
-        {
-            cRot[(int)pCord].MaxMinRatio = value;
+            RotationSettings[(int)pCord].MaxMinRatio = value;
         }
         
         public void CheckExists()
@@ -612,275 +633,121 @@ namespace FusionLibrary
             if (IsDetached || !IsAnimationOn)
                 return;
 
-            {                
-                if (cPos[0].Update)
-                {
-                    if (cPos[0].isIncreasing)
-                    {
-                        pOffset.X += cPos[0].Step * cPos[0].StepRatio;
-
-                        if (pOffset.X > cPos[0].Maximum * cPos[0].MaxMinRatio)
-                        {
-                            if (cPos[0].Stop) 
-                            {
-                                cPos[0].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.X, cPos[0], false);
-                            }
-                                
-                            cPos[0].isIncreasing = false;
-                            pOffset.X = cPos[0].Maximum * cPos[0].MaxMinRatio;
-                        }
-                    }
-                    else
-                    {
-                        pOffset.X -= cPos[0].Step * cPos[0].StepRatio;
-
-                        if (pOffset.X < cPos[0].Minimum * cPos[0].MaxMinRatio)
-                        {
-                            if (cPos[0].Stop)
-                            {
-                                cPos[0].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.X, cPos[0], false);
-                            }
-
-                            cPos[0].isIncreasing = true;
-                            pOffset.X = cPos[0].Minimum * cPos[0].MaxMinRatio;
-                        }
-                    }
-                }
-            }
-
+            for(int i = 0;i < 4;i++)
             {
-                if (cPos[1].Update)
-                {
-                    if (cPos[1].isIncreasing)
-                    {
-                        pOffset.Y += cPos[1].Step * cPos[1].StepRatio;
-
-                        if (pOffset.Y > cPos[1].Maximum * cPos[1].MaxMinRatio)
-                        {
-                            if (cPos[1].Stop)
-                            {
-                                cPos[1].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.Y, cPos[1], false);
-                            }
-
-                            cPos[1].isIncreasing = false;
-                            pOffset.Y = cPos[1].Maximum * cPos[1].MaxMinRatio;
-                        }
-                    }
-                    else
-                    {
-                        pOffset.Y -= cPos[1].Step * cPos[1].StepRatio;
-
-                        if (pOffset.Y < cPos[1].Minimum * cPos[1].MaxMinRatio)
-                        {
-                            if (cPos[1].Stop)
-                            {
-                                cPos[1].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.Y, cPos[1], false);
-                            }
-
-                            cPos[1].isIncreasing = true;
-                            pOffset.Y = cPos[1].Minimum * cPos[1].MaxMinRatio;
-                        }
-                    }
-                }
-            }
-
-            {
-                if (cPos[2].Update)
-                {
-                    if (cPos[2].isIncreasing)
-                    {
-                        pOffset.Z += cPos[2].Step * cPos[2].StepRatio;
-
-                        if (pOffset.Z > cPos[2].Maximum * cPos[2].MaxMinRatio)
-                        {
-                            if (cPos[2].Stop)
-                            {
-                                cPos[2].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.Z, cPos[2], false);
-                            }
-
-                            cPos[2].isIncreasing = false;
-                            pOffset.Z = cPos[2].Maximum * cPos[2].MaxMinRatio;
-                        }
-                    }
-                    else
-                    {
-                        pOffset.Z -= cPos[2].Step * cPos[2].StepRatio;
-
-                        if (pOffset.Z < cPos[2].Minimum * cPos[2].MaxMinRatio)
-                        {
-                            if (cPos[2].Stop)
-                            {
-                                cPos[2].Update = false;
-                                AnimationStopped?.Invoke(this, Coordinate.Z, cPos[2], false);
-                            }
-
-                            cPos[2].isIncreasing = true;
-                            pOffset.Z = cPos[2].Minimum * cPos[2].MaxMinRatio;
-                        }
-                    }
-                }
-            }
-
-            {
-                if (cRot[0].Update)
-                {
-                    if (cRot[0].isIncreasing)
-                    {
-                        pRotation.X += cRot[0].Step * cRot[0].StepRatio;
-
-                        if (pRotation.X > cRot[0].Maximum * cRot[0].MaxMinRatio)
-                        {
-                            if (cRot[0].isFullCircle)
-                            {
-                                pRotation.X -= 360;
-                            }
-                            else
-                            {
-                                if (cRot[0].Stop)
-                                {
-                                    cRot[0].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.X, cRot[0], true);
-                                }
-
-                                cRot[0].isIncreasing = false;
-                                pRotation.X = cRot[0].Maximum * cRot[0].MaxMinRatio;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        pRotation.X -= cRot[0].Step * cRot[0].StepRatio;
-
-                        if (pRotation.X < cRot[0].Minimum * cRot[0].MaxMinRatio)
-                        {
-                            if (cRot[0].isFullCircle)
-                            {
-                                pRotation.X += 360;
-                            }
-                            else
-                            {
-                                if (cRot[0].Stop)
-                                {
-                                    cRot[0].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.X, cRot[0], true);
-                                }
-
-                                cRot[0].isIncreasing = true;
-                                pRotation.X = cRot[0].Minimum * cRot[0].MaxMinRatio;
-                            }
-                        }
-                    }
-                }
-            }
-
-            {
-                if (cRot[1].Update)
-                {
-                    if (cRot[1].isIncreasing)
-                    {
-                        pRotation.Y += cRot[1].Step * cRot[1].StepRatio;
-
-                        if (pRotation.Y > cRot[1].Maximum * cRot[1].MaxMinRatio)
-                        {
-                            if (cRot[1].isFullCircle)
-                            {
-                                pRotation.Y -= 360;
-                            }
-                            else
-                            {
-                                if (cRot[1].Stop)
-                                {
-                                    cRot[1].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.Y, cRot[1], true);
-                                }
-
-                                cRot[1].isIncreasing = false;
-                                pRotation.Y = cRot[1].Maximum * cRot[1].MaxMinRatio;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        pRotation.Y -= cRot[1].Step * cRot[1].StepRatio;
-
-                        if (pRotation.Y < cRot[1].Minimum * cRot[1].MaxMinRatio)
-                        {
-                            if (cRot[1].isFullCircle)
-                            {
-                                pRotation.Y += 360;
-                            }
-                            else
-                            {
-                                if (cRot[1].Stop)
-                                {
-                                    cRot[1].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.Y, cRot[1], true);
-                                }
-
-                                cRot[1].isIncreasing = true;
-                                pRotation.Y = cRot[1].Minimum * cRot[1].MaxMinRatio;
-                            }
-                        }
-                    }
-                }
-            }
-
-            {
-                if (cRot[2].Update)
-                {
-                    if (cRot[2].isIncreasing)
-                    {
-                        pRotation.Z += cRot[2].Step * cRot[2].StepRatio;
-                        if (pRotation.Z > cRot[2].Maximum * cRot[2].MaxMinRatio)
-                        {
-                            if (cRot[2].isFullCircle)
-                            {
-                                pRotation.Z -= 360;
-                            }
-                            else
-                            {
-                                if (cRot[2].Stop)
-                                {
-                                    cRot[2].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.Z, cRot[2], true);
-                                }
-
-                                cRot[2].isIncreasing = false;
-                                pRotation.Z = cRot[2].Maximum * cRot[2].MaxMinRatio;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        pRotation.Z -= cRot[2].Step * cRot[2].StepRatio;
-                        if (pRotation.Z < cRot[2].Minimum * cRot[2].MaxMinRatio)
-                        {
-                            if (cRot[2].isFullCircle)
-                            {
-                                pRotation.Z += 360;
-                            }
-                            else
-                            {
-                                if (cRot[2].Stop)
-                                {
-                                    cRot[2].Update = false;
-                                    AnimationStopped?.Invoke(this, Coordinate.Z, cRot[2], true);
-                                }
-
-                                cRot[2].isIncreasing = true;
-                                pRotation.Z = cRot[2].Minimum * cRot[2].MaxMinRatio;
-                            }
-                        }
-                    }
-                }
+                UpdateOffset(i);
+                UpdateRotation(i);
             }
 
             Attach();
         }
+
+        public void setOffsetAtMaximum(Coordinate coordinate)
+        {
+            AdjustOffset[(int)coordinate] = (OffsetSettings[(int)coordinate].Maximum * OffsetSettings[(int)coordinate].MaxMinRatio) - pOffset[(int)coordinate];
+            OffsetSettings[(int)coordinate].isIncreasing = false;
+            Attach();
+        }
+
+        public void setOffsetAtMinimum(Coordinate coordinate)
+        {
+            AdjustOffset[(int)coordinate] = (OffsetSettings[(int)coordinate].Minimum * OffsetSettings[(int)coordinate].MaxMinRatio) - pOffset[(int)coordinate];
+            OffsetSettings[(int)coordinate].isIncreasing = true;
+            Attach();
+        }
+
+        public void setRotationAtMaximum(Coordinate coordinate)
+        {
+            AdjustRotation[(int)coordinate] = (RotationSettings[(int)coordinate].Maximum * RotationSettings[(int)coordinate].MaxMinRatio) - pRotation[(int)coordinate];
+            RotationSettings[(int)coordinate].isIncreasing = false;
+            Attach();
+        }
+
+        public void setRotationAtMinimum(Coordinate coordinate)
+        {
+            AdjustRotation[(int)coordinate] = (RotationSettings[(int)coordinate].Minimum * RotationSettings[(int)coordinate].MaxMinRatio) - pRotation[(int)coordinate];
+            RotationSettings[(int)coordinate].isIncreasing = true;
+            Attach();
+        }
+
+        private void UpdateOffset(int i)
+        {
+            if (!OffsetSettings[i].Update)
+                return;
+
+            float current = AdjustOffset[i] + pOffset[i];
+            float step = OffsetSettings[i].Step * OffsetSettings[i].StepRatio * Game.LastFrameTime;
+            float end;
+
+            if (OffsetSettings[i].isIncreasing)
+            {
+                end = OffsetSettings[i].Maximum;
+                current += step;
+            }                
+            else
+            {
+                end = OffsetSettings[i].Minimum;
+                current -= step;
+            }
+                
+            end *= OffsetSettings[i].MaxMinRatio;
+
+            AdjustOffset[i] = current - pOffset[i];
+
+            if (current.Near(end, step))
+            {
+                OffsetSettings[i].isIncreasing = false;
+                AdjustOffset[i] = end - pOffset[i];
+
+                if (OffsetSettings[i].Stop)
+                {
+                    OffsetSettings[i].Update = false;
+                    AnimationStopped?.Invoke(this, (Coordinate)i, OffsetSettings[i], false);
+                }                
+            }
+        }
+
+        private void UpdateRotation(int i)
+        {
+            if (!RotationSettings[i].Update)
+                return;
+
+            float current = AdjustRotation[i] + pRotation[i];
+            float step = RotationSettings[i].Step * RotationSettings[i].StepRatio * Game.LastFrameTime;
+            float end;
+            
+            if (RotationSettings[i].isIncreasing)
+            {
+                end = RotationSettings[i].Maximum;
+                current += step;
+            }                
+            else
+            {
+                end = RotationSettings[i].Minimum;
+                current -= step;
+            }
+
+            end *= RotationSettings[i].MaxMinRatio;
+
+            if (Math.Abs(current) > 360)
+                current += 360 * (current > 0 ? -1 : 1);
+
+            AdjustRotation[i] = current - pRotation[i];
+
+            if (current.Near(end, step))
+            {
+                RotationSettings[i].isIncreasing = !RotationSettings[i].isIncreasing;
+                AdjustRotation[i] = end - pRotation[i];
+
+                if (RotationSettings[i].Stop)
+                {                    
+                    RotationSettings[i].Update = false;
+                    AnimationStopped?.Invoke(this, (Coordinate)i, RotationSettings[i], true);
+                }
+            }
+        }
+
+        public static implicit operator Prop(AnimateProp animateProp) => animateProp.Prop;
+        public static implicit operator Entity(AnimateProp animateProp) => animateProp.Prop;
     }
 }

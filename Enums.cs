@@ -123,6 +123,7 @@ namespace FusionLibrary
 
         public struct CoordinateSetting
         {
+            public bool isSetted;
             public bool Update;
             public bool isIncreasing;
             public float Minimum;
@@ -130,8 +131,8 @@ namespace FusionLibrary
             public float MaxMinRatio;
             public float Step;
             public float StepRatio;
-            public bool isFullCircle;
             public bool Stop;
+            public bool SimulateAcceleration;
         }
 
         public enum AnimationStep
