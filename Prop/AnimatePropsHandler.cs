@@ -15,6 +15,11 @@ namespace FusionLibrary
             GlobalPropsList.ForEach(x => x.Play());
         }
 
+        public static void Abort()
+        {
+            GlobalPropsList.ForEach(x => x.Dispose());
+        }
+
         public List<AnimateProp> Props = new List<AnimateProp>();
 
         public AnimationStopped AnimationStopped;
