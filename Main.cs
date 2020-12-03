@@ -20,7 +20,7 @@ namespace FusionLibrary
 
         private void Main_Aborted(object sender, EventArgs e)
         {
-            AnimatePropsHandler.Abort();
+            
         }
 
         private void Main_Tick(object sender, EventArgs e)
@@ -28,8 +28,8 @@ namespace FusionLibrary
             if (Game.IsLoading)
                 return;
 
+            AnimateProp.ProcessAll();
             TimeHandler.Process();
-            AnimatePropsHandler.ProcessAll();
             CustomNativeMenu.ObjectPool.Process();
             CustomNativeMenu.ProcessAll();
             ScreenFlash.Process();

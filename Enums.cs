@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FusionLibrary
 {
@@ -121,18 +123,10 @@ namespace FusionLibrary
             WheelieDown
         }
 
-        public struct CoordinateSetting
+        public enum AnimationType
         {
-            public bool isSetted;
-            public bool Update;
-            public bool isIncreasing;
-            public float Minimum;
-            public float Maximum;
-            public float MaxMinRatio;
-            public float Step;
-            public float StepRatio;
-            public bool Stop;
-            public bool SimulateAcceleration;
+            Offset,
+            Rotation
         }
 
         public enum AnimationStep
@@ -142,7 +136,9 @@ namespace FusionLibrary
             Second,
             Third,
             Fourth,
-            Fifth
+            Fifth,
+            Sixth,
+            Seventh
         }
     }
 }
