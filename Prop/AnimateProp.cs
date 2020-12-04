@@ -307,7 +307,8 @@ namespace FusionLibrary
 
             if (current.Near(end, step))
             {
-                coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
+                if (!coordinateSetting.DoNotInvert)
+                    coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
 
                 if (coordinateSetting.Type == AnimationType.Offset)
                     SecondOffset[i] = end - Offset[i];

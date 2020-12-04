@@ -144,7 +144,7 @@ namespace FusionLibrary
         public float Step = 0;
         public float StepRatio = 1;
         public bool Stop = false;
-
+        public bool DoNotInvert = false;
         public CoordinateSetting(Coordinate coordinate, AnimationType type, AnimationStep animationStep)
         {
             IsSetted = false;
