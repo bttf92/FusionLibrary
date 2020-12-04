@@ -223,6 +223,12 @@ namespace FusionLibrary
             if (!IsSpawned)
                 return;
 
+            if (!Entity.NotNullAndExists() | !Prop.NotNullAndExists())
+            {
+                Delete();
+                return;
+            }
+
             if (Duration > 0)
             {
                 _currentTime += Game.LastFrameTime;

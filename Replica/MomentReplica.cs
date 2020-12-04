@@ -98,7 +98,11 @@ namespace FusionLibrary
 
             VehicleReplicas = new List<VehicleReplica>();
 
-            TimeHandler.UsedVehiclesByPlayer.ForEach(x => VehicleReplicas.Add(new VehicleReplica(x)));
+            TimeHandler.UsedVehiclesByPlayer.ForEach(x => 
+            {
+                if (x != Utils.PlayerVehicle)
+                    VehicleReplicas.Add(new VehicleReplica(x));
+            });
         }
     }
 }
