@@ -23,7 +23,7 @@ namespace FusionLibrary
         }
 
         public Prop Prop { get; private set; }
-        public Model Model { get; set; }
+        public Model Model { get; private set; }
         public bool UsePhysicalAttach { get; private set; }
         public float Duration { get; set; } = 0;
 
@@ -43,7 +43,6 @@ namespace FusionLibrary
         public new bool IsPlaying { get; private set; }
         
         private bool ToBone;
-        private string boneName;
         private EntityBone Bone;
         private bool IsDetached = false;
         private float _currentTime = 0;
@@ -62,7 +61,6 @@ namespace FusionLibrary
         {
             Model = pModel;
             Entity = pEntity;
-            this.boneName = boneName;
             Bone = pEntity.Bones[boneName];
             Offset = pOffset;
             Rotation = pRotation;
@@ -110,41 +108,41 @@ namespace FusionLibrary
 
         public Vector3 WorldPosition => Bone.GetOffsetPosition(CurrentOffset);
 
-        public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
+        public void setOffset(Coordinate coordinate, float value, bool isCurrent = false)
         {
-            if (currentOffset)
+            if (isCurrent)
                 SecondOffset[(int)coordinate] = value - Offset[(int)coordinate];
             else
                 SecondOffset[(int)coordinate] = value;
         }
 
-        public void setOffset(Vector3 value, bool currentOffset = false)
+        public void setOffset(Vector3 value, bool isCurrent = false)
         {
-            if (currentOffset)
+            if (isCurrent)
                 SecondOffset = value - Offset;
             else
                 SecondOffset = value;
         }
 
-        public void setRotation(Coordinate coordinate, float value, bool currentOffset = false)
+        public void setRotation(Coordinate coordinate, float value, bool isCurrent = false)
         {
-            if (currentOffset)
+            if (isCurrent)
                 SecondRotation[(int)coordinate] = value - Rotation[(int)coordinate];
             else
                 SecondRotation[(int)coordinate] = value;
         }
 
-        public void setRotation(Vector3 value, bool currentOffset = false)
+        public void setRotation(Vector3 value, bool isCurrent = false)
         {
-            if (currentOffset)
+            if (isCurrent)
                 SecondRotation = value - Rotation;
             else
                 SecondRotation = value;
         }
 
-        public void MoveProp(Vector3 offset, Vector3 rotation, bool second = true)
+        public void MoveProp(Vector3 offset, Vector3 rotation, bool isCurrent = true)
         {
-            if (second)
+            if (isCurrent)
             {
                 SecondOffset = offset - Offset;
                 SecondRotation = rotation - Rotation;
