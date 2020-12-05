@@ -55,6 +55,7 @@
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Extensions\OtherExtensions.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
+    <Compile Include="Other\CustomModelHandler.cs" />
     <Compile Include="Other\Player.cs" />
     <Compile Include="Prop\AnimateProp.cs" />
     <Compile Include="Prop\AnimatePropsHandler.cs" />

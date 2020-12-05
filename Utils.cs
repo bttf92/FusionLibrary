@@ -51,6 +51,9 @@ namespace FusionLibrary
         {
             Model model = new Model(modelName);
 
+            if (!model.IsInCdImage || !model.IsValid)
+                throw new Exception(model + " not present!");
+
             return LoadAndRequestModel(model);
         }
 

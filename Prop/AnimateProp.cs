@@ -23,7 +23,7 @@ namespace FusionLibrary
         }
 
         public Prop Prop { get; private set; }
-        public Model Model { get; private set; }
+        public CustomModel Model { get; private set; }
         public bool UsePhysicalAttach { get; private set; }
         public float Duration { get; set; } = 0;
 
@@ -57,7 +57,7 @@ namespace FusionLibrary
         /// <param name="boneName">Bone's name of the <paramref name="pEntity"/>.</param>
         /// <param name="pOffset">A <seealso cref="GTA.Vector3"/> indicating offset of the prop relative to the <paramref name="boneName"/>'s position.</param>
         /// <param name="pRotation">A <seealso cref="GTA.Vector3"/> indicating rotation of the prop.</param>
-        public AnimateProp(Model pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             Model = pModel;
             Entity = pEntity;
@@ -73,7 +73,7 @@ namespace FusionLibrary
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(Model pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             Model = pModel;
             Entity = pEntity;            
@@ -88,12 +88,12 @@ namespace FusionLibrary
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(Entity pEntity, Model pModel, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pOffset, pRotation, true, usePhysicalAttach)
+        public AnimateProp(Entity pEntity, CustomModel pModel, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pOffset, pRotation, true, usePhysicalAttach)
         {
 
         }
 
-        public AnimateProp(Entity pEntity, Model pModel, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
+        public AnimateProp(Entity pEntity, CustomModel pModel, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
         {
 
         }
@@ -157,7 +157,7 @@ namespace FusionLibrary
                 SpawnProp();
         }
 
-        public void SwapModel(Model model)
+        public void SwapModel(CustomModel model)
         {
             Model = model;
             Prop?.Delete();
@@ -325,8 +325,7 @@ namespace FusionLibrary
                 IsSpawned = true;
                 return;
             }
-
-            Utils.LoadAndRequestModel(Model);
+            
             Prop = World.CreateProp(Model, Entity.Position, false, false);
             Prop.IsPersistent = true;
 
