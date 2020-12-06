@@ -55,14 +55,14 @@ namespace FusionLibrary
         {
             Model model = new Model(modelName);
 
-            if (!model.IsInCdImage || !model.IsValid)
-                throw new Exception(model + " not present!");
-
             return LoadAndRequestModel(model);
         }
 
         public static Model LoadAndRequestModel(Model model)
         {
+            if (!model.IsInCdImage || !model.IsValid)
+                throw new Exception(model + " not present!");
+
             model.Request();
 
             while (!model.IsLoaded)
@@ -73,7 +73,7 @@ namespace FusionLibrary
 
         public static void ClearWorld()
         {
-            //Function.Call(Hash.DELETE_ALL_TRAINS);
+            Function.Call(Hash.DELETE_ALL_TRAINS);
 
             var allVehicles = World.GetAllVehicles();
 

@@ -56,6 +56,8 @@ namespace FusionLibrary
                 Utils.LoadAndRequestModel(customModel);
             }
 
+            LoadingPrompt.Hide();
+
             return customModel;
         }
 
