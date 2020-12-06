@@ -81,6 +81,8 @@ namespace FusionLibrary
 
             Utils.ClearWorld();
 
+            Game.Player.WantedLevel = 0;
+
             Utils.CurrentTime = destinationTime;
 
             UsedVehiclesByPlayer.Clear();

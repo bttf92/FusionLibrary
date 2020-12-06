@@ -17,6 +17,10 @@ namespace FusionLibrary
         internal static Model DMC12 = new Model("dmc12");
         internal static Model DMC12Debug = new Model("dmc_debug");
 
+        internal static Model SierraModel = new Model("sierra");
+        internal static Model SierraTenderModel = new Model("sierratender");
+        internal static Model SierraDebugModel = new Model("sierra_debug");
+
         public static DateTime CurrentTime
         {
             get => GetWorldTime();
@@ -69,12 +73,12 @@ namespace FusionLibrary
 
         public static void ClearWorld()
         {
-            Function.Call(Hash.DELETE_ALL_TRAINS);
+            //Function.Call(Hash.DELETE_ALL_TRAINS);
 
             var allVehicles = World.GetAllVehicles();
 
-            allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug).ToList()
-                .ForEach(x => x?.Delete());
+            allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug && x.Model != SierraModel && x.Model != SierraDebugModel && x.Model != SierraTenderModel).ToList()
+                .ForEach(x => x?.DeleteCompletely());
 
             var allPeds = World.GetAllPeds();
 

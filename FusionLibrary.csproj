@@ -96,6 +96,7 @@
     <Compile Include="Event\TimedEventHandler.cs" />
     <Compile Include="Prop\Light.cs" />
     <Compile Include="Prop\LightHandler.cs" />
+    <Compile Include="Prop\PtfxPlayer.cs" />
     <Compile Include="Prop\SpawnLocation.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Replica\MomentReplica.cs" />

@@ -59,9 +59,9 @@ namespace FusionLibrary
             return customModel;
         }
 
-        protected static List<CustomModel> GetAllModels()
+        protected static List<CustomModel> GetAllModels(Type type)
         {
-            var fields = typeof(CustomModelHandler).GetFields();
+            var fields = type.GetFields();
             var models = new List<CustomModel>();
 
             foreach (var field in fields)
