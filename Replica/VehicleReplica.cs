@@ -9,6 +9,7 @@ using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
+    [Serializable]
     public class VehicleReplica
     {
         public int Model { get; set; }

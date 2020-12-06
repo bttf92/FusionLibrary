@@ -7,6 +7,7 @@ using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
+    [Serializable]
     public class MomentReplica
     {
         public static List<MomentReplica> MomentReplicas = new List<MomentReplica>();
