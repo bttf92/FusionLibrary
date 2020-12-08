@@ -25,6 +25,7 @@ namespace FusionLibrary
             CheckExists = 32,
             NoOccupants = 64,
             NoVelocity = 128,
+            NoWayback = 256
         }
 
         public enum TimeTravelPhase
