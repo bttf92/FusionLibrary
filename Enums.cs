@@ -47,7 +47,8 @@ namespace FusionLibrary
         {
             Cutscene,
             Instant,
-            RC
+            RC,
+            Wayback
         }
 
         public enum LightsMode
