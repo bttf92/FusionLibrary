@@ -254,8 +254,11 @@ namespace FusionLibrary
                 if (rotationSettings.Count == 0 && offsetSettings.Count == 0)
                 {
                     IsPlaying = false;
-                    OnAnimCompleted?.Invoke(AnimationStep);
-                    AnimationStep = AnimationStep.Off;            
+
+                    AnimationStep animationStep = AnimationStep;
+                    AnimationStep = AnimationStep.Off;
+
+                    OnAnimCompleted?.Invoke(animationStep);                    
                 }
 
                 return;
