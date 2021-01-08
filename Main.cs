@@ -20,7 +20,7 @@ namespace FusionLibrary
 
         private void Main_Aborted(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Main_Tick(object sender, EventArgs e)
