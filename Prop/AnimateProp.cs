@@ -198,13 +198,66 @@ namespace FusionLibrary
             Attach();
         }
 
+        public void setInstantAnimationStep(AnimationStep animationStep)
+        {
+            List<CoordinateSetting> offsetSettings = Animation[AnimationType.Offset][animationStep].Coordinates.Where(x => x.IsSetted).ToList();
+            List<CoordinateSetting> rotationSettings = Animation[AnimationType.Rotation][animationStep].Coordinates.Where(x => x.IsSetted).ToList();
+
+            offsetSettings.ForEach(x => 
+            {
+                float val;
+
+                if (x.IsIncreasing)
+                    val = x.Maximum * x.MaxMinRatio;
+                else
+                    val = x.Minimum * x.MaxMinRatio;
+
+                x.IsIncreasing = !x.IsIncreasing;
+
+                SecondOffset[(int)x.Coordinate] = val - Offset[(int)x.Coordinate];
+            });
+
+            rotationSettings.ForEach(x =>
+            {
+                float val;
+
+                if (x.IsIncreasing)
+                    val = x.Maximum * x.MaxMinRatio;
+                else
+                    val = x.Minimum * x.MaxMinRatio;
+
+                x.IsIncreasing = !x.IsIncreasing;
+
+                SecondRotation[(int)x.Coordinate] = val - Rotation[(int)x.Coordinate];
+            });
+
+            Attach();
+        }
+
         public override void Play()
         {
             Play(AnimationStep.First);
         }
 
-        public void Play(AnimationStep animationStep)
+        public void Play(bool instant = false)
         {
+            Play(AnimationStep.First, instant, false);
+        }
+
+        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false)
+        {
+            if (playInstantPreviousSteps)
+            {
+                for (AnimationStep prevStep = AnimationStep.First; prevStep < animationStep; prevStep++)
+                    setInstantAnimationStep(prevStep);
+            }
+
+            if (instant)
+            {
+                setInstantAnimationStep(animationStep);
+                return;
+            }
+
             Animation[AnimationType.Offset][animationStep].setAllUpdate(true);
             Animation[AnimationType.Rotation][animationStep].setAllUpdate(true);
             AnimationStep = animationStep;

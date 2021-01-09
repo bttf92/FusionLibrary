@@ -29,8 +29,11 @@ namespace FusionLibrary
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
         {
-            if (!Props.Any(x => x.IsPlaying))
-                OnAnimCompleted?.Invoke(animationStep);
+            foreach(AnimateProp prop in Props)
+                if (prop[AnimationType.Offset][animationStep].Coordinates.Any(x => x.Update) || prop[AnimationType.Rotation][animationStep].Coordinates.Any(x => x.Update))
+                    return;
+
+            OnAnimCompleted?.Invoke(animationStep);
         }
 
         public void SpawnProp()
@@ -38,14 +41,14 @@ namespace FusionLibrary
             Props.ForEach(x => x.SpawnProp());
         }
 
-        public void Play()
+        public void Play(bool instant = false)
         {
-            Play(AnimationStep.First);
+            Play(AnimationStep.First, instant);
         }
 
-        public void Play(AnimationStep animationStep)
+        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false)
         {
-            Props.ForEach(x => x.Play(animationStep));            
+            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps));            
         }
 
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
@@ -61,6 +64,11 @@ namespace FusionLibrary
         public void setCoordinateAt(bool maximum, AnimationType animationType, AnimationStep animationStep, Coordinate coordinate)
         {
             Props.ForEach(x => x.setCoordinateAt(maximum, animationType, animationStep, coordinate));
+        }
+
+        public void setInstantAnimationStep(AnimationStep animationStep)
+        {
+            Props.ForEach(x => x.setInstantAnimationStep(animationStep));
         }
 
         public void Delete()

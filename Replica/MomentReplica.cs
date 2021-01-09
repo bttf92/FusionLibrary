@@ -1,4 +1,5 @@
-﻿using FusionLibrary.Memory;
+﻿using FusionLibrary.Extensions;
+using FusionLibrary.Memory;
 using GTA;
 using GTA.Native;
 using System;
@@ -34,16 +35,15 @@ namespace FusionLibrary
 
         public bool IsNow()
         {
-            if (CurrentDate > Utils.CurrentTime.AddHours(6) && CurrentDate < Utils.CurrentTime.AddHours(-6))
-                return false;
+            if (CurrentDate > Utils.CurrentTime.AddHours(-6) && CurrentDate < Utils.CurrentTime.AddHours(6))
+                return true;
 
-            return true;
+            return false;
         }
 
         public static void Randomize()
         {
             // Set the weather to a random weather
-            //World.Weather = Utils.GetRandomWeather();
             Function.Call(Hash.SET_RANDOM_WEATHER_TYPE);
 
             // Initial puddle level
@@ -53,16 +53,14 @@ namespace FusionLibrary
             if (World.Weather == Weather.Raining)
             {
                 // Set the puddle to a random number between 0.4 and 0.8
-                //puddleLevel = (float)Utils.Random.NextDouble(0.4, 0.8);
+                puddleLevel = (float)Utils.Random.NextDouble(0.4, 0.8);
             }
-
             // If the weather is clearing
             else if (World.Weather == Weather.Clearing)
             {
                 // Set the puddle to 0.2
                 puddleLevel = 0.2f;
             }
-
             // If the weather is a thunderstorm
             else if (World.Weather == Weather.ThunderStorm)
             {
@@ -83,9 +81,7 @@ namespace FusionLibrary
         {
             World.Weather = Weather;
             RainPuddleEditor.Level = PuddleLevel;
-
-            Function.Call(Hash.SET_PLAYER_WANTED_LEVEL, Game.Player, WantedLevel, false);
-            Function.Call(Hash.SET_PLAYER_WANTED_LEVEL_NOW, Game.Player, false);
+            Game.Player.WantedLevel = WantedLevel;
 
             VehicleReplicas.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
         }

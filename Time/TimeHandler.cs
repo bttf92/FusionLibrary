@@ -62,7 +62,7 @@ namespace FusionLibrary
             else if (year <= 1900)
                 vehDensity = 0;
 
-            if (vehDensity == 1)
+            if (vehDensity >= 1)
                 return;
 
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
@@ -81,11 +81,9 @@ namespace FusionLibrary
 
             Utils.ClearWorld();
 
-            Game.Player.WantedLevel = 0;
+            UsedVehiclesByPlayer.Clear();
 
             Utils.CurrentTime = destinationTime;
-
-            UsedVehiclesByPlayer.Clear();
 
             momentReplica = MomentReplica.SearchForMoment();
 
