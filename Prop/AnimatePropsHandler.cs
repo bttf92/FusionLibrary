@@ -1,6 +1,4 @@
-﻿using GTA;
-using GTA.Math;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.Enums;
 

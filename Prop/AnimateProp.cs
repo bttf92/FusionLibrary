@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FusionLibrary.Extensions;
+﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary

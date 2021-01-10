@@ -1,9 +1,7 @@
-﻿using System;
+﻿using GTA.Math;
 using GTA.Native;
+using System;
 using System.Drawing;
-using GTA.Math;
-using GTA;
-using System.Collections.Generic;
 
 namespace FusionLibrary
 {

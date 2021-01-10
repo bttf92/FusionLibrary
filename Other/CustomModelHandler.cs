@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GTA;
-using GTA.Native;
+﻿using GTA;
 using GTA.UI;
+using System;
+using System.Collections.Generic;
 
 namespace FusionLibrary
 {

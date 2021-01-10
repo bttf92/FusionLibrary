@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using GTA;
+﻿using GTA;
 using GTA.Native;
+using System.Collections.Generic;
 
 namespace FusionLibrary
 {

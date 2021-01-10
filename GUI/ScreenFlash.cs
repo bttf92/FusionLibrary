@@ -1,7 +1,5 @@
 ﻿using GTA;
 using GTA.Native;
-using GTA.UI;
-using System.Drawing;
 
 namespace FusionLibrary
 {

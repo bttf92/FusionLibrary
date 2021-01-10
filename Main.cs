@@ -1,6 +1,6 @@
-﻿using System;
-using GTA;
+﻿using GTA;
 using GTA.Native;
+using System;
 
 namespace FusionLibrary
 {

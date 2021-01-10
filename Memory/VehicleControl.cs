@@ -1,8 +1,8 @@
-﻿using System;
-using FusionLibrary.Extensions;
+﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
 
 namespace FusionLibrary.Memory
 {
