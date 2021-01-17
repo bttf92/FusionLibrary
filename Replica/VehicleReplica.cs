@@ -38,10 +38,10 @@ namespace FusionLibrary
             SecondaryColor = veh.Mods.SecondaryColor;
             Livery = veh.Mods.Livery;
 
-            //Occupants = new List<PedInfo>();
+            Occupants = new List<PedReplica>();
 
-            //foreach (Ped x in veh.Occupants)
-            //    Occupants.Add(new PedInfo(x));
+            foreach (Ped x in veh.Occupants)
+                Occupants.Add(new PedReplica(x));
         }
 
         public Vehicle Spawn(SpawnFlags spawnFlags, Vector3 position = default, float heading = default)
@@ -80,9 +80,9 @@ namespace FusionLibrary
             veh.Mods.SecondaryColor = SecondaryColor;
             veh.Mods.Livery = Livery;
 
-            //if (!spawnFlags.HasFlag(SpawnFlags.NoOccupants))
-            //    foreach (PedInfo pedInfo in Occupants)
-            //        pedInfo.Spawn(veh);
+            if (!spawnFlags.HasFlag(SpawnFlags.NoOccupants))
+                foreach (PedReplica pedReplica in Occupants)
+                    pedReplica.Spawn(veh);
         }
     }
 }

@@ -14,6 +14,9 @@ namespace FusionLibrary
             Model = ped.Model;
             Type = Function.Call<int>(Hash.GET_PED_TYPE, ped);
 
+            if (Type < 3)
+                Type = 4;
+
             Position = ped.Position;
             Rotation = ped.Rotation;
             Heading = ped.Heading;
