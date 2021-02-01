@@ -59,7 +59,15 @@ namespace FusionLibrary
 
         public Ped Spawn(Vehicle vehicle)
         {
-            Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, Seat != VehicleSeat.None ? Seat : VehicleSeat.Any, false, false);
+            VehicleSeat seat = Seat;
+
+            if (!vehicle.IsSeatFree(seat))
+                return null;
+
+            if (seat == VehicleSeat.None)
+                seat = VehicleSeat.Any;
+
+            Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, seat, false, false);
 
             foreach (var x in Weapons)
                 x.Give(ped);
@@ -69,6 +77,12 @@ namespace FusionLibrary
 
         public Ped Spawn(Vehicle vehicle, VehicleSeat vehicleSeat)
         {
+            if (!vehicle.IsSeatFree(vehicleSeat))
+                return null;
+
+            if (vehicleSeat == VehicleSeat.None)
+                vehicleSeat = VehicleSeat.Any;
+
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, vehicleSeat, false, false);
 
             foreach (var x in Weapons)
