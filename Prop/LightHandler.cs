@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.Math;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace FusionLibrary
 
         public LightHandler(Entity entity, int shadowMulti)
         {
-            this.Entity = entity;
-            this.ShadowMulti = shadowMulti * 10;
+            Entity = entity;
+            ShadowMulti = shadowMulti * 10;
         }
 
         public Light Add(string sourceBone, string directionBone, Color color, float distance, float brightness, float roundness, float radius, float fadeout)
@@ -26,9 +27,9 @@ namespace FusionLibrary
             return Lights.Last();
         }
 
-        public Light Add(float positionX, float positionY, float positionZ, float directionX, float directionY, float directionZ, Color color, float distance, float brightness, float roundness, float radius, float fadeout)
+        public Light Add(Vector3 position, Vector3 direction, Color color, float distance, float brightness, float roundness, float radius, float fadeout)
         {
-            Lights.Add(new Light(positionX, positionY, positionZ, directionX, directionY, directionZ, color, distance, brightness, roundness, radius, fadeout));
+            Lights.Add(new Light(position, direction, color, distance, brightness, roundness, radius, fadeout));
             return Lights.Last();
         }
 

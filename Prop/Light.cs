@@ -7,15 +7,10 @@ namespace FusionLibrary
 {
     public class Light
     {
-        public Light(float positionX, float positionY, float positionZ, float directionX, float directionY, float directionZ, Color color, float distance, float brightness, float roundness, float radius, float fadeout)
+        public Light(Vector3 position, Vector3 direction, Color color, float distance, float brightness, float roundness, float radius, float fadeout)
         {
-            PositionX = positionX;
-            PositionY = positionY;
-            PositionZ = positionZ;
-
-            DirectionX = directionX;
-            DirectionY = directionY;
-            DirectionZ = directionZ;
+            Position = position;
+            Direction = direction;
 
             Distance = distance;
             Brightness = brightness;
@@ -47,12 +42,9 @@ namespace FusionLibrary
         public string SourceBone { get; set; }
         public string DirectionBone { get; set; }
 
-        public float PositionX { get; set; }
-        public float PositionY { get; set; }
-        public float PositionZ { get; set; }
-        public float DirectionX { get; set; }
-        public float DirectionY { get; set; }
-        public float DirectionZ { get; set; }
+        public Vector3 Position { get; set; }
+        public Vector3 Direction { get; set; }
+
         public float Distance { get; set; }
         public float Brightness { get; set; }
         public float Roundness { get; set; }
@@ -73,13 +65,18 @@ namespace FusionLibrary
             {
                 pos = Entity.Bones[SourceBone].Position;
 
-                dir = Vector3.Subtract(Entity.Bones[DirectionBone].Position, Entity.Bones[SourceBone].Position);
-                dir.Normalize();
+                if (DirectionBone != null)
+                {
+                    dir = Vector3.Subtract(Entity.Bones[DirectionBone].Position, Entity.Bones[SourceBone].Position);
+                    dir.Normalize();
+                } 
+                else
+                    dir = Direction;
             }
             else
             {
-                pos = Entity.GetOffsetPosition(new Vector3(PositionX, PositionY, PositionZ));
-                dir = new Vector3(DirectionX, DirectionY, DirectionZ);
+                pos = Entity.GetOffsetPosition(Position);
+                dir = Direction;
             }
 
             Function.Call(Hash._DRAW_SPOT_LIGHT_WITH_SHADOW, pos.X, pos.Y, pos.Z, dir.X, dir.Y, dir.Z, Color.R, Color.G, Color.B, Distance, Brightness, Roundness, Radius, Fadeout, shadowId);
