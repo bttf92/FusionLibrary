@@ -1,4 +1,5 @@
-﻿using GTA;
+﻿using FusionLibrary.Extensions;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 using System.Drawing;
@@ -66,10 +67,7 @@ namespace FusionLibrary
                 pos = Entity.Bones[SourceBone].Position;
 
                 if (DirectionBone != null)
-                {
-                    dir = Vector3.Subtract(Entity.Bones[DirectionBone].Position, Entity.Bones[SourceBone].Position);
-                    dir.Normalize();
-                } 
+                    dir = Entity.Bones[SourceBone].Position.GetDirectionTo(Entity.Bones[DirectionBone].Position);
                 else
                     dir = Direction;
             }

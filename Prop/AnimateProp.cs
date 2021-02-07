@@ -47,8 +47,12 @@ namespace FusionLibrary
         private bool IsDetached = false;
         private float _currentTime = 0;
 
-        public Animation Animation { get; } = new Animation();
-                
+        public Animation Animation { get; private set; } = new Animation();
+
+        public Animation SavedAnimation { get; private set; } = new Animation();
+        public Vector3 SavedOffset { get; private set; } = new Vector3();
+        public Vector3 SavedRotation { get; private set; } = new Vector3();
+
         /// <summary>
         /// Spawns a new prop with <paramref name="pModel"/> attached to <paramref name="boneName"/> of <paramref name="pEntity"/> with <paramref name="pOffset"/> and <paramref name="pRotation"/>
         /// </summary>
@@ -107,6 +111,22 @@ namespace FusionLibrary
         public Vector3 RelativePosition => Bone.GetRelativeOffsetPosition(CurrentOffset);
 
         public Vector3 WorldPosition => Bone.GetOffsetPosition(CurrentOffset);
+
+        public void SaveAnimation()
+        {
+            SavedAnimation = Animation.Clone();
+            SavedOffset = SecondOffset;
+            SavedRotation = SecondRotation;
+        }
+
+        public void RestoreAnimation()
+        {
+            Animation = SavedAnimation.Clone();
+            SecondOffset = SavedOffset;
+            SecondRotation = SavedRotation;
+
+            Attach();
+        }
 
         public void setOffset(Coordinate coordinate, float value, bool isCurrent = false)
         {

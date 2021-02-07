@@ -17,6 +17,8 @@ namespace FusionLibrary
         internal static Model DMC12 = new Model("dmc12");
         internal static Model DMC12Debug = new Model("dmc_debug");
 
+        private static int _padShakeStop;
+
         public static DateTime CurrentTime
         {
             get => GetWorldTime();
@@ -91,6 +93,22 @@ namespace FusionLibrary
             rotval.X = ((float)Math.Atan2(rotpos.X, rotpos.Y)).ToDeg();
             rotval.Y = roll;
             return rotval;
+        }
+
+        public static bool IsPadShaking => _padShakeStop >= Game.GameTime;
+
+        public static void SetPadShake(int duration, int frequency)
+        {
+            _padShakeStop = Game.GameTime + duration;
+
+            Function.Call(Hash.SET_PAD_SHAKE, 0, duration, frequency);
+        }
+
+        public static void StopPadShake()
+        {
+            _padShakeStop = 0;
+
+            Function.Call(Hash.STOP_PAD_SHAKE);
         }
 
         public static DateTime GetWorldTime()

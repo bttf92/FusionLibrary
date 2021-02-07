@@ -34,6 +34,16 @@ namespace FusionLibrary
             OnAnimCompleted?.Invoke(animationStep);
         }
 
+        public void SaveAnimation()
+        {
+            Props.ForEach(x => x.SaveAnimation());
+        }
+
+        public void RestoreAnimation()
+        {
+            Props.ForEach(x => x.RestoreAnimation());
+        }
+
         public void SpawnProp()
         {
             Props.ForEach(x => x.SpawnProp());

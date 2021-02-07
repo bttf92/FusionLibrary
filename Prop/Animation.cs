@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
+    [Serializable]
     public class Animation
     {
         public List<AnimationSettings> AnimationSettings { get; } = new List<AnimationSettings>();
+
+        private static BinaryFormatter formatter = new BinaryFormatter();
 
         public Animation()
         {
@@ -14,11 +19,23 @@ namespace FusionLibrary
                 AnimationSettings.Add(new AnimationSettings(animationType));
         }
 
+        public Animation Clone()
+        {
+            MemoryStream stream = new MemoryStream();
+
+            formatter.Serialize(stream, this);
+
+            MemoryStream stream2 = new MemoryStream(stream.ToArray());
+
+            return (Animation)formatter.Deserialize(stream2);            
+        }
+
         public AnimationSettings this[AnimationType animationType] => AnimationSettings[(int)animationType];
 
         public AnimationSettings this[int animationType] => AnimationSettings[animationType];
     }
 
+    [Serializable]
     public class AnimationSettings
     {
         public List<AnimationStepSettings> AnimationStepSettings { get; } = new List<AnimationStepSettings>();
@@ -34,6 +51,7 @@ namespace FusionLibrary
         public AnimationStepSettings this[int animationStep] => AnimationStepSettings[animationStep];
     }
 
+    [Serializable]
     public class AnimationStepSettings
     {
         public List<CoordinateSetting> Coordinates { get; } = new List<CoordinateSetting>();
@@ -126,6 +144,7 @@ namespace FusionLibrary
         public CoordinateSetting this[int coordinate] => Coordinates[coordinate];
     }
 
+    [Serializable]
     public class CoordinateSetting
     {
         public bool IsSetted { get; private set; }

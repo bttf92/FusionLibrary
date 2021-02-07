@@ -60,6 +60,14 @@ namespace FusionLibrary.Extensions
             return dst;
         }
 
+        public static Vector3 GetDirectionTo(this Vector3 src, Vector3 dst)
+        {
+            Vector3 ret = Vector3.Subtract(dst, src);
+            ret.Normalize();
+
+            return ret;
+        }
+
         public static float GetMostFreeDirection(this Vector3 position, Entity ignoreEntity)
         {
             float ret = 0;
