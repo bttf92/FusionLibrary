@@ -1,5 +1,7 @@
-﻿using GTA;
+﻿using FusionLibrary.Extensions;
+using GTA;
 using GTA.Math;
+using GTA.Native;
 
 namespace FusionLibrary
 {
@@ -12,6 +14,8 @@ namespace FusionLibrary
 
         public Camera Camera { get; private set; }
 
+        private bool isVehicle;
+
         public CustomCamera(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView)
         {
             Entity = entity;
@@ -20,14 +24,30 @@ namespace FusionLibrary
             FieldOfView = fieldOfView;
         }
 
+        public CustomCamera(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView) : this((Entity)vehicle, positionOffset, pointAtOffset, fieldOfView)
+        {
+            isVehicle = true;
+            PointAtOffset = Utils.DirectionToRotation(PositionOffset, PointAtOffset, 0);
+        }
+
+        public CustomCamera(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView) : this(vehicle, vehicle.Bones[positionBone].RelativePosition, vehicle.Bones[pointAtBone].RelativePosition, fieldOfView)
+        {
+
+        }
+
         public void Show(ref CustomCamera OldCamera, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Camera == null || Camera.Exists() == false)
             {
                 Camera = World.CreateCamera(Entity.Position, Entity.Rotation, FieldOfView);
-
-                Camera.AttachTo(Entity, PositionOffset);
-                Camera.PointAt(Entity, PointAtOffset);
+                
+                if (!isVehicle)
+                {
+                    Camera.AttachTo(Entity, PositionOffset);
+                    Camera.PointAt(Entity, PointAtOffset);
+                }                    
+                else
+                    Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
             }
 
             if (OldCamera == null || OldCamera.Camera == null || OldCamera.Camera.Exists() == false)

@@ -84,9 +84,9 @@ namespace FusionLibrary
                 .ForEach(x => x?.Delete());
         }
 
-        public static Vector3 DirectionToRotation(Vector3 target, Vector3 current, float roll)
+        public static Vector3 DirectionToRotation(Vector3 src, Vector3 dst, float roll)
         {
-            Vector3 dir = (current - target).Normalized;
+            Vector3 dir = src.GetDirectionTo(dst);
             Vector3 rotval = Vector3.Zero;
             rotval.Z = -(((float)Math.Atan2(dir.X, dir.Y)).ToDeg());
             Vector3 rotpos = Vector3.Normalize(new Vector3(dir.Z, new Vector3(dir.X, dir.Y, 0.0f).Length(), 0.0f));

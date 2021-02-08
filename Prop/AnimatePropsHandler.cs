@@ -79,9 +79,9 @@ namespace FusionLibrary
             Props.ForEach(x => x.setInstantAnimationStep(animationStep));
         }
 
-        public void Delete()
+        public void Delete(bool keepProp = false)
         {
-            Props.ForEach(x => x.Delete());
+            Props.ForEach(x => x.Delete(keepProp));
         }
 
         public void Detach()
@@ -94,9 +94,9 @@ namespace FusionLibrary
             Props.ForEach(x => x.ScatterProp(ForceMultiplier));
         }
 
-        public void Dispose()
+        public void Dispose(bool keepProp = false)
         {
-            Props.ForEach(x => x.Dispose());
+            Props.ForEach(x => x.Dispose(keepProp));
             Props.Clear();
         }
 

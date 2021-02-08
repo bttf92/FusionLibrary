@@ -370,9 +370,9 @@ namespace FusionLibrary
 
             end *= coordinateSetting.MaxMinRatio;
 
-            if (coordinateSetting.Type == AnimationType.Rotation)
-                if (Math.Abs(current) > 360)
-                    current += 360 * (current > 0 ? -1 : 1);
+            //if (coordinateSetting.Type == AnimationType.Rotation)
+            //    if (Math.Abs(current) > 360)
+            //        current += 360 * (current > 0 ? -1 : 1);
 
             if (coordinateSetting.Type == AnimationType.Offset)
                 SecondOffset[i] = current - Offset[i];
@@ -431,19 +431,24 @@ namespace FusionLibrary
             }
         }
 
-        public void Delete()
+        public void Delete(bool keepProp = false)
         {
             IsSpawned = false;
             IsDetached = false;
             _currentTime = 0;
             AnimationStep = AnimationStep.Off;
-            Prop?.Delete();
+
+            if (!keepProp)
+                Prop?.Delete();
+            else
+                Prop?.Detach();
         }
 
         public void Detach()
         {
             Prop.Detach();
             Prop.IsPositionFrozen = false;
+            Prop.IsPersistent = false;
             IsDetached = true;
         }
         
@@ -462,9 +467,15 @@ namespace FusionLibrary
             IsPlaying = false;
         }
 
+        public void Dispose(bool keepProp = false)
+        {
+            Delete(keepProp);
+            GlobalAnimatePropList.Remove(this);
+        }
+
         public override void Dispose()
         {            
-            Delete();
+            Delete(false);
             GlobalAnimatePropList.Remove(this);
         }
 

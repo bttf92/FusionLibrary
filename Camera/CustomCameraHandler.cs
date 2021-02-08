@@ -59,6 +59,24 @@ namespace FusionLibrary
             return ret;
         }
 
+        public CustomCamera Add(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView)
+        {
+            CustomCamera ret = new CustomCamera(vehicle, positionOffset, pointAtOffset, fieldOfView);
+
+            Cameras.Add(ret);
+
+            return ret;
+        }
+
+        public CustomCamera Add(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView)
+        {
+            CustomCamera ret = new CustomCamera(vehicle, positionBone, pointAtBone, fieldOfView);
+
+            Cameras.Add(ret);
+
+            return ret;
+        }
+
         public void Show(int index, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Cameras.Count == 0)

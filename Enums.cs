@@ -89,7 +89,11 @@ namespace FusionLibrary
             RightSide,
             FrontToBack,
             FrontOnRail,
-            FrontToBackRightSide
+            FrontToBackRightSide,
+            LicensePlate,
+            TimeTravelOnTracks,
+            DigitalSpeedoTowardsFront,
+            RearCarTowardsFront
         }
 
         public enum SmokeColor
