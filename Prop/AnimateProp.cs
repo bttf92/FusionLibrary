@@ -2,7 +2,6 @@
 using GTA;
 using GTA.Math;
 using GTA.Native;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.Enums;
@@ -28,7 +27,7 @@ namespace FusionLibrary
         public float Duration { get; set; } = 0;
 
         public bool IsSpawned { get; private set; }
-               
+
         public Vector3 Offset { get; }
         public Vector3 Rotation { get; }
 
@@ -41,7 +40,7 @@ namespace FusionLibrary
         public AnimationStep AnimationStep { get; private set; } = AnimationStep.Off;
 
         public new bool IsPlaying { get; private set; }
-        
+
         private bool ToBone;
         private EntityBone Bone;
         private bool IsDetached = false;
@@ -80,7 +79,7 @@ namespace FusionLibrary
         public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             Model = pModel;
-            Entity = pEntity;            
+            Entity = pEntity;
             Offset = pOffset;
             Rotation = pRotation;
             ToBone = false;
@@ -172,7 +171,7 @@ namespace FusionLibrary
                 SecondOffset = offset;
                 SecondRotation = rotation;
             }
-            
+
             if (!IsSpawned)
                 SpawnProp();
         }
@@ -223,7 +222,7 @@ namespace FusionLibrary
             List<CoordinateSetting> offsetSettings = Animation[AnimationType.Offset][animationStep].Coordinates.Where(x => x.IsSetted).ToList();
             List<CoordinateSetting> rotationSettings = Animation[AnimationType.Rotation][animationStep].Coordinates.Where(x => x.IsSetted).ToList();
 
-            offsetSettings.ForEach(x => 
+            offsetSettings.ForEach(x =>
             {
                 float val;
 
@@ -286,7 +285,7 @@ namespace FusionLibrary
 
         public override void Process()
         {
-            
+
         }
 
         internal void ProcessInt()
@@ -319,7 +318,7 @@ namespace FusionLibrary
                 List<CoordinateSetting> offsetSettings = Animation[AnimationType.Offset][AnimationStep].Coordinates.Where(x => x.IsSetted && x.Update).ToList();
                 List<CoordinateSetting> rotationSettings = Animation[AnimationType.Rotation][AnimationStep].Coordinates.Where(x => x.IsSetted && x.Update).ToList();
 
-                offsetSettings.ForEach(x => UpdateCoordinate(x));              
+                offsetSettings.ForEach(x => UpdateCoordinate(x));
                 rotationSettings.ForEach(x => UpdateCoordinate(x));
 
                 Attach();
@@ -331,12 +330,12 @@ namespace FusionLibrary
                     AnimationStep animationStep = AnimationStep;
                     AnimationStep = AnimationStep.Off;
 
-                    OnAnimCompleted?.Invoke(animationStep);                    
+                    OnAnimCompleted?.Invoke(animationStep);
                 }
 
                 return;
-            }            
-            
+            }
+
             Attach();
         }
 
@@ -401,7 +400,7 @@ namespace FusionLibrary
                 IsSpawned = true;
                 return;
             }
-            
+
             Prop = World.CreateProp(Model, Entity.Position, false, false);
             Prop.IsPersistent = true;
 
@@ -451,7 +450,7 @@ namespace FusionLibrary
             Prop.IsPersistent = false;
             IsDetached = true;
         }
-        
+
         public void ScatterProp(float ForceMultiplier = 1f)
         {
             Detach();
@@ -474,7 +473,7 @@ namespace FusionLibrary
         }
 
         public override void Dispose()
-        {            
+        {
             Delete(false);
             GlobalAnimatePropList.Remove(this);
         }

@@ -34,7 +34,7 @@ namespace FusionLibrary
             CustomNativeMenu.ProcessAll();
             ScreenFlash.Process();
             PlayerSwitch.Process();
-            NativeInput.ProcessAll();            
+            NativeInput.ProcessAll();
 
             if (PlayerSwitch.Disable)
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);

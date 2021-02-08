@@ -130,7 +130,7 @@ namespace FusionLibrary
         }
 
         public void Stop()
-        {            
+        {
             if (CurrentCameraIndex > -1)
             {
                 CurrentCamera.Stop();
@@ -151,7 +151,7 @@ namespace FusionLibrary
         }
 
         public void Process()
-        {           
+        {
             if (CycleCameras)
             {
                 if (nextChange < Game.GameTime)

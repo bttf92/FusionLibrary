@@ -265,7 +265,7 @@ namespace FusionLibrary.Memory
         {
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
-            
+
             if (wheelAngularVelocityOffset == 0) return;
 
             for (sbyte i = 0; i < numWheels; i++)
@@ -324,7 +324,7 @@ namespace FusionLibrary.Memory
 
             if (wheelSteeringAngleOffset == 0) return array;
 
-            for(sbyte i = 0; i < numWheels; i++)
+            for (sbyte i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 array[i] = *(float*)(wheelAddr + (ulong)wheelSteeringAngleOffset);
@@ -338,7 +338,7 @@ namespace FusionLibrary.Memory
             float largestAngle = 0.0f;
             float[] angles = GetWheelSteeringAngles(v);
 
-            foreach(float angle in angles)
+            foreach (float angle in angles)
             {
                 if (Math.Abs(angle) > Math.Abs(largestAngle))
                 {

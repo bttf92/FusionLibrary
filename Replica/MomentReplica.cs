@@ -95,7 +95,7 @@ namespace FusionLibrary
 
             VehicleReplicas = new List<VehicleReplica>();
 
-            TimeHandler.UsedVehiclesByPlayer.ForEach(x => 
+            TimeHandler.UsedVehiclesByPlayer.ForEach(x =>
             {
                 if (x != Utils.PlayerVehicle)
                     VehicleReplicas.Add(new VehicleReplica(x));

@@ -1,6 +1,5 @@
 ﻿namespace FusionLibrary.Memory
 {
-    using System;
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]

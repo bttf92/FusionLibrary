@@ -11,7 +11,7 @@ namespace FusionLibrary
     public delegate void OnItemActivated(NativeItem sender, EventArgs e);
     public delegate void OnItemCheckboxChanged(NativeCheckboxItem sender, EventArgs e, bool Checked);
     public delegate void OnItemValueChanged(NativeSliderItem sender, EventArgs e);
-    
+
     public abstract class CustomNativeMenu : NativeMenu
     {
         public static ObjectPool ObjectPool { get; internal set; } = new ObjectPool();
@@ -102,7 +102,7 @@ namespace FusionLibrary
         {
             nativeSlidableItem.Activated += NativeItem_Activated;
             nativeSlidableItem.Selected += NativeItem_Selected;
-            
+
             base.Add(nativeSlidableItem);
         }
 

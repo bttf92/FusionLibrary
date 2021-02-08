@@ -27,7 +27,7 @@ namespace FusionLibrary
 
             MemoryStream stream2 = new MemoryStream(stream.ToArray());
 
-            return (Animation)formatter.Deserialize(stream2);            
+            return (Animation)formatter.Deserialize(stream2);
         }
 
         public AnimationSettings this[AnimationType animationType] => AnimationSettings[(int)animationType];

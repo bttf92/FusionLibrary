@@ -7,7 +7,7 @@ namespace FusionLibrary
     {
         public CustomStopwatch() : base()
         {
-            
+
         }
 
         public void StartNewRecord()

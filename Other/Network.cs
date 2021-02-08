@@ -66,14 +66,14 @@ namespace FusionLibrary
 
             udpClient.EnableBroadcast = true;
 
-            foreach(var addr in broadcastAddress)
+            foreach (var addr in broadcastAddress)
             {
                 try
                 {
                     udpClient.SendAsync(data, data.Length, new IPEndPoint(addr, port));
                 }
                 catch { }
-            }                
+            }
 
             udpClient.Close();
             udpClient.Dispose();

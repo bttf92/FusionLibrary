@@ -9,7 +9,7 @@ namespace FusionLibrary
 
     public enum CameraType
     {
-        Position,        
+        Position,
         Entity,
         Custom
     }
@@ -30,7 +30,7 @@ namespace FusionLibrary
         public float EndFloat = 0;
         private bool _setFloat = false;
 
-        public double CurrentSpeed { get; private set; }    
+        public double CurrentSpeed { get; private set; }
         public int StartSpeed = 0;
         public int EndSpeed = 0;
         private bool _setSpeed = false;
@@ -44,8 +44,8 @@ namespace FusionLibrary
         public float FieldOfView { get; private set; }
 
         public Camera CustomCamera;
-        private CameraType _lookAtType = CameraType.Position;    
-        
+        private CameraType _lookAtType = CameraType.Position;
+
         private int _executionCount = 0;
 
         private CustomCameraHandler _customCameraManager;
@@ -77,7 +77,7 @@ namespace FusionLibrary
             }
             else
             {
-                StartTime = tStartTime;                
+                StartTime = tStartTime;
             }
 
             EndTime = TimeSpan.Zero;
@@ -161,7 +161,7 @@ namespace FusionLibrary
                 case CameraType.Entity:
                     if (CustomCamera == null)
                         CustomCamera = World.CreateCamera(CameraOnEntity.GetOffsetPosition(CameraPosition), Vector3.Zero, FieldOfView == -1 ? GameplayCamera.FieldOfView : FieldOfView);
-                    
+
                     CustomCamera.AttachTo(CameraOnEntity, CameraPosition);
                     break;
                 case CameraType.Position:
@@ -169,8 +169,8 @@ namespace FusionLibrary
                         CustomCamera = World.CreateCamera(CameraPosition, Vector3.Zero, FieldOfView == -1 ? GameplayCamera.FieldOfView : FieldOfView);
                     else
                         CustomCamera.Position = CameraPosition;
-                    break;                    
-            }            
+                    break;
+            }
 
             switch (_lookAtType)
             {
@@ -195,7 +195,8 @@ namespace FusionLibrary
         {
             bool ret = StartTime.TotalMilliseconds <= tCurrentTime.TotalMilliseconds && ((OneShot && _executionCount == 0) || tCurrentTime.TotalMilliseconds <= EndTime.TotalMilliseconds);
 
-            if (ret) {
+            if (ret)
+            {
                 if (_executionCount < 2)
                     _executionCount += 1;
 
@@ -209,7 +210,7 @@ namespace FusionLibrary
                     PlaceCamera();
 
                 OnExecute?.Invoke(this);
-            }                
+            }
 
             return ret;
         }

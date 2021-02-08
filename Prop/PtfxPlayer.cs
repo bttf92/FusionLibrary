@@ -64,7 +64,7 @@ namespace FusionLibrary
 
         public override void Process()
         {
-            if(IsPlaying && ShouldLoop && DoLoopHandling && Game.GameTime > nextRemove)
+            if (IsPlaying && ShouldLoop && DoLoopHandling && Game.GameTime > nextRemove)
             {
                 if (currentPlayingParticles.Count > 3)
                     RemovePtfx(currentPlayingParticles[0]);
@@ -79,7 +79,7 @@ namespace FusionLibrary
         {
             evolutionParams[key] = value;
 
-            foreach(var entry in evolutionParams)
+            foreach (var entry in evolutionParams)
             {
                 currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
             }
@@ -139,7 +139,7 @@ namespace FusionLibrary
 
             if (!ShouldLoop) return;
 
-            foreach(var entry in evolutionParams)
+            foreach (var entry in evolutionParams)
             {
                 currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
             }
@@ -163,7 +163,7 @@ namespace FusionLibrary
     {
         public PtfxEntityPlayer(string[] ptfx) : base(ptfx)
         {
-            
+
         }
 
         public PtfxEntityPlayer(string[] ptfx, Entity entity, Vector3 posOffset, Vector3 rot, float size = 1f, bool loop = false, bool doLoopHandling = false, int removeTime = 30) : base(ptfx[0], ptfx[1], posOffset, rot, size, loop, doLoopHandling, removeTime)
@@ -222,7 +222,7 @@ namespace FusionLibrary
 
         public PtfxEntityBonePlayer(string[] ptfx) : base(ptfx)
         {
-            
+
         }
 
         public PtfxEntityBonePlayer(string[] ptfx, Entity entity, string boneName, Vector3 posOffset, Vector3 rot, float size = 1f, bool loop = false, bool doLoopHandling = false, int removeTime = 30) : base(ptfx[0], ptfx[1], posOffset, rot, size, loop, doLoopHandling, removeTime)

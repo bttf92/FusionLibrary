@@ -7,7 +7,7 @@ using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
-    public class SpawnLocationHandler 
+    public class SpawnLocationHandler
     {
         public List<SpawnLocation> Locations { get; } = new List<SpawnLocation>();
 

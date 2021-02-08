@@ -23,7 +23,7 @@ namespace FusionLibrary
 
         public bool DisableLongpressControl { get; protected set; }
 
-        public OnControlJustPressed OnControlJustPressed{ get; set; }
+        public OnControlJustPressed OnControlJustPressed { get; set; }
         public OnControlJustReleased OnControlJustReleased { get; set; }
         public OnControlLongPressed OnControlLongPressed { get; set; }
         public OnControlPressed OnControlPressed { get; set; }
@@ -54,7 +54,7 @@ namespace FusionLibrary
 
             if (Game.IsControlJustReleased(Input))
             {
-                if(pressedFor < 500 && registerRelease)
+                if (pressedFor < 500 && registerRelease)
                 {
                     pressedFor = 0;
                     OnControlJustReleased?.Invoke();
@@ -71,7 +71,7 @@ namespace FusionLibrary
                     Game.DisableControlThisFrame(Input);
             }
 
-            if(pressedFor >= 500)
+            if (pressedFor >= 500)
             {
                 OnControlLongPressed?.Invoke();
                 pressedFor = 0;

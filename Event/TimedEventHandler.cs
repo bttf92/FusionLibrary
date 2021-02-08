@@ -80,7 +80,7 @@ namespace FusionLibrary
         {
             RunEvents(TimeSpan.FromMilliseconds(tCurrentTime));
         }
-       
+
         public void RunEvents(TimeSpan tCurrentTime)
         {
             if (Pause)
@@ -93,7 +93,7 @@ namespace FusionLibrary
                 if (runningEvents.Where(x => x.IsSettingCamera).Count() == 0)
                     ResetCamera();
                 else if (!IsCustomCameraActive)
-                    IsCustomCameraActive = true;                    
+                    IsCustomCameraActive = true;
             }
             else
                 ResetCamera();

@@ -19,12 +19,12 @@ namespace FusionLibrary
         public CustomModel(Model model)
         {
             Name = model.Hash.ToString();
-            Model = model;            
+            Model = model;
         }
 
         public Model Request() => Utils.LoadAndRequestModel(Model);
 
-        public static implicit operator Model(CustomModel customModel) 
+        public static implicit operator Model(CustomModel customModel)
         {
             return customModel.Request();
         }
@@ -46,7 +46,7 @@ namespace FusionLibrary
         {
             LoadingPrompt.Show("Loading: " + customModel);
 
-            if(!customModel.Model.IsLoaded)
+            if (!customModel.Model.IsLoaded)
             {
                 if (!customModel.Model.IsInCdImage || !customModel.Model.IsValid)
                     throw new Exception(customModel.Model + " not present!");

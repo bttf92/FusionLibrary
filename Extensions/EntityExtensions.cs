@@ -200,7 +200,7 @@ namespace FusionLibrary.Extensions
         {
             if (!vehicle.IsTrain())
                 return;
-            
+
             Function.Call(Hash.SET_RENDER_TRAIN_AS_DERAILED, vehicle, true);
         }
 

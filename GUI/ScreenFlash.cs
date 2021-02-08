@@ -23,7 +23,7 @@ namespace FusionLibrary
         {
             if (!IsFlashing) return;
 
-            switch(currentStep)
+            switch (currentStep)
             {
                 case 0:
                     float numToAdd = (255 * Game.LastFrameTime) / (time / 2);

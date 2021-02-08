@@ -27,7 +27,7 @@ namespace FusionLibrary
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
         {
-            foreach(AnimateProp prop in Props)
+            foreach (AnimateProp prop in Props)
                 if (prop[AnimationType.Offset][animationStep].Coordinates.Any(x => x.Update) || prop[AnimationType.Rotation][animationStep].Coordinates.Any(x => x.Update))
                     return;
 
@@ -56,7 +56,7 @@ namespace FusionLibrary
 
         public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false)
         {
-            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps));            
+            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps));
         }
 
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)

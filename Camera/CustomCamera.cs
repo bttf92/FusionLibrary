@@ -1,7 +1,6 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
-using GTA.Native;
 
 namespace FusionLibrary
 {
@@ -40,12 +39,12 @@ namespace FusionLibrary
             if (Camera == null || Camera.Exists() == false)
             {
                 Camera = World.CreateCamera(Entity.Position, Entity.Rotation, FieldOfView);
-                
+
                 if (!isVehicle)
                 {
                     Camera.AttachTo(Entity, PositionOffset);
                     Camera.PointAt(Entity, PointAtOffset);
-                }                    
+                }
                 else
                     Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
             }
@@ -56,7 +55,7 @@ namespace FusionLibrary
             {
                 Camera.IsActive = true;
                 OldCamera.Camera.IsActive = false;
-                
+
                 if (cameraSwitchType == CameraSwitchType.Animated)
                     OldCamera.Camera.InterpTo(Camera, 900, 1, 1);
                 else
