@@ -70,7 +70,7 @@ namespace FusionLibrary.Extensions
             vehicle.IsPositionFrozen = !isVisible;
             vehicle.IsEngineRunning = isVisible;
 
-            foreach (var ped in vehicle.Occupants)
+            foreach (Ped ped in vehicle.Occupants)
             {
                 ped.IsVisible = isVisible;
                 ped.CanBeDraggedOutOfVehicle = isVisible;
@@ -115,7 +115,7 @@ namespace FusionLibrary.Extensions
         public static void DeleteCompletely(this Vehicle vehicle)
         {
             if (vehicle.NotNullAndExists())
-                foreach (var x in vehicle.Occupants)
+                foreach (Ped x in vehicle.Occupants)
                     if (x != Utils.PlayerPed)
                         x?.Delete();
 

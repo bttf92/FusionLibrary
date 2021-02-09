@@ -15,7 +15,10 @@ namespace FusionLibrary
         public bool ManageCamera = false;
         public bool IsCustomCameraActive { get; private set; }
         public bool Pause { get; set; }
-        public int IndexOf(TimedEvent timedEvent) => _timedEvents.IndexOf(timedEvent);
+        public int IndexOf(TimedEvent timedEvent)
+        {
+            return _timedEvents.IndexOf(timedEvent);
+        }
 
         public TimeSpan CurrentTime { get; set; } = TimeSpan.Zero;
 

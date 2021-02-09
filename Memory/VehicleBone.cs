@@ -22,8 +22,8 @@ namespace FusionLibrary
 
         private VehicleBone(Vehicle vehicle, int index)
         {
-            this.Vehicle = vehicle;
-            this.Index = index;
+            Vehicle = vehicle;
+            Index = index;
 
             CVehicle* veh = ((CVehicle*)vehicle.MemoryAddress);
             archetype = veh->inst->archetype;
@@ -62,9 +62,15 @@ namespace FusionLibrary
             matrix->M43 = translation.Z;
         }
 
-        public void ResetRotation() => SetRotation(OriginalRotation);
-        public void ResetTranslation() => SetTranslation(OriginalTranslation);
+        public void ResetRotation()
+        {
+            SetRotation(OriginalRotation);
+        }
 
+        public void ResetTranslation()
+        {
+            SetTranslation(OriginalTranslation);
+        }
 
         public static bool TryGetForVehicle(Vehicle vehicle, string boneName, out VehicleBone bone)
         {

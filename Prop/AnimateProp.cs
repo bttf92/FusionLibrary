@@ -478,8 +478,15 @@ namespace FusionLibrary
             GlobalAnimatePropList.Remove(this);
         }
 
-        public static implicit operator Prop(AnimateProp animateProp) => animateProp.Prop;
-        public static implicit operator Entity(AnimateProp animateProp) => animateProp.Prop;
+        public static implicit operator Prop(AnimateProp animateProp)
+        {
+            return animateProp.Prop;
+        }
+
+        public static implicit operator Entity(AnimateProp animateProp)
+        {
+            return animateProp.Prop;
+        }
 
         public AnimationSettings this[AnimationType animationType] => Animation[animationType];
     }

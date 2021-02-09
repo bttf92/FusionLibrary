@@ -41,7 +41,7 @@ namespace FusionLibrary
 
             ped.Rotation = Rotation;
 
-            foreach (var x in Weapons)
+            foreach (WeaponReplica x in Weapons)
                 x.Give(ped);
 
             return ped;
@@ -51,7 +51,7 @@ namespace FusionLibrary
         {
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, position.X, position.Y, position.Z, heading, false, false);
 
-            foreach (var x in Weapons)
+            foreach (WeaponReplica x in Weapons)
                 x.Give(ped);
 
             return ped;
@@ -69,7 +69,7 @@ namespace FusionLibrary
 
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, seat, false, false);
 
-            foreach (var x in Weapons)
+            foreach (WeaponReplica x in Weapons)
                 x.Give(ped);
 
             return ped;
@@ -85,7 +85,7 @@ namespace FusionLibrary
 
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, vehicleSeat, false, false);
 
-            foreach (var x in Weapons)
+            foreach (WeaponReplica x in Weapons)
                 x.Give(ped);
 
             return ped;

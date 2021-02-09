@@ -102,8 +102,8 @@ namespace FusionLibrary
 
         public AnimateProp this[int propIndex]
         {
-            get { return Props[propIndex]; }
-            set { Props[propIndex] = value; }
+            get => Props[propIndex];
+            set => Props[propIndex] = value;
         }
     }
 }

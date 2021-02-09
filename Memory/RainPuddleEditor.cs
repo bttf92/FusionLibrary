@@ -14,14 +14,8 @@
 
         public static float Level
         {
-            set
-            {
-                *pPuddleLevel = value;
-            }
-            get
-            {
-                return *pPuddleLevel;
-            }
+            set => *pPuddleLevel = value;
+            get => *pPuddleLevel;
         }
     }
 }

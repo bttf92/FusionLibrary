@@ -33,6 +33,9 @@
 
         [FieldOffset(0x0042)] public ushort index;
 
-        public string GetName() => namePtr == null ? null : Marshal.PtrToStringAnsi(namePtr);
+        public string GetName()
+        {
+            return namePtr == null ? null : Marshal.PtrToStringAnsi(namePtr);
+        }
     }
 }

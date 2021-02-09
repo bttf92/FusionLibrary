@@ -39,7 +39,7 @@ namespace FusionLibrary
         public void UpdatePanel()
         {
             ClearPanel();
-            foreach (var button in _buttonList)
+            foreach (InstrumentalButton button in _buttonList)
             {
                 CallFunction("SET_DATA_SLOT", _buttonList.IndexOf(button), GetButtonIdFromControl(button.Control), button.Tittle);
             }
@@ -48,7 +48,7 @@ namespace FusionLibrary
 
         public int GetButtonIdFromControl(Control control)
         {
-            var controlName = Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, control, true);
+            string controlName = Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, control, true);
             controlName = controlName.Substring(2);
 
             return int.Parse(controlName);

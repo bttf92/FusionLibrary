@@ -34,10 +34,7 @@ namespace FusionLibrary
         private static bool randomTrains = true;
         public static bool RandomTrains
         {
-            get
-            {
-                return randomTrains;
-            }
+            get => randomTrains;
             set
             {
                 Function.Call(Hash.SET_RANDOM_TRAINS, value);
@@ -73,12 +70,12 @@ namespace FusionLibrary
         {
             Function.Call(Hash.DELETE_ALL_TRAINS);
 
-            var allVehicles = World.GetAllVehicles();
+            Vehicle[] allVehicles = World.GetAllVehicles();
 
             allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug).ToList()
                 .ForEach(x => x?.DeleteCompletely());
 
-            var allPeds = World.GetAllPeds();
+            Ped[] allPeds = World.GetAllPeds();
 
             allPeds.Where(x => x.NotNullAndExists() && x != PlayerPed && (!PlayerVehicle.NotNullAndExists() || !PlayerVehicle.Passengers.Contains(x))).ToList()
                 .ForEach(x => x?.Delete());
@@ -170,20 +167,22 @@ namespace FusionLibrary
             }
 
             //The rotation is the left over matrix after dividing out the scaling.
-            Matrix rotationmatrix = new Matrix();
-            rotationmatrix.M11 = matrix.M11 / scale.X;
-            rotationmatrix.M12 = matrix.M12 / scale.X;
-            rotationmatrix.M13 = matrix.M13 / scale.X;
+            Matrix rotationmatrix = new Matrix
+            {
+                M11 = matrix.M11 / scale.X,
+                M12 = matrix.M12 / scale.X,
+                M13 = matrix.M13 / scale.X,
 
-            rotationmatrix.M21 = matrix.M21 / scale.Y;
-            rotationmatrix.M22 = matrix.M22 / scale.Y;
-            rotationmatrix.M23 = matrix.M23 / scale.Y;
+                M21 = matrix.M21 / scale.Y,
+                M22 = matrix.M22 / scale.Y,
+                M23 = matrix.M23 / scale.Y,
 
-            rotationmatrix.M31 = matrix.M31 / scale.Z;
-            rotationmatrix.M32 = matrix.M32 / scale.Z;
-            rotationmatrix.M33 = matrix.M33 / scale.Z;
+                M31 = matrix.M31 / scale.Z,
+                M32 = matrix.M32 / scale.Z,
+                M33 = matrix.M33 / scale.Z,
 
-            rotationmatrix.M44 = 1f;
+                M44 = 1f
+            };
 
             rotation = Quaternion.RotationMatrix(rotationmatrix);
             return true;
@@ -196,7 +195,7 @@ namespace FusionLibrary
 
         public static int Lerp(int firstFloat, int secondFloat, float by)
         {
-            return (int)((float)firstFloat + ((float)secondFloat - (float)firstFloat) * by);
+            return (int)(firstFloat + (secondFloat - (float)firstFloat) * by);
         }
 
         public static readonly string[] WheelNames = new string[4]
@@ -224,26 +223,26 @@ namespace FusionLibrary
             {
                 if (raw.Length == 12)
                 {
-                    var month = raw.Substring(0, 2);
-                    var day = raw.Substring(2, 2);
-                    var year = raw.Substring(4, 4);
-                    var hour = raw.Substring(8, 2);
-                    var minute = raw.Substring(10, 2);
+                    string month = raw.Substring(0, 2);
+                    string day = raw.Substring(2, 2);
+                    string year = raw.Substring(4, 4);
+                    string hour = raw.Substring(8, 2);
+                    string minute = raw.Substring(10, 2);
 
                     return new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), int.Parse(hour), int.Parse(minute), 0);
                 }
                 else if (raw.Length == 8)
                 {
-                    var month = raw.Substring(0, 2);
-                    var day = raw.Substring(2, 2);
-                    var year = raw.Substring(4, 4);
+                    string month = raw.Substring(0, 2);
+                    string day = raw.Substring(2, 2);
+                    string year = raw.Substring(4, 4);
 
                     return new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), currentTime.Hour, currentTime.Minute, 0);
                 }
                 else if (raw.Length == 4)
                 {
-                    var hour = raw.Substring(0, 2);
-                    var minute = raw.Substring(2, 2);
+                    string hour = raw.Substring(0, 2);
+                    string minute = raw.Substring(2, 2);
 
                     return new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, int.Parse(hour), int.Parse(minute), 0);
                 }
@@ -321,8 +320,8 @@ namespace FusionLibrary
 
         public static bool IsAnyOfFrontDoorsOpen(Vehicle vehicle)
         {
-            var doorOpen = false;
-            foreach (var door in vehicle.Doors)
+            bool doorOpen = false;
+            foreach (VehicleDoor door in vehicle.Doors)
             {
                 if (door.IsOpen)
                     doorOpen = true;
@@ -431,23 +430,23 @@ namespace FusionLibrary
             const float r = 0.15f;
             for (float i = 0; i <= 360; i += 30)
             {
-                var angleRad = i * (float)Math.PI / 180;
+                float angleRad = i * (float)Math.PI / 180;
 
-                var x = r * Math.Cos(angleRad);
-                var y = r * Math.Sin(angleRad);
+                double x = r * Math.Cos(angleRad);
+                double y = r * Math.Sin(angleRad);
 
-                var circlePos = pos;
+                Vector3 circlePos = pos;
                 circlePos.X += (float)x;
                 circlePos.Y += (float)y;
 
                 //DrawLine(pos, circlePos, Color.Aqua);
 
                 // Then we check for every pos if it hits tracks material
-                var surface = World.Raycast(circlePos, circlePos + new Vector3(0, 0, -10),
+                RaycastResult surface = World.Raycast(circlePos, circlePos + new Vector3(0, 0, -10),
                     IntersectFlags.Everything, vehicle);
 
                 // Tracks materials
-                var allowedSurfaces = new List<MaterialHash>
+                List<MaterialHash> allowedSurfaces = new List<MaterialHash>
                 {
                     MaterialHash.MetalSolidRoadSurface,
                     MaterialHash.MetalSolidSmall,
@@ -462,14 +461,14 @@ namespace FusionLibrary
 
         public static DateTime RandomDate()
         {
-            var rand = new Random();
+            Random rand = new Random();
 
-            var second = rand.Next(0, 59);
-            var minute = rand.Next(0, 59);
-            var hour = rand.Next(0, 23);
-            var month = rand.Next(1, 12);
-            var year = rand.Next(1, 9999);
-            var day = rand.Next(1, DateTime.DaysInMonth(year, month));
+            int second = rand.Next(0, 59);
+            int minute = rand.Next(0, 59);
+            int hour = rand.Next(0, 23);
+            int month = rand.Next(1, 12);
+            int year = rand.Next(1, 9999);
+            int day = rand.Next(1, DateTime.DaysInMonth(year, month));
 
             return new DateTime(year, month, day, hour, minute, second);
         }

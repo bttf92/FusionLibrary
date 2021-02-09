@@ -66,13 +66,13 @@ namespace FusionLibrary.Memory
 
         public static void SetWheelSize(Vehicle vehicle, float size)
         {
-            var address = vehicle?.MemoryAddress;
+            IntPtr? address = vehicle?.MemoryAddress;
 
             if (address == IntPtr.Zero)
                 return;
 
-            var CVeh_0x48 = *(UInt64*)(address + 0x48);
-            var CVeh_0x48_0x370 = *(UInt64*)(CVeh_0x48 + 0x370);
+            ulong CVeh_0x48 = *(ulong*)(address + 0x48);
+            ulong CVeh_0x48_0x370 = *(ulong*)(CVeh_0x48 + 0x370);
 
             if ((UIntPtr)CVeh_0x48_0x370 == UIntPtr.Zero)
                 return;
@@ -82,13 +82,13 @@ namespace FusionLibrary.Memory
 
         public static float GetWheelSize(Vehicle vehicle)
         {
-            var address = vehicle?.MemoryAddress;
+            IntPtr? address = vehicle?.MemoryAddress;
 
             if (address == IntPtr.Zero)
                 return 1.0f;
 
-            var CVeh_0x48 = *(UInt64*)(address + 0x48);
-            var CVeh_0x48_0x370 = *(UInt64*)(CVeh_0x48 + 0x370);
+            ulong CVeh_0x48 = *(ulong*)(address + 0x48);
+            ulong CVeh_0x48_0x370 = *(ulong*)(CVeh_0x48 + 0x370);
 
             if ((UIntPtr)CVeh_0x48_0x370 == UIntPtr.Zero)
                 return 1.0f;
@@ -217,7 +217,7 @@ namespace FusionLibrary.Memory
         {
             ulong handlingAddr = GetHandlingPtr(vehicle);
             if (handlingAddr == 0) return 0f;
-            float* addr = (float*)(handlingAddr + (ulong)0x0080);
+            float* addr = (float*)(handlingAddr + 0x0080);
             return *addr;
         }
 
@@ -290,10 +290,12 @@ namespace FusionLibrary.Memory
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
 
-                WheelDimensions dimensions = new WheelDimensions();
-                dimensions.TyreRadius = *(float*)(wheelAddr + offTyreRadius);
-                dimensions.RimRadius = *(float*)(wheelAddr + offRimRadius);
-                dimensions.TyreWidth = *(float*)(wheelAddr + offTyreWidth);
+                WheelDimensions dimensions = new WheelDimensions
+                {
+                    TyreRadius = *(float*)(wheelAddr + offTyreRadius),
+                    RimRadius = *(float*)(wheelAddr + offRimRadius),
+                    TyreWidth = *(float*)(wheelAddr + offTyreWidth)
+                };
                 dimensionsSet[i] = dimensions;
             }
 
@@ -362,7 +364,7 @@ namespace FusionLibrary.Memory
             //}
             //mult = (1 + (mult - 1) * 1.0f);
 
-            var remap = vel.Length().Remap(0, 30, 0, 0.6f);
+            float remap = vel.Length().Remap(0, 30, 0, 0.6f);
             return remap > 0.6f ? 0.6f : remap;
         }
 

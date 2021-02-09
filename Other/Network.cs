@@ -26,7 +26,7 @@ namespace FusionLibrary
                 {
                     IPInterfaceProperties adapterProperties = adapter.GetIPProperties();
 
-                    foreach (var ua in adapterProperties.UnicastAddresses)
+                    foreach (UnicastIPAddressInformation ua in adapterProperties.UnicastAddresses)
                     {
                         if (ua.Address.AddressFamily == AddressFamily.InterNetwork)
                             broadcastAddress.Add(GetBroadcastAddress(ua.Address, ua.IPv4Mask));
@@ -62,11 +62,12 @@ namespace FusionLibrary
 
         public static void SendMsg(byte[] data, int port)
         {
-            UdpClient udpClient = new UdpClient();
+            UdpClient udpClient = new UdpClient
+            {
+                EnableBroadcast = true
+            };
 
-            udpClient.EnableBroadcast = true;
-
-            foreach (var addr in broadcastAddress)
+            foreach (IPAddress addr in broadcastAddress)
             {
                 try
                 {

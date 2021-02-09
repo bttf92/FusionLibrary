@@ -18,21 +18,9 @@ namespace FusionLibrary
 
         public int Handle => _handle;
 
-        public bool IsValid
-        {
-            get
-            {
-                return Handle != 0;
-            }
-        }
+        public bool IsValid => Handle != 0;
 
-        public bool IsLoaded
-        {
-            get
-            {
-                return Function.Call<bool>(Hash.HAS_SCALEFORM_MOVIE_LOADED, Handle);
-            }
-        }
+        public bool IsLoaded => Function.Call<bool>(Hash.HAS_SCALEFORM_MOVIE_LOADED, Handle);
         public bool DrawInPauseMenu { get; set; }
 
         private int _handle;
@@ -40,7 +28,7 @@ namespace FusionLibrary
         public void CallFunction(string function, params object[] arguments)
         {
             Function.Call(Hash.BEGIN_SCALEFORM_MOVIE_METHOD, Handle, function);
-            foreach (var argument in arguments)
+            foreach (object argument in arguments)
             {
                 if (argument is int)
                 {

@@ -22,7 +22,10 @@ namespace FusionLibrary
             Model = model;
         }
 
-        public Model Request() => Utils.LoadAndRequestModel(Model);
+        public Model Request()
+        {
+            return Utils.LoadAndRequestModel(Model);
+        }
 
         public static implicit operator Model(CustomModel customModel)
         {
@@ -61,20 +64,20 @@ namespace FusionLibrary
 
         protected static List<CustomModel> GetAllModels(Type type)
         {
-            var fields = type.GetFields();
-            var models = new List<CustomModel>();
+            System.Reflection.FieldInfo[] fields = type.GetFields();
+            List<CustomModel> models = new List<CustomModel>();
 
-            foreach (var field in fields)
+            foreach (System.Reflection.FieldInfo field in fields)
             {
-                var obj = field.GetValue(null);
+                object obj = field.GetValue(null);
                 if (obj.GetType() == typeof(CustomModel))
                 {
-                    var modelObj = (CustomModel)obj;
+                    CustomModel modelObj = (CustomModel)obj;
                     models.Add(modelObj);
                 }
                 else if (obj.GetType() == typeof(Dictionary<int, CustomModel>))
                 {
-                    var dict = (Dictionary<int, CustomModel>)obj;
+                    Dictionary<int, CustomModel> dict = (Dictionary<int, CustomModel>)obj;
                     models.AddRange(dict.Values);
                 }
             }

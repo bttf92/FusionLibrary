@@ -21,10 +21,7 @@ namespace FusionLibrary
 
         public int CycleInterval
         {
-            get
-            {
-                return _CycleInterval;
-            }
+            get => _CycleInterval;
             set
             {
                 if (CycleCameras)

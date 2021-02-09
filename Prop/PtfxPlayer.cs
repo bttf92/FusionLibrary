@@ -79,7 +79,7 @@ namespace FusionLibrary
         {
             evolutionParams[key] = value;
 
-            foreach (var entry in evolutionParams)
+            foreach (KeyValuePair<string, float> entry in evolutionParams)
             {
                 currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
             }
@@ -139,7 +139,7 @@ namespace FusionLibrary
 
             if (!ShouldLoop) return;
 
-            foreach (var entry in evolutionParams)
+            foreach (KeyValuePair<string, float> entry in evolutionParams)
             {
                 currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
             }
@@ -197,7 +197,7 @@ namespace FusionLibrary
                 Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
                 currentPlayingParticles.Add(Handle);
 
-                foreach (var entry in evolutionParams)
+                foreach (KeyValuePair<string, float> entry in evolutionParams)
                 {
                     currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
                 }
@@ -277,7 +277,7 @@ namespace FusionLibrary
                 Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Entity.Bones[BoneName].Index, Size, false, false, false);
                 currentPlayingParticles.Add(Handle);
 
-                foreach (var entry in evolutionParams)
+                foreach (KeyValuePair<string, float> entry in evolutionParams)
                 {
                     currentPlayingParticles.ForEach(x => Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, x, entry.Key, entry.Value, 0));
                 }
