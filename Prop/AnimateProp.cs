@@ -43,7 +43,7 @@ namespace FusionLibrary
 
         private bool ToBone;
         private EntityBone Bone;
-        private bool IsDetached = false;
+        public bool IsDetached { get; private set; }
         private float _currentTime = 0;
 
         public Animation Animation { get; private set; } = new Animation();
@@ -258,13 +258,19 @@ namespace FusionLibrary
             Play(AnimationStep.First);
         }
 
-        public void Play(bool instant = false)
+        public void Play(bool instant = false, bool spawnAndRestore = false)
         {
-            Play(AnimationStep.First, instant, false);
+            Play(AnimationStep.First, instant, false, spawnAndRestore);
         }
 
-        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false)
+        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false, bool spawnAndRestore = false)
         {
+            if (spawnAndRestore)
+            {
+                RestoreAnimation();
+                SpawnProp();
+            }
+
             if (playInstantPreviousSteps)
             {
                 for (AnimationStep prevStep = AnimationStep.First; prevStep < animationStep; prevStep++)
@@ -437,17 +443,19 @@ namespace FusionLibrary
             _currentTime = 0;
             AnimationStep = AnimationStep.Off;
 
-            if (!keepProp)
-                Prop?.Delete();
+            if (keepProp && Prop.NotNullAndExists())
+            {
+                Detach();
+                Prop.IsPersistent = false;
+            }                
             else
-                Prop?.Detach();
+                Prop?.Delete(); 
         }
 
         public void Detach()
         {
             Prop.Detach();
-            Prop.IsPositionFrozen = false;
-            Prop.IsPersistent = false;
+            Prop.IsPositionFrozen = false;            
             IsDetached = true;
         }
 

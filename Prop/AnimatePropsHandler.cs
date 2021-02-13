@@ -49,14 +49,14 @@ namespace FusionLibrary
             Props.ForEach(x => x.SpawnProp());
         }
 
-        public void Play(bool instant = false)
+        public void Play(bool instant = false, bool spawnAndRestore = false)
         {
-            Play(AnimationStep.First, instant);
+            Play(AnimationStep.First, instant, spawnAndRestore);
         }
 
-        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false)
+        public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false, bool spawnAndRestore = false)
         {
-            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps));
+            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps, spawnAndRestore));
         }
 
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
