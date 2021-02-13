@@ -447,15 +447,15 @@ namespace FusionLibrary
             {
                 Detach();
                 Prop.IsPersistent = false;
-            }                
+            }
             else
-                Prop?.Delete(); 
+                Prop?.Delete();
         }
 
         public void Detach()
         {
             Prop.Detach();
-            Prop.IsPositionFrozen = false;            
+            Prop.IsPositionFrozen = false;
             IsDetached = true;
         }
 
