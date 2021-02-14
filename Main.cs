@@ -28,6 +28,7 @@ namespace FusionLibrary
             if (Game.IsLoading)
                 return;
 
+            AnimatePropsHandler.ProcessAll();
             AnimateProp.ProcessAll();
             TimeHandler.Process();
             CustomNativeMenu.ObjectPool.Process();

@@ -1,13 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using GTA;
+using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
+    public delegate void OnSequenceCompleted(bool isLooped);
+
     public class AnimatePropsHandler
     {
+        internal static List<AnimatePropsHandler> GlobalAnimatePropsHandlerList = new List<AnimatePropsHandler>();
+
+        internal static void ProcessAll()
+        {
+            GlobalAnimatePropsHandlerList.ForEach(x => x.Process());
+        }
+
+        public event OnSequenceCompleted OnSequenceCompleted;
         public event OnAnimCompleted OnAnimCompleted;
         public List<AnimateProp> Props = new List<AnimateProp>();
+
+        public bool SequenceSpawn { get; set; }
+        public int SequenceInterval { get; set; }
+        public bool IsSequenceLooped { get; set; }
+        public bool IsSequencePlaying { get; private set; }
+
+        private int nextSequenceTime;
+        private int nextSequenceProp;
+
+        public AnimatePropsHandler()
+        {
+            GlobalAnimatePropsHandlerList.Add(this);
+        }
 
         public bool Visible
         {
@@ -23,6 +47,14 @@ namespace FusionLibrary
         {
             Props.Add(animateProp);
             animateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
+        }
+
+        internal void Process()
+        {
+            if (!IsSequencePlaying || Game.GameTime < nextSequenceTime)
+                return;
+
+            Play();
         }
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
@@ -56,7 +88,45 @@ namespace FusionLibrary
 
         public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false, bool spawnAndRestore = false)
         {
-            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps, spawnAndRestore));
+            if (SequenceSpawn)
+            {
+                if (nextSequenceProp == Props.Count - 1)
+                {
+                    if (IsSequenceLooped)
+                    {
+                        Props[nextSequenceProp]?.Delete();
+                        nextSequenceProp = 0;
+
+                        OnSequenceCompleted?.Invoke(true);
+                    }
+                    else
+                    {
+                        Delete();
+
+                        OnSequenceCompleted?.Invoke(false);
+                        return;
+                    }
+                }
+
+                IsSequencePlaying = true;
+
+                Props[nextSequenceProp + 1]?.SpawnProp();
+                Props[nextSequenceProp]?.Delete();
+
+                nextSequenceProp++;
+
+                nextSequenceTime = Game.GameTime + SequenceInterval;
+            }
+            else
+                Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps, spawnAndRestore));
+        }
+
+        public void Stop()
+        {
+            IsSequencePlaying = false;
+            nextSequenceProp = 0;
+
+            Props.ForEach(x => x.Stop());
         }
 
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
@@ -81,6 +151,9 @@ namespace FusionLibrary
 
         public void Delete(bool keepProp = false)
         {
+            IsSequencePlaying = false;
+            nextSequenceProp = 0;
+
             Props.ForEach(x => x.Delete(keepProp));
         }
 
@@ -98,6 +171,8 @@ namespace FusionLibrary
         {
             Props.ForEach(x => x.Dispose(keepProp));
             Props.Clear();
+
+            GlobalAnimatePropsHandlerList.Remove(this);
         }
 
         public AnimateProp this[int propIndex]
