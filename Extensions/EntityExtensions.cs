@@ -55,6 +55,11 @@ namespace FusionLibrary.Extensions
             return 0.5f * HandlingData.GetByVehicleModel(vehicle.Model).Mass * (float)Math.Pow(vehicle.Speed, 2);
         }
 
+        public static VehicleReplica Clone(this Vehicle vehicle)
+        {
+            return new VehicleReplica(vehicle);
+        }
+
         public static void TeleportTo(this Vehicle vehicle, Vector3 position)
         {
             position = vehicle.Position.TransferHeight(position);
