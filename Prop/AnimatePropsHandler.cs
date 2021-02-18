@@ -1,4 +1,5 @@
-﻿using GTA;
+﻿using FusionLibrary.Extensions;
+using GTA;
 using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.Enums;
@@ -24,9 +25,11 @@ namespace FusionLibrary
         public int SequenceInterval { get; set; }
         public bool IsSequenceLooped { get; set; }
         public bool IsSequencePlaying { get; private set; }
+        public bool IsSequenceRandom { get; set; }
 
         private int nextSequenceTime;
-        private int nextSequenceProp;
+        private int currentSequenceProp = -1;
+        private List<int> playedProps = new List<int>();
 
         public AnimatePropsHandler()
         {
@@ -56,7 +59,70 @@ namespace FusionLibrary
             if (!IsSequencePlaying || Game.GameTime < nextSequenceTime)
                 return;
 
-            Play();
+            if (IsSequenceRandom)
+            {
+                if (playedProps.Count == Count)
+                {
+                    if (IsSequenceLooped)
+                    {
+                        playedProps.Clear();
+
+                        OnSequenceCompleted?.Invoke(true);
+                    }
+                    else
+                    {
+                        Delete();
+
+                        OnSequenceCompleted?.Invoke(false);
+                        return;
+                    }
+                }
+
+                if (currentSequenceProp > -1)
+                    Props[currentSequenceProp]?.Delete();
+
+                if (playedProps.Count == 0)
+                    currentSequenceProp = Utils.Random.NextExcept(0, Count, currentSequenceProp);
+                else
+                    currentSequenceProp = Utils.Random.NextExcept(0, Count, currentSequenceProp);
+
+                Props[currentSequenceProp]?.SpawnProp();
+
+                playedProps.Add(currentSequenceProp);
+
+                nextSequenceTime = Game.GameTime + SequenceInterval;
+
+                return;
+            }
+
+            if (playedProps.Count == Count)
+            {
+                if (IsSequenceLooped)
+                {
+                    Props[currentSequenceProp]?.Delete();
+
+                    currentSequenceProp = -1;
+                    playedProps.Clear();
+                }
+                else
+                {
+                    Delete();
+
+                    OnSequenceCompleted?.Invoke(false);
+                    return;
+                }
+            }
+
+            if (currentSequenceProp > -1)
+                Props[currentSequenceProp]?.Delete();
+
+            currentSequenceProp++;
+
+            Props[currentSequenceProp]?.SpawnProp();
+
+            playedProps.Add(currentSequenceProp);
+
+            nextSequenceTime = Game.GameTime + SequenceInterval;
         }
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
@@ -92,45 +158,18 @@ namespace FusionLibrary
         {
             if (SequenceSpawn)
             {
-                if (nextSequenceProp == Props.Count - 1)
-                {
-                    if (IsSequenceLooped)
-                    {
-                        Props[0]?.SpawnProp();
-                        Props[nextSequenceProp]?.Delete();
-                        nextSequenceProp = 0;
-
-                        nextSequenceTime = Game.GameTime + SequenceInterval;
-
-                        OnSequenceCompleted?.Invoke(true);
-                        return;
-                    }
-                    else
-                    {
-                        Delete();
-
-                        OnSequenceCompleted?.Invoke(false);
-                        return;
-                    }
-                }
-
                 IsSequencePlaying = true;
-
-                Props[nextSequenceProp + 1]?.SpawnProp();
-                Props[nextSequenceProp]?.Delete();
-
-                nextSequenceProp++;
-
-                nextSequenceTime = Game.GameTime + SequenceInterval;
+                return;
             }
-            else
-                Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps, spawnAndRestore));
+
+            Props.ForEach(x => x.Play(animationStep, instant, playInstantPreviousSteps, spawnAndRestore));
         }
 
         public void Stop()
         {
             IsSequencePlaying = false;
-            nextSequenceProp = 0;
+            //currentSequenceProp = -1;
+            //playedProps.Clear();
 
             Props.ForEach(x => x.Stop());
         }
@@ -158,7 +197,8 @@ namespace FusionLibrary
         public void Delete(bool keepProp = false)
         {
             IsSequencePlaying = false;
-            nextSequenceProp = 0;
+            currentSequenceProp = -1;
+            playedProps.Clear();
 
             Props.ForEach(x => x.Delete(keepProp));
         }

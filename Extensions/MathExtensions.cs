@@ -2,6 +2,7 @@
 using GTA.Math;
 using GTA.Native;
 using System;
+using System.Collections.Generic;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary.Extensions
@@ -11,6 +12,30 @@ namespace FusionLibrary.Extensions
         public static double NextDouble(this Random random, double minValue, double maxValue)
         {
             return random.NextDouble() * (maxValue - minValue) + minValue;
+        }
+
+        public static int NextExcept(this Random random, int minValue, int maxValue, int except)
+        {
+            int ret;
+
+            do
+            {
+                ret = random.Next(minValue, maxValue);
+            } while (ret == except);
+
+            return ret;
+        }
+
+        public static int NextExcept(this Random random, int minValue, int maxValue, List<int> except)
+        {
+            int ret;
+
+            do
+            {
+                ret = random.Next(minValue, maxValue);
+            } while (except.Contains(ret));
+
+            return ret;
         }
 
         public static float Lerp(float firstFloat, float secondFloat, float by)
