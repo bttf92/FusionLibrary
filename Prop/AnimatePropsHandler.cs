@@ -33,6 +33,8 @@ namespace FusionLibrary
             GlobalAnimatePropsHandlerList.Add(this);
         }
 
+        public int Count => Props.Count();
+
         public bool Visible
         {
             get => Props[0].Visible;
@@ -94,10 +96,14 @@ namespace FusionLibrary
                 {
                     if (IsSequenceLooped)
                     {
+                        Props[0]?.SpawnProp();
                         Props[nextSequenceProp]?.Delete();
                         nextSequenceProp = 0;
 
+                        nextSequenceTime = Game.GameTime + SequenceInterval;
+
                         OnSequenceCompleted?.Invoke(true);
+                        return;
                     }
                     else
                     {

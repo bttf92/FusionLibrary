@@ -49,13 +49,7 @@ namespace FusionLibrary
         {
             LoadingPrompt.Show("Loading: " + customModel);
 
-            if (!customModel.Model.IsLoaded)
-            {
-                if (!customModel.Model.IsInCdImage || !customModel.Model.IsValid)
-                    throw new Exception(customModel.Model + " not present!");
-
-                Utils.LoadAndRequestModel(customModel);
-            }
+            customModel.Request();
 
             LoadingPrompt.Hide();
 
@@ -79,6 +73,16 @@ namespace FusionLibrary
                 {
                     Dictionary<int, CustomModel> dict = (Dictionary<int, CustomModel>)obj;
                     models.AddRange(dict.Values);
+                }
+                else if (obj.GetType() == typeof(Dictionary<string, CustomModel>))
+                {
+                    Dictionary<string, CustomModel> dict = (Dictionary<string, CustomModel>)obj;
+                    models.AddRange(dict.Values);
+                }
+                else if (obj.GetType() == typeof(List<CustomModel>))
+                {
+                    List<CustomModel> dict = (List<CustomModel>)obj;
+                    models.AddRange(dict);
                 }
             }
 
