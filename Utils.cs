@@ -14,8 +14,12 @@ namespace FusionLibrary
     {
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
-        internal static Model DMC12 = new Model("dmc12");
-        internal static Model DMC12Debug = new Model("dmc_debug");
+        internal static CustomModel DMC12 = new CustomModel("dmc12");
+        internal static CustomModel DMC12Debug = new CustomModel("dmc_debug");
+
+        internal static CustomModel SierraVisibleModel = new CustomModel("sierra");
+        internal static CustomModel SierraTenderModel = new CustomModel("sierratender");
+        internal static CustomModel SierraModel = new CustomModel("sierra_debug");
 
         private static int _padShakeStop;
 
@@ -72,7 +76,7 @@ namespace FusionLibrary
 
             Vehicle[] allVehicles = World.GetAllVehicles();
 
-            allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug).ToList()
+            allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug && x.Model != SierraModel && x.Model != SierraVisibleModel && x.Model != SierraTenderModel).ToList()
                 .ForEach(x => x?.DeleteCompletely());
 
             Ped[] allPeds = World.GetAllPeds();
