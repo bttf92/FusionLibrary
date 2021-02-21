@@ -26,29 +26,6 @@ namespace FusionLibrary
             New = 256
         }
 
-        public enum TimeTravelPhase
-        {
-            Completed = 0,
-            OpeningWormhole = 1,
-            InTime = 2,
-            Reentering = 3
-        }
-
-        public enum ReenterType
-        {
-            Normal,
-            Spawn,
-            Forced
-        }
-
-        public enum TimeTravelType
-        {
-            Cutscene,
-            Instant,
-            RC,
-            Wayback
-        }
-
         public enum LightsMode
         {
             Default,
@@ -68,63 +45,6 @@ namespace FusionLibrary
             FrontRight = 1,
             RearLeft = 4,
             RearRight = 5
-        }
-
-        public enum MissionType
-        {
-            None,
-            Escape,
-            Train
-        }
-
-        public enum TimeMachineCamera
-        {
-            Default = -1,
-            DestinationDate,
-            DriverSeat,
-            DigitalSpeedo,
-            AnalogSpeedo,
-            FrontPassengerWheelLookAtRear,
-            TrainApproaching,
-            RightSide,
-            FrontToBack,
-            FrontOnRail,
-            FrontToBackRightSide,
-            LicensePlate,
-            TimeTravelOnTracks,
-            DigitalSpeedoTowardsFront,
-            RearCarTowardsFront
-        }
-
-        public enum SmokeColor
-        {
-            Off,
-            Default,
-            Green,
-            Yellow,
-            Red
-        }
-
-        public enum TrainCamera
-        {
-            Off = -1,
-            TowardsRail,
-            Pilot,
-            Front,
-            RightFunnel,
-            RightWheels,
-            RightFrontWheels,
-            RightFront2Wheels,
-            RightSide,
-            TopCabin,
-            LeftSide,
-            LeftFunnel,
-            LeftWheels,
-            LeftFrontWheels,
-            LeftFront2Wheels,
-            Inside,
-            WheelieUp,
-            WheelieDown
         }
 
         public enum AnimationType
