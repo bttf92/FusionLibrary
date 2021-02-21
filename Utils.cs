@@ -5,7 +5,9 @@ using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary
@@ -475,6 +477,13 @@ namespace FusionLibrary
             int day = rand.Next(1, DateTime.DaysInMonth(year, month));
 
             return new DateTime(year, month, day, hour, minute, second);
+        }
+
+        public static string RemoveIllegalFileNameChars(string input, string replacement = "")
+        {
+            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            return r.Replace(input, replacement);
         }
     }
 }
