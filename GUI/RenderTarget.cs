@@ -42,12 +42,13 @@ namespace FusionLibrary
 
         public void CreateProp()
         {
-            Prop.SpawnProp();
+            if (!Prop.IsSpawned)
+                Prop?.SpawnProp();
         }
 
         public void DeleteProp()
         {
-            Prop.Delete();
+            Prop?.Delete();
         }
 
         public void Dispose()
@@ -59,7 +60,7 @@ namespace FusionLibrary
         {
             Function.Call(Hash.SET_TEXT_RENDER_ID, RenderTargetId);
 
-            OnRenderTargetDraw.Invoke();
+            OnRenderTargetDraw?.Invoke();
 
             Function.Call(Hash.SET_TEXT_RENDER_ID, Function.Call<int>(Hash.GET_DEFAULT_SCRIPT_RENDERTARGET_RENDER_ID));
         }
