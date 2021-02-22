@@ -152,27 +152,27 @@ namespace FusionLibrary
         public AnimationType Type { get; }
         public AnimationStep AnimationStep { get; }
 
-        public bool Update = false;
-        public bool IsIncreasing = true;
+        public bool Update;
+        public bool IsIncreasing;
         public float Minimum = 0;
         public float Maximum = 0;
         public float MaxMinRatio = 1;
         public float Step = 0;
         public float StepRatio = 1;
-        public bool Stop = false;
-        public bool DoNotInvert = false;
+        public bool Stop;
+        public bool DoNotInvert;
+
         public CoordinateSetting(Coordinate coordinate, AnimationType type, AnimationStep animationStep)
         {
-            IsSetted = false;
             Coordinate = coordinate;
             Type = type;
             AnimationStep = animationStep;
         }
 
-        public void Setup(bool update, bool stop, bool isIncreasing, float minimum, float maximum, float maxMinRatio, float step, float stepRatio)
+        public void Setup(bool stop, bool isIncreasing, float minimum, float maximum, float maxMinRatio, float step, float stepRatio)
         {
             IsSetted = true;
-            Update = update;
+
             IsIncreasing = isIncreasing;
             Minimum = minimum;
             Maximum = maximum;

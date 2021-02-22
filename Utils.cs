@@ -194,6 +194,11 @@ namespace FusionLibrary
             return true;
         }
 
+        public static float Clamp(float value, float max, float max2)
+        {
+            return (value * max2) / max;
+        }
+
         public static float Lerp(float minValue, float maxValue, float by)
         {
             return minValue + (maxValue - minValue) * by;
