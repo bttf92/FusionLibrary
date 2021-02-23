@@ -88,7 +88,7 @@ namespace FusionLibrary
 
         public void Update()
         {
-            CurrentDate = Utils.GetWorldTime();
+            CurrentDate = Utils.CurrentTime;
             Weather = World.Weather;
             PuddleLevel = RainPuddleEditor.Level;
             WantedLevel = Game.Player.WantedLevel;

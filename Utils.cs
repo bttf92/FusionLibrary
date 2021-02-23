@@ -114,7 +114,7 @@ namespace FusionLibrary
             Function.Call(Hash.STOP_PAD_SHAKE);
         }
 
-        public static DateTime GetWorldTime()
+        private static DateTime GetWorldTime()
         {
             try
             {
@@ -135,7 +135,7 @@ namespace FusionLibrary
             return DateTime.MinValue;
         }
 
-        public static void SetWorldTime(DateTime time)
+        private static void SetWorldTime(DateTime time)
         {
             Function.Call(Hash.SET_CLOCK_DATE, time.Day, time.Month - 1, time.Year);
             Function.Call(Hash.SET_CLOCK_TIME, time.Hour, time.Minute, time.Second);

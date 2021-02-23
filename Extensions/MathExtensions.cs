@@ -180,9 +180,9 @@ namespace FusionLibrary.Extensions
             return (to - by) <= src && src <= (to + by);
         }
 
-        public static bool Near(this DateTime src, DateTime to, TimeSpan by)
+        public static bool Near(this DateTime src, DateTime to, TimeSpan by, bool onlyFromLeft = false)
         {
-            return to.Subtract(by) <= src && src <= to.Add(by);
+            return to.Subtract(by) <= src && ((onlyFromLeft && src <= to) || (!onlyFromLeft && src <= to.Add(by)));
         }
 
         public static Vector3 DirectionToRotation(this Vector3 dir, float roll)
