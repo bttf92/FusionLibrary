@@ -2,13 +2,13 @@
 
 namespace FusionLibrary
 {
-    public delegate void OnCompleted();
+    public delegate void OnPlayerCompleted();
 
     public abstract class Player
     {
         public Entity Entity { get; protected set; }
 
-        public OnCompleted OnCompleted { get; set; }
+        public OnPlayerCompleted OnPlayerCompleted { get; set; }
 
         public bool IsPlaying { get; protected set; }
 
