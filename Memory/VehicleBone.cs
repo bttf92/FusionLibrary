@@ -74,7 +74,8 @@ namespace FusionLibrary
 
         public static bool TryGetForVehicle(Vehicle vehicle, string boneName, out VehicleBone bone)
         {
-            int boneIndex = vehicle.GetBoneIndex(boneName);
+            int boneIndex = vehicle.Bones[boneName].Index;
+
             if (boneIndex == -1)
             {
                 bone = null;

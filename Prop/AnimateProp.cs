@@ -76,6 +76,22 @@ namespace FusionLibrary
             GlobalAnimatePropList.Add(this);
         }
 
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
+        {
+            Model = pModel;
+            Entity = pEntity;
+            Bone = entityBone;
+            Offset = pOffset;
+            Rotation = pRotation;
+            ToBone = true;
+            UsePhysicalAttach = usePhysicalAttach;
+
+            if (!doNotSpawn)
+                SpawnProp();
+
+            GlobalAnimatePropList.Add(this);
+        }
+
         public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
         {
             Model = pModel;
@@ -97,6 +113,11 @@ namespace FusionLibrary
         }
 
         public AnimateProp(Entity pEntity, CustomModel pModel, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
+        {
+
+        }
+
+        public AnimateProp(Entity pEntity, CustomModel pModel, EntityBone entityBone, bool usePhysicalAttach = false) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
         {
 
         }
@@ -194,6 +215,12 @@ namespace FusionLibrary
         public void TransferTo(Entity entity, string boneName)
         {
             Bone = entity.Bones[boneName];
+            TransferTo(entity);
+        }
+
+        public void TransferTo(Entity entity, EntityBone entityBone)
+        {
+            Bone = entityBone;
             TransferTo(entity);
         }
 
