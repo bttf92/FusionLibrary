@@ -10,6 +10,8 @@ namespace FusionLibrary
     {
         public RenderTarget(Model propModel, string renderTargetName)
         {
+            Name = renderTargetName;
+
             Function.Call(Hash.RELEASE_NAMED_RENDERTARGET, renderTargetName);
 
             if (!Function.Call<bool>(Hash.IS_NAMED_RENDERTARGET_REGISTERED, renderTargetName))
@@ -18,32 +20,38 @@ namespace FusionLibrary
             if (!Function.Call<bool>(Hash.IS_NAMED_RENDERTARGET_LINKED, propModel.Hash))
                 Function.Call(Hash.LINK_NAMED_RENDERTARGET, propModel.Hash);
 
-            RenderTargetId = Function.Call<int>(Hash.GET_NAMED_RENDERTARGET_RENDER_ID, renderTargetName);
+            ID = Function.Call<int>(Hash.GET_NAMED_RENDERTARGET_RENDER_ID, renderTargetName);
         }
 
         public RenderTarget(Model propModel, string renderTargetName, Entity attachTo, string bone) : this(propModel, renderTargetName)
         {
+            Name = renderTargetName;
+
             Prop = new AnimateProp(attachTo, propModel, bone);
         }
 
         public RenderTarget(Model propModel, string renderTargetName, Entity attachTo, Vector3 offset) : this(propModel, renderTargetName)
         {
+            Name = renderTargetName;
+
             Prop = new AnimateProp(attachTo, propModel, offset, Vector3.Zero);
         }
 
         public RenderTarget(Model propModel, string renderTargetName, Entity attachTo, Vector3 offset, Vector3 rotation) : this(propModel, renderTargetName)
         {
+            Name = renderTargetName;
+
             Prop = new AnimateProp(attachTo, propModel, offset, rotation);
         }
 
-        public int RenderTargetId { get; private set; }
+        public int ID { get; private set; }
         public AnimateProp Prop { get; private set; }
+        public string Name { get; private set; }
         public OnRenderTargetDraw OnRenderTargetDraw { get; set; }
 
         public void CreateProp()
         {
-            if (!Prop.IsSpawned)
-                Prop?.SpawnProp();
+            Prop?.SpawnProp();
         }
 
         public void DeleteProp()
@@ -58,7 +66,7 @@ namespace FusionLibrary
 
         public void Draw()
         {
-            Function.Call(Hash.SET_TEXT_RENDER_ID, RenderTargetId);
+            Function.Call(Hash.SET_TEXT_RENDER_ID, ID);
 
             OnRenderTargetDraw?.Invoke();
 
