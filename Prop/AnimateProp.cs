@@ -23,7 +23,7 @@ namespace FusionLibrary
 
         public Prop Prop { get; private set; }
         public CustomModel Model { get; private set; }
-        public bool UsePhysicalAttach { get; private set; }
+        public bool UsePhysicalAttach { get; }
         public float Duration { get; set; } = 0;
 
         public bool IsSpawned { get; private set; }
@@ -52,31 +52,7 @@ namespace FusionLibrary
         public Vector3 SavedOffset { get; private set; } = new Vector3();
         public Vector3 SavedRotation { get; private set; } = new Vector3();
 
-        /// <summary>
-        /// Spawns a new prop with <paramref name="pModel"/> attached to <paramref name="boneName"/> of <paramref name="pEntity"/> with <paramref name="pOffset"/> and <paramref name="pRotation"/>
-        /// </summary>
-        /// <param name="pModel"><seealso cref="GTA.Model"/> of the prop.</param>
-        /// <param name="pEntity"><seealso cref="GTA.Entity"/> owner of the <paramref name="boneName"/>.</param>
-        /// <param name="boneName">Bone's name of the <paramref name="pEntity"/>.</param>
-        /// <param name="pOffset">A <seealso cref="GTA.Vector3"/> indicating offset of the prop relative to the <paramref name="boneName"/>'s position.</param>
-        /// <param name="pRotation">A <seealso cref="GTA.Vector3"/> indicating rotation of the prop.</param>
-        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
-        {
-            Model = pModel;
-            Entity = pEntity;
-            Bone = pEntity.Bones[boneName];
-            Offset = pOffset;
-            Rotation = pRotation;
-            ToBone = true;
-            UsePhysicalAttach = usePhysicalAttach;
-
-            if (!doNotSpawn)
-                SpawnProp();
-
-            GlobalAnimatePropList.Add(this);
-        }
-
-        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false)
         {
             Model = pModel;
             Entity = pEntity;
@@ -86,46 +62,54 @@ namespace FusionLibrary
             ToBone = true;
             UsePhysicalAttach = usePhysicalAttach;
 
-            if (!doNotSpawn)
-                SpawnProp();
-
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool doNotSpawn = false, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, bool usePhysicalAttach = false) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero, usePhysicalAttach)
+        {
+
+        }
+
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, pEntity.Bones[boneName], Vector3.Zero, Vector3.Zero, usePhysicalAttach)
+        {
+
+        }
+
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pEntity.Bones[boneName], pOffset, pRotation, usePhysicalAttach)
+        {
+
+        }
+
+        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false)
         {
             Model = pModel;
             Entity = pEntity;
             Offset = pOffset;
             Rotation = pRotation;
-            ToBone = false;
             UsePhysicalAttach = usePhysicalAttach;
-
-            if (!doNotSpawn)
-                SpawnProp();
 
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(Entity pEntity, CustomModel pModel, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pOffset, pRotation, true, usePhysicalAttach)
-        {
-
-        }
-
-        public AnimateProp(Entity pEntity, CustomModel pModel, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, boneName, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
-        {
-
-        }
-
-        public AnimateProp(Entity pEntity, CustomModel pModel, EntityBone entityBone, bool usePhysicalAttach = false) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero, true, usePhysicalAttach)
+        public AnimateProp(CustomModel pModel, Entity pEntity, bool usePhysicalAttach = false) : this(pModel, pEntity, Vector3.Zero, Vector3.Zero, usePhysicalAttach)
         {
 
         }
 
         public bool Visible
         {
-            get => Prop.IsVisible;
-            set => Prop.IsVisible = value;
+            get
+            {
+                if (Prop != null && Prop.Exists())
+                    return Prop.IsVisible;
+
+                return false;
+            }
+            set
+            {
+                if (Prop != null && Prop.Exists())
+                    Prop.IsVisible = value;
+            }
         }
 
         public Vector3 RelativePosition => Bone.GetRelativeOffsetPosition(CurrentOffset);

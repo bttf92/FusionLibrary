@@ -212,9 +212,9 @@ namespace FusionLibrary
         public static readonly string[] WheelNames = new string[4]
         {
             "wheel_lf",
+            "wheel_rf",
             "wheel_lr",
-            "wheel_rr",
-            "wheel_rf"
+            "wheel_rr"
         };
 
         public static Vehicle CreateMissionTrain(int var, Vector3 pos, bool direction)

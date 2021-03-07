@@ -27,21 +27,21 @@ namespace FusionLibrary
         {
             Name = renderTargetName;
 
-            Prop = new AnimateProp(attachTo, propModel, bone);
+            Prop = new AnimateProp(propModel, attachTo, bone);
         }
 
         public RenderTarget(Model propModel, string renderTargetName, Entity attachTo, Vector3 offset) : this(propModel, renderTargetName)
         {
             Name = renderTargetName;
 
-            Prop = new AnimateProp(attachTo, propModel, offset, Vector3.Zero);
+            Prop = new AnimateProp(propModel, attachTo, offset, Vector3.Zero);
         }
 
         public RenderTarget(Model propModel, string renderTargetName, Entity attachTo, Vector3 offset, Vector3 rotation) : this(propModel, renderTargetName)
         {
             Name = renderTargetName;
 
-            Prop = new AnimateProp(attachTo, propModel, offset, rotation);
+            Prop = new AnimateProp(propModel, attachTo, offset, rotation);
         }
 
         public int ID { get; private set; }
