@@ -209,13 +209,40 @@ namespace FusionLibrary
             return (int)(firstFloat + (secondFloat - (float)firstFloat) * by);
         }
 
-        public static readonly string[] WheelNames = new string[4]
+        public static readonly string[] WheelsBonesNames = new string[8]
         {
             "wheel_lf",
             "wheel_rf",
             "wheel_lr",
-            "wheel_rr"
+            "wheel_rr",
+            "wheel_lm1",
+            "wheel_rm1",
+            "wheel_lm2",
+            "wheel_lm2"
         };
+
+        public static WheelId ConvertWheelNameToID(string name)
+        {
+            switch (name)
+            {
+                case "wheel_lf":
+                    return WheelId.FrontLeft;
+                case "wheel_lr":
+                    return WheelId.RearLeft;
+                case "wheel_rf":
+                    return WheelId.FrontRight;
+                case "wheel_rr":
+                    return WheelId.RearRight;
+                case "wheel_lm1":
+                    return WheelId.Middle1Left;
+                case "wheel_rm1":
+                    return WheelId.Middle1Right;
+                case "wheel_lm2":
+                    return WheelId.Middle2Left;
+                default:
+                    return WheelId.Middle2Right;
+            }
+        }
 
         public static Vehicle CreateMissionTrain(int var, Vector3 pos, bool direction)
         {

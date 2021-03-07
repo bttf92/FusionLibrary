@@ -219,5 +219,23 @@ namespace FusionLibrary.Extensions
 
             return vect3;
         }
+
+        public static Vector3 InvertCoordinate(this Vector3 vect3, Coordinate coord)
+        {
+            switch (coord)
+            {
+                case Coordinate.X:
+                    vect3.X = -vect3.X;
+                    break;
+                case Coordinate.Y:
+                    vect3.Y = -vect3.Y;
+                    break;
+                default:
+                    vect3.Z = -vect3.Z;
+                    break;
+            }
+
+            return vect3;
+        }
     }
 }

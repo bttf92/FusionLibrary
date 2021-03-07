@@ -43,8 +43,12 @@ namespace FusionLibrary
         {
             FrontLeft = 0,
             FrontRight = 1,
+            Middle1Left = 2,
+            Middle1Right = 3,
             RearLeft = 4,
-            RearRight = 5
+            RearRight = 5,
+            Middle2Left = 45,
+            Middle2Right = 47
         }
 
         public enum AnimationType

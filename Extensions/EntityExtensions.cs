@@ -258,29 +258,9 @@ namespace FusionLibrary.Extensions
         {
             Dictionary<string, Vector3> ret = new Dictionary<string, Vector3>();
 
-            if (vehicle.Bones["wheel_lf"].Index > 0)
-                ret.Add("wheel_lf", vehicle.Bones["wheel_lf"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_rf"].Index > 0)
-                ret.Add("wheel_rf", vehicle.Bones["wheel_rf"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_lr"].Index > 0)
-                ret.Add("wheel_lr", vehicle.Bones["wheel_lr"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_rr"].Index > 0)
-                ret.Add("wheel_rr", vehicle.Bones["wheel_rr"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_lm1"].Index > 0)
-                ret.Add("wheel_lm1", vehicle.Bones["wheel_lm1"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_rm1"].Index > 0)
-                ret.Add("wheel_rm1", vehicle.Bones["wheel_rm1"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_lm2"].Index > 0)
-                ret.Add("wheel_lm2", vehicle.Bones["wheel_lm1"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
-
-            if (vehicle.Bones["wheel_rm2"].Index > 0)
-                ret.Add("wheel_rm2", vehicle.Bones["wheel_rm2"].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
+            foreach (string wheel in Utils.WheelsBonesNames)
+                if (vehicle.Bones[wheel].Index > 0)
+                    ret.Add(wheel, vehicle.Bones[wheel].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
 
             return ret;
         }
