@@ -18,7 +18,6 @@ namespace FusionLibrary
         public VehicleBone BoneMemory { get; }
 
         public Vector3 Position => BoneMemory.OriginalTranslation;
-        public Vector3 Rotation => BoneMemory.OriginalRotation.Axis;
 
         public bool Left { get; }
         public bool Front { get; }
