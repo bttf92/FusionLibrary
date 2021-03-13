@@ -87,7 +87,7 @@ namespace FusionLibrary.Extensions
             return vehicle.IsFunctioning() && Utils.PlayerVehicle == vehicle && Utils.PlayerPed.SeatIndex == VehicleSeat.Driver;
         }
 
-        public static bool IsTimeMachine2(this Vehicle vehicle)
+        public static bool IsDMC12TimeMachine(this Vehicle vehicle)
         {
             return vehicle.Model == Utils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
         }

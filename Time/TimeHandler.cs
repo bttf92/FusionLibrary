@@ -21,11 +21,11 @@ namespace FusionLibrary
 
         public static bool TrafficVolumeYearBased { get; set; }
 
-        internal static void Process()
+        internal static void Tick()
         {
             UsedVehiclesByPlayer.ForEach(x =>
             {
-                if (!x.IsFunctioning() || x.IsTimeMachine2())
+                if (!x.IsFunctioning() || x.IsDMC12TimeMachine())
                     RemoveUsedVehicle.Add(x);
             });
 
@@ -35,7 +35,7 @@ namespace FusionLibrary
                 RemoveUsedVehicle.Clear();
             }
 
-            if (Utils.PlayerVehicle.IsFunctioning() && !Utils.PlayerVehicle.IsTimeMachine2() && !Utils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(Utils.PlayerVehicle))
+            if (Utils.PlayerVehicle.IsFunctioning() && !Utils.PlayerVehicle.IsDMC12TimeMachine() && !Utils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(Utils.PlayerVehicle))
                 UsedVehiclesByPlayer.Add(Utils.PlayerVehicle);
 
             bool isNight = Utils.CurrentTime.Hour >= 20 || (Utils.CurrentTime.Hour >= 0 && Utils.CurrentTime.Hour <= 5);

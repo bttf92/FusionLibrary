@@ -47,7 +47,7 @@ namespace FusionLibrary
             ObjectPool.Add(this);
         }
 
-        internal static void ProcessAll()
+        internal static void TickAll()
         {
             CustomNativeMenus.ForEach(x =>
             {

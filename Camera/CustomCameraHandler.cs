@@ -1,15 +1,10 @@
 ﻿using GTA;
 using GTA.Math;
 using System.Collections.Generic;
+using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
-    public enum CameraSwitchType
-    {
-        Instant,
-        Animated
-    }
-
     public class CustomCameraHandler
     {
         public List<CustomCamera> Cameras { get; private set; } = new List<CustomCamera>();
@@ -147,7 +142,7 @@ namespace FusionLibrary
             World.DestroyAllCameras();
         }
 
-        public void Process()
+        public void Tick()
         {
             if (CycleCameras)
             {

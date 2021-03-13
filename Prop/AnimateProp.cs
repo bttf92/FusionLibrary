@@ -16,9 +16,9 @@ namespace FusionLibrary
 
         internal static List<AnimateProp> GlobalAnimatePropList = new List<AnimateProp>();
 
-        internal static void ProcessAll()
+        internal static void TickAll()
         {
-            GlobalAnimatePropList.ForEach(x => x.ProcessInt());
+            GlobalAnimatePropList.ForEach(x => x.Tick());
         }
 
         public Prop Prop { get; private set; }
@@ -300,12 +300,7 @@ namespace FusionLibrary
             IsPlaying = true;
         }
 
-        public override void Process()
-        {
-
-        }
-
-        internal void ProcessInt()
+        public override void Tick()
         {
             if (!IsSpawned)
                 return;

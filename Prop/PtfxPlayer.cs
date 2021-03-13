@@ -62,7 +62,7 @@ namespace FusionLibrary
             }
         }
 
-        public override void Process()
+        public override void Tick()
         {
             if (IsPlaying && ShouldLoop && DoLoopHandling && Game.GameTime > nextRemove)
             {

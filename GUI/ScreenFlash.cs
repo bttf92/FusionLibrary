@@ -19,7 +19,7 @@ namespace FusionLibrary
             currentStep = 0;
         }
 
-        internal static void Process()
+        internal static void Tick()
         {
             if (!IsFlashing) return;
 

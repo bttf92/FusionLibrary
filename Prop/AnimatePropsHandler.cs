@@ -12,9 +12,9 @@ namespace FusionLibrary
     {
         internal static List<AnimatePropsHandler> GlobalAnimatePropsHandlerList = new List<AnimatePropsHandler>();
 
-        internal static void ProcessAll()
+        internal static void TickAll()
         {
-            GlobalAnimatePropsHandlerList.ForEach(x => x.Process());
+            GlobalAnimatePropsHandlerList.ForEach(x => x.Tick());
         }
 
         public event OnSequenceCompleted OnSequenceCompleted;
@@ -54,7 +54,7 @@ namespace FusionLibrary
             animateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
 
-        internal void Process()
+        internal void Tick()
         {
             if (!IsSequencePlaying || Game.GameTime < nextSequenceTime)
                 return;

@@ -78,7 +78,7 @@ namespace FusionLibrary
 
             Vehicle[] allVehicles = World.GetAllVehicles();
 
-            allVehicles.Where(x => x.NotNullAndExists() && !x.IsTimeMachine2() && PlayerVehicle != x && x.Model != DMC12Debug && x.Model != SierraModel && x.Model != SierraVisibleModel && x.Model != SierraTenderModel).ToList()
+            allVehicles.Where(x => x.NotNullAndExists() && !x.IsDMC12TimeMachine() && PlayerVehicle != x && x.Model != DMC12Debug && x.Model != SierraModel && x.Model != SierraVisibleModel && x.Model != SierraTenderModel).ToList()
                 .ForEach(x => x?.DeleteCompletely());
 
             Ped[] allPeds = World.GetAllPeds();

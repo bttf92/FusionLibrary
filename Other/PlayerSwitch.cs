@@ -76,7 +76,7 @@ namespace FusionLibrary
             return clone;
         }
 
-        internal static void Process()
+        internal static void Tick()
         {
             if (!IsSwitching)
                 return;

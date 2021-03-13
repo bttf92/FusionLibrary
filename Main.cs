@@ -28,14 +28,14 @@ namespace FusionLibrary
             if (Game.IsLoading)
                 return;
 
-            AnimatePropsHandler.ProcessAll();
-            AnimateProp.ProcessAll();
-            TimeHandler.Process();
+            AnimatePropsHandler.TickAll();
+            AnimateProp.TickAll();
+            TimeHandler.Tick();
             CustomNativeMenu.ObjectPool.Process();
-            CustomNativeMenu.ProcessAll();
-            ScreenFlash.Process();
-            PlayerSwitch.Process();
-            NativeInput.ProcessAll();
+            CustomNativeMenu.TickAll();
+            ScreenFlash.Tick();
+            PlayerSwitch.Tick();
+            NativeInput.TickAll();
 
             if (PlayerSwitch.Disable)
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);

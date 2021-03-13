@@ -26,6 +26,12 @@ namespace FusionLibrary
             New = 256
         }
 
+        public enum CameraSwitchType
+        {
+            Instant,
+            Animated
+        }
+
         public enum LightsMode
         {
             Default,

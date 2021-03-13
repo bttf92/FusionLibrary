@@ -12,9 +12,9 @@ namespace FusionLibrary
     {
         private static List<NativeInput> nativeInputs = new List<NativeInput>();
 
-        internal static void ProcessAll()
+        internal static void TickAll()
         {
-            nativeInputs.ForEach(x => x.Process());
+            nativeInputs.ForEach(x => x.Tick());
         }
 
         public Control Input { get; protected set; }
@@ -40,7 +40,7 @@ namespace FusionLibrary
             nativeInputs.Add(this);
         }
 
-        internal void Process()
+        internal void Tick()
         {
             if (DisableControl)
                 Game.DisableControlThisFrame(Input);

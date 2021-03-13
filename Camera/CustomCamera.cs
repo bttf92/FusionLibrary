@@ -1,6 +1,7 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
+using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {

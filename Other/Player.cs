@@ -14,7 +14,7 @@ namespace FusionLibrary
 
         public abstract void Play();
 
-        public abstract void Process();
+        public abstract void Tick();
 
         public abstract void Stop();
 
