@@ -37,6 +37,12 @@ namespace FusionLibrary
             BoneMemory = vehicleBone;
         }
 
+        public void Reset()
+        {
+            BoneMemory.ResetRotation();
+            BoneMemory.ResetTranslation();
+        }
+
         /// <summary>
         /// Gets the position relative to the <see cref="Vehicle"/> of an offset relative this <see cref="CVehicleWheel"/>
         /// </summary>
