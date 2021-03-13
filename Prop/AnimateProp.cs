@@ -10,7 +10,7 @@ namespace FusionLibrary
 {
     public delegate void OnAnimCompleted(AnimationStep animationStep);
 
-    public class AnimateProp : Player
+    public class AnimateProp
     {
         public event OnAnimCompleted OnAnimCompleted;
 
@@ -20,6 +20,10 @@ namespace FusionLibrary
         {
             GlobalAnimatePropList.ForEach(x => x.Tick());
         }
+
+        public Entity Entity { get; protected set; }
+
+        public bool IsPlaying { get; private set; }
 
         public Prop Prop { get; private set; }
         public CustomModel Model { get; private set; }
@@ -38,8 +42,6 @@ namespace FusionLibrary
         public Vector3 CurrentRotation => Rotation + SecondRotation;
 
         public AnimationStep AnimationStep { get; private set; } = AnimationStep.Off;
-
-        public new bool IsPlaying { get; private set; }
 
         private bool ToBone;
         private EntityBone Bone;
@@ -264,7 +266,7 @@ namespace FusionLibrary
             Attach();
         }
 
-        public override void Play()
+        public void Play()
         {
             Play(AnimationStep.First);
         }
@@ -300,7 +302,7 @@ namespace FusionLibrary
             IsPlaying = true;
         }
 
-        public override void Tick()
+        internal void Tick()
         {
             if (!IsSpawned)
                 return;
@@ -471,7 +473,7 @@ namespace FusionLibrary
             Prop.ApplyForce(Vector3.RandomXYZ() * ForceMultiplier, Vector3.RandomXYZ() * ForceMultiplier);
         }
 
-        public override void Stop()
+        public void Stop()
         {
             Animation[AnimationType.Offset][AnimationStep].setAllUpdate(false);
             Animation[AnimationType.Rotation][AnimationStep].setAllUpdate(false);
@@ -486,7 +488,7 @@ namespace FusionLibrary
             GlobalAnimatePropList.Remove(this);
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
             Delete(false);
             GlobalAnimatePropList.Remove(this);
