@@ -47,7 +47,7 @@ namespace FusionLibrary
         public TaskDrive Add(DriveAction driveAction, int time)
         {
             if (TaskSequence == null || TaskSequence.IsClosed)
-                TaskSequence = new TaskSequence();
+                Create();
 
             Function.Call(Hash.TASK_VEHICLE_TEMP_ACTION, Ped, Vehicle, (int)driveAction, time);
 

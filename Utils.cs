@@ -72,6 +72,15 @@ namespace FusionLibrary
             return model;
         }
 
+        public static Vector3 GetPointOnRoadSide(Vector3 position)
+        {
+            OutputArgument ret = new OutputArgument();
+
+            Function.Call((Hash)0x16F46FB18C8009E4, position.X, position.Y, position.Z, -1, ret);
+
+            return ret.GetResult<Vector3>();
+        }
+
         public static void ClearWorld()
         {
             Function.Call(Hash.DELETE_ALL_TRAINS);
@@ -380,58 +389,6 @@ namespace FusionLibrary
         public static bool IsPlayerUseFirstPerson()
         {
             return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);
-        }
-
-        public static bool IsAllTiresBurst(Vehicle vehicle)
-        {
-            if (!Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.FrontLeft, true))
-                return false;
-
-            if (!Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.FrontRight, true))
-                return false;
-
-            if (!Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.RearRight, true))
-                return false;
-
-            if (!Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.RearLeft, true))
-                return false;
-
-            return true;
-        }
-
-        public static bool IsAnyTireBurst(Vehicle vehicle)
-        {
-            if (Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.FrontLeft, true))
-                return true;
-
-            if (Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.FrontRight, true))
-                return true;
-
-            if (Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.RearRight, true))
-                return true;
-
-            if (Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, vehicle, (int)WheelId.RearLeft, true))
-                return true;
-
-            return false;
-        }
-
-        public static void SetTiresBurst(Vehicle vehicle, bool toggle)
-        {
-            if (toggle)
-            {
-                vehicle.Wheels[(int)WheelId.FrontLeft].Burst();
-                vehicle.Wheels[(int)WheelId.FrontRight].Burst();
-                vehicle.Wheels[(int)WheelId.RearRight].Burst();
-                vehicle.Wheels[(int)WheelId.RearLeft].Burst();
-            }
-            else
-            {
-                vehicle.Wheels[(int)WheelId.FrontLeft].Fix();
-                vehicle.Wheels[(int)WheelId.FrontRight].Fix();
-                vehicle.Wheels[(int)WheelId.RearRight].Fix();
-                vehicle.Wheels[(int)WheelId.RearLeft].Fix();
-            }
         }
 
         public static float Magnitude(Vector3 vector3)

@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,18 @@ namespace FusionLibrary
         {
             BoneMemory.ResetRotation();
             BoneMemory.ResetTranslation();
+        }
+
+        public bool Burst
+        {
+            get => Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, (int)WheelID, true);
+            set
+            {
+                if (value)
+                    Vehicle.Wheels[(int)WheelID].Burst();
+                else
+                    Vehicle.Wheels[(int)WheelID].Fix();
+            }
         }
 
         /// <summary>
@@ -97,6 +110,14 @@ namespace FusionLibrary
         public IEnumerator GetEnumerator()
         {
             return new CVehicleWheelCollection(Wheels.ToArray());
+        }
+
+        public bool AnyBurst => Wheels.Any(x => x.Burst == true);
+
+        public bool Burst
+        {
+            get => Wheels.TrueForAll(x => x.Burst);
+            set => Wheels.ForEach(x => x.Burst = value);
         }
     }
 
