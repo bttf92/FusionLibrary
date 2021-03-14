@@ -25,6 +25,36 @@ namespace FusionLibrary.Extensions
             return entity.RelativeVelocity().Y >= 0;
         }
 
+        public static float DistanceToSquared2D(this Entity src, Entity entity)
+        {
+            return Utils.DistanceToSquared2D(src, entity);
+        }
+
+        public static float DistanceToSquared2D(this Entity src, Entity entity, string boneName)
+        {
+            return src.Position.DistanceToSquared2D(entity.Bones[boneName].Position);
+        }
+
+        public static float DistanceToSquared2D(this Entity src, Vector3 worldPosition)
+        {
+            return src.Position.DistanceToSquared2D(worldPosition);
+        }
+
+        public static bool DistanceToSquared2D(this Entity src, Entity entity, float maxDistance)
+        {
+            return DistanceToSquared2D(src, entity) <= maxDistance * maxDistance;
+        }
+
+        public static bool DistanceToSquared2D(this Entity src, Entity entity, string boneName, float maxDistance)
+        {
+            return DistanceToSquared2D(src, entity, boneName) <= maxDistance * maxDistance;
+        }
+
+        public static bool DistanceToSquared2D(this Entity src, Vector3 worldPosition, float maxDistance)
+        {
+            return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
+        }
+
         //public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
         //{
         //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);

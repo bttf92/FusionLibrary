@@ -255,7 +255,7 @@ namespace FusionLibrary
             Function.Call((Hash)0x84EA99C62CB3EF0C, vehicle, id, height);
         }
 
-        public static DateTime? ParseFromRawString(string raw, DateTime currentTime)
+        public static DateTime? ParseFromRawString(string raw, DateTime currentTime, out InputType inputType)
         {
             try
             {
@@ -267,6 +267,8 @@ namespace FusionLibrary
                     string hour = raw.Substring(8, 2);
                     string minute = raw.Substring(10, 2);
 
+                    inputType = InputType.Full;
+
                     return new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), int.Parse(hour), int.Parse(minute), 0);
                 }
                 else if (raw.Length == 8)
@@ -275,6 +277,8 @@ namespace FusionLibrary
                     string day = raw.Substring(2, 2);
                     string year = raw.Substring(4, 4);
 
+                    inputType = InputType.Date;
+
                     return new DateTime(int.Parse(year), int.Parse(month), int.Parse(day), currentTime.Hour, currentTime.Minute, 0);
                 }
                 else if (raw.Length == 4)
@@ -282,20 +286,25 @@ namespace FusionLibrary
                     string hour = raw.Substring(0, 2);
                     string minute = raw.Substring(2, 2);
 
+                    inputType = InputType.Time;
+
                     return new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, int.Parse(hour), int.Parse(minute), 0);
                 }
+
+                inputType = InputType.Error;
 
                 return null;
             }
             catch (Exception)
             {
+                inputType = InputType.Error;
                 return null;
             }
         }
 
-        public static float Distance2DBetween(Entity entity1, Entity entity2)
+        public static float DistanceToSquared2D(Entity entity1, Entity entity2)
         {
-            return entity1.Position.DistanceTo2D(entity2.Position);
+            return entity1.Position.DistanceToSquared2D(entity2.Position);
         }
 
         public static void DrawLine(Vector3 from, Vector3 to, Color col)

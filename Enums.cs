@@ -74,5 +74,13 @@ namespace FusionLibrary
             Sixth,
             Seventh
         }
+
+        public enum InputType
+        {
+            Full,
+            Date,
+            Time,
+            Error
+        }
     }
 }
