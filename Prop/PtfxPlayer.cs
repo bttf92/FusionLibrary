@@ -57,9 +57,7 @@ namespace FusionLibrary
             Function.Call(Hash.REQUEST_NAMED_PTFX_ASSET, AssetName);
 
             while (!Function.Call<bool>(Hash.HAS_NAMED_PTFX_ASSET_LOADED, AssetName))
-            {
                 Script.Yield();
-            }
         }
 
         public override void Tick()

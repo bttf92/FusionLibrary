@@ -82,5 +82,33 @@ namespace FusionLibrary
             Time,
             Error
         }
+
+        public enum DriveAction
+        {
+            None = -1,
+            BrakeAndReverse = 3,
+            TurnLeft90AndBraking = 4,
+            TurnRight90AndBraking = 5,
+            HandrakeUntilEnd = 6,
+            TurnLeftAndAccelerate = 7,
+            TurnRightAndAccelerate = 8,
+            AccelerateWeak = 9,
+            TurnLeftAndRestoreWheel = 10,
+            TurnRightAndRestoreWheel = 11,
+            TurnLeftAndReverse = 13,
+            TurnRightAndReverse = 14,
+            BrakeStrongAndTurn = 19,
+            BrakeWeakAndTurnLeftThenTurnRight = 20,
+            BrakeWeakAndTurnRightThenTurnLeft = 21,
+            BrakeAndReverse2 = 22,
+            AccelerateFast = 23,
+            BrakeThenTurnLeftWhenStopping = 25,
+            BrakeThenTurnRightWhenStopping = 26,
+            BrakeUntilTimeEndsOrCarStops = 27,
+            BrakeAndReverseStrong = 28,
+            BrakeUntilStopAndBurnout = 30,
+            AccelerateAndHandbrake = 31,
+            AccelerateVeryStrong = 32
+        }
     }
 }

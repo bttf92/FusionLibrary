@@ -55,6 +55,21 @@ namespace FusionLibrary.Extensions
             return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
         }
 
+        public static TaskDrive TaskDrive(this Vehicle vehicle)
+        {
+            return new TaskDrive(vehicle);
+        }
+
+        public static TaskDrive TaskDrive(this Ped ped)
+        {
+            return new TaskDrive(ped);
+        }
+
+        public static TaskDrive TaskDrive(this Ped ped, Vehicle vehicle)
+        {
+            return new TaskDrive(ped, vehicle);
+        }
+
         //public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
         //{
         //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);

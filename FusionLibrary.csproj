@@ -65,6 +65,7 @@
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Extensions\OtherExtensions.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
+    <Compile Include="Other\TaskDrive.cs" />
     <Compile Include="Other\CustomModelHandler.cs" />
     <Compile Include="Other\Network.cs" />
     <Compile Include="Other\Player.cs" />
