@@ -97,6 +97,10 @@ namespace FusionLibrary
     {
         private List<CVehicleWheel> Wheels { get; } = new List<CVehicleWheel>();
 
+        public int Count => Wheels.Count;
+
+        public int IndexOf(CVehicleWheel wheel) => Wheels.IndexOf(wheel);
+
         public CVehicleWheels(Vehicle vehicle)
         {
             foreach (string wheel in Utils.WheelsBonesNames)
