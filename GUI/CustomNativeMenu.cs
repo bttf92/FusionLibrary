@@ -23,6 +23,8 @@ namespace FusionLibrary
 
         public static List<CustomNativeMenu> CustomNativeMenus = new List<CustomNativeMenu>();
 
+        public string InternalName { get; protected set; }
+
         public CustomNativeMenu(string title) : base(title)
         {
             CustomNativeMenus.Add(this);

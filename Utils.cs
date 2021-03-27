@@ -55,34 +55,19 @@ namespace FusionLibrary
             }
         }
 
-        public static Model LoadAndRequestModel(string modelName)
-        {
-            Model model = new Model(modelName);
-
-            return LoadAndRequestModel(model);
-        }
-
-        public static Model LoadAndRequestModel(Model model)
+        public static Model LoadAndRequestModel(Model model, string name = default)
         {
             if (!model.IsInCdImage || !model.IsValid)
-                throw new Exception(model + " not present!");
+            {
+                if (name == default)
+                    throw new Exception(model + " not present!");
+                else
+                    throw new Exception(name + " not present!");
+            }                
 
             model.Request();
 
             while (!model.IsLoaded)
-                Script.Yield();
-
-            return model;
-        }
-
-        public static Model LoadAndRequestModel(CustomModel model)
-        {
-            if (!model.Model.IsInCdImage || !model.Model.IsValid)
-                throw new Exception(model + " not present!");
-
-            model.Model.Request();
-
-            while (!model.Model.IsLoaded)
                 Script.Yield();
 
             return model;

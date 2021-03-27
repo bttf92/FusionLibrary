@@ -24,7 +24,7 @@ namespace FusionLibrary
 
         public Model Request()
         {
-            return Utils.LoadAndRequestModel(this);
+            return Utils.LoadAndRequestModel(Model, Name);
         }
 
         public static implicit operator Model(CustomModel customModel)
