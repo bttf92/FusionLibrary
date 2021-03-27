@@ -35,6 +35,9 @@ namespace FusionLibrary
 
         public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
 
+        public static float FramesPerGameSecond = (1.0f) / Function.Call<float>(Hash.TIMESTEP);
+        public static float FrameMultiplier = 30 / FramesPerGameSecond;
+
         public static bool HideGUI { get; set; } = false;
 
         private static bool randomTrains = true;
@@ -67,6 +70,19 @@ namespace FusionLibrary
             model.Request();
 
             while (!model.IsLoaded)
+                Script.Yield();
+
+            return model;
+        }
+
+        public static Model LoadAndRequestModel(CustomModel model)
+        {
+            if (!model.Model.IsInCdImage || !model.Model.IsValid)
+                throw new Exception(model + " not present!");
+
+            model.Model.Request();
+
+            while (!model.Model.IsLoaded)
                 Script.Yield();
 
             return model;
@@ -386,7 +402,7 @@ namespace FusionLibrary
             return doorOpen;
         }
 
-        public static bool IsPlayerUseFirstPerson()
+        public static bool IsCameraInFirstPerson()
         {
             return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);
         }

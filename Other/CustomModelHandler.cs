@@ -24,7 +24,7 @@ namespace FusionLibrary
 
         public Model Request()
         {
-            return Utils.LoadAndRequestModel(Model);
+            return Utils.LoadAndRequestModel(this);
         }
 
         public static implicit operator Model(CustomModel customModel)
@@ -40,6 +40,11 @@ namespace FusionLibrary
         public static implicit operator CustomModel(Model model)
         {
             return new CustomModel(model);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 

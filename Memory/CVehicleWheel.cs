@@ -99,7 +99,10 @@ namespace FusionLibrary
 
         public int Count => Wheels.Count;
 
-        public int IndexOf(CVehicleWheel wheel) => Wheels.IndexOf(wheel);
+        public int IndexOf(CVehicleWheel wheel)
+        {
+            return Wheels.IndexOf(wheel);
+        }
 
         public CVehicleWheels(Vehicle vehicle)
         {

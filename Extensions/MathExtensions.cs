@@ -38,7 +38,7 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
-        public static float Lerp(float firstFloat, float secondFloat, float by)
+        public static float Lerp(this float firstFloat, float secondFloat, float by)
         {
             return firstFloat * by + secondFloat * (1 - by);
         }
