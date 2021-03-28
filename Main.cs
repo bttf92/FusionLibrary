@@ -4,7 +4,7 @@ using System;
 
 namespace FusionLibrary
 {
-    public class Main : Script
+    internal class Main : Script
     {
         public static Version Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 

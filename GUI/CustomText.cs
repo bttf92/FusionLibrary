@@ -1,6 +1,6 @@
 ﻿using GTA;
-using Screen = GTA.UI.Screen;
 using Notification = GTA.UI.Notification;
+using Screen = GTA.UI.Screen;
 
 namespace FusionLibrary
 {
@@ -24,7 +24,7 @@ namespace FusionLibrary
     }
 
     public class CustomText : CustomTextInterface
-    {        
+    {
         public string EntryModel { get; }
 
         public CustomText(string entryModel)

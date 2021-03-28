@@ -63,7 +63,7 @@ namespace FusionLibrary
                     throw new Exception(model + " not present!");
                 else
                     throw new Exception(name + " not present!");
-            }                
+            }
 
             model.Request();
 
