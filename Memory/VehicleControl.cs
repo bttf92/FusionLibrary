@@ -284,7 +284,7 @@ namespace FusionLibrary.Memory
 
             if (wheelAngleOffset == 0) return;
 
-            ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);            
+            ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);
             *(float*)(wheelAddr + (ulong)wheelAngleOffset) = rotation;
         }
 
