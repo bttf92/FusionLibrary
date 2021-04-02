@@ -204,19 +204,46 @@ namespace FusionLibrary
             return true;
         }
 
+        public static float Wrap(float x, float min, float max)
+        {
+            float delta = max - min;
+
+            x = (x + max) % delta;
+
+            if (x < 0)
+                x += delta;
+
+            return x + min;
+        }
+
         public static float Clamp(float value, float max, float max2)
         {
             return (value * max2) / max;
         }
 
-        public static float Lerp(float minValue, float maxValue, float by)
+        public static float Lerp(float a, float b, float f)
         {
-            return minValue + (maxValue - minValue) * by;
+            return a + (b - a) * f;
         }
 
-        public static int Lerp(int firstFloat, int secondFloat, float by)
+        public static float Lerp(float a, float b, float f, float min, float max)
         {
-            return (int)(firstFloat + (secondFloat - (float)firstFloat) * by);
+            return a + f * Wrap(b - a, min, max);
+        }
+
+        public static int Lerp(int a, int b, float f)
+        {
+            return (int)(a + (b - (float)a) * f);
+        }
+
+        public static Vector3 Lerp(Vector3 a, Vector3 b, float f)
+        {
+            return new Vector3() { X = Lerp(a.X, b.X, f), Y = Lerp(a.Y, b.Y, f), Z = Lerp(a.Z, b.Z, f) };
+        }
+
+        public static Vector3 Lerp(Vector3 a, Vector3 b, float f, float min, float max)
+        {
+            return new Vector3() { X = Lerp(a.X, b.X, f, min, max), Y = Lerp(a.Y, b.Y, f, min, max), Z = Lerp(a.Z, b.Z, f, min, max) };
         }
 
         public static readonly string[] WheelsBonesNames = new string[8]

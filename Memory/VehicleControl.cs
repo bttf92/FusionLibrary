@@ -27,7 +27,8 @@ namespace FusionLibrary.Memory
 
         private static int wheelSteeringAngleOffset;
         private static int wheelAngularVelocityOffset;
-        private static int wheelRotationOffset;
+        private static int wheelSuspensionCompressionOffset;
+        private static int wheelAngleOffset;
 
         private static int deluxoTransformationOffset;
         private static int deluxoFlyModeOffset;
@@ -56,8 +57,9 @@ namespace FusionLibrary.Memory
             fuelLevelOffset = addr == null ? 0 : *(int*)(addr + 8);
 
             addr = MemoryFunctions.FindPattern("\x45\x0f\x57\xc9\xf3\x0f\x11\x83\x60\x01\x00\x00\xf3\x0f\x5c", "xxx?xxx???xxxxx");
+            wheelSuspensionCompressionOffset = addr == null ? 0 : *(int*)(addr + 8);
+            wheelAngleOffset = addr == null ? 0 : (*(int*)(addr + 8)) + 0x8;
             wheelAngularVelocityOffset = addr == null ? 0 : (*(int*)(addr + 8)) + 0xc;
-            wheelRotationOffset = 0x170 - 4;
 
             addr = MemoryFunctions.FindPattern("\xF3\x0F\x11\xB3\x00\x00\x00\x00\x44\x88\x00\x00\x00\x00\x00\x48\x85\xC9", "xxxx????xx?????xxx");
             deluxoTransformationOffset = addr == null ? 0 : *(int*)(addr + 4);
@@ -244,24 +246,7 @@ namespace FusionLibrary.Memory
             return speeds;
         }
 
-        public static float[] GetWheelRotations(Vehicle handle)
-        {
-            ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
-
-            float[] rotations = new float[numWheels];
-
-            if (wheelAngularVelocityOffset == 0) return rotations;
-
-            for (sbyte i = 0; i < numWheels; i++)
-            {
-                ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
-                rotations[i] = -*(float*)(wheelAddr + (ulong)wheelRotationOffset);
-            }
-            return rotations;
-        }
-
-        public static void SetWheelRotations(Vehicle handle, float[] rotations)
+        public static void SetWheelRotationSpeeds(Vehicle handle, float[] rotations)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
@@ -271,9 +256,64 @@ namespace FusionLibrary.Memory
             for (sbyte i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
-                float* address = (float*)(wheelAddr + (ulong)wheelRotationOffset);
-                *address = -rotations[i];
+                *(float*)(wheelAddr + (ulong)wheelAngularVelocityOffset) = rotations[i];
             }
+        }
+
+        public static float[] GetWheelRotations(Vehicle handle)
+        {
+            ulong wheelPtr = GetWheelsPtr(handle);
+            sbyte numWheels = GetNumWheels(handle);
+
+            float[] speeds = new float[numWheels];
+
+            if (wheelAngleOffset == 0) return speeds;
+
+            for (sbyte i = 0; i < numWheels; i++)
+            {
+                ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
+                speeds[i] = *(float*)(wheelAddr + (ulong)wheelAngleOffset);
+            }
+            return speeds;
+        }
+
+        public static void SetWheelRotation(Vehicle handle, int index, float rotation)
+        {
+            ulong wheelPtr = GetWheelsPtr(handle);
+            sbyte numWheels = GetNumWheels(handle);
+
+            if (wheelAngleOffset == 0) return;
+
+            ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);            
+            *(float*)(wheelAddr + (ulong)wheelAngleOffset) = rotation;
+        }
+
+        public static float[] GetWheelCompressions(Vehicle handle)
+        {
+            ulong wheelPtr = GetWheelsPtr(handle);
+            sbyte numWheels = GetNumWheels(handle);
+
+            float[] speeds = new float[numWheels];
+
+            if (wheelSuspensionCompressionOffset == 0) return speeds;
+
+            for (sbyte i = 0; i < numWheels; i++)
+            {
+                ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
+                speeds[i] = *(float*)(wheelAddr + (ulong)wheelSuspensionCompressionOffset);
+            }
+            return speeds;
+        }
+
+        public static void SetWheelCompression(Vehicle handle, int index, float rotation)
+        {
+            ulong wheelPtr = GetWheelsPtr(handle);
+            sbyte numWheels = GetNumWheels(handle);
+
+            if (wheelSuspensionCompressionOffset == 0) return;
+
+            ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);
+            *(float*)(wheelAddr + (ulong)wheelSuspensionCompressionOffset + 4) = rotation;
         }
 
         public static WheelDimensions[] GetWheelDimensions(Vehicle handle)
