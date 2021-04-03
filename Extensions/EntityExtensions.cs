@@ -4,6 +4,7 @@ using GTA.Math;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static FusionLibrary.Enums;
 
 namespace FusionLibrary.Extensions
@@ -53,6 +54,41 @@ namespace FusionLibrary.Extensions
         public static bool DistanceToSquared2D(this Entity src, Vector3 worldPosition, float maxDistance)
         {
             return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
+        }
+
+        public static bool IsTaskActive(this Ped ped, TaskType taskType)
+        {
+            return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
+        }
+
+        public static bool IsAnyTaskActive(this Ped ped)
+        {
+            foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
+                if (ped.IsTaskActive(taskType))
+                    return true;
+
+            return false;
+        }
+
+        public static List<TaskType> GetActiveTasks(this Ped ped)
+        {
+            List<TaskType> ret = new List<TaskType>();
+
+            foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
+                if (ped.IsTaskActive(taskType))
+                    ret.Add(taskType);
+
+            return ret;
+        }
+
+        public static Vehicle GetNearestVehicle(this Ped ped)
+        {
+            return World.GetClosestVehicle(ped.Position, 10);
+        }
+
+        public static Vehicle IsEnteringVehicle(this Ped ped)
+        {
+            return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_ENTERING, ped);
         }
 
         public static TaskDrive TaskDrive(this Vehicle vehicle)
