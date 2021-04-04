@@ -35,9 +35,6 @@ namespace FusionLibrary
 
         public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
 
-        public static float FramesPerGameSecond = (1.0f) / Function.Call<float>(Hash.TIMESTEP);
-        public static float FrameMultiplier = 30 / FramesPerGameSecond;
-
         public static bool HideGUI { get; set; } = false;
 
         private static bool randomTrains = true;

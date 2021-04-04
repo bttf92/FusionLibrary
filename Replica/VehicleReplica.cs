@@ -100,11 +100,8 @@ namespace FusionLibrary
             return veh;
         }
 
-        public void ApplyTo(Vehicle veh, SpawnFlags spawnFlags = SpawnFlags.Default, float timeRatio = 0, VehicleReplica nextReplica = default)
+        public void ApplyTo(Vehicle veh, SpawnFlags spawnFlags = SpawnFlags.Default, float adjustedRatio = 0, VehicleReplica nextReplica = null)
         {
-            if (nextReplica == default)
-                nextReplica = this;
-
             veh.ThrottlePower = Throttle;
             veh.BrakePower = Brake;
             veh.SteeringAngle = SteeringAngle;
@@ -121,21 +118,46 @@ namespace FusionLibrary
 
             if (!spawnFlags.HasFlag(SpawnFlags.ForcePosition))
             {
-                veh.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, timeRatio);
-                veh.Heading = Utils.Lerp(Heading, nextReplica.Heading, timeRatio);
-                veh.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, timeRatio, -180, 180);
+                if (nextReplica == null)
+                {
+                    veh.PositionNoOffset = Position;
+                    veh.Heading = Heading;
+                    veh.Rotation = Rotation;
+                }
+                else
+                {
+                    veh.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, adjustedRatio);
+                    veh.Heading = Utils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
+                    veh.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
+                }
             }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
-                veh.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, timeRatio);
-                veh.Speed = Utils.Lerp(Speed, nextReplica.Speed, timeRatio);
+                if (nextReplica == null)
+                {
+                    veh.Velocity = Velocity;
+                    veh.Speed = Speed;
+                }
+                else
+                {
+                    veh.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
+                    veh.Speed = Utils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
+                }
             }
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                VehicleControl.SetWheelRotation(veh, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], timeRatio, -(float)Math.PI, (float)Math.PI));
-                VehicleControl.SetWheelCompression(veh, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], timeRatio));
+                if (nextReplica == null)
+                {
+                    VehicleControl.SetWheelRotation(veh, i, Utils.Wrap(WheelsRotations[i], -(float)Math.PI, (float)Math.PI));
+                    VehicleControl.SetWheelCompression(veh, i, WheelsCompressions[i]);
+                }
+                else
+                {
+                    VehicleControl.SetWheelRotation(veh, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio, -(float)Math.PI, (float)Math.PI));
+                    VehicleControl.SetWheelCompression(veh, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
+                }
             }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoOccupants))
