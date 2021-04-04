@@ -81,14 +81,19 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
-        public static Vehicle GetNearestVehicle(this Ped ped)
+        public static Vehicle GetClosestVehicle(this Ped ped, float radius = 10)
         {
-            return World.GetClosestVehicle(ped.Position, 10);
+            return World.GetClosestVehicle(ped.Position, radius);
         }
 
-        public static Vehicle IsEnteringVehicle(this Ped ped)
+        public static Vehicle GetEnteringVehicle(this Ped ped)
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_ENTERING, ped);
+        }
+
+        public static Vehicle GetUsingVehicle(this Ped ped)
+        {
+            return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
         }
 
         public static TaskDrive TaskDrive(this Vehicle vehicle)
@@ -104,6 +109,31 @@ namespace FusionLibrary.Extensions
         public static TaskDrive TaskDrive(this Ped ped, Vehicle vehicle)
         {
             return new TaskDrive(ped, vehicle);
+        }
+
+        public static void TaskGoStraightTo(this Ped ped, Vector3 position, float speed, float heading, int timeout = -1, float distanceToSlide = 0)
+        {
+            Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped, position.X, position.Y, position.Z, speed, timeout, heading, distanceToSlide);
+        }
+
+        public static bool IsFullyInVehicle(this Ped ped)
+        {
+            return ped.IsSittingInVehicle() && !ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
+        }
+
+        public static bool IsFullyOutVehicle(this Ped ped)
+        {
+            return ped.CurrentVehicle == null && !ped.IsTaskActive(TaskType.ExitVehicle) && !ped.IsTaskActive(TaskType.EnterVehicle);
+        }
+
+        public static bool IsEnteringVehicle(this Ped ped)
+        {
+            return !ped.IsSittingInVehicle() && ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
+        }
+
+        public static bool IsLeavingVehicle(this Ped ped)
+        {
+            return !IsFullyOutVehicle(ped) && ped.IsTaskActive(TaskType.ExitVehicle);
         }
 
         //public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)

@@ -185,6 +185,11 @@ namespace FusionLibrary.Extensions
             return to.Subtract(by) <= src && ((onlyFromLeft && src <= to) || (!onlyFromLeft && src <= to.Add(by)));
         }
 
+        public static bool Between(this DateTime src, DateTime start, DateTime end)
+        {
+            return src >= start && src <= end;
+        }
+
         public static Vector3 DirectionToRotation(this Vector3 dir, float roll)
         {
             dir.Normalize();
