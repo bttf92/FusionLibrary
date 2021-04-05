@@ -9,7 +9,12 @@ namespace FusionLibrary
     [Serializable]
     public class PedReplica
     {
-        public Model Model { get; }
+        public int ModelHash { get; set; }
+        public Model Model
+        {
+            get => new Model(ModelHash);
+            set => ModelHash = value.Hash;
+        }
         public int Type { get; }
         public Vector3 Position { get; }
         public Vector3 Rotation { get; }
