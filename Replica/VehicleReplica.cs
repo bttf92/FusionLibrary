@@ -24,6 +24,9 @@ namespace FusionLibrary
         public int Livery { get; }
         public List<PedReplica> Occupants { get; }
 
+        public float Handbrake { get; }
+        public float RPM { get; }
+        public int Gear { get; }
         public float Throttle { get; }
         public float Brake { get; }
         public float SteeringAngle { get; }
@@ -33,37 +36,41 @@ namespace FusionLibrary
         public float[] WheelsRotations { get; }
         public float[] WheelsCompressions { get; }
 
-        public VehicleReplica(Vehicle veh, SpawnFlags spawnFlags = SpawnFlags.Default)
+        public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
         {
-            Model = veh.Model;
-            Velocity = veh.Velocity;
-            Position = veh.Position;
-            Rotation = veh.Rotation;
-            Heading = veh.Heading;
-            Speed = veh.Speed;
-            Health = veh.HealthFloat;
-            EngineHealth = veh.EngineHealth;
-            EngineRunning = veh.IsEngineRunning;
-            PrimaryColor = veh.Mods.PrimaryColor;
-            SecondaryColor = veh.Mods.SecondaryColor;
-            Livery = veh.Mods.Livery;
+            Model = vehicle.Model;
+            Velocity = vehicle.Velocity;
+            Position = vehicle.Position;
+            Rotation = vehicle.Rotation;
+            Heading = vehicle.Heading;
+            Speed = vehicle.Speed;
+            Health = vehicle.HealthFloat;
+            EngineHealth = vehicle.EngineHealth;
+            EngineRunning = vehicle.IsEngineRunning;
+            PrimaryColor = vehicle.Mods.PrimaryColor;
+            SecondaryColor = vehicle.Mods.SecondaryColor;
+            Livery = vehicle.Mods.Livery;
 
-            Throttle = veh.ThrottlePower;
-            Brake = veh.BrakePower;
+            RPM = vehicle.CurrentRPM;
+            Gear = vehicle.CurrentGear;
 
-            SteeringAngle = veh.SteeringAngle;
-            Lights = veh.AreLightsOn;
-            Headlights = veh.AreHighBeamsOn;
+            Throttle = vehicle.ThrottlePower;
+            Brake = vehicle.BrakePower;
+            Handbrake = VehicleControl.GetHandbrake(vehicle);
 
-            WheelsRotations = VehicleControl.GetWheelRotations(veh);
-            WheelsCompressions = VehicleControl.GetWheelCompressions(veh);
+            SteeringAngle = vehicle.SteeringAngle;
+            Lights = vehicle.AreLightsOn;
+            Headlights = vehicle.AreHighBeamsOn;
+
+            WheelsRotations = VehicleControl.GetWheelRotations(vehicle);
+            WheelsCompressions = VehicleControl.GetWheelCompressions(vehicle);
 
             if (spawnFlags.HasFlag(SpawnFlags.NoOccupants))
                 return;
 
             Occupants = new List<PedReplica>();
 
-            foreach (Ped x in veh.Occupants)
+            foreach (Ped x in vehicle.Occupants)
                 Occupants.Add(new PedReplica(x));
         }
 
@@ -107,6 +114,7 @@ namespace FusionLibrary
 
             vehicle.ThrottlePower = Throttle;
             vehicle.BrakePower = Brake;
+            VehicleControl.SetHandbrake(vehicle, Handbrake);
             vehicle.SteeringAngle = SteeringAngle;
             vehicle.AreLightsOn = Lights;
             vehicle.AreHighBeamsOn = Headlights;
@@ -118,6 +126,9 @@ namespace FusionLibrary
             vehicle.Mods.Livery = Livery;
 
             vehicle.IsEngineRunning = EngineRunning;
+
+            vehicle.CurrentRPM = RPM;
+            vehicle.CurrentGear = Gear;
 
             if (!spawnFlags.HasFlag(SpawnFlags.ForcePosition))
             {
