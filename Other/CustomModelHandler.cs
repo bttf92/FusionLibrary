@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace FusionLibrary
 {
-    [Serializable]
     public class CustomModel
     {
         public string Name { get; }

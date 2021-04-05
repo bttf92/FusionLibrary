@@ -9,7 +9,7 @@ namespace FusionLibrary
     [Serializable]
     public class PedReplica
     {
-        public CustomModel Model { get; }
+        public Model Model { get; }
         public int Type { get; }
         public Vector3 Position { get; }
         public Vector3 Rotation { get; }

@@ -10,7 +10,7 @@ namespace FusionLibrary
     [Serializable]
     public class VehicleReplica
     {
-        public CustomModel Model { get; set; }
+        public Model Model { get; set; }
         public Vector3 Velocity { get; }
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
