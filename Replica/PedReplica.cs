@@ -9,6 +9,14 @@ namespace FusionLibrary
     [Serializable]
     public class PedReplica
     {
+        public CustomModel Model { get; }
+        public int Type { get; }
+        public Vector3 Position { get; }
+        public Vector3 Rotation { get; }
+        public float Heading { get; }
+        public VehicleSeat Seat { get; }
+        public List<WeaponReplica> Weapons { get; }
+
         public PedReplica(Ped ped)
         {
             Model = ped.Model;
@@ -26,14 +34,6 @@ namespace FusionLibrary
                 if (ped.Weapons.HasWeapon(x))
                     Weapons.Add(new WeaponReplica(ped, ped.Weapons[x]));
         }
-
-        public int Model { get; }
-        public int Type { get; }
-        public Vector3 Position { get; }
-        public Vector3 Rotation { get; }
-        public float Heading { get; }
-        public VehicleSeat Seat { get; }
-        public List<WeaponReplica> Weapons { get; }
 
         public Ped Spawn()
         {

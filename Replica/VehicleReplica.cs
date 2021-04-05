@@ -10,7 +10,7 @@ namespace FusionLibrary
     [Serializable]
     public class VehicleReplica
     {
-        public int Model { get; set; }
+        public CustomModel Model { get; set; }
         public Vector3 Velocity { get; }
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
@@ -100,69 +100,47 @@ namespace FusionLibrary
             return veh;
         }
 
-        public void ApplyTo(Vehicle veh, SpawnFlags spawnFlags = SpawnFlags.Default, float adjustedRatio = 0, VehicleReplica nextReplica = null)
+        public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, VehicleReplica nextReplica = default, float adjustedRatio = 0)
         {
-            veh.ThrottlePower = Throttle;
-            veh.BrakePower = Brake;
-            veh.SteeringAngle = SteeringAngle;
-            veh.AreLightsOn = Lights;
-            veh.AreHighBeamsOn = Headlights;
+            if (nextReplica == default || nextReplica == null)
+                nextReplica = this;
 
-            veh.HealthFloat = Health;
-            veh.EngineHealth = EngineHealth;
-            veh.Mods.PrimaryColor = PrimaryColor;
-            veh.Mods.SecondaryColor = SecondaryColor;
-            veh.Mods.Livery = Livery;
+            vehicle.ThrottlePower = Throttle;
+            vehicle.BrakePower = Brake;
+            vehicle.SteeringAngle = SteeringAngle;
+            vehicle.AreLightsOn = Lights;
+            vehicle.AreHighBeamsOn = Headlights;
 
-            veh.IsEngineRunning = EngineRunning;
+            vehicle.HealthFloat = Health;
+            vehicle.EngineHealth = EngineHealth;
+            vehicle.Mods.PrimaryColor = PrimaryColor;
+            vehicle.Mods.SecondaryColor = SecondaryColor;
+            vehicle.Mods.Livery = Livery;
+
+            vehicle.IsEngineRunning = EngineRunning;
 
             if (!spawnFlags.HasFlag(SpawnFlags.ForcePosition))
             {
-                if (nextReplica == null)
-                {
-                    veh.PositionNoOffset = Position;
-                    veh.Heading = Heading;
-                    veh.Rotation = Rotation;
-                }
-                else
-                {
-                    veh.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, adjustedRatio);
-                    veh.Heading = Utils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
-                    veh.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
-                }
+                vehicle.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, adjustedRatio);
+                vehicle.Heading = Utils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
+                vehicle.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
             }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
-                if (nextReplica == null)
-                {
-                    veh.Velocity = Velocity;
-                    veh.Speed = Speed;
-                }
-                else
-                {
-                    veh.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
-                    veh.Speed = Utils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
-                }
+                vehicle.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
+                vehicle.Speed = Utils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
             }
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                if (nextReplica == null)
-                {
-                    VehicleControl.SetWheelRotation(veh, i, Utils.Wrap(WheelsRotations[i], -(float)Math.PI, (float)Math.PI));
-                    VehicleControl.SetWheelCompression(veh, i, WheelsCompressions[i]);
-                }
-                else
-                {
-                    VehicleControl.SetWheelRotation(veh, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio, -(float)Math.PI, (float)Math.PI));
-                    VehicleControl.SetWheelCompression(veh, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
-                }
+                VehicleControl.SetWheelRotation(vehicle, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio, -(float)Math.PI, (float)Math.PI));
+                VehicleControl.SetWheelCompression(vehicle, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
             }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoOccupants))
                 foreach (PedReplica pedReplica in Occupants)
-                    pedReplica.Spawn(veh);
+                    pedReplica.Spawn(vehicle);
         }
     }
 }

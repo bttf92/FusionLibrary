@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.Native;
 using GTA.UI;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,11 @@ namespace FusionLibrary
         public static implicit operator CustomModel(Model model)
         {
             return new CustomModel(model);
+        }
+
+        public static implicit operator InputArgument(CustomModel customModel)
+        {
+            return new InputArgument((ulong)customModel.Request().Hash);
         }
 
         public override string ToString()
