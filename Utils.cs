@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using static FusionLibrary.Enums;
 
@@ -22,6 +23,8 @@ namespace FusionLibrary
         internal static CustomModel SierraVisibleModel = new CustomModel("sierra");
         internal static CustomModel SierraTenderModel = new CustomModel("sierratender");
         internal static CustomModel SierraModel = new CustomModel("sierra_debug");
+
+        public static BinaryFormatter BinaryFormatter { get; } = new BinaryFormatter();
 
         private static int _padShakeStop;
 
