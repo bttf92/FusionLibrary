@@ -4,6 +4,12 @@ namespace FusionLibrary
 {
     public class Enums
     {
+        public enum ScriptTimer
+        {
+            A,
+            B
+        }
+
         public enum Coordinate
         {
             X,

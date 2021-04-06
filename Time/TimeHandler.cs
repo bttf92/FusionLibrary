@@ -3,6 +3,7 @@ using GTA;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
+using static FusionLibrary.Enums;
 
 namespace FusionLibrary
 {
@@ -20,6 +21,16 @@ namespace FusionLibrary
         public static bool IsNight { get; internal set; }
 
         public static bool TrafficVolumeYearBased { get; set; }
+
+        public static void SetTimer(ScriptTimer scriptTimer, int value)
+        {
+            Function.Call(scriptTimer == ScriptTimer.A ? Hash.SETTIMERA : Hash.SETTIMERB, value);
+        }
+
+        public static int GetTimer(ScriptTimer scriptTimer)
+        {
+            return Function.Call<int>(scriptTimer == ScriptTimer.A ? Hash.TIMERA : Hash.TIMERB);
+        }
 
         internal static void Tick()
         {
