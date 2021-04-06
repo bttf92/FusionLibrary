@@ -142,6 +142,9 @@ namespace FusionLibrary
                 vehicle.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
             }
 
+            if (spawnFlags.HasFlag(SpawnFlags.SetRotation))
+                vehicle.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
+
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
                 vehicle.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);

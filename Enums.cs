@@ -29,7 +29,8 @@ namespace FusionLibrary
             CheckExists = 32,
             NoOccupants = 64,
             NoVelocity = 128,
-            New = 256
+            New = 256,
+            SetRotation = 512
         }
 
         public enum CameraSwitchType
