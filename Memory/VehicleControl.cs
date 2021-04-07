@@ -286,7 +286,7 @@ namespace FusionLibrary.Memory
             for (sbyte i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
-                speeds[i] = *(float*)(wheelAddr + (ulong)wheelAngleOffset);
+                speeds[i] = Utils.Wrap(*(float*)(wheelAddr + (ulong)wheelAngleOffset), -(float)Math.PI, (float)Math.PI);
             }
             return speeds;
         }

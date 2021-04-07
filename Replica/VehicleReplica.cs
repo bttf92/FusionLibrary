@@ -86,7 +86,7 @@ namespace FusionLibrary
             if (spawnFlags.HasFlag(SpawnFlags.CheckExists))
                 veh = World.GetClosestVehicle(Position, 1.0f, Model);
 
-            if (spawnFlags.HasFlag(SpawnFlags.ForcePosition))
+            if (spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
                 if (veh == null)
                     veh = World.CreateVehicle(Model, position, heading);
@@ -112,11 +112,8 @@ namespace FusionLibrary
             return veh;
         }
 
-        public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, VehicleReplica nextReplica = default, float adjustedRatio = 0)
+        private void ApplyTo2(Vehicle vehicle, bool noOccupants)
         {
-            if (nextReplica == default || nextReplica == null)
-                nextReplica = this;
-
             vehicle.ThrottlePower = Throttle;
             vehicle.BrakePower = Brake;
             VehicleControl.SetHandbrake(vehicle, Handbrake);
@@ -135,7 +132,48 @@ namespace FusionLibrary
             vehicle.CurrentRPM = RPM;
             vehicle.CurrentGear = Gear;
 
-            if (!spawnFlags.HasFlag(SpawnFlags.ForcePosition))
+            if (noOccupants)
+                return;
+
+            foreach (PedReplica pedReplica in Occupants)
+                pedReplica.Spawn(vehicle);
+        }
+
+        public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
+        {
+            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants));
+
+            if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
+            {
+                vehicle.PositionNoOffset = Position;
+                vehicle.Heading = Heading;
+                vehicle.Rotation = Rotation;
+            }
+
+            if (spawnFlags.HasFlag(SpawnFlags.SetRotation))
+                vehicle.Rotation = Rotation;
+
+            if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
+            {
+                vehicle.Velocity = Velocity;
+                vehicle.Speed = Speed;
+            }
+
+            for (int i = 0; i < WheelsRotations.Length; i++)
+            {
+                VehicleControl.SetWheelRotation(vehicle, i, WheelsRotations[i]);
+                VehicleControl.SetWheelCompression(vehicle, i, WheelsCompressions[i]);
+            }
+        }
+
+        public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, VehicleReplica nextReplica = default, float adjustedRatio = 0)
+        {
+            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants));
+
+            if (nextReplica == default || nextReplica == null)
+                nextReplica = this;
+
+            if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
                 vehicle.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, adjustedRatio);
                 vehicle.Heading = Utils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
@@ -153,13 +191,9 @@ namespace FusionLibrary
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                VehicleControl.SetWheelRotation(vehicle, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio, -(float)Math.PI, (float)Math.PI));
+                VehicleControl.SetWheelRotation(vehicle, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio));
                 VehicleControl.SetWheelCompression(vehicle, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
             }
-
-            if (!spawnFlags.HasFlag(SpawnFlags.NoOccupants))
-                foreach (PedReplica pedReplica in Occupants)
-                    pedReplica.Spawn(vehicle);
         }
     }
 }

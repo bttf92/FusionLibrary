@@ -22,8 +22,8 @@ namespace FusionLibrary
         {
             Default = 0,
             WarpPlayer = 1,
-            ForcePosition = 2,
-            ResetValues = 4,
+            NoPosition = 2,
+            NoProperties = 4,
             Broken = 8,
             ForceReentry = 16,
             CheckExists = 32,
