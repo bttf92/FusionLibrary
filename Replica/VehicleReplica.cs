@@ -159,9 +159,12 @@ namespace FusionLibrary
                 vehicle.Speed = Speed;
             }
 
+            if (spawnFlags.HasFlag(SpawnFlags.NoWheels))
+                return;
+
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                VehicleControl.SetWheelRotation(vehicle, i, WheelsRotations[i]);
+                VehicleControl.SetWheelRotation(vehicle, i, Utils.Wrap(WheelsRotations[i], -(float)Math.PI, (float)Math.PI));
                 VehicleControl.SetWheelCompression(vehicle, i, WheelsCompressions[i]);
             }
         }
@@ -188,6 +191,9 @@ namespace FusionLibrary
                 vehicle.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
                 vehicle.Speed = Utils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
             }
+
+            if (spawnFlags.HasFlag(SpawnFlags.NoWheels))
+                return;
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
