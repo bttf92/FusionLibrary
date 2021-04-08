@@ -26,7 +26,7 @@ namespace FusionLibrary.Extensions
         public static T SelectRandomElement<T>(this IEnumerable<T> sequence) where T : class
         {
             if (sequence.Count() != 0)
-                return sequence.ElementAt(Utils.Random.Next(0, sequence.Count()));
+                return sequence.ElementAt(FusionUtils.Random.Next(0, sequence.Count()));
 
             return null;
         }
@@ -34,7 +34,7 @@ namespace FusionLibrary.Extensions
         public static T SelectRandomElement<T>(this IDictionary<int, T> dictionnary) where T : class
         {
             if (dictionnary.Count != 0)
-                return dictionnary[Utils.Random.Next(0, dictionnary.Count)];
+                return dictionnary[FusionUtils.Random.Next(0, dictionnary.Count)];
 
             return null;
         }

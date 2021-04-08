@@ -55,7 +55,7 @@ namespace FusionLibrary
 
             if (_loadWaypoint)
             {
-                _waypointPos = Utils.GetWaypointPosition();
+                _waypointPos = FusionUtils.GetWaypointPosition();
 
                 _loadWaypoint = false;
 

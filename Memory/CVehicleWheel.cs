@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -106,9 +106,9 @@ namespace FusionLibrary
 
         public CVehicleWheels(Vehicle vehicle)
         {
-            foreach (string wheel in Utils.WheelsBonesNames)
+            foreach (string wheel in FusionUtils.WheelsBonesNames)
                 if (vehicle.Bones[wheel].Index > 0)
-                    Wheels.Add(new CVehicleWheel(vehicle, wheel, Utils.ConvertWheelNameToID(wheel)));
+                    Wheels.Add(new CVehicleWheel(vehicle, wheel, FusionUtils.ConvertWheelNameToID(wheel)));
         }
 
         public CVehicleWheel this[WheelId wheelId] => Wheels.Single(x => x.WheelID == wheelId);

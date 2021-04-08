@@ -3,7 +3,7 @@ using GTA;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -46,10 +46,10 @@ namespace FusionLibrary
                 RemoveUsedVehicle.Clear();
             }
 
-            if (Utils.PlayerVehicle.IsFunctioning() && !Utils.PlayerVehicle.IsDMC12TimeMachine() && !Utils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(Utils.PlayerVehicle))
-                UsedVehiclesByPlayer.Add(Utils.PlayerVehicle);
+            if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine() && !FusionUtils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
+                UsedVehiclesByPlayer.Add(FusionUtils.PlayerVehicle);
 
-            bool isNight = Utils.CurrentTime.Hour >= 20 || (Utils.CurrentTime.Hour >= 0 && Utils.CurrentTime.Hour <= 5);
+            bool isNight = FusionUtils.CurrentTime.Hour >= 20 || (FusionUtils.CurrentTime.Hour >= 0 && FusionUtils.CurrentTime.Hour <= 5);
 
             if (isNight != IsNight)
             {
@@ -62,7 +62,7 @@ namespace FusionLibrary
 
             float vehDensity = 1;
 
-            float year = Utils.CurrentTime.Year;
+            float year = FusionUtils.CurrentTime.Year;
 
             if (year > 1900 && year < 1950)
             {
@@ -90,11 +90,11 @@ namespace FusionLibrary
             else
                 momentReplica.Update();
 
-            Utils.ClearWorld();
+            FusionUtils.ClearWorld();
 
             UsedVehiclesByPlayer.Clear();
 
-            Utils.CurrentTime = destinationTime;
+            FusionUtils.CurrentTime = destinationTime;
 
             momentReplica = MomentReplica.SearchForMoment();
 

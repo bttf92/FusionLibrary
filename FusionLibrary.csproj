@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums.cs" />
+    <Compile Include="FusionEnums.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Extensions\OtherExtensions.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="GUI\InstrumentalMenu.cs" />
     <Compile Include="Other\TaskDrive.cs" />
     <Compile Include="Other\CustomModelHandler.cs" />
-    <Compile Include="Other\Network.cs" />
+    <Compile Include="Other\FusionNetwork.cs" />
     <Compile Include="Other\Player.cs" />
     <Compile Include="Other\GameScreen.cs" />
     <Compile Include="Memory\CVehicleWheel.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Prop\PtfxPlayer.cs" />
     <Compile Include="Prop\SpawnLocation.cs" />
     <Compile Include="Other\WaypointScript.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="FusionUtils.cs" />
     <Compile Include="Replica\MomentReplica.cs" />
     <Compile Include="Replica\PedReplica.cs" />
     <Compile Include="Replica\VehicleReplica.cs" />

@@ -2,7 +2,7 @@
 
 namespace FusionLibrary
 {
-    public class Enums
+    public class FusionEnums
     {
         public enum ScriptTimer
         {

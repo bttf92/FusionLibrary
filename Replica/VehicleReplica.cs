@@ -3,7 +3,7 @@ using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -164,7 +164,7 @@ namespace FusionLibrary
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                VehicleControl.SetWheelRotation(vehicle, i, Utils.Wrap(WheelsRotations[i], -(float)Math.PI, (float)Math.PI));
+                VehicleControl.SetWheelRotation(vehicle, i, FusionUtils.Wrap(WheelsRotations[i], -(float)Math.PI, (float)Math.PI));
                 VehicleControl.SetWheelCompression(vehicle, i, WheelsCompressions[i]);
             }
         }
@@ -178,18 +178,18 @@ namespace FusionLibrary
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
-                vehicle.PositionNoOffset = Utils.Lerp(Position, nextReplica.Position, adjustedRatio);
-                vehicle.Heading = Utils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
-                vehicle.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
+                vehicle.PositionNoOffset = FusionUtils.Lerp(Position, nextReplica.Position, adjustedRatio);
+                vehicle.Heading = FusionUtils.Lerp(Heading, nextReplica.Heading, adjustedRatio);
+                vehicle.Rotation = FusionUtils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.SetRotation))
-                vehicle.Rotation = Utils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
+                vehicle.Rotation = FusionUtils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
-                vehicle.Velocity = Utils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
-                vehicle.Speed = Utils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
+                vehicle.Velocity = FusionUtils.Lerp(Velocity, nextReplica.Velocity, adjustedRatio);
+                vehicle.Speed = FusionUtils.Lerp(Speed, nextReplica.Speed, adjustedRatio);
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.NoWheels))
@@ -197,8 +197,8 @@ namespace FusionLibrary
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
-                VehicleControl.SetWheelRotation(vehicle, i, Utils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio));
-                VehicleControl.SetWheelCompression(vehicle, i, Utils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
+                VehicleControl.SetWheelRotation(vehicle, i, FusionUtils.Lerp(WheelsRotations[i], nextReplica.WheelsRotations[i], adjustedRatio));
+                VehicleControl.SetWheelCompression(vehicle, i, FusionUtils.Lerp(WheelsCompressions[i], nextReplica.WheelsCompressions[i], adjustedRatio));
             }
         }
     }

@@ -9,11 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
-    public static class Utils
+    public static class FusionUtils
     {
         public static Random Random = new Random(DateTime.Now.Millisecond);
 

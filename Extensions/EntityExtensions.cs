@@ -5,7 +5,7 @@ using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary.Extensions
 {
@@ -28,7 +28,7 @@ namespace FusionLibrary.Extensions
 
         public static float DistanceToSquared2D(this Entity src, Entity entity)
         {
-            return Utils.DistanceToSquared2D(src, entity);
+            return FusionUtils.DistanceToSquared2D(src, entity);
         }
 
         public static float DistanceToSquared2D(this Entity src, Entity entity, string boneName)
@@ -195,12 +195,12 @@ namespace FusionLibrary.Extensions
 
         public static bool IsPlayerDriving(this Vehicle vehicle)
         {
-            return vehicle.IsFunctioning() && Utils.PlayerVehicle == vehicle && Utils.PlayerPed.SeatIndex == VehicleSeat.Driver;
+            return vehicle.IsFunctioning() && FusionUtils.PlayerVehicle == vehicle && FusionUtils.PlayerPed.SeatIndex == VehicleSeat.Driver;
         }
 
         public static bool IsDMC12TimeMachine(this Vehicle vehicle)
         {
-            return vehicle.Model == Utils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
+            return vehicle.Model == FusionUtils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
         }
 
         public static float GetMPHSpeed(this Vehicle vehicle)
@@ -232,7 +232,7 @@ namespace FusionLibrary.Extensions
         {
             if (vehicle.NotNullAndExists())
                 foreach (Ped x in vehicle.Occupants)
-                    if (x != Utils.PlayerPed)
+                    if (x != FusionUtils.PlayerPed)
                         x?.Delete();
 
             vehicle?.Delete();
@@ -369,7 +369,7 @@ namespace FusionLibrary.Extensions
         {
             Dictionary<string, Vector3> ret = new Dictionary<string, Vector3>();
 
-            foreach (string wheel in Utils.WheelsBonesNames)
+            foreach (string wheel in FusionUtils.WheelsBonesNames)
                 if (vehicle.Bones[wheel].Index > 0)
                     ret.Add(wheel, vehicle.Bones[wheel].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
 

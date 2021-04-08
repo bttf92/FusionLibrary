@@ -3,7 +3,7 @@ using GTA.Math;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary.Extensions
 {

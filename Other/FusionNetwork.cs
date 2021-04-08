@@ -7,11 +7,11 @@ using System.Text;
 
 namespace FusionLibrary
 {
-    public static class Network
+    public static class FusionNetwork
     {
         private static readonly List<IPAddress> broadcastAddress;
 
-        static Network()
+        static FusionNetwork()
         {
             broadcastAddress = new List<IPAddress>();
 

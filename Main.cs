@@ -40,7 +40,7 @@ namespace FusionLibrary
             if (PlayerSwitch.Disable)
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);
 
-            if (Utils.HideGUI)
+            if (FusionUtils.HideGUI)
                 Function.Call(Hash.HIDE_HUD_AND_RADAR_THIS_FRAME);
         }
     }

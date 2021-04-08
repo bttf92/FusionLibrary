@@ -49,7 +49,7 @@ namespace FusionLibrary
         public void SetRotation(Quaternion rotation)
         {
             NativeMatrix4x4* matrix = &(archetype->skeleton->desiredBonesMatricesArray[Index]);
-            Utils.Decompose(*matrix, out Vector3 scale, out _, out Vector3 translation);
+            FusionUtils.Decompose(*matrix, out Vector3 scale, out _, out Vector3 translation);
             Matrix newMatrix = Matrix.Scaling(scale) * Matrix.RotationQuaternion(rotation) * Matrix.Translation(translation);
             *matrix = newMatrix;
         }

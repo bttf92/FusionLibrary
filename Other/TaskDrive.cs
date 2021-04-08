@@ -1,7 +1,7 @@
 ﻿using GTA;
 using GTA.Native;
 using System.Collections.Generic;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {

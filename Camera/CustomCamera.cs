@@ -1,7 +1,7 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -27,7 +27,7 @@ namespace FusionLibrary
         public CustomCamera(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView) : this((Entity)vehicle, positionOffset, pointAtOffset, fieldOfView)
         {
             isVehicle = true;
-            PointAtOffset = Utils.DirectionToRotation(PositionOffset, PointAtOffset, 0);
+            PointAtOffset = FusionUtils.DirectionToRotation(PositionOffset, PointAtOffset, 0);
         }
 
         public CustomCamera(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView) : this(vehicle, vehicle.Bones[positionBone].RelativePosition, vehicle.Bones[pointAtBone].RelativePosition, fieldOfView)

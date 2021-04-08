@@ -2,7 +2,7 @@
 using GTA;
 using System.Collections.Generic;
 using System.Linq;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -82,9 +82,9 @@ namespace FusionLibrary
                     Props[currentSequenceProp]?.Delete();
 
                 if (playedProps.Count == 0)
-                    currentSequenceProp = Utils.Random.NextExcept(0, Count, currentSequenceProp);
+                    currentSequenceProp = FusionUtils.Random.NextExcept(0, Count, currentSequenceProp);
                 else
-                    currentSequenceProp = Utils.Random.NextExcept(0, Count, currentSequenceProp);
+                    currentSequenceProp = FusionUtils.Random.NextExcept(0, Count, currentSequenceProp);
 
                 Props[currentSequenceProp]?.SpawnProp();
 

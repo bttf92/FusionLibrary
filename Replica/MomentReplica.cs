@@ -4,7 +4,7 @@ using GTA;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
-using static FusionLibrary.Enums;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -35,7 +35,7 @@ namespace FusionLibrary
 
         public bool IsNow()
         {
-            if (CurrentDate > Utils.CurrentTime.AddHours(-6) && CurrentDate < Utils.CurrentTime.AddHours(6))
+            if (CurrentDate > FusionUtils.CurrentTime.AddHours(-6) && CurrentDate < FusionUtils.CurrentTime.AddHours(6))
                 return true;
 
             return false;
@@ -53,7 +53,7 @@ namespace FusionLibrary
             if (World.Weather == Weather.Raining)
             {
                 // Set the puddle to a random number between 0.4 and 0.8
-                puddleLevel = (float)Utils.Random.NextDouble(0.4, 0.8);
+                puddleLevel = (float)FusionUtils.Random.NextDouble(0.4, 0.8);
             }
             // If the weather is clearing
             else if (World.Weather == Weather.Clearing)
@@ -88,7 +88,7 @@ namespace FusionLibrary
 
         public void Update()
         {
-            CurrentDate = Utils.CurrentTime;
+            CurrentDate = FusionUtils.CurrentTime;
             Weather = World.Weather;
             PuddleLevel = RainPuddleEditor.Level;
             WantedLevel = Game.Player.WantedLevel;
@@ -97,7 +97,7 @@ namespace FusionLibrary
 
             TimeHandler.UsedVehiclesByPlayer.ForEach(x =>
             {
-                if (x != Utils.PlayerVehicle)
+                if (x != FusionUtils.PlayerVehicle)
                     VehicleReplicas.Add(new VehicleReplica(x));
             });
         }
