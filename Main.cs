@@ -42,6 +42,24 @@ namespace FusionLibrary
 
             if (FusionUtils.HideGUI)
                 Function.Call(Hash.HIDE_HUD_AND_RADAR_THIS_FRAME);
+
+            if (FusionUtils.HelpText != null)
+            {
+                GTA.UI.Screen.ShowHelpTextThisFrame($"{FusionUtils.HelpText}");
+                FusionUtils.HelpText = null;
+            }
+
+            if (FusionUtils.SubtitleText != null)
+            {
+                GTA.UI.Screen.ShowSubtitle($"{FusionUtils.SubtitleText}");
+                FusionUtils.SubtitleText = null;
+            }
+
+            if (FusionUtils.NotificationText != null)
+            {
+                GTA.UI.Notification.Show($"{FusionUtils.NotificationText}");
+                FusionUtils.NotificationText = null;
+            }
         }
     }
 }

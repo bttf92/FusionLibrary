@@ -40,6 +40,10 @@ namespace FusionLibrary
 
         public static bool HideGUI { get; set; } = false;
 
+        public static string HelpText { get; set; } = null;
+        public static string NotificationText { get; set; } = null;
+        public static string SubtitleText { get; set; } = null;
+
         private static bool randomTrains = true;
         public static bool RandomTrains
         {
