@@ -8,20 +8,8 @@ using static FusionLibrary.FusionEnums;
 namespace FusionLibrary
 {
     [Serializable]
-    public class VehicleReplica
+    public class VehicleReplica : EntityReplica
     {
-        public int ModelHash { get; set; }
-        public Model Model
-        {
-            get => new Model(ModelHash);
-            set => ModelHash = value.Hash;
-        }
-        public Vector3 Velocity { get; }
-        public Vector3 Position { get; set; }
-        public Vector3 Rotation { get; set; }
-        public float Heading { get; set; }
-        public float Speed { get; }
-        public float Health { get; }
         public float EngineHealth { get; }
         public bool EngineRunning { get; }
         public VehicleColor PrimaryColor { get; }
@@ -41,15 +29,8 @@ namespace FusionLibrary
         public float[] WheelsRotations { get; }
         public float[] WheelsCompressions { get; }
 
-        public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
+        public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default) : base(vehicle)
         {
-            Model = vehicle.Model;
-            Velocity = vehicle.Velocity;
-            Position = vehicle.Position;
-            Rotation = vehicle.Rotation;
-            Heading = vehicle.Heading;
-            Speed = vehicle.Speed;
-            Health = vehicle.HealthFloat;
             EngineHealth = vehicle.EngineHealth;
             EngineRunning = vehicle.IsEngineRunning;
             PrimaryColor = vehicle.Mods.PrimaryColor;

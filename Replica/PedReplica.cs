@@ -7,29 +7,16 @@ using System.Collections.Generic;
 namespace FusionLibrary
 {
     [Serializable]
-    public class PedReplica
+    public class PedReplica : EntityReplica
     {
-        public int ModelHash { get; set; }
-        public Model Model
-        {
-            get => new Model(ModelHash);
-            set => ModelHash = value.Hash;
-        }
         public int Type { get; }
-        public Vector3 Position { get; }
-        public Vector3 Rotation { get; }
-        public float Heading { get; }
         public VehicleSeat Seat { get; }
         public List<WeaponReplica> Weapons { get; }
 
-        public PedReplica(Ped ped)
+        public PedReplica(Ped ped) : base(ped)
         {
             Model = ped.Model;
             Type = Function.Call<int>(Hash.GET_PED_TYPE, ped);
-
-            Position = ped.Position;
-            Rotation = ped.Rotation;
-            Heading = ped.Heading;
 
             Seat = ped.SeatIndex;
 
@@ -38,6 +25,11 @@ namespace FusionLibrary
             foreach (WeaponHash x in Enum.GetValues(typeof(WeaponHash)))
                 if (ped.Weapons.HasWeapon(x))
                     Weapons.Add(new WeaponReplica(ped, ped.Weapons[x]));
+        }
+
+        public void ApplyTo(Ped ped)
+        {
+
         }
 
         public Ped Spawn()

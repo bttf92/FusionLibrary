@@ -124,6 +124,7 @@
     <Compile Include="Prop\SpawnLocation.cs" />
     <Compile Include="Other\WaypointScript.cs" />
     <Compile Include="FusionUtils.cs" />
+    <Compile Include="Replica\EntityReplica.cs" />
     <Compile Include="Replica\MomentReplica.cs" />
     <Compile Include="Replica\PedReplica.cs" />
     <Compile Include="Replica\VehicleReplica.cs" />
