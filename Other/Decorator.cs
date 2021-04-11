@@ -79,7 +79,7 @@ namespace FusionLibrary
         }
 
         private static IntPtr lockAddress;
-        private unsafe static byte* g_bIsDecorRegisterLockedPtr;
+        private static unsafe byte* g_bIsDecorRegisterLockedPtr;
 
         public static bool? IsLocked
         {
@@ -105,7 +105,7 @@ namespace FusionLibrary
             unsafe
             {
                 lockAddress = (IntPtr)MemoryFunctions.FindPattern("\x40\x53\x48\x83\xEC\x20\x80\x3D\x00\x00\x00\x00\x00\x8B\xDA\x75\x29", "xxxxxxxx????xxxxx");
-                
+
                 if (lockAddress != IntPtr.Zero)
                     g_bIsDecorRegisterLockedPtr = (byte*)(lockAddress + *(int*)(lockAddress + 8) + 13);
             }
