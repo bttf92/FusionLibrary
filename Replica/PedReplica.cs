@@ -13,6 +13,8 @@ namespace FusionLibrary
         public VehicleSeat Seat { get; }
         public List<WeaponReplica> Weapons { get; }
 
+        private static Array WeaponsHash = Enum.GetValues(typeof(WeaponHash));
+
         public PedReplica(Ped ped) : base(ped)
         {
             Model = ped.Model;
@@ -22,14 +24,20 @@ namespace FusionLibrary
 
             Weapons = new List<WeaponReplica>();
 
-            foreach (WeaponHash x in Enum.GetValues(typeof(WeaponHash)))
+            foreach (WeaponHash x in WeaponsHash)
                 if (ped.Weapons.HasWeapon(x))
                     Weapons.Add(new WeaponReplica(ped, ped.Weapons[x]));
         }
 
         public void ApplyTo(Ped ped)
         {
-
+            ped.IsVisible = IsVisible;
+            ped.PositionNoOffset = Position;
+            ped.Heading = Heading;
+            ped.Rotation = Rotation;
+            ped.Speed = Speed;
+            ped.Velocity = Velocity;
+            ped.HealthFloat = Health;
         }
 
         public Ped Spawn()
