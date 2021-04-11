@@ -76,6 +76,7 @@
     <Compile Include="Extensions\OtherExtensions.cs" />
     <Compile Include="GUI\CustomText.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
+    <Compile Include="Other\Decorator.cs" />
     <Compile Include="Other\TaskDrive.cs" />
     <Compile Include="Other\CustomModelHandler.cs" />
     <Compile Include="Other\FusionNetwork.cs" />

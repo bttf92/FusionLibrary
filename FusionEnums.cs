@@ -4,6 +4,15 @@ namespace FusionLibrary
 {
     public class FusionEnums
     {
+        public enum DecorType
+        {
+            Float = 1,
+            Bool,
+            Int,
+            Unk,
+            Time
+        }
+
         public enum ScriptTimer
         {
             A,

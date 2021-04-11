@@ -16,6 +16,11 @@ namespace FusionLibrary.Extensions
             return entity != null && entity.Exists();
         }
 
+        public static Decorator Decorator(this Entity entity)
+        {
+            return new Decorator(entity);
+        }
+
         public static Vector3 RelativeVelocity(this Entity entity)
         {
             return Function.Call<Vector3>(Hash.GET_ENTITY_SPEED_VECTOR, entity, true);
