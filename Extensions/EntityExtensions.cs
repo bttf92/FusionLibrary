@@ -66,6 +66,11 @@ namespace FusionLibrary.Extensions
             return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
         }
 
+        public static bool ExistsAndAlive(this Ped ped)
+        {
+            return ped.NotNullAndExists() && ped.IsAlive;
+        }
+
         public static bool IsAnyTaskActive(this Ped ped)
         {
             foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
