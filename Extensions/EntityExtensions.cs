@@ -61,14 +61,29 @@ namespace FusionLibrary.Extensions
             return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
         }
 
-        public static bool IsTaskActive(this Ped ped, TaskType taskType)
-        {
-            return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
-        }
-
         public static bool ExistsAndAlive(this Ped ped)
         {
             return ped.NotNullAndExists() && ped.IsAlive;
+        }
+
+        public static bool HasBeenDamaged(this Ped ped)
+        {
+            return Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE, ped);
+        }
+
+        public static int GetAlpha(this Entity entity)
+        {
+            return Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
+        }
+
+        public static void SetAlpha(this Entity entity, int level)
+        {
+            Function.Call(Hash.SET_ENTITY_ALPHA, entity, level);
+        }
+
+        public static bool IsTaskActive(this Ped ped, TaskType taskType)
+        {
+            return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
         }
 
         public static bool IsAnyTaskActive(this Ped ped)

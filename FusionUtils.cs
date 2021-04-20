@@ -372,29 +372,14 @@ namespace FusionLibrary
             if (!Game.IsWaypointActive)
                 return Vector3.Zero;
 
-            bool blipFound = false;
-            Vector3 position = Vector3.Zero;
+            Vector3 position = World.WaypointPosition;
 
-            int it = Function.Call<int>(Hash._GET_BLIP_INFO_ID_ITERATOR);
-            for (int i = Function.Call<int>(Hash.GET_FIRST_BLIP_INFO_ID, it); Function.Call<bool>(Hash.DOES_BLIP_EXIST, i); i = Function.Call<int>(Hash.GET_NEXT_BLIP_INFO_ID, it))
+            do
             {
-                if (Function.Call<int>(Hash.GET_BLIP_INFO_ID_TYPE, i) == 4)
-                {
-                    position = Function.Call<Vector3>(Hash.GET_BLIP_INFO_ID_COORD, i);
-                    blipFound = true;
-                    break;
-                }
-            }
-
-            if (blipFound)
-            {
-                do
-                {
-                    position.RequestCollision();
-                    Script.Yield();
-                    position.Z = World.GetGroundHeight(new Vector2(position.X, position.Y));
-                } while (position.Z == 0);
-            }
+                position.RequestCollision();
+                Script.Yield();
+                position.Z = World.GetGroundHeight(new Vector2(position.X, position.Y));
+            } while (position.Z == 0);
 
             return position;
         }

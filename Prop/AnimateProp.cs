@@ -425,7 +425,7 @@ namespace FusionLibrary
 
         private void Attach()
         {
-            if (!Prop.NotNullAndExists())
+            if (!Prop.NotNullAndExists() || !Entity.NotNullAndExists())
                 return;
 
             if (ToBone)
