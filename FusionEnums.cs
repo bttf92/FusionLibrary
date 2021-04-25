@@ -128,6 +128,38 @@ namespace FusionLibrary
             AccelerateVeryStrong = 32
         }
 
+        public enum GarageDoor : uint
+        {
+            MichaelBeverlyHills = 360562957,
+            TrevorCountryside = 2175093583,
+            TrevorCity = 3774828611,
+            TrevorStripclub = 1066626361,
+            FranklinAunt = 4019785634,
+            FranklinHills = 2393745202,
+            Lockup_PSY_01 = 1335986502,
+            Lockup_PSY_02 = 800999792,
+            Lockup_PSY_03 = 577351367,
+            Lockup_CSY_01 = 843505453,
+            Lockup_CSY_02 = 320774365,
+            Lockup_CSY_03 = 80217136,
+            Lockup_CMS_01 = 3782144472,
+            Lockup_CMS_02 = 4093351613,
+            Lockup_CMS_03 = 1029581185,
+            MP_GAR_SIMEON = 1215605247
+        }
+
+        public enum DoorState
+        {
+            Unknown = -1,
+            Unlocked = 0,
+            Locked = 1,
+            LockedUntilOutOfArea = 2,
+            UnlockedUntilOutOfArea = 3,
+            LockedThisFrame = 4,
+            OpenThisFrame = 5,
+            ClosedThisFrame = 6
+        }
+
         public enum TaskType
         {
             HandsUp = 0,

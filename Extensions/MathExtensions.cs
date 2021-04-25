@@ -78,6 +78,13 @@ namespace FusionLibrary.Extensions
             Function.Call(Hash.NEW_LOAD_SCENE_START, position.X, position.Y, position.Z, 0.0f, 0.0f, 0.0f, 20.0f, 0);
         }
 
+        public static Vector3 SetToGroundHeight(this Vector3 position)
+        {
+            position.Z = World.GetGroundHeight(position);
+
+            return position;
+        }
+
         public static Vector3 TransferHeight(this Vector3 src, Vector3 dst)
         {
             dst.Z += src.Z - World.GetGroundHeight(src);

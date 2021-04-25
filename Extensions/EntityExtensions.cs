@@ -186,6 +186,16 @@ namespace FusionLibrary.Extensions
             AttachToPhysically(entity1, toEntity, toEntity.Bones[boneName].Index, offset, rotation);
         }
 
+        public static bool IsEntirelyInGarage(this Entity entity, GarageDoor garage)
+        {
+            return Function.Call<bool>(Hash.IS_OBJECT_ENTIRELY_INSIDE_GARAGE, garage, entity, 0, 0);
+        }
+
+        public static bool IsPartiallyInGarage(this Entity entity, GarageDoor garage)
+        {
+            return Function.Call<bool>(Hash.IS_OBJECT_PARTIALLY_INSIDE_GARAGE, garage, entity, 0);
+        }
+
         public static float GetKineticEnergy(this Vehicle vehicle)
         {
             return 0.5f * HandlingData.GetByVehicleModel(vehicle.Model).Mass * (float)Math.Pow(vehicle.Speed, 2);

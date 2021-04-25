@@ -36,6 +36,7 @@ namespace FusionLibrary
             ScreenFlash.Tick();
             PlayerSwitch.Tick();
             NativeInput.TickAll();
+            ScreenFade.Tick();
 
             if (PlayerSwitch.Disable)
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);
