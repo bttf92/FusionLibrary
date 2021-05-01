@@ -12,20 +12,22 @@ namespace FusionLibrary
 
         public bool CycleCameras { get; set; } = false;
 
-        private int _CycleInterval = 10000;
+        private int _cycleInterval = 10000;
+
+        private int _duration = -1;
 
         public int CycleInterval
         {
-            get => _CycleInterval;
+            get => _cycleInterval;
             set
             {
                 if (CycleCameras)
                 {
-                    nextChange -= _CycleInterval;
+                    nextChange -= _cycleInterval;
                     nextChange += value;
                 }
 
-                _CycleInterval = value;
+                _cycleInterval = value;
             }
         }
 
@@ -69,7 +71,7 @@ namespace FusionLibrary
             return ret;
         }
 
-        public void Show(int index, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
+        public void Show(int index, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant, int duration = -1)
         {
             if (Cameras.Count == 0)
                 return;
@@ -82,6 +84,9 @@ namespace FusionLibrary
 
             if (index > Cameras.Count - 1 || index < 0)
                 return;
+
+            if (duration != -1)
+                _duration = Game.GameTime + duration;
 
             CustomCamera customCamera = CurrentCamera;
 
@@ -128,6 +133,8 @@ namespace FusionLibrary
                 CurrentCamera.Stop();
                 CurrentCameraIndex = -1;
             }
+
+            _duration = -1;
         }
 
         public void Abort()
@@ -152,6 +159,9 @@ namespace FusionLibrary
                     nextChange = Game.GameTime + CycleInterval;
                 }
             }
+
+            if (_duration > -1 && Game.GameTime >= _duration)
+                Stop();
 
             if (CurrentCameraIndex > -1 && !CurrentCamera.Camera.IsActive)
                 Stop();

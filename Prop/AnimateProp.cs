@@ -415,6 +415,9 @@ namespace FusionLibrary
                 return;
             }
 
+            if (!Entity.NotNullAndExists())
+                return;
+
             Prop = World.CreateProp(Model, Entity.Position, false, false);
             Prop.IsPersistent = true;
 
