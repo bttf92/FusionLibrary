@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,17 @@ namespace FusionLibrary.Extensions
         public static void AttachTo(this Camera camera, Vehicle vehicle, string bone, Vector3 position, Vector3 rotation)
         {
             Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, true, rotation.X, rotation.Y, rotation.Z, position.X, position.Y, position.Z, true);
+        }
+
+        public static IEnumerable<string> SplitInParts(this string s, int partLength)
+        {
+            if (s == null)
+                throw new ArgumentNullException(nameof(s));
+            if (partLength <= 0)
+                throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+
+            for (int i = 0; i < s.Length; i += partLength)
+                yield return s.Substring(i, Math.Min(partLength, s.Length - i));
         }
 
         public static T SelectRandomElement<T>(this IEnumerable<T> sequence) where T : class

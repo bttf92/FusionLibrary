@@ -22,6 +22,9 @@ namespace FusionLibrary
 
         public bool Remove(string propertyName)
         {
+            if (IsLocked.HasValue && IsLocked.Value)
+                Unlock();
+
             return Function.Call<bool>(Hash.DECOR_REMOVE, Entity, propertyName);
         }
 
