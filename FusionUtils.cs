@@ -17,12 +17,12 @@ namespace FusionLibrary
     {
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
-        internal static CustomModel DMC12 = new CustomModel("dmc12");
-        internal static CustomModel DMC12Debug = new CustomModel("dmc_debug");
+        internal static Model DMC12 = new Model("dmc12");
+        internal static Model DMC12Debug = new Model("dmc_debug");
 
-        internal static CustomModel SierraVisibleModel = new CustomModel("sierra");
-        internal static CustomModel SierraTenderModel = new CustomModel("sierratender");
-        internal static CustomModel SierraModel = new CustomModel("sierra_debug");
+        internal static Model SierraVisibleModel = new Model("sierra");
+        internal static Model SierraTenderModel = new Model("sierratender");
+        internal static Model SierraModel = new Model("sierra_debug");
 
         public static BinaryFormatter BinaryFormatter { get; } = new BinaryFormatter();
 
