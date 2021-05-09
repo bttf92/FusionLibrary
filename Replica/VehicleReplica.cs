@@ -1,4 +1,5 @@
-﻿using FusionLibrary.Memory;
+﻿using FusionLibrary.Extensions;
+using FusionLibrary.Memory;
 using GTA;
 using GTA.Math;
 using System;
@@ -25,6 +26,7 @@ namespace FusionLibrary
         public float SteeringAngle { get; }
         public bool Lights { get; }
         public bool Headlights { get; }
+        public bool IsGoingForward { get; }
 
         public float[] WheelsRotations { get; }
         public float[] WheelsCompressions { get; }
@@ -47,6 +49,8 @@ namespace FusionLibrary
             SteeringAngle = vehicle.SteeringAngle;
             Lights = vehicle.AreLightsOn;
             Headlights = vehicle.AreHighBeamsOn;
+
+            IsGoingForward = vehicle.IsGoingForward();
 
             WheelsRotations = VehicleControl.GetWheelRotations(vehicle);
             WheelsCompressions = VehicleControl.GetWheelCompressions(vehicle);
