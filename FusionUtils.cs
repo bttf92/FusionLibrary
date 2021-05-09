@@ -18,11 +18,6 @@ namespace FusionLibrary
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
         internal static Model DMC12 = new Model("dmc12");
-        internal static Model DMC12Debug = new Model("dmc_debug");
-
-        internal static Model SierraVisibleModel = new Model("sierra");
-        internal static Model SierraTenderModel = new Model("sierratender");
-        internal static Model SierraModel = new Model("sierra_debug");
 
         public static BinaryFormatter BinaryFormatter { get; } = new BinaryFormatter();
 
@@ -92,7 +87,7 @@ namespace FusionLibrary
 
             Vehicle[] allVehicles = World.GetAllVehicles();
 
-            allVehicles.Where(x => x.NotNullAndExists() && !x.IsDMC12TimeMachine() && PlayerVehicle != x && x.Model != DMC12Debug && x.Model != SierraModel && x.Model != SierraVisibleModel && x.Model != SierraTenderModel).ToList()
+            allVehicles.Where(x => x.NotNullAndExists() && !x.Decorator().DotNotDelete).ToList()
                 .ForEach(x => x?.DeleteCompletely());
 
             Ped[] allPeds = World.GetAllPeds();

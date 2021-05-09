@@ -8,11 +8,25 @@ namespace FusionLibrary
 {
     public class Decorator
     {
+        public const string DoNotDelete = "FusionProp_DoNotDelete";
+
+        internal static void Initialize()
+        {
+            Register(DoNotDelete, DecorType.Bool);
+            Lock();
+        }
+
         private Entity Entity;
 
         public Decorator(Entity entity)
         {
             Entity = entity;
+        }
+
+        public bool DotNotDelete
+        {
+            get => Exists(DoNotDelete) && GetBool(DoNotDelete);
+            set => SetBool(DoNotDelete, value);
         }
 
         public bool Exists(string propertyName)

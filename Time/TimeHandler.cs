@@ -22,6 +22,19 @@ namespace FusionLibrary
 
         public static bool TrafficVolumeYearBased { get; set; }
 
+        public static bool RealTime
+        {
+            get => realTime;
+            set
+            {
+                realTime = value;
+                realSecond = Game.GameTime + 1000;
+                World.PauseClock(value);
+            }
+        }
+        private static bool realTime;
+        private static int realSecond;
+
         public static void SetTimer(ScriptTimer scriptTimer, int value)
         {
             Function.Call(scriptTimer == ScriptTimer.A ? Hash.SETTIMERA : Hash.SETTIMERB, value);
@@ -34,6 +47,17 @@ namespace FusionLibrary
 
         internal static void Tick()
         {
+            if (realTime)
+            {
+                World.PauseClock(true);
+
+                if (Game.GameTime > realSecond)
+                {
+                    Function.Call(Hash.ADD_TO_CLOCK_TIME, 0, 0, 1);
+                    realSecond = Game.GameTime + 1000;
+                }
+            }
+
             UsedVehiclesByPlayer.ForEach(x =>
             {
                 if (!x.IsFunctioning() || x.IsDMC12TimeMachine())
