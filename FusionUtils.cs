@@ -15,6 +15,8 @@ namespace FusionLibrary
 {
     public static class FusionUtils
     {
+        public static bool FirstTick { get; internal set; } = true;
+
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
         internal static Model DMC12 = new Model("dmc12");

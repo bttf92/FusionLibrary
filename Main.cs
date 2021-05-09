@@ -8,8 +8,6 @@ namespace FusionLibrary
     {
         public static Version Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
-        internal static bool FirstTick { get; private set; } = true;
-
         public Main()
         {
             DateTime buildDate = new DateTime(2000, 1, 1).AddDays(Version.Build).AddSeconds(Version.Revision * 2);
@@ -30,12 +28,8 @@ namespace FusionLibrary
             if (Game.IsLoading)
                 return;
 
-            if (FirstTick)
-            {
+            if (FusionUtils.FirstTick)
                 Decorator.Initialize();
-
-                FirstTick = false;
-            }
 
             AnimatePropsHandler.TickAll();
             AnimateProp.TickAll();
@@ -70,6 +64,9 @@ namespace FusionLibrary
                 GTA.UI.Notification.Show($"{FusionUtils.NotificationText}");
                 FusionUtils.NotificationText = null;
             }
+
+            if (FusionUtils.FirstTick)
+                FusionUtils.FirstTick = false;
         }
     }
 }
