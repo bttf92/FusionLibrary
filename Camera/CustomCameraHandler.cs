@@ -44,27 +44,27 @@ namespace FusionLibrary
             }
         }
 
-        public CustomCamera Add(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView)
+        public CustomCamera Add(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
         {
-            CustomCamera ret = new CustomCamera(entity, positionOffset, pointAtOffset, fieldOfView);
+            CustomCamera ret = new CustomCamera(entity, positionOffset, pointAtOffset, fieldOfView, duration);
 
             Cameras.Add(ret);
 
             return ret;
         }
 
-        public CustomCamera Add(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView)
+        public CustomCamera Add(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
         {
-            CustomCamera ret = new CustomCamera(vehicle, positionOffset, pointAtOffset, fieldOfView);
+            CustomCamera ret = new CustomCamera(vehicle, positionOffset, pointAtOffset, fieldOfView, duration);
 
             Cameras.Add(ret);
 
             return ret;
         }
 
-        public CustomCamera Add(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView)
+        public CustomCamera Add(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView, int duration = -1)
         {
-            CustomCamera ret = new CustomCamera(vehicle, positionBone, pointAtBone, fieldOfView);
+            CustomCamera ret = new CustomCamera(vehicle, positionBone, pointAtBone, fieldOfView, duration);
 
             Cameras.Add(ret);
 
@@ -159,6 +159,9 @@ namespace FusionLibrary
                     nextChange = Game.GameTime + CycleInterval;
                 }
             }
+
+            if (CurrentCameraIndex > -1)
+                CurrentCamera.Tick();
 
             if (_duration > -1 && Game.GameTime >= _duration)
                 Stop();

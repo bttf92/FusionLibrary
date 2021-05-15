@@ -381,21 +381,24 @@ namespace FusionLibrary
             return position;
         }
 
-        public static bool IsAnyOfFrontDoorsOpen(Vehicle vehicle)
-        {
-            bool doorOpen = false;
+        public static bool IsAnyDoorOpen(Vehicle vehicle)
+        {            
             foreach (VehicleDoor door in vehicle.Doors)
-            {
                 if (door.IsOpen)
-                    doorOpen = true;
-            }
+                    return true;
 
-            return doorOpen;
+            return false;
         }
 
         public static bool IsCameraInFirstPerson()
         {
             return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);
+        }
+
+        public static float RainLevel
+        {
+            get => Function.Call<float>((Hash)0x96695E368AD855F3);
+            set => Function.Call((Hash)0x643E26EA6E024D92, value);
         }
 
         public static float Magnitude(Vector3 vector3)

@@ -13,11 +13,18 @@ namespace FusionLibrary
     {
         public static List<MomentReplica> MomentReplicas = new List<MomentReplica>();
 
-        public Weather Weather { get; set; }
-        public int WantedLevel { get; set; }
-        public float PuddleLevel { get; set; }
+        public Weather Weather { get; set; } = Weather.ExtraSunny;
+        public int WantedLevel { get; set; } = 0;
+        public float PuddleLevel { get; set; } = 0f;
+        public float RainLevel { get; set; } = -1f;
         public DateTime CurrentDate { get; set; }
         public List<VehicleReplica> VehicleReplicas { get; set; }
+
+        public MomentReplica(DateTime dateTime)
+        {
+            CurrentDate = dateTime;
+            MomentReplicas.Add(this);
+        }
 
         public MomentReplica()
         {
@@ -35,7 +42,7 @@ namespace FusionLibrary
 
         public bool IsNow()
         {
-            if (CurrentDate > FusionUtils.CurrentTime.AddHours(-6) && CurrentDate < FusionUtils.CurrentTime.AddHours(6))
+            if (CurrentDate.Between(FusionUtils.CurrentTime.AddMinutes(-10), FusionUtils.CurrentTime.AddMinutes(10)))
                 return true;
 
             return false;
@@ -81,15 +88,17 @@ namespace FusionLibrary
         {
             World.Weather = Weather;
             RainPuddleEditor.Level = PuddleLevel;
+            FusionUtils.RainLevel = RainLevel;            
             Game.Player.WantedLevel = WantedLevel;
 
-            VehicleReplicas.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
+            VehicleReplicas?.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
         }
 
         public void Update()
         {
             CurrentDate = FusionUtils.CurrentTime;
             Weather = World.Weather;
+            RainLevel = FusionUtils.RainLevel;
             PuddleLevel = RainPuddleEditor.Level;
             WantedLevel = Game.Player.WantedLevel;
 

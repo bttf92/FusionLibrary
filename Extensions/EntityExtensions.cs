@@ -196,6 +196,11 @@ namespace FusionLibrary.Extensions
             return Function.Call<bool>(Hash.IS_OBJECT_PARTIALLY_INSIDE_GARAGE, garage, entity, 0);
         }
 
+        public static void SetReduceGrip(this Vehicle vehicle, bool state)
+        {
+            Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP, vehicle, state);
+        }
+
         public static float GetKineticEnergy(this Vehicle vehicle)
         {
             return 0.5f * HandlingData.GetByVehicleModel(vehicle.Model).Mass * (float)Math.Pow(vehicle.Speed, 2);
