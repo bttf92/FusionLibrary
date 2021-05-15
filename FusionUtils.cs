@@ -382,7 +382,7 @@ namespace FusionLibrary
         }
 
         public static bool IsAnyDoorOpen(Vehicle vehicle)
-        {            
+        {
             foreach (VehicleDoor door in vehicle.Doors)
                 if (door.IsOpen)
                     return true;
@@ -399,6 +399,12 @@ namespace FusionLibrary
         {
             get => Function.Call<float>((Hash)0x96695E368AD855F3);
             set => Function.Call((Hash)0x643E26EA6E024D92, value);
+        }
+
+        public static float WindSpeed
+        {
+            get => Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
+            set => Function.Call((Hash)0xEE09ECEDBABE47FC, value);
         }
 
         public static float Magnitude(Vector3 vector3)

@@ -114,14 +114,14 @@ namespace FusionLibrary
             CurrentFieldOfView = FieldOfView;
 
             positionSpeed = 1000 * PositionOffset.DistanceTo(PositionEndOffset) / SwitchDuration;
-            pointAtSpeed = 1000 * PointAtOffset.DistanceTo(PointAtEndOffset) /  SwitchDuration;
+            pointAtSpeed = 1000 * PointAtOffset.DistanceTo(PointAtEndOffset) / SwitchDuration;
             fovSpeed = 1000 * (FieldOfViewEnd - FieldOfView) / SwitchDuration;
 
             waitTime = Game.GameTime + Wait;
         }
 
         internal void Tick()
-        {            
+        {
             if (Camera == null || !Camera.IsActive)
                 return;
 

@@ -88,7 +88,7 @@ namespace FusionLibrary
         {
             World.Weather = Weather;
             RainPuddleEditor.Level = PuddleLevel;
-            FusionUtils.RainLevel = RainLevel;            
+            FusionUtils.RainLevel = RainLevel;
             Game.Player.WantedLevel = WantedLevel;
 
             VehicleReplicas?.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
