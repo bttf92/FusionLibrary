@@ -174,6 +174,21 @@ namespace FusionLibrary
             Props.ForEach(x => x.Stop());
         }
 
+        public void TransferTo(Entity entity)
+        {
+            Props.ForEach(x => x.TransferTo(entity));
+        }
+
+        public void TransferTo(Entity entity, string boneName)
+        {
+            Props.ForEach(x => x.TransferTo(entity, boneName));
+        }
+
+        public void TransferTo(Entity entity, EntityBone entityBone)
+        {
+            Props.ForEach(x => x.TransferTo(entity, entityBone));
+        }
+
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
         {
             Props.ForEach(x => x.setOffset(coordinate, value, currentOffset));

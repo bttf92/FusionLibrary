@@ -125,7 +125,7 @@ namespace FusionLibrary
 
             Function.Call(Hash.USE_PARTICLE_FX_ASSET, AssetName);
 
-            if (ShouldLoop)
+            if (ShouldLoop && !DoLoopHandling)
             {
                 int id = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
                 currentPlayingParticles.Add(id);
@@ -190,7 +190,7 @@ namespace FusionLibrary
 
             Function.Call(Hash.USE_PARTICLE_FX_ASSET, AssetName);
 
-            if (ShouldLoop)
+            if (ShouldLoop && !DoLoopHandling)
             {
                 Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
                 currentPlayingParticles.Add(Handle);
@@ -270,7 +270,7 @@ namespace FusionLibrary
 
             Function.Call(Hash.USE_PARTICLE_FX_ASSET, AssetName);
 
-            if (ShouldLoop)
+            if (ShouldLoop && !DoLoopHandling)
             {
                 Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Entity.Bones[BoneName].Index, Size, false, false, false);
                 currentPlayingParticles.Add(Handle);

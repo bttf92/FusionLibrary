@@ -73,6 +73,42 @@ namespace FusionLibrary
             Moving = true;
         }
 
+        public void Show()
+        {
+            if (Camera == null || Camera.Exists() == false)
+            {
+                Camera = World.CreateCamera(Entity.Position, Entity.Rotation, FieldOfView);
+
+                if (!isVehicle)
+                {
+                    Camera.AttachTo(Entity, PositionOffset);
+                    Camera.PointAt(Entity, PointAtOffset);
+                }
+                else
+                    Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+            }
+
+            World.RenderingCamera = Camera;
+
+            if (Duration > -1)
+                gameTime = Game.GameTime + Duration;
+            else
+                gameTime = -1;
+
+            if (!Moving)
+                return;
+
+            CurrentPositionOffset = PositionOffset;
+            CurrentPointAtOffset = PointAtOffset;
+            CurrentFieldOfView = FieldOfView;
+
+            positionSpeed = 1000 * PositionOffset.DistanceTo(PositionEndOffset) / SwitchDuration;
+            pointAtSpeed = 1000 * PointAtOffset.DistanceTo(PointAtEndOffset) / SwitchDuration;
+            fovSpeed = 1000 * (FieldOfViewEnd - FieldOfView) / SwitchDuration;
+
+            waitTime = Game.GameTime + Wait;
+        }
+
         public void Show(ref CustomCamera OldCamera, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Camera == null || Camera.Exists() == false)
@@ -152,6 +188,9 @@ namespace FusionLibrary
 
         public void Stop()
         {
+            if (Camera == null || !Camera.IsActive)
+                return;
+
             Camera.IsActive = false;
 
             if (!isVehicle)
