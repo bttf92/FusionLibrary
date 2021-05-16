@@ -20,6 +20,8 @@ namespace FusionLibrary
         public DateTime CurrentDate { get; set; }
         public List<VehicleReplica> VehicleReplicas { get; set; }
 
+        public bool LockWeather { get; set; }
+
         public MomentReplica(DateTime dateTime)
         {
             CurrentDate = dateTime;
@@ -97,9 +99,14 @@ namespace FusionLibrary
         public void Update()
         {
             CurrentDate = FusionUtils.CurrentTime;
-            Weather = World.Weather;
-            RainLevel = FusionUtils.RainLevel;
-            PuddleLevel = RainPuddleEditor.Level;
+
+            if (!LockWeather)
+            {
+                Weather = World.Weather;
+                RainLevel = FusionUtils.RainLevel;
+                PuddleLevel = RainPuddleEditor.Level;
+            }
+
             WantedLevel = Game.Player.WantedLevel;
 
             VehicleReplicas = new List<VehicleReplica>();
