@@ -120,6 +120,16 @@ namespace FusionLibrary.Extensions
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
         }
+        
+        public static Hash GetStreetHash(this Vehicle vehicle)
+        {
+            OutputArgument street = new OutputArgument();
+            OutputArgument cross = new OutputArgument();
+
+            Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, street, cross);
+
+            return street.GetResult<Hash>();
+        }
 
         public static TaskDrive TaskDrive(this Vehicle vehicle)
         {
