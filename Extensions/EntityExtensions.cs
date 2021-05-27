@@ -120,7 +120,7 @@ namespace FusionLibrary.Extensions
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
         }
-        
+
         public static Hash GetStreetHash(this Vehicle vehicle)
         {
             OutputArgument street = new OutputArgument();
@@ -265,7 +265,7 @@ namespace FusionLibrary.Extensions
 
         public static bool CanHoverTransform(this Vehicle vehicle)
         {
-            return (vehicle.Bones["misc_c"].Index != 0 && vehicle.Bones["misc_c"].Index != -1 && vehicle.Bones["misc_f"].Index != 0 && vehicle.Bones["misc_f"].Index != -1);
+            return (vehicle.Bones["misc_a"].Index != 0 && vehicle.Bones["misc_b"].Index != -1 && vehicle.Bones["misc_c"].Index != 0 && vehicle.Bones["misc_e"].Index != -1 && vehicle.Bones["misc_q"].Index != -1 && vehicle.Bones["misc_s"].Index != -1 && vehicle.Bones["misc_z"].Index != -1);
         }
 
         public static void SetLightsBrightness(this Vehicle vehicle, float brightness)
