@@ -132,6 +132,7 @@
     <Compile Include="Replica\PedReplica.cs" />
     <Compile Include="Replica\VehicleReplica.cs" />
     <Compile Include="Replica\WeaponReplica.cs" />
+    <Compile Include="Time\FrametimeHelper.cs" />
     <Compile Include="Time\TimeHandler.cs" />
   </ItemGroup>
   <ItemGroup>
