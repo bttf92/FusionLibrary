@@ -208,7 +208,7 @@ namespace FusionLibrary
 
         public void StopNonLooped()
         {
-            Entity.RemoveParticleEffects();
+            Entity?.RemoveParticleEffects();
 
             Stop();
         }

@@ -123,12 +123,28 @@ namespace FusionLibrary.Extensions
 
         public static Hash GetStreetHash(this Vehicle vehicle)
         {
-            OutputArgument street = new OutputArgument();
-            OutputArgument cross = new OutputArgument();
+            Hash street;
+            Hash cross;
 
-            Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, street, cross);
+            unsafe
+            {
+                Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, &street, &cross);
+            }
 
-            return street.GetResult<Hash>();
+            return street;
+        }
+
+        public static Hash GetCrossingHash(this Vehicle vehicle)
+        {
+            Hash street;
+            Hash cross;
+
+            unsafe
+            {
+                Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, &street, &cross);
+            }
+
+            return cross;
         }
 
         public static TaskDrive TaskDrive(this Vehicle vehicle)

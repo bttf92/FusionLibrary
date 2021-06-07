@@ -6,7 +6,7 @@ namespace FusionLibrary
 
     public abstract class Player
     {
-        public Entity Entity { get; protected set; }
+        public Entity Entity { get; set; }
 
         public OnPlayerCompleted OnPlayerCompleted { get; set; }
 

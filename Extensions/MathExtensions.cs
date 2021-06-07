@@ -197,6 +197,15 @@ namespace FusionLibrary.Extensions
             return src >= start && src <= end;
         }
 
+        public static bool BetweenHours(this DateTime src, DateTime start, DateTime end)
+        {
+            int hour = int.Parse(src.ToString("hh"));
+            int hourStart = int.Parse(start.ToString("hh"));
+            int hourEnd = int.Parse(end.ToString("hh"));
+
+            return hour >= hourStart && hour <= hourEnd && src.Minute >= start.Minute && src.Minute <= end.Minute && src.Second >= start.Second && src.Second <= end.Second;
+        }
+
         public static Vector3 DirectionToRotation(this Vector3 dir, float roll)
         {
             dir.Normalize();

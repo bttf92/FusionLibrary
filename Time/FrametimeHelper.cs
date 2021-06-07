@@ -3,16 +3,16 @@ using System;
 
 namespace FusionLibrary
 {
-    public class FrametimeHelper
+    public class FrameTimeHelper
     {
         private double remainder;
-        public float BaseFPS { get; }
+        public float FrameTime { get; }
 
         public int Count { get; private set; }
 
-        public FrametimeHelper(float fps)
+        public FrameTimeHelper(float frameTime)
         {
-            BaseFPS = fps;
+            FrameTime = frameTime;
 
             Reset();
         }
@@ -25,7 +25,7 @@ namespace FusionLibrary
 
         public void Tick()
         {
-            float delta = BaseFPS / Game.FPS;
+            float delta = Game.LastFrameTime / FrameTime;
 
             Count = (int)Math.Truncate(delta);
 
