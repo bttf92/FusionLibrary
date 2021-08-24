@@ -14,7 +14,8 @@ namespace FusionLibrary
 
         internal static void TickAll()
         {
-            GlobalAnimatePropsHandlerList.ForEach(x => x.Tick());
+            for (int i = 0; i < GlobalAnimatePropsHandlerList.Count; i++)
+                GlobalAnimatePropsHandlerList[i].Tick();
         }
 
         public event OnSequenceCompleted OnSequenceCompleted;

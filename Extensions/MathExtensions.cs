@@ -177,6 +177,13 @@ namespace FusionLibrary.Extensions
             return currentRotation.WrapAngle();
         }
 
+        public static float AngularSpeed(this float wheelSpeed, float wheelLength, float currentAngle)
+        {
+            float addAngle = ((wheelSpeed / wheelLength) * 360) / Game.FPS;
+
+            return (currentAngle + addAngle).WrapAngle();
+        }
+
         public static double ArcCos(this double X)
         {
             return Math.Atan(-X / Math.Sqrt(-X * X + 1)) + 2 * Math.Atan(1);

@@ -18,7 +18,8 @@ namespace FusionLibrary
 
         internal static void TickAll()
         {
-            GlobalAnimatePropList.ForEach(x => x.Tick());
+            for (int i = 0; i < GlobalAnimatePropList.Count; i++)
+                GlobalAnimatePropList[i].Tick();
         }
 
         public Entity Entity { get; protected set; }

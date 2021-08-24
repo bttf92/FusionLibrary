@@ -4,6 +4,7 @@ using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary.Extensions
 {
@@ -22,6 +23,18 @@ namespace FusionLibrary.Extensions
         public static void AttachTo(this Camera camera, Vehicle vehicle, string bone, Vector3 position, Vector3 rotation)
         {
             Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, true, rotation.X, rotation.Y, rotation.Z, position.X, position.Y, position.Z, true);
+        }
+
+        public static (float width, float height, float depth) GetSize(this Model model)
+        {
+            return (model.GetSize(Coordinate.Y), model.GetSize(Coordinate.Z), model.GetSize(Coordinate.Z));
+        }
+
+        public static float GetSize(this Model model, Coordinate coordinate)
+        {
+            (Vector3 rearBottomLeft, Vector3 frontTopRight) = model.Dimensions;
+
+            return Math.Abs(frontTopRight[(int)coordinate] - rearBottomLeft[(int)coordinate]);
         }
 
         public static IEnumerable<string> SplitInParts(this string s, int partLength)
