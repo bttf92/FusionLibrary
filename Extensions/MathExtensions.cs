@@ -38,6 +38,13 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
+        public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+        {
+            if (val.CompareTo(min) < 0) return min;
+            else if (val.CompareTo(max) > 0) return max;
+            else return val;
+        }
+
         public static float Lerp(this float firstFloat, float secondFloat, float by)
         {
             return firstFloat * by + secondFloat * (1 - by);
@@ -179,9 +186,9 @@ namespace FusionLibrary.Extensions
 
         public static float AngularSpeed(this float wheelSpeed, float wheelLength, float currentAngle)
         {
-            float addAngle = ((wheelSpeed / wheelLength) * 360) / Game.FPS;
+            float newAngle = ((wheelSpeed / wheelLength) * 360) / Game.FPS;
 
-            return (currentAngle + addAngle).WrapAngle();
+            return (currentAngle - newAngle).WrapAngle();
         }
 
         public static double ArcCos(this double X)
