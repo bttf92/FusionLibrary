@@ -6,15 +6,18 @@ using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
-    public class InteractionProp
+    /// <summary>
+    /// Creates an interactive <see cref="FusionLibrary.AnimateProp"/> which can be used and moved in the game's world.
+    /// </summary>
+    public class InteractiveProp
     {
         /// <summary>
-        /// This event is invoked when the <see cref="InteractionProp"/> is completed.
+        /// This event is invoked when the <see cref="InteractiveProp"/> is completed.
         /// </summary>
-        public event EventHandler<InteractionProp> OnInteractionComplete;
+        public event EventHandler<InteractiveProp> OnInteractionComplete;
 
         /// <summary>
-        /// Interactable <see cref="FusionLibrary.AnimateProp"/>.
+        /// Interactive <see cref="FusionLibrary.AnimateProp"/>.
         /// </summary>
         public AnimateProp AnimateProp { get; }
 
@@ -24,37 +27,24 @@ namespace FusionLibrary
         public InteractionType InteractionType { get; }
 
         /// <summary>
-        /// Control used for this <see cref="InteractionProp"/>.
+        /// Control used for this <see cref="InteractiveProp"/>.
         /// </summary>
         public Control Control { get; }
 
         /// <summary>
-        /// Animation type of the <see cref="InteractionProp"/>.
+        /// Animation type of the <see cref="InteractiveProp"/>.
         /// </summary>
         public AnimationType MovementType { get; }
 
         /// <summary>
         /// Axis for the <see cref="AnimateProp"/> interaction.
         /// </summary>
-        public Coordinate CoordinateInteraction { get; }
+        public Coordinate Coordinate { get; }
 
         /// <summary>
-        /// Current value of <see cref="CoordinateInteraction"/> of the <see cref="AnimateProp"/>.
+        /// Current value of axis <see cref="Coordinate"/> of the <see cref="AnimateProp"/>, remapped between 0 and 1.
         /// </summary>
-        public float CurrentValue
-        {
-            get
-            {
-                float value;
-
-                if (MovementType == AnimationType.Offset)
-                    value = AnimateProp.CurrentOffset[(int)CoordinateInteraction];
-                else
-                    value = AnimateProp.CurrentRotation[(int)CoordinateInteraction];
-
-                return value.Remap(Min, Max, 0, 1);
-            }
-        }
+        public float CurrentValue => _currentValue.Remap(Min, Max, 0, 1);
 
         /// <summary>
         /// Maximum value.
@@ -67,49 +57,26 @@ namespace FusionLibrary
         public float Min { get; }
 
         /// <summary>
-        /// ID of this instance in the <see cref="InteractionController"/>.
+        /// ID of this <see cref="InteractiveProp"/> in the <see cref="InteractiveController"/>.
         /// </summary>
-        public int ID => _controller.InteractionProps.IndexOf(this);
+        public int ID => _controller.InteractiveProps.IndexOf(this);
 
         /// <summary>
         /// Returns true if this <see cref="AnimateProp"/> is interaction mode.
         /// </summary>
         public bool IsPlaying { get; private set; }
 
-        /// <summary>
-        /// Invert control or not.
-        /// </summary>
         private bool _invert;
-
-        /// <summary>
-        /// Shortcut for interaction axis.
-        /// </summary>
-        private Vector3 _axis => FusionUtils.GetUnitVector(CoordinateInteraction);
-
-        /// <summary>
-        /// Current value.
-        /// </summary>
+        private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
         private float _currentValue;
-
-        /// <summary>
-        /// New value.
-        /// </summary>
         private float _toValue;
-
-        /// <summary>
-        /// Sensitivity modifier.
-        /// </summary>
         private float _sensitivity = 14;
+        private InteractiveController _controller;
 
-        /// <summary>
-        /// Owner of this <see cref="InteractionProp"/>.
-        /// </summary>
-        private InteractionController _controller;
-
-        internal InteractionProp(InteractionController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier)
+        internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier)
         {
             InteractionType = interactionType;
-            CoordinateInteraction = coordinateInteraction;
+            Coordinate = coordinateInteraction;
             MovementType = movementType;
             Control = control;
 
@@ -125,9 +92,9 @@ namespace FusionLibrary
             Max = max;
 
             if (movementType == AnimationType.Offset)
-                AnimateProp.setOffset(CoordinateInteraction, startValue);
+                AnimateProp.setOffset(Coordinate, startValue);
             else
-                AnimateProp.setRotation(CoordinateInteraction, startValue);
+                AnimateProp.setRotation(Coordinate, startValue);
 
             AnimateProp.SpawnProp();
 
@@ -158,8 +125,8 @@ namespace FusionLibrary
         }
 
         private void UpdateLeverAnimation()
-        {            
-            var controlInput = Game.GetControlValueNormalized(Control);
+        {
+            float controlInput = Game.GetControlValueNormalized(Control);
 
             if (_invert)
                 controlInput *= -1;
@@ -184,17 +151,29 @@ namespace FusionLibrary
             AnimateProp?.Dispose();
         }
 
-        public static implicit operator AnimateProp(InteractionProp interactionProp)
+        /// <summary>
+        /// Implicit cast to <see cref="AnimateProp"/>.
+        /// </summary>
+        /// <param name="interactionProp">An instance of <paramref name="interactionProp"/>.</param>
+        public static implicit operator AnimateProp(InteractiveProp interactionProp)
         {
             return interactionProp.AnimateProp;
         }
 
-        public static implicit operator Prop(InteractionProp interactionProp)
+        /// <summary>
+        /// Implicit cast to <see cref="Prop"/>.
+        /// </summary>
+        /// <param name="interactionProp">An instance of <paramref name="interactionProp"/>.</param>
+        public static implicit operator Prop(InteractiveProp interactionProp)
         {
             return interactionProp.AnimateProp.Prop;
         }
 
-        public static implicit operator Entity(InteractionProp interactionProp)
+        /// <summary>
+        /// Implicit cast to <see cref="Entity"/>.
+        /// </summary>
+        /// <param name="interactionProp">An instance of <paramref name="interactionProp"/>.</param>
+        public static implicit operator Entity(InteractiveProp interactionProp)
         {
             return interactionProp.AnimateProp.Prop;
         }

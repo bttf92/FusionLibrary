@@ -122,8 +122,8 @@
     <Compile Include="GUI\ScreenFlash.cs" />
     <Compile Include="Event\TimedEvent.cs" />
     <Compile Include="Event\TimedEventHandler.cs" />
-    <Compile Include="Prop\InteractionController.cs" />
-    <Compile Include="Prop\InteractionProp.cs" />
+    <Compile Include="Prop\InteractiveController.cs" />
+    <Compile Include="Prop\InteractiveProp.cs" />
     <Compile Include="Prop\Light.cs" />
     <Compile Include="Prop\LightHandler.cs" />
     <Compile Include="Prop\PtfxPlayer.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="Time\TimeHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
