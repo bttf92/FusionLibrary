@@ -138,6 +138,13 @@ namespace FusionLibrary
 
             if (CurrentInteractiveID == -1)
             {
+                if (FusionUtils.PlayerPed.Weapons.Current.Model != 0)
+                {
+                    StopHover();
+
+                    return;
+                }
+
                 RaycastResult raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
 
                 if (!raycast.DidHit || !raycast.HitEntity.NotNullAndExists() || raycast.HitEntity.Decorator().InteractableEntity == false)
@@ -169,7 +176,7 @@ namespace FusionLibrary
                 else if (Game.IsControlJustReleased(Control.Attack))
                     StopHover();
             }
-            else if (Game.IsControlJustReleased(Control.Attack))
+            else if (Game.IsControlJustReleased(Control.Attack) || FusionUtils.PlayerPed.Weapons.Current.Model != 0)
                 StopInteraction();
 
             CurrentInteractiveProp?.Tick();
