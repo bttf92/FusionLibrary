@@ -368,40 +368,25 @@ namespace FusionLibrary
             else
                 current = CurrentRotation[i];
 
-            float step = coordinateSetting.Step * coordinateSetting.StepRatio * Game.LastFrameTime;
-            float end;
-
+            float newValue = current;
+            float step = coordinateSetting.Step * coordinateSetting.StepRatio;
+            
             if (coordinateSetting.IsIncreasing)
-            {
-                end = coordinateSetting.Maximum;
-                current += step;
-            }
+                newValue += step;
             else
-            {
-                end = coordinateSetting.Minimum;
-                current -= step;
-            }
-
-            end *= coordinateSetting.MaxMinRatio;
-
-            //if (coordinateSetting.Type == AnimationType.Rotation)
-            //    if (Math.Abs(current) > 360)
-            //        current += 360 * (current > 0 ? -1 : 1);
+                newValue -= step;
+            
+            current = FusionUtils.Lerp(current, newValue, Game.LastFrameTime).Clamp(coordinateSetting.Minimum * coordinateSetting.MaxMinRatio, coordinateSetting.Maximum * coordinateSetting.MaxMinRatio);
 
             if (coordinateSetting.Type == AnimationType.Offset)
                 SecondOffset[i] = current - Offset[i];
             else
                 SecondRotation[i] = current - Rotation[i];
 
-            if (current.Near(end, step))
+            if (current == coordinateSetting.Minimum || current == coordinateSetting.Maximum)
             {
                 if (!coordinateSetting.DoNotInvert)
                     coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
-
-                if (coordinateSetting.Type == AnimationType.Offset)
-                    SecondOffset[i] = end - Offset[i];
-                else
-                    SecondRotation[i] = end - Rotation[i];
 
                 if (coordinateSetting.Stop)
                     coordinateSetting.Update = false;
@@ -420,6 +405,7 @@ namespace FusionLibrary
                 return;
 
             Prop = World.CreateProp(Model, Entity.Position, false, false);
+            Prop.ApplyForce(Vector3.UnitX);
             Prop.IsPersistent = true;
 
             IsSpawned = true;

@@ -70,7 +70,9 @@ namespace FusionLibrary
         private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
         private float _currentValue;
         private float _toValue;
-        private float _sensitivity = 14;
+        private float _sensitivity = 10;
+        private bool _goBack;
+        private bool _buttonOk;
         private InteractiveController _controller;
 
         internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier)
@@ -101,9 +103,25 @@ namespace FusionLibrary
             AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
 
+        public void SetupButton(float step, float stepRatio, bool isIncreasing)
+        {
+            if (InteractionType != InteractionType.Button)
+                return;
+
+            AnimateProp[MovementType][AnimationStep.First][Coordinate].Setup(true, isIncreasing, Min, Max, 1, step, stepRatio);
+
+            _buttonOk = true;
+        }
+
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
         {
             OnInteractionComplete?.Invoke(_controller, this);
+
+            if (_buttonOk && _goBack)
+            {
+                _goBack = false;
+                AnimateProp.Play();                
+            }
         }
 
         internal void Play()
@@ -111,8 +129,12 @@ namespace FusionLibrary
             if (InteractionType == InteractionType.Lever)
                 UpdateLeverAnimation();
 
-            AnimateProp.Play();
-
+            if (_buttonOk)
+            {
+                _goBack = true;
+                AnimateProp.Play();
+            }
+                
             IsPlaying = true;
         }
 
@@ -126,7 +148,17 @@ namespace FusionLibrary
 
         private void UpdateLeverAnimation()
         {
-            float controlInput = Game.GetControlValueNormalized(Control);
+            Game.DisableControlThisFrame(Control.LookUpDown);
+            Game.DisableControlThisFrame(Control.LookLeftRight);
+
+            float controlInput;
+
+            int _control = (int)Control;
+
+            if ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273))
+                controlInput = Game.GetDisabledControlValueNormalized(Control);
+            else
+                controlInput = Game.GetControlValueNormalized(Control);
 
             if (_invert)
                 controlInput *= -1;
@@ -141,7 +173,7 @@ namespace FusionLibrary
 
         internal void Stop()
         {
-            AnimateProp.Stop();
+            //AnimateProp.Stop();
 
             IsPlaying = false;
         }

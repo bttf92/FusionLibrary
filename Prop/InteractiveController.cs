@@ -138,7 +138,7 @@ namespace FusionLibrary
 
             if (CurrentInteractiveID == -1)
             {
-                RaycastResult raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Everything, FusionUtils.PlayerPed);
+                RaycastResult raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
 
                 if (!raycast.DidHit || !raycast.HitEntity.NotNullAndExists() || raycast.HitEntity.Decorator().InteractableEntity == false)
                 {
@@ -149,14 +149,14 @@ namespace FusionLibrary
 
                 int id = raycast.HitEntity.Decorator().InteractableId;
 
-                if (InteractiveProps[id] != raycast.HitEntity)
+                if (InteractiveProps[id] != raycast.HitEntity || InteractiveProps[id].AnimateProp.IsPlaying)
                 {
                     StopHover();
 
                     return;
                 }
 
-                raycast.HitEntity.SetAlpha(AlphaLevel.L3);
+                raycast.HitEntity.SetAlpha(AlphaLevel.L4);
                 _hoverId = id;
 
                 if (Game.IsControlPressed(Control.Attack))
