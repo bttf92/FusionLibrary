@@ -2,17 +2,11 @@
 using GTA.Math;
 using GTA.Native;
 using System;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
     public delegate void OnExecute(TimedEvent timedEvent);
-
-    public enum CameraType
-    {
-        Position,
-        Entity,
-        Custom
-    }
 
     public class TimedEvent
     {

@@ -4,6 +4,25 @@ namespace FusionLibrary
 {
     public class FusionEnums
     {
+        public enum InteractionType
+        {
+            Lever,
+            Button
+        }
+
+        /// <summary>
+        /// Camera types for <see cref="TimedEvent"/>.
+        /// </summary>
+        public enum CameraType
+        {
+            Position,
+            Entity,
+            Custom
+        }
+
+        /// <summary>
+        /// Types of decors that can be used as <see cref="Decorator"/>.
+        /// </summary>
         public enum DecorType
         {
             Float = 1,
@@ -13,12 +32,18 @@ namespace FusionLibrary
             Time
         }
 
+        /// <summary>
+        /// Available script timers. 
+        /// </summary>
         public enum ScriptTimer
         {
             A,
             B
         }
 
+        /// <summary>
+        /// Cartesian coordinates.
+        /// </summary>
         public enum Coordinate
         {
             X,
@@ -26,6 +51,9 @@ namespace FusionLibrary
             Z
         }
 
+        /// <summary>
+        /// Spawn flags.
+        /// </summary>
         [Flags]
         public enum SpawnFlags
         {
@@ -43,12 +71,18 @@ namespace FusionLibrary
             NoWheels = 1024
         }
 
+        /// <summary>
+        /// Camera switch types for <see cref="CustomCamera"/>.
+        /// </summary>
         public enum CameraSwitchType
         {
             Instant,
             Animated
         }
 
+        /// <summary>
+        /// Lights modes for <see cref="Light"/>.
+        /// </summary>
         public enum LightsMode
         {
             Default,
@@ -62,6 +96,9 @@ namespace FusionLibrary
             City = -289320599
         }
 
+        /// <summary>
+        /// Wheel's ID.
+        /// </summary>
         public enum WheelId
         {
             FrontLeft = 0,
@@ -74,12 +111,31 @@ namespace FusionLibrary
             Middle2Right = 47
         }
 
+        /// <summary>
+        /// Alpha levels for entities.
+        /// </summary>
+        public enum AlphaLevel
+        {
+            L0 = 0,
+            L1 = 51,
+            L2 = 102,
+            L3 = 153,
+            L4 = 204,
+            L5 = 255
+        }
+
+        /// <summary>
+        /// Animation types for <see cref="AnimationSettings"/>.
+        /// </summary>
         public enum AnimationType
         {
             Offset,
             Rotation
         }
 
+        /// <summary>
+        /// Animation steps for <see cref="AnimationStep"/>.
+        /// </summary>
         public enum AnimationStep
         {
             Off,
@@ -92,6 +148,9 @@ namespace FusionLibrary
             Seventh
         }
 
+        /// <summary>
+        /// Input types for <see cref="FusionUtils.ParseFromRawString(string, DateTime, out InputType)"/>.
+        /// </summary>
         public enum InputType
         {
             Full,
@@ -100,6 +159,9 @@ namespace FusionLibrary
             Error
         }
 
+        /// <summary>
+        /// Drive actions for <see cref="TaskDrive"/>.
+        /// </summary>
         public enum DriveAction
         {
             None = -1,
@@ -128,6 +190,9 @@ namespace FusionLibrary
             AccelerateVeryStrong = 32
         }
 
+        /// <summary>
+        /// Garage doors IDs.
+        /// </summary>
         public enum GarageDoor : uint
         {
             MichaelBeverlyHills = 360562957,
@@ -148,6 +213,9 @@ namespace FusionLibrary
             MP_GAR_SIMEON = 1215605247
         }
 
+        /// <summary>
+        /// Garage door states.
+        /// </summary>
         public enum DoorState
         {
             Unknown = -1,
@@ -160,6 +228,9 @@ namespace FusionLibrary
             ClosedThisFrame = 6
         }
 
+        /// <summary>
+        /// Task types for <see cref="GTA.Ped"/>.
+        /// </summary>
         public enum TaskType
         {
             HandsUp = 0,

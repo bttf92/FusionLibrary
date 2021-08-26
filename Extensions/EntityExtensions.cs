@@ -11,76 +11,163 @@ namespace FusionLibrary.Extensions
 {
     public static class EntityExtensions
     {
+        /// <summary>
+        /// Checks if given <paramref name="entity"/> is not <c>null</c> and exists in game's world.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns><c>true</c> if <paramref name="entity"/> is not <c>null</c> and exists; otherwise <c>false</c></returns>
         public static bool NotNullAndExists(this Entity entity)
         {
             return entity != null && entity.Exists();
         }
 
+        /// <summary>
+        /// Returns the <see cref="FusionLibrary.Decorator"/> object of the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns>Instance of the <see cref="FusionLibrary.Decorator"/> of <paramref name="entity"/></returns>
         public static Decorator Decorator(this Entity entity)
         {
             return new Decorator(entity);
         }
 
+        /// <summary>
+        /// Returns the <see cref="Vector3"/>'s relative velocity of the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns><see cref="Vector3"/>'s relative velocity of <paramref name="entity"/></returns>
         public static Vector3 RelativeVelocity(this Entity entity)
         {
             return Function.Call<Vector3>(Hash.GET_ENTITY_SPEED_VECTOR, entity, true);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="entity"/> is going forward.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns><c>true</c> if <paramref name="entity"/> is going forward or is still; otherwise <c>false</c></returns>
         public static bool IsGoingForward(this Entity entity)
         {
             return entity.RelativeVelocity().Y >= 0;
         }
 
+        /// <summary>
+        /// Returns the 2D squared distance between <paramref name="src"/> and <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns>Distance in <c>float</c> between the entities</returns>
         public static float DistanceToSquared2D(this Entity src, Entity entity)
         {
             return FusionUtils.DistanceToSquared2D(src, entity);
         }
 
+        /// <summary>
+        /// Returns the 2D squared distance between <paramref name="src"/> and <paramref name="boneName"/> of <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="boneName">Bone's name.</param>
+        /// <returns>Distance in <c>float</c> between the entities</returns>
         public static float DistanceToSquared2D(this Entity src, Entity entity, string boneName)
         {
             return src.Position.DistanceToSquared2D(entity.Bones[boneName].Position);
         }
 
+        /// <summary>
+        /// Returns the 2D squared distance between <paramref name="src"/> and <paramref name="worldPosition"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="worldPosition">Instance of a <see cref="Vector3"/>.</param>
+        /// <returns>Distance in <c>float</c></returns>
         public static float DistanceToSquared2D(this Entity src, Vector3 worldPosition)
         {
             return src.Position.DistanceToSquared2D(worldPosition);
         }
 
+        /// <summary>
+        /// Checks if the distance between <paramref name="src"/> and <paramref name="entity"/> is less or equal than <paramref name="maxDistance"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="maxDistance">Max distance allowed.</param>
+        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
         public static bool DistanceToSquared2D(this Entity src, Entity entity, float maxDistance)
         {
             return DistanceToSquared2D(src, entity) <= maxDistance * maxDistance;
         }
 
+        /// <summary>
+        /// Checks if the distance between <paramref name="src"/> and <paramref name="boneName"/> of <paramref name="entity"/> is less or equal than <paramref name="maxDistance"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="boneName">Bone's name.</param>
+        /// <param name="maxDistance">Max distance allowed.</param>
+        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
         public static bool DistanceToSquared2D(this Entity src, Entity entity, string boneName, float maxDistance)
         {
             return DistanceToSquared2D(src, entity, boneName) <= maxDistance * maxDistance;
         }
 
+        /// <summary>
+        /// Checks if the distance between <paramref name="src"/> and <paramref name="worldPosition"/> is less or equal than <paramref name="maxDistance"/>.
+        /// </summary>
+        /// <param name="src">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="worldPosition">Instance of a <see cref="Vector3"/>.</param>
+        /// <param name="maxDistance">Max distance allowed.</param>
+        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
         public static bool DistanceToSquared2D(this Entity src, Vector3 worldPosition, float maxDistance)
         {
             return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> is not <c>null</c>, <seealso cref="Ped.Exists()"/> and also is alive.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> is not <c>null</c>, <seealso cref="Ped.Exists()"/> and also is alive; otherwise <c>false</c></returns>
         public static bool ExistsAndAlive(this Ped ped)
         {
             return ped.NotNullAndExists() && ped.IsAlive;
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> has been damaged.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> has been damaged; otherwise <c>false</c></returns>
         public static bool HasBeenDamaged(this Ped ped)
         {
             return Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE, ped);
         }
 
-        public static int GetAlpha(this Entity entity)
+        /// <summary>
+        /// Returns the <see cref="AlphaLevel"/> of the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns><see cref="AlphaLevel"/> of <paramref name="entity"/></returns>
+        public static AlphaLevel GetAlpha(this Entity entity)
         {
-            return Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
+            return (AlphaLevel)Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
         }
 
-        public static void SetAlpha(this Entity entity, int level)
+        /// <summary>
+        /// Sets the <see cref="AlphaLevel"/> of the given <paramref name="entity"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="level">Desired <see cref="AlphaLevel"/>.</param>
+        public static void SetAlpha(this Entity entity, AlphaLevel level)
         {
-            Function.Call(Hash.SET_ENTITY_ALPHA, entity, level);
+            Function.Call(Hash.SET_ENTITY_ALPHA, entity, (int)level);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="taskType"/> is running for <paramref name="ped"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <param name="taskType">A <see cref="TaskType"/>.</param>
+        /// <returns></returns>
         public static bool IsTaskActive(this Ped ped, TaskType taskType)
         {
             return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
@@ -341,62 +428,102 @@ namespace FusionLibrary.Extensions
             return false;
         }
 
+        /// <summary>
+        /// Checks if the given <paramref name="vehicle"/> is a train.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> if <paramref name="vehicle"/> is a train; otherwise <c>false</c></returns>
         public static bool IsTrain(this Vehicle vehicle)
         {
             return Function.Call<bool>(Hash.IS_THIS_MODEL_A_TRAIN, vehicle.Model.Hash);
         }
 
-        public static void SetTrainCruiseSpeed(this Vehicle vehicle, float speed)
+        /// <summary>
+        /// Sets <paramref name="train"/>'s cruise <paramref name="speed"/> value (m/s).
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="speed">Cruise speed (m/s).</param>
+        public static void SetTrainCruiseSpeed(this Vehicle train, float speed)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return;
 
-            Function.Call(Hash.SET_TRAIN_CRUISE_SPEED, vehicle, speed);
+            Function.Call(Hash.SET_TRAIN_CRUISE_SPEED, train, speed);
         }
 
-        public static void SetTrainCruiseMPHSpeed(this Vehicle vehicle, float speed)
+        /// <summary>
+        /// Sets <paramref name="train"/>'s cruise <paramref name="speed"/> value (MPH).
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="speed">Cruise speed (MPH).</param>
+        public static void SetTrainCruiseMPHSpeed(this Vehicle train, float speed)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return;
 
-            vehicle.SetTrainCruiseSpeed(speed.ToMS());
+            train.SetTrainCruiseSpeed(speed.ToMS());
         }
 
-        public static void SetTrainSpeed(this Vehicle vehicle, float speed)
+        /// <summary>
+        /// Sets <paramref name="train"/>'s <paramref name="speed"/> value (m/s).
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="speed">Speed (m/s).</param>
+        public static void SetTrainSpeed(this Vehicle train, float speed)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return;
 
-            Function.Call(Hash.SET_TRAIN_SPEED, vehicle, speed);
+            Function.Call(Hash.SET_TRAIN_SPEED, train, speed);
         }
 
-        public static void SetTrainMPHSpeed(this Vehicle vehicle, float speed)
+        /// <summary>
+        /// Sets <paramref name="train"/>'s <paramref name="speed"/> value (MPH).
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="speed">Speed (MPH).</param>
+        public static void SetTrainMPHSpeed(this Vehicle train, float speed)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return;
 
-            vehicle.SetTrainSpeed(speed.ToMS());
+            train.SetTrainSpeed(speed.ToMS());
         }
 
-        public static void Derail(this Vehicle vehicle)
+        /// <summary>
+        /// Makes <paramref name="train"/> derail.
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        public static void Derail(this Vehicle train)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return;
 
-            Function.Call(Hash.SET_RENDER_TRAIN_AS_DERAILED, vehicle, true);
+            Function.Call(Hash.SET_RENDER_TRAIN_AS_DERAILED, train, true);
         }
 
-        public static Vehicle GetTrainCarriage(this Vehicle vehicle, int index)
+        /// <summary>
+        /// Returns the carriage at <paramref name="index"/>'s position of the <paramref name="train"/>. 0 returns the first carriage behind the <paramref name="train"/>.
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="index">Position of the carriage.</param>
+        /// <returns><see cref="Vehicle"/> instance of the carriage</returns>
+        public static Vehicle GetTrainCarriage(this Vehicle train, int index)
         {
-            if (!vehicle.IsTrain())
+            if (!train.IsTrain())
                 return null;
 
-            return Function.Call<Vehicle>(Hash.GET_TRAIN_CARRIAGE, vehicle, index);
+            return Function.Call<Vehicle>(Hash.GET_TRAIN_CARRIAGE, train, index);
         }
 
-        public static void SetTrainPosition(this Vehicle vehicle, Vector3 pos)
+        /// <summary>
+        /// Sets the <paramref name="train"/>'s <paramref name="position"/>.
+        /// </summary>
+        /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
+        public static void SetTrainPosition(this Vehicle train, Vector3 position)
         {
-            Function.Call(Hash.SET_MISSION_TRAIN_COORDS, vehicle, pos.X, pos.Y, pos.Z);
+            Function.Call(Hash.SET_MISSION_TRAIN_COORDS, train, position.X, position.Y, position.Z);
         }
 
         public static unsafe Vector3 GetBoneOriginalTranslation(this Vehicle vehicle, int index)

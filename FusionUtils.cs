@@ -15,26 +15,47 @@ namespace FusionLibrary
 {
     public static class FusionUtils
     {
+        /// <summary>
+        /// Checks if first tick has gone.
+        /// </summary>
         public static bool FirstTick { get; internal set; } = true;
 
+        /// <summary>
+        /// Represents a pseudo-random number generator, which is an algorithm that produces a sequence of numbers that meet certain statistical requirements for randomness.
+        /// </summary>
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
         internal static Model DMC12 = new Model("dmc12");
 
+        /// <summary>
+        /// Serializes and deserializes an object, or an entire graph of connected objects, in binary format.
+        /// </summary>
         public static BinaryFormatter BinaryFormatter { get; } = new BinaryFormatter();
 
         private static int _padShakeStop;
 
+        /// <summary>
+        /// Gets or sets current <see cref="DateTime"/> of the game's world.
+        /// </summary>
         public static DateTime CurrentTime
         {
             get => GetWorldTime();
             set => SetWorldTime(value);
         }
 
+        /// <summary>
+        /// Gets the <see cref="Ped"/> of the current <see cref="GTA.Player"/>.
+        /// </summary>
         public static Ped PlayerPed => Game.Player.Character;
 
+        /// <summary>
+        /// Gets the current driven <see cref="Vehicle"/> by <see cref="GTA.Player"/>.
+        /// </summary>
         public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
 
+        /// <summary>
+        /// Toggles visibility state of game's GUI.
+        /// </summary>
         public static bool HideGUI { get; set; } = false;
 
         public static string HelpText { get; set; } = null;
@@ -42,6 +63,10 @@ namespace FusionLibrary
         public static string SubtitleText { get; set; } = null;
 
         private static bool randomTrains = true;
+
+        /// <summary>
+        /// Toggles random generated trains on map.
+        /// </summary>
         public static bool RandomTrains
         {
             get => randomTrains;
@@ -56,6 +81,12 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// Requests the given <paramref name="model"/> in game.
+        /// </summary>
+        /// <param name="model">Instance of a <see cref="Model"/>.</param>
+        /// <param name="name">Name of the <paramref name="model"/>.</param>
+        /// <returns></returns>
         public static Model LoadAndRequestModel(Model model, string name = default)
         {
             if (!model.IsInCdImage || !model.IsValid)
@@ -74,6 +105,11 @@ namespace FusionLibrary
             return model;
         }
 
+        /// <summary>
+        /// Given a <paramref name="position"/> returns the nearest roadside point.
+        /// </summary>
+        /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
+        /// <returns>Nearest roadside point</returns>
         public static Vector3 GetPointOnRoadSide(Vector3 position)
         {
             OutputArgument ret = new OutputArgument();
@@ -83,13 +119,16 @@ namespace FusionLibrary
             return ret.GetResult<Vector3>();
         }
 
+        /// <summary>
+        /// Cleares game's world from every ped and vehicles. Except entities with <see cref="Decorator.DoNotDelete"/> == <c>true</c>.
+        /// </summary>
         public static void ClearWorld()
         {
             Function.Call(Hash.DELETE_ALL_TRAINS);
 
             Vehicle[] allVehicles = World.GetAllVehicles();
 
-            allVehicles.Where(x => x.NotNullAndExists() && !x.Decorator().DotNotDelete).ToList()
+            allVehicles.Where(x => x.NotNullAndExists() && !x.Decorator().DoNotDelete).ToList()
                 .ForEach(x => x?.DeleteCompletely());
 
             Ped[] allPeds = World.GetAllPeds();
@@ -98,6 +137,13 @@ namespace FusionLibrary
                 .ForEach(x => x?.Delete());
         }
 
+        /// <summary>
+        /// Given two <see cref="Vector3"/> points, returns the rotation between them.
+        /// </summary>
+        /// <param name="src">First <see cref="Vector3"/> point.</param>
+        /// <param name="dst">Second <see cref="Vector3"/> point.</param>
+        /// <param name="roll">Desired roll for output rotation.</param>
+        /// <returns>Rotation between the two points</returns>
         public static Vector3 DirectionToRotation(Vector3 src, Vector3 dst, float roll)
         {
             Vector3 dir = src.GetDirectionTo(dst);
@@ -109,8 +155,16 @@ namespace FusionLibrary
             return rotval;
         }
 
+        /// <summary>
+        /// Checks if pad is shaking.
+        /// </summary>
         public static bool IsPadShaking => _padShakeStop >= Game.GameTime;
 
+        /// <summary>
+        /// Sets pad shake <paramref name="duration"/> and <paramref name="frequency"/>.
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <param name="frequency"></param>
         public static void SetPadShake(int duration, int frequency)
         {
             _padShakeStop = Game.GameTime + duration;
@@ -118,6 +172,9 @@ namespace FusionLibrary
             Function.Call(Hash.SET_PAD_SHAKE, 0, duration, frequency);
         }
 
+        /// <summary>
+        /// Instantly stops pad shake.
+        /// </summary>
         public static void StopPadShake()
         {
             _padShakeStop = 0;
@@ -125,6 +182,10 @@ namespace FusionLibrary
             Function.Call(Hash.STOP_PAD_SHAKE);
         }
 
+        /// <summary>
+        /// Gets the current game's world <see cref="DateTime"/>.
+        /// </summary>
+        /// <returns></returns>
         private static DateTime GetWorldTime()
         {
             try
@@ -146,6 +207,10 @@ namespace FusionLibrary
             return DateTime.MinValue;
         }
 
+        /// <summary>
+        /// Sets the current game's world <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="time"></param>
         private static void SetWorldTime(DateTime time)
         {
             Function.Call(Hash.SET_CLOCK_DATE, time.Day, time.Month - 1, time.Year);
@@ -205,6 +270,13 @@ namespace FusionLibrary
             return true;
         }
 
+        /// <summary>
+        /// Wraps <paramref name="x"/> between <paramref name="min"/> and <paramref name="max"/>.
+        /// </summary>
+        /// <param name="x">Original value</param>
+        /// <param name="min">Min value</param>
+        /// <param name="max">Max value</param>
+        /// <returns>Wrapped value</returns>
         public static float Wrap(float x, float min, float max)
         {
             float delta = max - min;
@@ -217,36 +289,98 @@ namespace FusionLibrary
             return x + min;
         }
 
+        /// <summary>
+        /// (DO NOT USE) Kept for legacy reasons. Use instead <see cref="MathExtensions.Clamp{T}(T, T, T)"/>.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="max"></param>
+        /// <param name="max2"></param>
+        /// <returns></returns>
         public static float Clamp(float value, float max, float max2)
         {
             return (value * max2) / max;
         }
 
+        /// <summary>
+        /// Linear interpolation between <paramref name="a"/> and <paramref name="b"/> by <paramref name="f"/> value.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="f"></param>
+        /// <returns>Interpolated value</returns>
         public static float Lerp(float a, float b, float f)
         {
             return a + (b - a) * f;
         }
 
+        /// <summary>
+        /// Combination of <see cref="Lerp(float, float, float)"/> and <see cref="Wrap(float, float, float)"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="f"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
         public static float Lerp(float a, float b, float f, float min, float max)
         {
-            return a + f * Wrap(b - a, min, max);
+            return Wrap(Lerp(a, b, f), min, max);
         }
 
+        /// <summary>
+        /// Linear interpolation between <paramref name="a"/> and <paramref name="b"/> by <paramref name="f"/> value.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="f"></param>
+        /// <returns>Interpolated value</returns>
         public static int Lerp(int a, int b, float f)
         {
             return (int)(a + (b - (float)a) * f);
         }
 
+        /// <summary>
+        /// Linear interpolation between <paramref name="a"/> and <paramref name="b"/> by <paramref name="f"/> value.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="f"></param>
+        /// <returns>Interpolated value</returns>
         public static Vector3 Lerp(Vector3 a, Vector3 b, float f)
         {
             return new Vector3() { X = Lerp(a.X, b.X, f), Y = Lerp(a.Y, b.Y, f), Z = Lerp(a.Z, b.Z, f) };
         }
 
+        /// <summary>
+        /// Combination of <see cref="Lerp(float, float, float)"/> and <see cref="Wrap(float, float, float)"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="f"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
         public static Vector3 Lerp(Vector3 a, Vector3 b, float f, float min, float max)
         {
             return new Vector3() { X = Lerp(a.X, b.X, f, min, max), Y = Lerp(a.Y, b.Y, f, min, max), Z = Lerp(a.Z, b.Z, f, min, max) };
         }
 
+        public static Vector3 GetUnitVector(Coordinate coordinate)
+        {
+            switch (coordinate)
+            {
+                case Coordinate.X:
+                    return Vector3.UnitX;
+                case Coordinate.Y:
+                    return Vector3.UnitY;
+                default:
+                    return Vector3.UnitZ;
+            }
+        }
+
+        /// <summary>
+        /// List of wheel's bones.
+        /// </summary>
         public static readonly string[] WheelsBonesNames = new string[8]
         {
             "wheel_lf",
@@ -259,6 +393,11 @@ namespace FusionLibrary
             "wheel_lm2"
         };
 
+        /// <summary>
+        /// Returns the <see cref="WheelId"/> of the given wheel's <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">Wheel's name.</param>
+        /// <returns><see cref="WheelId"/> of the wheel.</returns>
         public static WheelId ConvertWheelNameToID(string name)
         {
             switch (name)
@@ -282,17 +421,37 @@ namespace FusionLibrary
             }
         }
 
-        public static Vehicle CreateMissionTrain(int var, Vector3 pos, bool direction)
+        /// <summary>
+        /// Spawns a train of <paramref name="type"/> and <paramref name="direction"/> at <paramref name="position"/>.
+        /// </summary>
+        /// <param name="type">Type of train.</param>
+        /// <param name="position">Position of the train.</param>
+        /// <param name="direction">Direction of the train.</param>
+        /// <returns><see cref="Vehicle"/> instance of the train.</returns>
+        public static Vehicle CreateMissionTrain(int type, Vector3 position, bool direction)
         {
-            return Function.Call<Vehicle>(Hash.CREATE_MISSION_TRAIN, var, pos.X, pos.Y, pos.Z, direction);
+            return Function.Call<Vehicle>(Hash.CREATE_MISSION_TRAIN, type, position.X, position.Y, position.Z, direction);
         }
 
+        /// <summary>
+        /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
+        /// </summary>
+        /// <param name="vehicle"><see cref="Vehicle"/> owner of the wheel.</param>
+        /// <param name="id"><see cref="WheelId"/> of the wheel.</param>
+        /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(Vehicle vehicle, WheelId id, float height)
         {
             //_SET_HYDRAULIC_STATE
             Function.Call((Hash)0x84EA99C62CB3EF0C, vehicle, id, height);
         }
 
+        /// <summary>
+        /// Parses a <paramref name="raw"/> string trying to retrieve a correct <see cref="DateTime"/> representation.
+        /// </summary>
+        /// <param name="raw">Raw string</param>
+        /// <param name="currentTime">Original <see cref="DateTime"/>.</param>
+        /// <param name="inputType">Returns the <see cref="InputType"/>.</param>
+        /// <returns><see cref="DateTime"/> value; otherwise <c>null</c>.</returns>
         public static DateTime? ParseFromRawString(string raw, DateTime currentTime, out InputType inputType)
         {
             try
@@ -340,16 +499,34 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// Returns the 2D squared distance between <paramref name="entity1"/> and <paramref name="entity2"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an entity.</param>
+        /// <param name="entity2">Instance of an entity.</param>
+        /// <returns>Distance in <c>float</c> between the entities</returns>
         public static float DistanceToSquared2D(Entity entity1, Entity entity2)
         {
             return entity1.Position.DistanceToSquared2D(entity2.Position);
         }
 
-        public static void DrawLine(Vector3 from, Vector3 to, Color col)
+        /// <summary>
+        /// Draws a line.
+        /// </summary>
+        /// <param name="from">First point.</param>
+        /// <param name="to">Second point.</param>
+        /// <param name="color">Color of the line.</param>
+        public static void DrawLine(Vector3 from, Vector3 to, Color color)
         {
-            Function.Call(Hash.DRAW_LINE, from.X, from.Y, from.Z, to.X, to.Y, to.Z, col.R, col.G, col.B, col.A);
+            Function.Call(Hash.DRAW_LINE, from.X, from.Y, from.Z, to.X, to.Y, to.Z, color.R, color.G, color.B, color.A);
         }
 
+        /// <summary>
+        /// Gets the position on ground of the given <paramref name="position"/> with <paramref name="verticalOffset"/>.
+        /// </summary>
+        /// <param name="position">Point in the world.</param>
+        /// <param name="verticalOffset">Z offset.</param>
+        /// <returns>Point on ground.</returns>
         public static Vector3 GetPositionOnGround(Vector3 position, float verticalOffset)
         {
             float result = -1;
@@ -364,6 +541,10 @@ namespace FusionLibrary
             return position;
         }
 
+        /// <summary>
+        /// Gets the position of the waypoint, if any.
+        /// </summary>
+        /// <returns><see cref="Vector3"/> position of the waypoint. Returns <see cref="Vector3.Zero"/> if waypoint is not present.</returns>
         public static Vector3 GetWaypointPosition()
         {
             if (!Game.IsWaypointActive)
@@ -381,6 +562,11 @@ namespace FusionLibrary
             return position;
         }
 
+        /// <summary>
+        /// Check if any door of the <paramref name="vehicle"/> is open.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> if there is at least a door open; otherwise <c>false</c>.</returns>
         public static bool IsAnyDoorOpen(Vehicle vehicle)
         {
             foreach (VehicleDoor door in vehicle.Doors)
@@ -390,6 +576,10 @@ namespace FusionLibrary
             return false;
         }
 
+        /// <summary>
+        /// Checks if current camera is in first person view.
+        /// </summary>
+        /// <returns><c>true</c> if FPV is enabled; otherwise <c>false</c>.</returns>
         public static bool IsCameraInFirstPerson()
         {
             return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);

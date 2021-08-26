@@ -33,6 +33,7 @@ namespace FusionLibrary
 
             AnimatePropsHandler.TickAll();
             AnimateProp.TickAll();
+            InteractionController.TickAll();
             TimeHandler.Tick();
             CustomNativeMenu.ObjectPool.Process();
             CustomNativeMenu.TickAll();

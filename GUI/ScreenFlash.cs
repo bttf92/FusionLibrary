@@ -21,7 +21,8 @@ namespace FusionLibrary
 
         internal static void Tick()
         {
-            if (!IsFlashing) return;
+            if (!IsFlashing)
+                return;
 
             switch (currentStep)
             {

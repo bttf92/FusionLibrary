@@ -8,11 +8,16 @@ namespace FusionLibrary
 {
     public class Decorator
     {
-        public const string DoNotDelete = "FusionProp_DoNotDelete";
+        public const string dDoNotDelete = "FusionProp_DoNotDelete";
+
+        public const string dInteractableEntity = "InteractableEntity";
+        public const string dInteractableId = "InteractableId";
 
         internal static void Initialize()
         {
-            Register(DoNotDelete, DecorType.Bool);
+            Register(dDoNotDelete, DecorType.Bool);
+            Register(dInteractableEntity, DecorType.Bool);
+            Register(dInteractableId, DecorType.Int);
             Lock();
         }
 
@@ -23,10 +28,22 @@ namespace FusionLibrary
             Entity = entity;
         }
 
-        public bool DotNotDelete
+        public bool DoNotDelete
         {
-            get => Exists(DoNotDelete) && GetBool(DoNotDelete);
-            set => SetBool(DoNotDelete, value);
+            get => Exists(dDoNotDelete) && GetBool(dDoNotDelete);
+            set => SetBool(dDoNotDelete, value);
+        }
+
+        public bool InteractableEntity
+        {
+            get => Exists(dInteractableEntity) && GetBool(dInteractableEntity);
+            set => SetBool(dInteractableEntity, value);
+        }
+
+        public int InteractableId
+        {
+            get => GetInt(dInteractableId);
+            set => SetInt(dInteractableId, value);
         }
 
         public bool Exists(string propertyName)

@@ -5,17 +5,30 @@ using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CustomCameraHandler
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public List<CustomCamera> Cameras { get; private set; } = new List<CustomCamera>();
+        /// <summary>
+        /// 
+        /// </summary>
         public int CurrentCameraIndex { get; private set; } = -1;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool CycleCameras { get; set; } = false;
 
         private int _cycleInterval = 10000;
 
         private int _duration = -1;
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int CycleInterval
         {
             get => _cycleInterval;
@@ -33,6 +46,9 @@ namespace FusionLibrary
 
         private int nextChange = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public CustomCamera CurrentCamera
         {
             get
@@ -44,6 +60,15 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="positionOffset"></param>
+        /// <param name="pointAtOffset"></param>
+        /// <param name="fieldOfView"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
         public CustomCamera Add(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
         {
             CustomCamera ret = new CustomCamera(entity, positionOffset, pointAtOffset, fieldOfView, duration);
@@ -53,6 +78,15 @@ namespace FusionLibrary
             return ret;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <param name="positionOffset"></param>
+        /// <param name="pointAtOffset"></param>
+        /// <param name="fieldOfView"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
         public CustomCamera Add(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
         {
             CustomCamera ret = new CustomCamera(vehicle, positionOffset, pointAtOffset, fieldOfView, duration);
@@ -62,6 +96,15 @@ namespace FusionLibrary
             return ret;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <param name="positionBone"></param>
+        /// <param name="pointAtBone"></param>
+        /// <param name="fieldOfView"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
         public CustomCamera Add(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView, int duration = -1)
         {
             CustomCamera ret = new CustomCamera(vehicle, positionBone, pointAtBone, fieldOfView, duration);
@@ -71,6 +114,12 @@ namespace FusionLibrary
             return ret;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="cameraSwitchType"></param>
+        /// <param name="duration"></param>
         public void Show(int index, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant, int duration = -1)
         {
             if (Cameras.Count == 0)
@@ -94,6 +143,10 @@ namespace FusionLibrary
             CurrentCameraIndex = index;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cameraSwitchType"></param>
         public void ShowNext(CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Cameras.Count == 0)
@@ -110,6 +163,10 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cameraSwitchType"></param>
         public void ShowPrevious(CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Cameras.Count == 0)
@@ -126,6 +183,9 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Stop()
         {
             if (CurrentCameraIndex > -1)
@@ -137,6 +197,9 @@ namespace FusionLibrary
             _duration = -1;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Abort()
         {
             Stop();
@@ -149,6 +212,9 @@ namespace FusionLibrary
             World.DestroyAllCameras();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Tick()
         {
             if (CycleCameras)

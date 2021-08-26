@@ -6,14 +6,17 @@ namespace FusionLibrary
 {
     public class InstrumentalButton
     {
+
         public InstrumentalButton(Control control, string tittle)
         {
             Control = control;
             Tittle = tittle;
         }
+
         public Control Control { get; }
         public string Tittle { get; }
     }
+
     public class InstrumentalMenu : ScaleformGui
     {
         private readonly List<InstrumentalButton> _buttonList;
