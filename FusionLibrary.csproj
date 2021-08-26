@@ -31,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\FusionLibrary.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Test%29|AnyCPU'">
     <OutputPath>bin\Release %28Test%29\</OutputPath>
@@ -148,6 +149,7 @@
     ) 
 copy "$(TargetPath)" "%25GTAPath%25\scripts\$(TargetFileName)"
 copy "$(TargetDir)\$(TargetName).pdb" "%25GTAPath%25\scripts\$(TargetName).pdb"
+copy "$(TargetDir)\$(TargetName).xml" "%25GTAPath%25\scripts\$(TargetName).xml"
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>
