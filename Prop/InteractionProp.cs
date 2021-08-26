@@ -7,23 +7,44 @@ namespace FusionLibrary
 {
     public class InteractionProp
     {
+        /// <summary>
+        /// This event is invoked when the <see cref="InteractionProp"/> is completed.
+        /// </summary>
         public event EventHandler<InteractionProp> OnInteractionComplete;
 
         /// <summary>
-        /// Interactable prop.
+        /// Interactable <see cref="FusionLibrary.AnimateProp"/>.
         /// </summary>
         public AnimateProp AnimateProp { get; }
 
+        /// <summary>
+        /// Interaction type of the <see cref="AnimateProp"/>.
+        /// </summary>
         public InteractionType InteractionType { get; }
 
+        /// <summary>
+        /// Control used for this <see cref="InteractionProp"/>.
+        /// </summary>
         public Control Control { get; }
 
+        /// <summary>
+        /// Animation type of the <see cref="InteractionProp"/>.
+        /// </summary>
         public AnimationType MovementType { get; }
 
+        /// <summary>
+        /// Axis for the <see cref="AnimateProp"/> interaction.
+        /// </summary>
         public Coordinate CoordinateInteraction { get; }
 
+        /// <summary>
+        /// Shortcut for <see cref="FusionLibrary.CoordinateSetting"/> of <see cref="AnimateProp"/>.
+        /// </summary>
         private CoordinateSetting CoordinateSetting => AnimateProp[MovementType][AnimationStep.First][CoordinateInteraction];
 
+        /// <summary>
+        /// Current value of <see cref="CoordinateInteraction"/> of the <see cref="AnimateProp"/>.
+        /// </summary>
         public float CurrentValue
         {
             get
@@ -39,8 +60,14 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// ID of this instance in the <see cref="InteractionController"/>.
+        /// </summary>
         public int ID => _controller.InteractionProps.IndexOf(this);
 
+        /// <summary>
+        /// Returns true if this <see cref="AnimateProp"/> is interaction mode.
+        /// </summary>
         public bool IsPlaying { get; private set; }
 
         /// <summary>
@@ -48,10 +75,33 @@ namespace FusionLibrary
         /// </summary>
         private bool _invert;
 
+        /// <summary>
+        /// Sensitivity modifier.
+        /// </summary>
         private float _sensitivity = 14;
 
+        /// <summary>
+        /// Owner of this <see cref="InteractionProp"/>.
+        /// </summary>
         private InteractionController _controller;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="model"></param>
+        /// <param name="entity"></param>
+        /// <param name="boneName"></param>
+        /// <param name="interactionType"></param>
+        /// <param name="movementType"></param>
+        /// <param name="coordinateInteraction"></param>
+        /// <param name="control"></param>
+        /// <param name="invert"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="startValue"></param>
+        /// <param name="step"></param>
+        /// <param name="sensitivityMultiplier"></param>
         internal InteractionProp(InteractionController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float step, float sensitivityMultiplier)
         {
             InteractionType = interactionType;
