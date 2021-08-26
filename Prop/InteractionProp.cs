@@ -1,5 +1,6 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
+using GTA.Math;
 using System;
 using static FusionLibrary.FusionEnums;
 
@@ -38,11 +39,6 @@ namespace FusionLibrary
         public Coordinate CoordinateInteraction { get; }
 
         /// <summary>
-        /// Shortcut for <see cref="FusionLibrary.CoordinateSetting"/> of <see cref="AnimateProp"/>.
-        /// </summary>
-        private CoordinateSetting CoordinateSetting => AnimateProp[MovementType][AnimationStep.First][CoordinateInteraction];
-
-        /// <summary>
         /// Current value of <see cref="CoordinateInteraction"/> of the <see cref="AnimateProp"/>.
         /// </summary>
         public float CurrentValue
@@ -56,9 +52,19 @@ namespace FusionLibrary
                 else
                     value = AnimateProp.CurrentRotation[(int)CoordinateInteraction];
 
-                return value.Remap(CoordinateSetting.Minimum, CoordinateSetting.Maximum, 0, 1);
+                return value.Remap(Min, Max, 0, 1);
             }
         }
+
+        /// <summary>
+        /// Maximum value.
+        /// </summary>
+        public float Max { get; }
+
+        /// <summary>
+        /// Minimum value.
+        /// </summary>
+        public float Min { get; }
 
         /// <summary>
         /// ID of this instance in the <see cref="InteractionController"/>.
@@ -76,6 +82,21 @@ namespace FusionLibrary
         private bool _invert;
 
         /// <summary>
+        /// Shortcut for interaction axis.
+        /// </summary>
+        private Vector3 _axis => FusionUtils.GetUnitVector(CoordinateInteraction);
+
+        /// <summary>
+        /// Current value.
+        /// </summary>
+        private float _currentValue;
+
+        /// <summary>
+        /// New value.
+        /// </summary>
+        private float _toValue;
+
+        /// <summary>
         /// Sensitivity modifier.
         /// </summary>
         private float _sensitivity = 14;
@@ -85,24 +106,7 @@ namespace FusionLibrary
         /// </summary>
         private InteractionController _controller;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="model"></param>
-        /// <param name="entity"></param>
-        /// <param name="boneName"></param>
-        /// <param name="interactionType"></param>
-        /// <param name="movementType"></param>
-        /// <param name="coordinateInteraction"></param>
-        /// <param name="control"></param>
-        /// <param name="invert"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <param name="startValue"></param>
-        /// <param name="step"></param>
-        /// <param name="sensitivityMultiplier"></param>
-        internal InteractionProp(InteractionController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float step, float sensitivityMultiplier)
+        internal InteractionProp(InteractionController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier)
         {
             InteractionType = interactionType;
             CoordinateInteraction = coordinateInteraction;
@@ -111,19 +115,19 @@ namespace FusionLibrary
 
             _controller = controller;
             _invert = invert;
+            _currentValue = startValue;
+            _toValue = startValue;
             _sensitivity *= sensitivityMultiplier;
 
             AnimateProp = new AnimateProp(model, entity, boneName);
 
-            CoordinateSetting.Setup(true, true, min, max, 1, step, 1);
-            
-            if (startValue != 0)
-            {
-                if (movementType == AnimationType.Offset)
-                    AnimateProp.setOffset(CoordinateInteraction, startValue);
-                else
-                    AnimateProp.setRotation(CoordinateInteraction, startValue);
-            }
+            Min = min;
+            Max = max;
+
+            if (movementType == AnimationType.Offset)
+                AnimateProp.setOffset(CoordinateInteraction, startValue);
+            else
+                AnimateProp.setRotation(CoordinateInteraction, startValue);
 
             AnimateProp.SpawnProp();
 
@@ -154,27 +158,18 @@ namespace FusionLibrary
         }
 
         private void UpdateLeverAnimation()
-        {
-            float controlValue = Game.GetControlValueNormalized(Control) * _sensitivity;
+        {            
+            var controlInput = Game.GetControlValueNormalized(Control);
 
             if (_invert)
-            {
-                if (controlValue > 0 && CoordinateSetting.IsIncreasing)
-                    CoordinateSetting.IsIncreasing = false;
+                controlInput *= -1;
 
-                if (controlValue < 0 && !CoordinateSetting.IsIncreasing)
-                    CoordinateSetting.IsIncreasing = true;
-            }
-            else
-            {
-                if (controlValue > 0 && !CoordinateSetting.IsIncreasing)
-                    CoordinateSetting.IsIncreasing = true;
+            _toValue += controlInput * _sensitivity;
+            _toValue = _toValue.Clamp(Min, Max);
 
-                if (controlValue < 0 && CoordinateSetting.IsIncreasing)
-                    CoordinateSetting.IsIncreasing = false;
-            }
+            _currentValue = FusionUtils.Lerp(_currentValue, (int)_toValue, 0.1f);
 
-            CoordinateSetting.StepRatio = Math.Abs(controlValue);
+            AnimateProp.SecondRotation = _axis * _currentValue;
         }
 
         internal void Stop()

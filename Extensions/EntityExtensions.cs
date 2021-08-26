@@ -149,7 +149,21 @@ namespace FusionLibrary.Extensions
         /// <returns><see cref="AlphaLevel"/> of <paramref name="entity"/></returns>
         public static AlphaLevel GetAlpha(this Entity entity)
         {
-            return (AlphaLevel)Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
+            int value = Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
+
+            if (value < (int)AlphaLevel.L1)
+                return AlphaLevel.L0;
+
+            if (value < (int)AlphaLevel.L2)
+                return AlphaLevel.L1;
+
+            if (value < (int)AlphaLevel.L3)
+                return AlphaLevel.L2;
+
+            if (value < (int)AlphaLevel.L4)
+                return AlphaLevel.L4;
+
+            return AlphaLevel.L5;
         }
 
         /// <summary>

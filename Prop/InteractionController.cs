@@ -74,14 +74,13 @@ namespace FusionLibrary
         /// <param name="min">Minimum value.</param>
         /// <param name="max">Maximum value.</param>
         /// <param name="startValue">Starting value.</param>
-        /// <param name="step">Step value.</param>
         /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>
         /// <returns>New instance of <see cref="InteractionProp"/>.</returns>
-        public InteractionProp Add(CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float step = 1f, float sensitivityMultiplier = 1f)
+        public InteractionProp Add(CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
         {
             InteractionProp interactionProp;
 
-            InteractionProps.Add(interactionProp = new InteractionProp(this, model, entity, boneName, interactionType, movementType, coordinateInteraction, control, invert, min, max, startValue, step, sensitivityMultiplier));
+            InteractionProps.Add(interactionProp = new InteractionProp(this, model, entity, boneName, interactionType, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier));
 
             interactionProp.OnInteractionComplete += InteractionProp_OnInteractionComplete;
 
@@ -94,8 +93,6 @@ namespace FusionLibrary
         private void InteractionProp_OnInteractionComplete(object sender, InteractionProp e)
         {
             OnInteractionComplete?.Invoke(sender, e);
-
-            StopAnimation();
         }
 
         public void Dispose()
@@ -113,7 +110,8 @@ namespace FusionLibrary
 
         public void Stop()
         {
-            StopAnimation();
+            StopInteraction();
+            StopHover();
 
             IsPlaying = false;
         }
@@ -152,15 +150,17 @@ namespace FusionLibrary
 
                     CurrentInteractionIndex = id;
                     CurrentInteractionProp?.Play();
-                }
+                } 
+                else if (Game.IsControlJustReleased(Control.Attack))
+                    StopHover();
             }
-            else if (!Game.IsControlPressed(Control.Attack))
-                StopAnimation();
-
+            else if (Game.IsControlJustReleased(Control.Attack))
+                StopInteraction();
+            
             CurrentInteractionProp?.Tick();
         }
 
-        private void StopAnimation()
+        private void StopInteraction()
         {
             if (CurrentInteractionIndex == -1)
                 return;
