@@ -59,7 +59,7 @@ namespace FusionLibrary
         /// <summary>
         /// ID of this <see cref="InteractiveProp"/> in the <see cref="InteractiveController"/>.
         /// </summary>
-        public int ID => _controller.InteractiveProps.IndexOf(this);
+        public int ID => AnimateProp.Prop.Decorator().InteractableId;
 
         /// <summary>
         /// Returns true if this <see cref="AnimateProp"/> is interaction mode.
