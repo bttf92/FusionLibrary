@@ -41,6 +41,10 @@ namespace FusionLibrary
         /// </summary>
         public Coordinate Coordinate { get; }
 
+        public bool UseAltControl { get; set; }
+
+        public Control AltControl { get; set; }
+
         /// <summary>
         /// Current value of axis <see cref="Coordinate"/> of the <see cref="AnimateProp"/>, remapped between 0 and 1.
         /// </summary>
@@ -66,6 +70,7 @@ namespace FusionLibrary
         /// </summary>
         public bool IsPlaying { get; private set; }
 
+        private bool _altInvert;
         private bool _invert;
         private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
         private float _currentValue;
@@ -111,6 +116,12 @@ namespace FusionLibrary
             AnimateProp[MovementType][AnimationStep.First][Coordinate].Setup(true, isIncreasing, Min, Max, 1, step, stepRatio);
 
             _buttonOk = true;
+        }
+
+        public void SetupAltControl(Control control, bool invert)
+        {
+            AltControl = control;
+            _altInvert = invert;
         }
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
@@ -174,14 +185,14 @@ namespace FusionLibrary
 
                 float controlInput;
 
-                int _control = (int)Control;
+                int _control = UseAltControl ? (int)AltControl : (int)Control;
 
                 if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
-                    controlInput = Game.GetDisabledControlValueNormalized(Control);
+                    controlInput = Game.GetDisabledControlValueNormalized((Control)_control);
                 else
-                    controlInput = Game.GetControlValueNormalized(Control);
+                    controlInput = Game.GetControlValueNormalized((Control)_control);
 
-                if (!_invert)
+                if ((!UseAltControl && _invert) || (UseAltControl && _altInvert))
                     controlInput *= -1;
 
                 _toValue += controlInput * _sensitivity;

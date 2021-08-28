@@ -63,6 +63,19 @@ namespace FusionLibrary
             }
         }
 
+        public bool UseAltControl 
+        { 
+            get
+            {
+                return InteractiveProps[0].UseAltControl;
+            } 
+            set
+            {
+                for (int i = 0; i < InteractiveProps.Count; i++)
+                    InteractiveProps[i].UseAltControl = value;
+            }
+        }
+
         /// <summary>
         /// ID for hover <see cref="InteractiveProp"/>.
         /// </summary>
