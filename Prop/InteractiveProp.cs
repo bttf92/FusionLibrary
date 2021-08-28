@@ -41,8 +41,14 @@ namespace FusionLibrary
         /// </summary>
         public Coordinate Coordinate { get; }
 
+        /// <summary>
+        /// Gets or sets if alternate controls must be used.
+        /// </summary>
         public bool UseAltControl { get; set; }
 
+        /// <summary>
+        /// Alternate <see cref="GTA.Control"/> used while <see cref="UseAltControl"/> is <c>true</c>.
+        /// </summary>
         public Control AltControl { get; set; }
 
         /// <summary>
@@ -70,6 +76,7 @@ namespace FusionLibrary
         /// </summary>
         public bool IsPlaying { get; private set; }
 
+        private bool _altSetup;
         private bool _altInvert;
         private bool _invert;
         private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
@@ -122,6 +129,8 @@ namespace FusionLibrary
         {
             AltControl = control;
             _altInvert = invert;
+
+            _altSetup = true;
         }
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
@@ -185,14 +194,14 @@ namespace FusionLibrary
 
                 float controlInput;
 
-                int _control = UseAltControl ? (int)AltControl : (int)Control;
+                int _control = _altSetup && UseAltControl ? (int)AltControl : (int)Control;
 
                 if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
                     controlInput = Game.GetDisabledControlValueNormalized((Control)_control);
                 else
                     controlInput = Game.GetControlValueNormalized((Control)_control);
 
-                if ((!UseAltControl && _invert) || (UseAltControl && _altInvert))
+                if ((!UseAltControl && _invert) || (UseAltControl && _altSetup && _altInvert))
                     controlInput *= -1;
 
                 _toValue += controlInput * _sensitivity;

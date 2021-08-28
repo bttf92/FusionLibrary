@@ -63,6 +63,9 @@ namespace FusionLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets if alternate controls must be used for all the <see cref="InteractiveProp"/>s.
+        /// </summary>
         public bool UseAltControl 
         { 
             get
