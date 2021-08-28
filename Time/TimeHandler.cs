@@ -12,7 +12,7 @@ namespace FusionLibrary
 
     public class TimeHandler
     {
-        public static List<Vehicle> UsedVehiclesByPlayer = new List<Vehicle>();
+        public static List<Vehicle> UsedVehiclesByPlayer { get; } = new List<Vehicle>();
         private static List<Vehicle> RemoveUsedVehicle = new List<Vehicle>();
 
         public static OnTimeChanged OnTimeChanged;

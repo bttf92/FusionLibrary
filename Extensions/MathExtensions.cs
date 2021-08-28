@@ -9,11 +9,27 @@ namespace FusionLibrary.Extensions
 {
     public static class MathExtensions
     {
+
+        /// <summary>
+        /// Returns a random <see cref="Double"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>.
+        /// </summary>
+        /// <param name="random">Instance of a <see cref="System.Random"/>.</param>
+        /// <param name="minValue">Minimum value.</param>
+        /// <param name="maxValue">Maximum value.</param>
+        /// <returns>Random value.</returns>
         public static double NextDouble(this Random random, double minValue, double maxValue)
         {
             return random.NextDouble() * (maxValue - minValue) + minValue;
         }
 
+        /// <summary>
+        /// Returns a random <see cref="int"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>. Ignoring <paramref name="except"/> value.
+        /// </summary>
+        /// <param name="random">Instance of a <see cref="System.Random"/>.</param>
+        /// <param name="minValue">Minimum value.</param>
+        /// <param name="maxValue">Maximum value.</param>
+        /// <param name="except">Value to be ignored.</param>
+        /// <returns>Random value.</returns>
         public static int NextExcept(this Random random, int minValue, int maxValue, int except)
         {
             int ret;
@@ -26,6 +42,14 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
+        /// <summary>
+        /// Returns a random <see cref="int"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>. Ignoring <paramref name="except"/> values.
+        /// </summary>
+        /// <param name="random">Instance of a <see cref="System.Random"/>.</param>
+        /// <param name="minValue">Minimum value.</param>
+        /// <param name="maxValue">Maximum value.</param>
+        /// <param name="except">Values to be ignored.</param>
+        /// <returns>Random value.</returns>
         public static int NextExcept(this Random random, int minValue, int maxValue, List<int> except)
         {
             int ret;
@@ -75,16 +99,29 @@ namespace FusionLibrary.Extensions
             return value * ((float)Math.PI / 180);
         }
 
+        /// <summary>
+        /// Requests ground collisions at <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">Position.</param>
         public static void RequestCollision(this Vector3 position)
         {
             Function.Call(Hash.REQUEST_COLLISION_AT_COORD, position.X, position.Y, position.Z);
         }
 
+        /// <summary>
+        /// Loads game's world at <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">Position.</param>
         public static void LoadScene(this Vector3 position)
         {
             Function.Call(Hash.NEW_LOAD_SCENE_START, position.X, position.Y, position.Z, 0.0f, 0.0f, 0.0f, 20.0f, 0);
         }
 
+        /// <summary>
+        /// Sets the Z coordinate of <paramref name="position"/> to the ground height.
+        /// </summary>
+        /// <param name="position">Original position.</param>
+        /// <returns>Position with Z set to ground height.</returns>
         public static Vector3 SetToGroundHeight(this Vector3 position)
         {
             position.Z = World.GetGroundHeight(position);
@@ -99,6 +136,12 @@ namespace FusionLibrary.Extensions
             return dst;
         }
 
+        /// <summary>
+        /// Returns the direction <see cref="Vector3"/> from <paramref name="src"/> to <paramref name="dst"/>.
+        /// </summary>
+        /// <param name="src">Start point.</param>
+        /// <param name="dst">End point.</param>
+        /// <returns>Direction from start to end point.</returns>
         public static Vector3 GetDirectionTo(this Vector3 src, Vector3 dst)
         {
             Vector3 ret = Vector3.Subtract(dst, src);
@@ -220,6 +263,12 @@ namespace FusionLibrary.Extensions
             return hour >= hourStart && hour <= hourEnd && src.Minute >= start.Minute && src.Minute <= end.Minute && src.Second >= start.Second && src.Second <= end.Second;
         }
 
+        /// <summary>
+        /// Converts a <see cref="Vector3"/> direction to a <see cref="Vector3"/> rotation with <paramref name="roll"/>.
+        /// </summary>
+        /// <param name="dir">Direction vector.</param>
+        /// <param name="roll">Roll.</param>
+        /// <returns>Rotation vector.</returns>
         public static Vector3 DirectionToRotation(this Vector3 dir, float roll)
         {
             dir.Normalize();

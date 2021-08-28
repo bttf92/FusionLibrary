@@ -138,6 +138,22 @@ namespace FusionLibrary
             IsPlaying = true;
         }
 
+        /// <summary>
+        /// Sets value of axis <see cref="Coordinate"/> of the <see cref="AnimateProp"/>.
+        /// </summary>
+        /// <param name="value">Value in 0.0 - 1.0 range</param>
+        public void SetValue(float value)
+        {
+            if (InteractionType != InteractionType.Lever)
+                return;
+
+            _toValue = value.Clamp(0, 1).Remap(0, 1, Min, Max);
+
+            _currentValue = FusionUtils.Lerp(_currentValue, (int)_toValue, 0.1f);
+
+            AnimateProp.SecondRotation = _axis * _currentValue;
+        }
+
         internal void Tick()
         {
             if (!IsPlaying || InteractionType != InteractionType.Lever)
@@ -148,19 +164,22 @@ namespace FusionLibrary
 
         private void UpdateLeverAnimation()
         {
-            Game.DisableControlThisFrame(Control.LookUpDown);
-            Game.DisableControlThisFrame(Control.LookLeftRight);
-
+            if (_controller.LockCamera)
+            {
+                Game.DisableControlThisFrame(Control.LookUpDown);
+                Game.DisableControlThisFrame(Control.LookLeftRight);
+            }
+            
             float controlInput;
 
             int _control = (int)Control;
 
-            if ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273))
+            if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
                 controlInput = Game.GetDisabledControlValueNormalized(Control);
             else
                 controlInput = Game.GetControlValueNormalized(Control);
 
-            if (_invert)
+            if (!_invert)
                 controlInput *= -1;
 
             _toValue += controlInput * _sensitivity;

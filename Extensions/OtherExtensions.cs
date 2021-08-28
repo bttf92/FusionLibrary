@@ -25,11 +25,22 @@ namespace FusionLibrary.Extensions
             Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, true, rotation.X, rotation.Y, rotation.Z, position.X, position.Y, position.Z, true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public static (float width, float height, float depth) GetSize(this Model model)
         {
             return (model.GetSize(Coordinate.Y), model.GetSize(Coordinate.Z), model.GetSize(Coordinate.Z));
         }
 
+        /// <summary>
+        /// Returns <see cref="Coordinate"/> dimension of <paramref name="model"/>.
+        /// </summary>
+        /// <param name="model">Instance of a <see cref="Model"/></param>
+        /// <param name="coordinate">Axis.</param>
+        /// <returns>Dimension.</returns>
         public static float GetSize(this Model model, Coordinate coordinate)
         {
             (Vector3 rearBottomLeft, Vector3 frontTopRight) = model.Dimensions;
@@ -37,6 +48,12 @@ namespace FusionLibrary.Extensions
             return Math.Abs(frontTopRight[(int)coordinate] - rearBottomLeft[(int)coordinate]);
         }
 
+        /// <summary>
+        /// Splits a string in parts of length <paramref name="partLength"/>.
+        /// </summary>
+        /// <param name="s">String that needs to be splitted.</param>
+        /// <param name="partLength">Length of the part.</param>
+        /// <returns><see cref="IEnumerable{String}"/> of splitted parts.</returns>
         public static IEnumerable<string> SplitInParts(this string s, int partLength)
         {
             if (s == null)

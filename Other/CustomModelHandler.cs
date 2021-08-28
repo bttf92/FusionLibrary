@@ -58,11 +58,7 @@ namespace FusionLibrary
     {
         protected static CustomModel PreloadModel(CustomModel customModel)
         {
-            LoadingPrompt.Show("Loading: " + customModel);
-
             customModel.Request();
-
-            LoadingPrompt.Hide();
 
             return customModel;
         }

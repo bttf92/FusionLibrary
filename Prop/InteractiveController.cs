@@ -40,6 +40,11 @@ namespace FusionLibrary
         public bool IsPlaying { get; private set; }
 
         /// <summary>
+        /// Gets or sets if camera should be locked while interacting with <see cref="InteractiveProp"/>.
+        /// </summary>
+        public bool LockCamera { get; set; }
+
+        /// <summary>
         /// Returns the selected <see cref="InteractiveProp"/>.
         /// </summary>
         public InteractiveProp CurrentInteractiveProp
@@ -59,10 +64,13 @@ namespace FusionLibrary
         private int _hoverId = -1;
 
         /// <summary>
-        /// 
+        /// Creates a new instance of <see cref="InteractiveController"/>.
         /// </summary>
-        public InteractiveController()
-        {
+        /// <param name="lockCamera">If camera should be locked while interacting with <see cref="InteractiveProp"/>.</param>
+        public InteractiveController(bool lockCamera = false)
+        {            
+            LockCamera = lockCamera;
+
             GlobalInteractiveControllerList.Add(this);
         }
 
@@ -145,7 +153,12 @@ namespace FusionLibrary
                     return;
                 }
 
-                RaycastResult raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
+                RaycastResult raycast;
+
+                if (GameplayCamera.IsRendering)
+                    raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
+                else
+                    raycast = World.Raycast(World.RenderingCamera.Position, World.RenderingCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
 
                 if (!raycast.DidHit || !raycast.HitEntity.NotNullAndExists() || raycast.HitEntity.Decorator().InteractableEntity == false)
                 {

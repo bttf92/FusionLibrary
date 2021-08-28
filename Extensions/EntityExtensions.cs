@@ -187,6 +187,11 @@ namespace FusionLibrary.Extensions
             return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> has any task active.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if a task is active; otherwise <c>false</c>.</returns>
         public static bool IsAnyTaskActive(this Ped ped)
         {
             foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
@@ -196,6 +201,11 @@ namespace FusionLibrary.Extensions
             return false;
         }
 
+        /// <summary>
+        /// Returns a list of current active tasks of <paramref name="ped"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns>List of <see cref="TaskType"/>.</returns>
         public static List<TaskType> GetActiveTasks(this Ped ped)
         {
             List<TaskType> ret = new List<TaskType>();
@@ -207,21 +217,64 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
+        /// <summary>
+        /// Rerturns the closest <see cref="Vehicle"/> in <paramref name="radius"/> of <paramref name="ped"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <param name="radius">Radius of the area to check.</param>
+        /// <returns>Instance of the closest <see cref="Vehicle"/>.</returns>
         public static Vehicle GetClosestVehicle(this Ped ped, float radius = 10)
         {
             return World.GetClosestVehicle(ped.Position, radius);
         }
 
+        /// <summary>
+        /// Returns the <see cref="Vehicle"/> that the <paramref name="ped"/> is currently entering.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns>Instance of the <see cref="Vehicle"/>.</returns>
         public static Vehicle GetEnteringVehicle(this Ped ped)
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_ENTERING, ped);
         }
 
+        /// <summary>
+        /// Returns the <see cref="Vehicle"/> that the <paramref name="ped"/> is currently using.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns>Instance of the <see cref="Vehicle"/>.</returns>
         public static Vehicle GetUsingVehicle(this Ped ped)
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
         }
 
+        /// <summary>
+        /// Gets the street's informations from <see cref="Vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><see cref="Hash"/> of the street and crossing, and names of them.</returns>
+        public static (Hash Street, string StreetName, Hash Crossing, string CrossingStreetName) GetStreetInfo(this Vehicle vehicle)
+        {
+            Hash street;
+            Hash cross;
+
+            unsafe
+            {
+                Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, &street, &cross);
+            }
+
+            string crossName;
+
+            string streetName = World.GetStreetName(vehicle.Position, out crossName);
+
+            return (street, streetName, cross, crossName);
+        }
+
+        /// <summary>
+        /// (DO NOT USE) Kept for legacy reasons. Use instead <see cref="EntityExtensions.GetStreetInfo(Vehicle)"/>.
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         public static Hash GetStreetHash(this Vehicle vehicle)
         {
             Hash street;
@@ -235,6 +288,11 @@ namespace FusionLibrary.Extensions
             return street;
         }
 
+        /// <summary>
+        /// (DO NOT USE) Kept for legacy reasons. Use instead <see cref="EntityExtensions.GetStreetInfo(Vehicle)"/>.
+        /// </summary>
+        /// <param name="vehicle"></param>
+        /// <returns></returns>
         public static Hash GetCrossingHash(this Vehicle vehicle)
         {
             Hash street;
@@ -268,21 +326,41 @@ namespace FusionLibrary.Extensions
             Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped, position.X, position.Y, position.Z, speed, timeout, heading, distanceToSlide);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> is inside a <see cref="Vehicle"/>, not entering or exiting.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> is inside a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
         public static bool IsFullyInVehicle(this Ped ped)
         {
             return ped.IsSittingInVehicle() && !ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> is outside a <see cref="Vehicle"/>, not entering or exiting.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> is outside a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
         public static bool IsFullyOutVehicle(this Ped ped)
         {
             return ped.CurrentVehicle == null && !ped.IsTaskActive(TaskType.ExitVehicle) && !ped.IsTaskActive(TaskType.EnterVehicle);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> is entering a <see cref="Vehicle"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> is entering a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
         public static bool IsEnteringVehicle(this Ped ped)
         {
             return !ped.IsSittingInVehicle() && ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="ped"/> is exiting a <see cref="Vehicle"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns><c>true</c> if <paramref name="ped"/> is exiting a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
         public static bool IsLeavingVehicle(this Ped ped)
         {
             return !IsFullyOutVehicle(ped) && ped.IsTaskActive(TaskType.ExitVehicle);
@@ -313,31 +391,63 @@ namespace FusionLibrary.Extensions
             AttachToPhysically(entity1, toEntity, toEntity.Bones[boneName].Index, offset, rotation);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="entity"/> is entirely inside the <paramref name="garage"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="garage"><see cref="GarageDoor"/> hash.</param>
+        /// <returns><c>true</c> if <paramref name="entity"/> is entirely inside <paramref name="garage"/>; otherwise <c>false</c>.</returns>
         public static bool IsEntirelyInGarage(this Entity entity, GarageDoor garage)
         {
             return Function.Call<bool>(Hash.IS_OBJECT_ENTIRELY_INSIDE_GARAGE, garage, entity, 0, 0);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="entity"/> is partially inside the <paramref name="garage"/>.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="garage"><see cref="GarageDoor"/> hash.</param>
+        /// <returns><c>true</c> if <paramref name="entity"/> is partially inside <paramref name="garage"/>; otherwise <c>false</c>.</returns>
         public static bool IsPartiallyInGarage(this Entity entity, GarageDoor garage)
         {
             return Function.Call<bool>(Hash.IS_OBJECT_PARTIALLY_INSIDE_GARAGE, garage, entity, 0);
         }
 
+        /// <summary>
+        /// Toggles reduced grip for <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="state">State of the toggle.</param>
         public static void SetReduceGrip(this Vehicle vehicle, bool state)
         {
             Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP, vehicle, state);
         }
 
+        /// <summary>
+        /// Gets the kinetic enegery of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>Kinetic enegery of <paramref name="vehicle"/>.</returns>
         public static float GetKineticEnergy(this Vehicle vehicle)
         {
             return 0.5f * HandlingData.GetByVehicleModel(vehicle.Model).Mass * (float)Math.Pow(vehicle.Speed, 2);
         }
 
+        /// <summary>
+        /// Clones the <paramref name="vehicle"/> using <see cref="VehicleReplica"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>Instance of <see cref="VehicleReplica"/>.</returns>
         public static VehicleReplica Clone(this Vehicle vehicle)
         {
             return new VehicleReplica(vehicle);
         }
 
+        /// <summary>
+        /// Teleports <paramref name="vehicle"/> to the <paramref name="position"/>, maintaining the height from ground.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="position">Destination position.</param>
         public static void TeleportTo(this Vehicle vehicle, Vector3 position)
         {
             position = vehicle.Position.TransferHeight(position);
@@ -346,6 +456,11 @@ namespace FusionLibrary.Extensions
             vehicle.Position = position;
         }
 
+        /// <summary>
+        /// Toggles visible, collisions and engine states of <paramref name="vehicle"/>. Hides\unhides also passengers.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <paramref name="vehicle"/>.</param>
+        /// <param name="isVisible">State.</param>
         public static void SetVisible(this Vehicle vehicle, bool isVisible)
         {
             vehicle.IsVisible = isVisible;
@@ -360,6 +475,11 @@ namespace FusionLibrary.Extensions
             }
         }
 
+        /// <summary>
+        /// Checks if <paramref name="vehicle"/> is being driven by <see cref="Player"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> if <paramref name="vehicle"/> is being driven by <see cref="Player"/>; otherwise <c>false</c>.</returns>
         public static bool IsPlayerDriving(this Vehicle vehicle)
         {
             return vehicle.IsFunctioning() && FusionUtils.PlayerVehicle == vehicle && FusionUtils.PlayerPed.SeatIndex == VehicleSeat.Driver;
@@ -370,31 +490,61 @@ namespace FusionLibrary.Extensions
             return vehicle.Model == FusionUtils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
         }
 
+        /// <summary>
+        /// Gets the speed in MPH of the <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>Speed in MPH.</returns>
         public static float GetMPHSpeed(this Vehicle vehicle)
         {
             return vehicle.Speed.ToMPH();
         }
 
+        /// <summary>
+        /// Sets speed in MPH of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="value">Speed in MPH.</param>
         public static void SetMPHSpeed(this Vehicle vehicle, float value)
         {
             vehicle.ForwardSpeed = value.ToMS();
         }
 
+        /// <summary>
+        /// Checks if <paramref name="vehicle"/> can theoretically hover transform.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> if <paramref name="vehicle"/> can theoretically hover transform; otherwise <c>false</c>.</returns>
         public static bool CanHoverTransform(this Vehicle vehicle)
         {
             return (vehicle.Bones["misc_a"].Index != 0 && vehicle.Bones["misc_b"].Index != -1 && vehicle.Bones["misc_c"].Index != 0 && vehicle.Bones["misc_e"].Index != -1 && vehicle.Bones["misc_q"].Index != -1 && vehicle.Bones["misc_s"].Index != -1 && vehicle.Bones["misc_z"].Index != -1);
         }
 
+        /// <summary>
+        /// Sets lights brightness of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="brightness">Value of brightness.</param>
         public static void SetLightsBrightness(this Vehicle vehicle, float brightness)
         {
             Function.Call(Hash.SET_VEHICLE_LIGHT_MULTIPLIER, vehicle, brightness);
         }
 
+        /// <summary>
+        /// Checks if two vehicles are pointed in the same direction.
+        /// </summary>
+        /// <param name="vehicle">First instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="vehicle1">Second instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> the direction is the same; otherwise <c>false</c>.</returns>
         public static bool SameDirection(this Vehicle vehicle, Vehicle vehicle1)
         {
             return vehicle.Rotation.Z.Near(vehicle1.Rotation.Z);
         }
 
+        /// <summary>
+        /// Deletes <paramref name="vehicle"/> and every <see cref="Ped"/> passenger.
+        /// </summary>
+        /// <param name="vehicle"><see cref="Vehicle"/> to be deleted.</param>
         public static void DeleteCompletely(this Vehicle vehicle)
         {
             if (vehicle.NotNullAndExists())
@@ -405,17 +555,33 @@ namespace FusionLibrary.Extensions
             vehicle?.Delete();
         }
 
+        /// <summary>
+        /// Checks if <paramref name="vehicle"/> is not null, exists and is alive.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns></returns>
         public static bool IsFunctioning(this Vehicle vehicle)
         {
             return vehicle.NotNullAndExists() && vehicle.IsAlive && !vehicle.IsDead;
         }
 
+        /// <summary>
+        /// Sets <see cref="LightsMode"/> of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="lightsMode"><see cref="LightsMode"/> to be applied.</param>
         public static void SetLightsMode(this Vehicle vehicle, LightsMode lightsMode)
         {
             Function.Call(Hash._SET_VEHICLE_LIGHTS_MODE, vehicle, lightsMode);
             Function.Call(Hash.SET_VEHICLE_LIGHTS, vehicle, lightsMode);
         }
 
+        /// <summary>
+        /// Gets if headlights and high beams <paramref name="vehicle"/> are on or off.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="lightsOn"></param>
+        /// <param name="highbeamsOn"></param>
         public static void GetLightsState(this Vehicle vehicle, out bool lightsOn, out bool highbeamsOn)
         {
             bool _lightsOn;
@@ -430,6 +596,12 @@ namespace FusionLibrary.Extensions
             highbeamsOn = _highbeamsOn;
         }
 
+        /// <summary>
+        /// Decreases speed of <paramref name="vehicle"/> of <paramref name="by"/> value.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="by">Value substracted to speed.</param>
+        /// <returns><c>true</c> if speed is almost zero; otherwise <c>false</c>.</returns>
         public static bool DecreaseSpeedAndWait(this Vehicle vehicle, float by = 20)
         {
             Vector3 vel = vehicle.RelativeVelocity();
