@@ -115,6 +115,12 @@ namespace FusionLibrary
             AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
 
+        /// <summary>
+        /// Setups the button behaviours of this <see cref="InteractiveProp"/>.
+        /// </summary>
+        /// <param name="step">Step of the animation.</param>
+        /// <param name="stepRatio">Step ratio of the animation.</param>
+        /// <param name="isIncreasing">If new value should increase or not.</param>
         public void SetupButton(float step, float stepRatio, bool isIncreasing)
         {
             if (InteractionType != InteractionType.Button)
@@ -125,6 +131,11 @@ namespace FusionLibrary
             _buttonOk = true;
         }
 
+        /// <summary>
+        /// Setups the alternate control for this <see cref="InteractiveProp"/>.
+        /// </summary>
+        /// <param name="control">Alternate <see cref="GTA.Control"/>.</param>
+        /// <param name="invert">Inverts the reading of the <paramref name="control"/> value.</param>
         public void SetupAltControl(Control control, bool invert)
         {
             AltControl = control;
