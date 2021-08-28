@@ -156,7 +156,7 @@ namespace FusionLibrary
 
         internal void Tick()
         {
-            if (!IsPlaying || InteractionType != InteractionType.Lever)
+            if ((!_controller.SmoothRelease && !IsPlaying) || InteractionType != InteractionType.Lever)
                 return;
 
             UpdateLeverAnimation();
@@ -164,26 +164,29 @@ namespace FusionLibrary
 
         private void UpdateLeverAnimation()
         {
-            if (_controller.LockCamera)
+            if (IsPlaying)
             {
-                Game.DisableControlThisFrame(Control.LookUpDown);
-                Game.DisableControlThisFrame(Control.LookLeftRight);
+                if (_controller.LockCamera)
+                {
+                    Game.DisableControlThisFrame(Control.LookUpDown);
+                    Game.DisableControlThisFrame(Control.LookLeftRight);
+                }
+
+                float controlInput;
+
+                int _control = (int)Control;
+
+                if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
+                    controlInput = Game.GetDisabledControlValueNormalized(Control);
+                else
+                    controlInput = Game.GetControlValueNormalized(Control);
+
+                if (!_invert)
+                    controlInput *= -1;
+
+                _toValue += controlInput * _sensitivity;
+                _toValue = _toValue.Clamp(Min, Max);
             }
-            
-            float controlInput;
-
-            int _control = (int)Control;
-
-            if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
-                controlInput = Game.GetDisabledControlValueNormalized(Control);
-            else
-                controlInput = Game.GetControlValueNormalized(Control);
-
-            if (!_invert)
-                controlInput *= -1;
-
-            _toValue += controlInput * _sensitivity;
-            _toValue = _toValue.Clamp(Min, Max);
 
             _currentValue = FusionUtils.Lerp(_currentValue, (int)_toValue, 0.1f);
 

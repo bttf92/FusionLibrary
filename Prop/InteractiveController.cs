@@ -45,6 +45,11 @@ namespace FusionLibrary
         public bool LockCamera { get; set; }
 
         /// <summary>
+        /// Gets or sets if release of a lever should be smoothed.
+        /// </summary>
+        public bool SmoothRelease { get; set; }
+
+        /// <summary>
         /// Returns the selected <see cref="InteractiveProp"/>.
         /// </summary>
         public InteractiveProp CurrentInteractiveProp
@@ -67,9 +72,11 @@ namespace FusionLibrary
         /// Creates a new instance of <see cref="InteractiveController"/>.
         /// </summary>
         /// <param name="lockCamera">If camera should be locked while interacting with <see cref="InteractiveProp"/>.</param>
-        public InteractiveController(bool lockCamera = false)
+        /// <param name="smoothRelease">if release of a lever should be smoothed.</param>
+        public InteractiveController(bool lockCamera = false, bool smoothRelease = false)
         {            
             LockCamera = lockCamera;
+            SmoothRelease = smoothRelease;
 
             GlobalInteractiveControllerList.Add(this);
         }
@@ -144,6 +151,17 @@ namespace FusionLibrary
             if (!IsPlaying)
                 return;
 
+            UpdateInteraction();
+
+            if (SmoothRelease)
+                for (int i = 0; i < InteractiveProps.Count; i++)
+                    InteractiveProps[i].Tick();
+            else
+                CurrentInteractiveProp?.Tick();
+        }
+
+        private void UpdateInteraction()
+        {
             if (CurrentInteractiveID == -1)
             {
                 if (FusionUtils.PlayerPed.Weapons.Current.Model != 0)
@@ -191,8 +209,6 @@ namespace FusionLibrary
             }
             else if (Game.IsControlJustReleased(Control.Attack) || FusionUtils.PlayerPed.Weapons.Current.Model != 0)
                 StopInteraction();
-
-            CurrentInteractiveProp?.Tick();
         }
 
         private void StopInteraction()
