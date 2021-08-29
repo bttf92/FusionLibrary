@@ -50,6 +50,11 @@ namespace FusionLibrary
         public bool SmoothRelease { get; set; }
 
         /// <summary>
+        /// Gets or sets if input from a gamepad is ignored.
+        /// </summary>
+        public bool IgnoreGamepadInput { get; set; }
+
+        /// <summary>
         /// Returns the selected <see cref="InteractiveProp"/>.
         /// </summary>
         public InteractiveProp CurrentInteractiveProp
@@ -180,7 +185,7 @@ namespace FusionLibrary
         {
             if (CurrentInteractiveID == -1)
             {
-                if (FusionUtils.PlayerPed.Weapons.Current.Model != 0)
+                if (FusionUtils.PlayerPed.Weapons.Current.Model != 0 || (IgnoreGamepadInput && Game.LastInputMethod == InputMethod.GamePad))
                 {
                     StopHover();
 
@@ -223,7 +228,7 @@ namespace FusionLibrary
                 else if (Game.IsControlJustReleased(Control.Attack))
                     StopHover();
             }
-            else if (Game.IsControlJustReleased(Control.Attack) || FusionUtils.PlayerPed.Weapons.Current.Model != 0)
+            else if (Game.IsControlJustReleased(Control.Attack) || FusionUtils.PlayerPed.Weapons.Current.Model != 0 || (IgnoreGamepadInput && Game.LastInputMethod == InputMethod.GamePad))
                 StopInteraction();
         }
 
