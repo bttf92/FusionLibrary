@@ -1,7 +1,9 @@
-﻿namespace FusionLibrary.Memory
+﻿using FusionLibrary.Memory;
+
+namespace FusionLibrary
 {
     // Credits to Dot. for this!!
-    internal static unsafe class RainPuddleEditor
+    public static unsafe class RainPuddleEditor
     {
         private static float* pPuddleLevel;
 
