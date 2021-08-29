@@ -20,11 +20,6 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// This event is invoked when a <see cref="InteractiveProp"/> is completed.
-        /// </summary>
-        public event EventHandler<InteractiveProp> OnInteractionComplete;
-
-        /// <summary>
         /// List of <see cref="InteractiveProp"/>.
         /// </summary>
         public List<InteractiveProp> InteractiveProps { get; } = new List<InteractiveProp>();
@@ -103,12 +98,11 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Creates a new <see cref="InteractiveProp"/>.
+        /// Creates a new <see cref="InteractiveProp"/> using <see cref="InteractionType.Lever"/> as type.
         /// </summary>
         /// <param name="model"><see cref="CustomModel"/> to be used for the <see cref="AnimateProp"/>.</param>
         /// <param name="entity"><see cref="Entity"/> at which the <see cref="AnimateProp"/>.</param>
         /// <param name="boneName">Bone name of <paramref name="entity"/> used for attach.</param>
-        /// <param name="interactionType"><see cref="InteractionType"/> for this <see cref="InteractiveProp"/>.</param>
         /// <param name="movementType"><see cref="AnimationType"/> for this <see cref="InteractiveProp"/>.</param>
         /// <param name="coordinateInteraction"><see cref="Coordinate"/> of the axis</param>
         /// <param name="control"><see cref="Control"/> which fires up this <see cref="InteractiveProp"/>.</param>
@@ -118,13 +112,11 @@ namespace FusionLibrary
         /// <param name="startValue">Starting value.</param>
         /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, interactionType, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier));
-
-            interactionProp.OnInteractionComplete += InteractionProp_OnInteractionComplete;
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier));
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -132,9 +124,34 @@ namespace FusionLibrary
             return interactionProp;
         }
 
-        private void InteractionProp_OnInteractionComplete(object sender, InteractiveProp e)
+        /// <summary>
+        /// Creates a new <see cref="InteractiveProp"/> using <see cref="InteractionType.Button"/> as type.
+        /// </summary>
+        /// <param name="model"><see cref="CustomModel"/> to be used for the <see cref="AnimateProp"/>.</param>
+        /// <param name="entity"><see cref="Entity"/> at which the <see cref="AnimateProp"/>.</param>
+        /// <param name="boneName">Bone name of <paramref name="entity"/> used for attach.</param>
+        /// <param name="movementType"><see cref="AnimationType"/> for this <see cref="InteractiveProp"/>.</param>
+        /// <param name="coordinateInteraction"><see cref="Coordinate"/> of the axis</param>
+        /// <param name="min">Minimum value.</param>
+        /// <param name="max">Maximum value.</param>
+        /// <param name="startValue">Starting value.</param>
+        /// <param name="step">Step of movement.</param>
+        /// <param name="stepRatio">Ratio of the step.</param>
+        /// <param name="isIncreasing">If value must go from min to max.</param>
+        /// <param name="rountTrip">If prop has to make a roundtrip before stopping.</param>
+        /// <returns></returns>
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool rountTrip)
         {
-            OnInteractionComplete?.Invoke(sender, e);
+            InteractiveProp interactionProp;
+
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f));
+
+            interactionProp.SetupButton(step, stepRatio, isIncreasing, rountTrip);
+
+            interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
+            interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
+
+            return interactionProp;
         }
 
         /// <summary>
@@ -164,7 +181,7 @@ namespace FusionLibrary
             StopInteraction();
             StopHover();
 
-            IsPlaying = false;
+            IsPlaying = false;            
         }
 
         internal void Tick()
@@ -216,6 +233,10 @@ namespace FusionLibrary
                 }
 
                 raycast.HitEntity.SetAlpha(AlphaLevel.L4);
+
+                if (_hoverId != id)
+                    InteractiveProps[id].HoverStart();
+
                 _hoverId = id;
 
                 if (Game.IsControlPressed(Control.Attack))
@@ -246,6 +267,7 @@ namespace FusionLibrary
             if (_hoverId == -1)
                 return;
 
+            InteractiveProps[_hoverId].HoverStop();
             InteractiveProps[_hoverId].AnimateProp.Prop.SetAlpha(AlphaLevel.L5);
             _hoverId = -1;
         }

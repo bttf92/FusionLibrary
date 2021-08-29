@@ -14,7 +14,13 @@ namespace FusionLibrary
         /// <summary>
         /// This event is invoked when the <see cref="InteractiveProp"/> is completed.
         /// </summary>
-        public event EventHandler<InteractiveProp> OnInteractionComplete;
+        public event EventHandler<InteractiveProp> OnInteractionEnded;
+
+        public event EventHandler<InteractiveProp> OnInteractionStarted;
+
+        public event EventHandler<InteractiveProp> OnHoverStarted;
+
+        public event EventHandler<InteractiveProp> OnHoverEnded;
 
         /// <summary>
         /// Interactive <see cref="FusionLibrary.AnimateProp"/>.
@@ -76,6 +82,8 @@ namespace FusionLibrary
         /// </summary>
         public bool IsPlaying { get; private set; }
 
+        public bool Blocked { get; set; }
+
         private bool _altSetup;
         private bool _altInvert;
         private bool _invert;
@@ -83,6 +91,7 @@ namespace FusionLibrary
         private float _currentValue;
         private float _toValue;
         private float _sensitivity = 10;
+        private bool _roundTrip;
         private bool _goBack;
         private bool _buttonOk;
         private InteractiveController _controller;
@@ -121,13 +130,14 @@ namespace FusionLibrary
         /// <param name="step">Step of the animation.</param>
         /// <param name="stepRatio">Step ratio of the animation.</param>
         /// <param name="isIncreasing">If new value should increase or not.</param>
-        public void SetupButton(float step, float stepRatio, bool isIncreasing)
+        internal void SetupButton(float step, float stepRatio, bool isIncreasing, bool roundTrip)
         {
             if (InteractionType != InteractionType.Button)
                 return;
 
-            AnimateProp[MovementType][AnimationStep.First][Coordinate].Setup(true, isIncreasing, Min, Max, 1, step, stepRatio);
+            AnimateProp[MovementType][AnimationStep.First][Coordinate].Setup(!roundTrip, isIncreasing, Min, Max, 1, step, stepRatio);
 
+            _roundTrip = roundTrip;
             _buttonOk = true;
         }
 
@@ -146,7 +156,7 @@ namespace FusionLibrary
 
         private void AnimateProp_OnAnimCompleted(AnimationStep animationStep)
         {
-            OnInteractionComplete?.Invoke(_controller, this);
+            OnInteractionEnded?.Invoke(_controller, this);
 
             if (_buttonOk && _goBack)
             {
@@ -155,18 +165,19 @@ namespace FusionLibrary
             }
         }
 
-        internal void Play()
+        public void Play()
         {
             if (InteractionType == InteractionType.Lever)
                 UpdateLeverAnimation();
 
             if (_buttonOk)
             {
-                _goBack = true;
+                _goBack = _roundTrip;
                 AnimateProp.Play();
             }
                 
             IsPlaying = true;
+            OnInteractionStarted?.Invoke(_controller, this);
         }
 
         /// <summary>
@@ -195,7 +206,7 @@ namespace FusionLibrary
 
         private void UpdateLeverAnimation()
         {
-            if (IsPlaying)
+            if (IsPlaying && !Blocked)
             {
                 if (_controller.LockCamera)
                 {
@@ -224,16 +235,25 @@ namespace FusionLibrary
             AnimateProp.SecondRotation = _axis * _currentValue;
         }
 
-        internal void Stop()
+        public void Stop()
         {
-            //AnimateProp.Stop();
-
             IsPlaying = false;
+            OnInteractionEnded?.Invoke(_controller, this);
         }
 
         internal void Dispose()
         {
             AnimateProp?.Dispose();
+        }
+
+        internal void HoverStart()
+        {
+            OnHoverStarted?.Invoke(_controller, this);
+        }
+
+        internal void HoverStop()
+        {
+            OnHoverEnded?.Invoke(_controller, this);
         }
 
         /// <summary>
