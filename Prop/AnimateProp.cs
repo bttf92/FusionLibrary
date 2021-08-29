@@ -116,7 +116,18 @@ namespace FusionLibrary
 
         public Vector3 RelativePosition => ToBone ? Bone.GetRelativeOffsetPosition(CurrentOffset) : CurrentOffset;
 
-        public Vector3 WorldPosition => ToBone ? Bone.GetOffsetPosition(CurrentOffset) : Entity.GetOffsetPosition(CurrentOffset);
+        public Vector3 Position => ToBone ? Bone.GetOffsetPosition(CurrentOffset) : Entity.GetOffsetPosition(CurrentOffset);
+
+        public Vector3 WorldPosition
+        {
+            get
+            {
+                if (!Prop.NotNullAndExists())
+                    return Vector3.Zero;
+
+                return Prop.Position;
+            }
+        }
 
         public void SaveAnimation()
         {
