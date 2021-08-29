@@ -28,7 +28,8 @@ namespace FusionLibrary
 
         public Prop Prop { get; private set; }
         public CustomModel Model { get; private set; }
-        public bool UsePhysicalAttach { get; }
+        public bool UsePhysicalAttach { get; set; }
+        public bool UseFixedRot { get; set; } = true;
         public float Duration { get; set; } = 0;
 
         public bool IsSpawned { get; private set; }
@@ -55,7 +56,7 @@ namespace FusionLibrary
         public Vector3 SavedOffset { get; private set; } = new Vector3();
         public Vector3 SavedRotation { get; private set; } = new Vector3();
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation)
         {
             Model = pModel;
             Entity = pEntity;
@@ -63,38 +64,36 @@ namespace FusionLibrary
             Offset = pOffset;
             Rotation = pRotation;
             ToBone = true;
-            UsePhysicalAttach = usePhysicalAttach;
 
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, bool usePhysicalAttach = false) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero, usePhysicalAttach)
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, bool usePhysicalAttach = false) : this(pModel, pEntity, pEntity.Bones[boneName], Vector3.Zero, Vector3.Zero, usePhysicalAttach)
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName) : this(pModel, pEntity, pEntity.Bones[boneName], Vector3.Zero, Vector3.Zero)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false) : this(pModel, pEntity, pEntity.Bones[boneName], pOffset, pRotation, usePhysicalAttach)
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation) : this(pModel, pEntity, pEntity.Bones[boneName], pOffset, pRotation)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool usePhysicalAttach = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation)
         {
             Model = pModel;
             Entity = pEntity;
             Offset = pOffset;
             Rotation = pRotation;
-            UsePhysicalAttach = usePhysicalAttach;
 
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, bool usePhysicalAttach = false) : this(pModel, pEntity, Vector3.Zero, Vector3.Zero, usePhysicalAttach)
+        public AnimateProp(CustomModel pModel, Entity pEntity) : this(pModel, pEntity, Vector3.Zero, Vector3.Zero)
         {
 
         }
@@ -115,9 +114,9 @@ namespace FusionLibrary
             }
         }
 
-        public Vector3 RelativePosition => Bone.GetRelativeOffsetPosition(CurrentOffset);
+        public Vector3 RelativePosition => ToBone ? Bone.GetRelativeOffsetPosition(CurrentOffset) : CurrentOffset;
 
-        public Vector3 WorldPosition => Bone.GetOffsetPosition(CurrentOffset);
+        public Vector3 WorldPosition => ToBone ? Bone.GetOffsetPosition(CurrentOffset) : Entity.GetOffsetPosition(CurrentOffset);
 
         public void SaveAnimation()
         {
@@ -421,16 +420,16 @@ namespace FusionLibrary
             if (ToBone)
             {
                 if (UsePhysicalAttach)
-                    Prop.AttachToPhysically(Entity, Bone.Index, CurrentOffset, CurrentRotation);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, Prop.Handle, Entity.Handle, 0, Bone.Index, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, 0, 0, 0, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, 1000000.0f, UseFixedRot, true, true, true, 2);
                 else
-                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, Bone.Index, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, true);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, Bone.Index, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, UseFixedRot);
             }
             else
             {
                 if (UsePhysicalAttach)
-                    Prop.AttachToPhysically(Entity, CurrentOffset, CurrentRotation);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, Prop.Handle, Entity.Handle, 0, 0, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, 0, 0, 0, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, 1000000.0f, UseFixedRot, true, true, true, 2);
                 else
-                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, true);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, UseFixedRot);
             }
         }
 
