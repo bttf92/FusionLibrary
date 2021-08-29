@@ -82,6 +82,9 @@ namespace FusionLibrary
         /// </summary>
         public bool IsPlaying { get; private set; }
 
+        /// <summary>
+        /// Gets or sets if interaction is blocked.
+        /// </summary>
         public bool Blocked { get; set; }
 
         private bool _altSetup;
@@ -96,7 +99,7 @@ namespace FusionLibrary
         private bool _buttonOk;
         private InteractiveController _controller;
 
-        internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier)
+        internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier, bool smoothEnd)
         {
             InteractionType = interactionType;
             Coordinate = coordinateInteraction;
@@ -109,7 +112,7 @@ namespace FusionLibrary
             _toValue = startValue;
             _sensitivity *= sensitivityMultiplier;
 
-            AnimateProp = new AnimateProp(model, entity, boneName);
+            AnimateProp = new AnimateProp(model, entity, boneName, smoothEnd);
 
             Min = min;
             Max = max;
@@ -130,6 +133,7 @@ namespace FusionLibrary
         /// <param name="step">Step of the animation.</param>
         /// <param name="stepRatio">Step ratio of the animation.</param>
         /// <param name="isIncreasing">If new value should increase or not.</param>
+        /// <param name="roundTrip"></param>
         internal void SetupButton(float step, float stepRatio, bool isIncreasing, bool roundTrip)
         {
             if (InteractionType != InteractionType.Button)
@@ -173,6 +177,10 @@ namespace FusionLibrary
             if (_buttonOk)
             {
                 _goBack = _roundTrip;
+
+                if (AnimateProp.IsPlaying)
+                    AnimateProp[MovementType][AnimationStep.First][Coordinate].IsIncreasing = !AnimateProp[MovementType][AnimationStep.First][Coordinate].IsIncreasing;
+
                 AnimateProp.Play();
             }
                 

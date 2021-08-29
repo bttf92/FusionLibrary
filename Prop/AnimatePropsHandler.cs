@@ -69,6 +69,18 @@ namespace FusionLibrary
             }
         }
 
+        public bool SmoothEnd
+        {
+            get
+            {
+                return Props.TrueForAll(x => x.SmoothEnd);
+            }
+            set
+            {
+                Props.ForEach(x => x.SmoothEnd = value);
+            }
+        }
+
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);
 
         public bool IsPlaying => Props.Any(x => x.IsPlaying);

@@ -111,12 +111,13 @@ namespace FusionLibrary
         /// <param name="max">Maximum value.</param>
         /// <param name="startValue">Starting value.</param>
         /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>
+        /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f, bool smoothEnd = false)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier, smoothEnd));
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -139,12 +140,13 @@ namespace FusionLibrary
         /// <param name="stepRatio">Ratio of the step.</param>
         /// <param name="isIncreasing">If value must go from min to max.</param>
         /// <param name="rountTrip">If prop has to make a roundtrip before stopping.</param>
-        /// <returns></returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool rountTrip)
+        /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
+        /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool rountTrip, bool smoothEnd = false)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f, smoothEnd));
 
             interactionProp.SetupButton(step, stepRatio, isIncreasing, rountTrip);
 
