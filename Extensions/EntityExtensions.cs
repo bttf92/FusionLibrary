@@ -263,9 +263,8 @@ namespace FusionLibrary.Extensions
                 Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, &street, &cross);
             }
 
-            string crossName;
 
-            string streetName = World.GetStreetName(vehicle.Position, out crossName);
+            string streetName = World.GetStreetName(vehicle.Position, out string crossName);
 
             return (street, streetName, cross, crossName);
         }

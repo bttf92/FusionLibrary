@@ -1,5 +1,4 @@
 ﻿using FusionLibrary.Extensions;
-using FusionLibrary.Memory;
 using GTA;
 using GTA.Native;
 using System;

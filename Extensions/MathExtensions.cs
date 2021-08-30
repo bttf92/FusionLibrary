@@ -11,7 +11,7 @@ namespace FusionLibrary.Extensions
     {
 
         /// <summary>
-        /// Returns a random <see cref="Double"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>.
+        /// Returns a random <see cref="double"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>.
         /// </summary>
         /// <param name="random">Instance of a <see cref="System.Random"/>.</param>
         /// <param name="minValue">Minimum value.</param>

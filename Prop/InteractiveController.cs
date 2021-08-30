@@ -1,6 +1,5 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
-using System;
 using System.Collections.Generic;
 using static FusionLibrary.FusionEnums;
 
@@ -66,12 +65,9 @@ namespace FusionLibrary
         /// <summary>
         /// Gets or sets if alternate controls must be used for all the <see cref="InteractiveProp"/>s.
         /// </summary>
-        public bool UseAltControl 
-        { 
-            get
-            {
-                return InteractiveProps[0].UseAltControl;
-            } 
+        public bool UseAltControl
+        {
+            get => InteractiveProps[0].UseAltControl;
             set
             {
                 for (int i = 0; i < InteractiveProps.Count; i++)
@@ -90,7 +86,7 @@ namespace FusionLibrary
         /// <param name="lockCamera">If camera should be locked while interacting with <see cref="InteractiveProp"/>.</param>
         /// <param name="smoothRelease">if release of a lever should be smoothed.</param>
         public InteractiveController(bool lockCamera = false, bool smoothRelease = false)
-        {            
+        {
             LockCamera = lockCamera;
             SmoothRelease = smoothRelease;
 
@@ -139,16 +135,16 @@ namespace FusionLibrary
         /// <param name="step">Step of movement.</param>
         /// <param name="stepRatio">Ratio of the step.</param>
         /// <param name="isIncreasing">If value must go from min to max.</param>
-        /// <param name="rountTrip">If prop has to make a roundtrip before stopping.</param>
+        /// <param name="roundTrip">If prop has to make a roundtrip before stopping.</param>
         /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool rountTrip, bool smoothEnd = false)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool roundTrip, bool smoothEnd = false)
         {
             InteractiveProp interactionProp;
 
             InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f, smoothEnd));
 
-            interactionProp.SetupButton(step, stepRatio, isIncreasing, rountTrip);
+            interactionProp.SetupButton(step, stepRatio, isIncreasing, roundTrip);
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -183,7 +179,7 @@ namespace FusionLibrary
             StopInteraction();
             StopHover();
 
-            IsPlaying = false;            
+            IsPlaying = false;
         }
 
         internal void Tick()

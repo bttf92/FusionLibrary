@@ -126,7 +126,7 @@
     <Compile Include="Prop\InteractiveProp.cs" />
     <Compile Include="Prop\Light.cs" />
     <Compile Include="Prop\LightHandler.cs" />
-    <Compile Include="Prop\PtfxPlayer.cs" />
+    <Compile Include="Prop\ParticlePlayer.cs" />
     <Compile Include="Prop\SpawnLocation.cs" />
     <Compile Include="Other\WaypointScript.cs" />
     <Compile Include="FusionUtils.cs" />

@@ -47,38 +47,20 @@ namespace FusionLibrary
 
         public bool UseFixedRot
         {
-            get
-            {
-                return Props.TrueForAll(x => x.UseFixedRot);
-            }
-            set
-            {
-                Props.ForEach(x => x.UseFixedRot = value);
-            }
+            get => Props.TrueForAll(x => x.UseFixedRot);
+            set => Props.ForEach(x => x.UseFixedRot = value);
         }
 
         public bool UsePhysicalAttach
         {
-            get
-            {
-                return Props.TrueForAll(x => x.UsePhysicalAttach);
-            }
-            set
-            {
-                Props.ForEach(x => x.UsePhysicalAttach = value);
-            }
+            get => Props.TrueForAll(x => x.UsePhysicalAttach);
+            set => Props.ForEach(x => x.UsePhysicalAttach = value);
         }
 
         public bool SmoothEnd
         {
-            get
-            {
-                return Props.TrueForAll(x => x.SmoothEnd);
-            }
-            set
-            {
-                Props.ForEach(x => x.SmoothEnd = value);
-            }
+            get => Props.TrueForAll(x => x.SmoothEnd);
+            set => Props.ForEach(x => x.SmoothEnd = value);
         }
 
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);

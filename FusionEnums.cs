@@ -4,6 +4,19 @@ namespace FusionLibrary
 {
     public class FusionEnums
     {
+        /// <summary>
+        /// Type of particle.
+        /// </summary>
+        public enum ParticleType
+        {
+            SingleSpawn,
+            Looped,
+            LoopedManually
+        }
+
+        /// <summary>
+        /// Type of interactive prop.
+        /// </summary>
         public enum InteractionType
         {
             Lever,

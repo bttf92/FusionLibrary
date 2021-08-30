@@ -98,6 +98,7 @@ namespace FusionLibrary
         private bool _goBack;
         private bool _buttonOk;
         private InteractiveController _controller;
+        private CoordinateSetting _coordinateSetting => AnimateProp[MovementType][AnimationStep.First][Coordinate];
 
         internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier, bool smoothEnd)
         {
@@ -123,8 +124,6 @@ namespace FusionLibrary
                 AnimateProp.setRotation(Coordinate, startValue);
 
             AnimateProp.SpawnProp();
-
-            AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
 
         /// <summary>
@@ -139,10 +138,12 @@ namespace FusionLibrary
             if (InteractionType != InteractionType.Button)
                 return;
 
-            AnimateProp[MovementType][AnimationStep.First][Coordinate].Setup(!roundTrip, isIncreasing, Min, Max, 1, step, stepRatio);
+            _coordinateSetting.Setup(!roundTrip, isIncreasing, Min, Max, 1, step, stepRatio);
 
             _roundTrip = roundTrip;
             _buttonOk = true;
+
+            AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
 
         /// <summary>
@@ -162,10 +163,10 @@ namespace FusionLibrary
         {
             OnInteractionEnded?.Invoke(_controller, this);
 
-            if (_buttonOk && _goBack)
+            if (_goBack)
             {
                 _goBack = false;
-                AnimateProp.Play();                
+                AnimateProp.Play();
             }
         }
 
@@ -179,11 +180,11 @@ namespace FusionLibrary
                 _goBack = _roundTrip;
 
                 if (AnimateProp.IsPlaying)
-                    AnimateProp[MovementType][AnimationStep.First][Coordinate].IsIncreasing = !AnimateProp[MovementType][AnimationStep.First][Coordinate].IsIncreasing;
+                    _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
 
                 AnimateProp.Play();
             }
-                
+
             IsPlaying = true;
             OnInteractionStarted?.Invoke(_controller, this);
         }
@@ -245,6 +246,9 @@ namespace FusionLibrary
 
         public void Stop()
         {
+            if (_buttonOk && AnimateProp.IsPlaying && !_goBack)
+                _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
+
             IsPlaying = false;
             OnInteractionEnded?.Invoke(_controller, this);
         }
