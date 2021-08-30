@@ -8,6 +8,14 @@ namespace FusionLibrary
 {
     public class ParticlePlayer
     {
+        internal static List<ParticlePlayer> GlobalParticlePlayerList = new List<ParticlePlayer>();
+
+        internal static void TickAll()
+        {
+            for (int i = 0; i < GlobalParticlePlayerList.Count; i++)
+                GlobalParticlePlayerList[i].Tick();
+        }
+
         /// <summary>
         /// Handle of looped particle.
         /// </summary>
@@ -101,6 +109,8 @@ namespace FusionLibrary
             EffectName = effectName;
 
             Request();
+
+            GlobalParticlePlayerList.Add(this);
         }
 
         /// <summary>
@@ -247,6 +257,8 @@ namespace FusionLibrary
         public void Dispose()
         {
             Stop(true);
+
+            GlobalParticlePlayerList.Remove(this);
         }
 
         /// <summary>
@@ -291,7 +303,7 @@ namespace FusionLibrary
                 return;
 
             foreach (KeyValuePair<string, float> entry in EvolutionParams)
-                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, entry.Key, entry.Value, 0);
+                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, entry.Key, entry.Value, true);
         }
 
         public void Color(float r, float g, float b)
