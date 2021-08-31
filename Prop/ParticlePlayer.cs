@@ -169,7 +169,7 @@ namespace FusionLibrary
         /// <param name="position">Position.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Vector3 position, Vector3 rotation, float size = 1f)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Vector3 position = default, Vector3 rotation = default, float size = 1f)
         {
             AssetName = assetName;
             EffectName = effectName;
@@ -194,7 +194,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, offset, rotation, size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset = default, Vector3 rotation = default, float size = 1f) : this(assetName, effectName, particleType, offset, rotation, size)
         {
             Entity = entity;
             ToEntity = true;
@@ -211,7 +211,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, entity, offset, rotation, size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset = default, Vector3 rotation = default, float size = 1f) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
             BoneName = boneName;
             Bone = Entity.Bones[boneName];

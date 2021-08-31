@@ -31,7 +31,8 @@ namespace FusionLibrary
         public enum InteractionType
         {
             Lever,
-            Button
+            Button,
+            Toggle
         }
 
         /// <summary>

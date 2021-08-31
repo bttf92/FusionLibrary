@@ -95,8 +95,7 @@ namespace FusionLibrary
         private float _toValue;
         private float _sensitivity = 10;
         private bool _roundTrip;
-        private bool _goBack;
-        private bool _buttonOk;
+        private bool _waitRelease;
         private InteractiveController _controller;
         private CoordinateSetting _coordinateSetting => AnimateProp[MovementType][AnimationStep.First][Coordinate];
 
@@ -132,16 +131,9 @@ namespace FusionLibrary
         /// <param name="step">Step of the animation.</param>
         /// <param name="stepRatio">Step ratio of the animation.</param>
         /// <param name="isIncreasing">If new value should increase or not.</param>
-        /// <param name="roundTrip"></param>
-        internal void SetupButton(float step, float stepRatio, bool isIncreasing, bool roundTrip)
+        internal void SetupAnimation(float step, float stepRatio, bool isIncreasing)
         {
-            if (InteractionType != InteractionType.Button)
-                return;
-
-            _coordinateSetting.Setup(!roundTrip, isIncreasing, Min, Max, 1, step, stepRatio);
-
-            _roundTrip = roundTrip;
-            _buttonOk = true;
+            _coordinateSetting.Setup(true, isIncreasing, Min, Max, 1, step, stepRatio);
 
             AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
@@ -163,10 +155,14 @@ namespace FusionLibrary
         {
             OnInteractionEnded?.Invoke(_controller, this);
 
-            if (_goBack)
+            if (InteractionType == InteractionType.Button && _roundTrip)
             {
-                _goBack = false;
-                AnimateProp.Play();
+                _waitRelease = IsPlaying;
+
+                _roundTrip = false;
+
+                if (!_waitRelease)
+                    AnimateProp.Play();
             }
         }
 
@@ -174,15 +170,18 @@ namespace FusionLibrary
         {
             if (InteractionType == InteractionType.Lever)
                 UpdateLeverAnimation();
-
-            if (_buttonOk)
-            {
-                _goBack = _roundTrip;
-
+            else
+            {                
                 if (AnimateProp.IsPlaying)
+                {
                     _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
-
-                AnimateProp.Play();
+                    _roundTrip = false;
+                }
+                else
+                {
+                    _roundTrip = InteractionType == InteractionType.Button;
+                    AnimateProp.Play();
+                }                                    
             }
 
             IsPlaying = true;
@@ -207,10 +206,26 @@ namespace FusionLibrary
 
         internal void Tick()
         {
-            if ((!_controller.SmoothRelease && !IsPlaying) || InteractionType != InteractionType.Lever)
-                return;
+            if (AnimateProp.IsPlaying)
+            {
+                Vector3 value;
 
-            UpdateLeverAnimation();
+                if (MovementType == AnimationType.Offset)
+                    value = AnimateProp.CurrentOffset;
+                else
+                    value = AnimateProp.CurrentRotation;
+
+                _currentValue = value[(int)Coordinate];
+            }                
+
+            if (InteractionType == InteractionType.Lever)
+                UpdateLeverAnimation();
+
+            if (_waitRelease && !IsPlaying)
+            {
+                _waitRelease = false;
+                AnimateProp.Play();
+            }
         }
 
         private void UpdateLeverAnimation()
@@ -246,9 +261,6 @@ namespace FusionLibrary
 
         public void Stop()
         {
-            if (_buttonOk && AnimateProp.IsPlaying && !_goBack)
-                _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
-
             IsPlaying = false;
             OnInteractionEnded?.Invoke(_controller, this);
         }

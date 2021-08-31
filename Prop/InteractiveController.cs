@@ -39,14 +39,14 @@ namespace FusionLibrary
         public bool LockCamera { get; set; }
 
         /// <summary>
-        /// Gets or sets if release of a lever should be smoothed.
-        /// </summary>
-        public bool SmoothRelease { get; set; }
-
-        /// <summary>
         /// Gets or sets if input from a gamepad is ignored.
         /// </summary>
         public bool IgnoreGamepadInput { get; set; }
+
+        /// <summary>
+        /// Gets or sets which <see cref="Control"/> triggers the interaction.
+        /// </summary>
+        public Control TriggerControl { get; set; }
 
         /// <summary>
         /// Returns the selected <see cref="InteractiveProp"/>.
@@ -83,12 +83,13 @@ namespace FusionLibrary
         /// <summary>
         /// Creates a new instance of <see cref="InteractiveController"/>.
         /// </summary>
+        /// <param name="triggerControl">Which <see cref="Control"/> triggers the interaction.</param>
         /// <param name="lockCamera">If camera should be locked while interacting with <see cref="InteractiveProp"/>.</param>
         /// <param name="smoothRelease">if release of a lever should be smoothed.</param>
-        public InteractiveController(bool lockCamera = false, bool smoothRelease = false)
+        public InteractiveController(Control triggerControl = Control.Attack, bool lockCamera = false)
         {
+            TriggerControl = triggerControl;
             LockCamera = lockCamera;
-            SmoothRelease = smoothRelease;
 
             GlobalInteractiveControllerList.Add(this);
         }
@@ -106,14 +107,13 @@ namespace FusionLibrary
         /// <param name="min">Minimum value.</param>
         /// <param name="max">Maximum value.</param>
         /// <param name="startValue">Starting value.</param>
-        /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>
-        /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
+        /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>        
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f, bool smoothEnd = false)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier, smoothEnd));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier, false));
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -122,29 +122,29 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Creates a new <see cref="InteractiveProp"/> using <see cref="InteractionType.Button"/> as type.
+        /// Creates a new <see cref="InteractiveProp"/> using <see cref="InteractionType.Button"/> or <see cref="InteractionType.Toggle"/> as type.
         /// </summary>
         /// <param name="model"><see cref="CustomModel"/> to be used for the <see cref="AnimateProp"/>.</param>
         /// <param name="entity"><see cref="Entity"/> at which the <see cref="AnimateProp"/>.</param>
         /// <param name="boneName">Bone name of <paramref name="entity"/> used for attach.</param>
         /// <param name="movementType"><see cref="AnimationType"/> for this <see cref="InteractiveProp"/>.</param>
         /// <param name="coordinateInteraction"><see cref="Coordinate"/> of the axis</param>
+        /// <param name="toggle">If prop is a button or a toggle.</param>
         /// <param name="min">Minimum value.</param>
         /// <param name="max">Maximum value.</param>
         /// <param name="startValue">Starting value.</param>
         /// <param name="step">Step of movement.</param>
         /// <param name="stepRatio">Ratio of the step.</param>
-        /// <param name="isIncreasing">If value must go from min to max.</param>
-        /// <param name="roundTrip">If prop has to make a roundtrip before stopping.</param>
+        /// <param name="isIncreasing">If value must go from min to max.</param>        
         /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool roundTrip, bool smoothEnd = false)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, bool toggle, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool smoothEnd = false)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f, smoothEnd));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, toggle ? InteractionType.Toggle : InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f, smoothEnd));
 
-            interactionProp.SetupButton(step, stepRatio, isIncreasing, roundTrip);
+            interactionProp.SetupAnimation(step, stepRatio, isIncreasing);
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -189,11 +189,8 @@ namespace FusionLibrary
 
             UpdateInteraction();
 
-            if (SmoothRelease)
-                for (int i = 0; i < InteractiveProps.Count; i++)
-                    InteractiveProps[i].Tick();
-            else
-                CurrentInteractiveProp?.Tick();
+            for (int i = 0; i < InteractiveProps.Count; i++)
+                InteractiveProps[i].Tick();
         }
 
         private void UpdateInteraction()
@@ -237,17 +234,17 @@ namespace FusionLibrary
 
                 _hoverId = id;
 
-                if (Game.IsControlPressed(Control.Attack))
+                if (Game.IsControlPressed(TriggerControl))
                 {
                     StopHover();
 
                     CurrentInteractiveID = id;
                     CurrentInteractiveProp?.Play();
                 }
-                else if (Game.IsControlJustReleased(Control.Attack))
+                else if (Game.IsControlJustReleased(TriggerControl))
                     StopHover();
             }
-            else if (Game.IsControlJustReleased(Control.Attack) || FusionUtils.PlayerPed.Weapons.Current.Model != 0 || (IgnoreGamepadInput && Game.LastInputMethod == InputMethod.GamePad))
+            else if (Game.IsControlJustReleased(TriggerControl) || FusionUtils.PlayerPed.Weapons.Current.Model != 0 || (IgnoreGamepadInput && Game.LastInputMethod == InputMethod.GamePad))
                 StopInteraction();
         }
 

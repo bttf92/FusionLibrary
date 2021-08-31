@@ -32,7 +32,7 @@ namespace FusionLibrary
         /// <param name="position">Position.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Vector3 position, Vector3 rotation, float size = 1f)
+        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Vector3 position = default, Vector3 rotation = default, float size = 1f)
         {
             ParticlePlayer particlePlayer = new ParticlePlayer(assetName, effectName, particleType, position, rotation, size);
 
@@ -51,7 +51,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset, Vector3 rotation, float size = 1f)
+        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset = default, Vector3 rotation = default, float size = 1f)
         {
             ParticlePlayer particlePlayer = new ParticlePlayer(assetName, effectName, particleType, entity, offset, rotation, size);
 
@@ -71,7 +71,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size = 1f)
+        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset = default, Vector3 rotation = default, float size = 1f)
         {
             ParticlePlayer particlePlayer = new ParticlePlayer(assetName, effectName, particleType, entity, boneName, offset, rotation, size);
 
@@ -91,7 +91,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, int boneIndex, Vector3 offset, Vector3 rotation, float size = 1f)
+        public ParticlePlayer Add(string assetName, string effectName, ParticleType particleType, Entity entity, int boneIndex, Vector3 offset = default, Vector3 rotation = default, float size = 1f)
         {
             ParticlePlayer particlePlayer = new ParticlePlayer(assetName, effectName, particleType, entity, boneIndex, offset, rotation, size);
 
