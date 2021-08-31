@@ -5,6 +5,17 @@ namespace FusionLibrary
     public class FusionEnums
     {
         /// <summary>
+        /// Switch types for <see cref="PlayerSwitch"/>.
+        /// </summary>
+        public enum SwitchTypes
+        {
+            Auto,
+            Long,
+            Medium,
+            Short
+        };
+
+        /// <summary>
         /// Type of particle.
         /// </summary>
         public enum ParticleType

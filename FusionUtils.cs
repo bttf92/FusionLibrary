@@ -296,6 +296,7 @@ namespace FusionLibrary
         /// <param name="max"></param>
         /// <param name="max2"></param>
         /// <returns></returns>
+        [Obsolete]
         public static float Clamp(float value, float max, float max2)
         {
             return (value * max2) / max;
@@ -307,7 +308,7 @@ namespace FusionLibrary
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="f"></param>
-        /// <returns>Interpolated value</returns>
+        /// <returns>Interpolated value.</returns>
         public static float Lerp(float a, float b, float f)
         {
             return a + (b - a) * f;
@@ -333,7 +334,7 @@ namespace FusionLibrary
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="f"></param>
-        /// <returns>Interpolated value</returns>
+        /// <returns>Interpolated value.</returns>
         public static int Lerp(int a, int b, float f)
         {
             return (int)(a + (b - (float)a) * f);
@@ -345,7 +346,7 @@ namespace FusionLibrary
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="f"></param>
-        /// <returns>Interpolated value</returns>
+        /// <returns>Interpolated value.</returns>
         public static Vector3 Lerp(Vector3 a, Vector3 b, float f)
         {
             return new Vector3() { X = Lerp(a.X, b.X, f), Y = Lerp(a.Y, b.Y, f), Z = Lerp(a.Z, b.Z, f) };
@@ -504,7 +505,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="entity1">Instance of an entity.</param>
         /// <param name="entity2">Instance of an entity.</param>
-        /// <returns>Distance in <c>float</c> between the entities</returns>
+        /// <returns>Distance in <c>float</c> between the entities.</returns>
         public static float DistanceToSquared2D(Entity entity1, Entity entity2)
         {
             return entity1.Position.DistanceToSquared2D(entity2.Position);
@@ -602,6 +603,11 @@ namespace FusionLibrary
             return Function.Call<float>(Hash.VMAG2, vector3.X, vector3.Z, vector3.Y);
         }
 
+        /// <summary>
+        /// Returns the wheel positions of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>List of <see cref="Vector3"/>.</returns>
         public static List<Vector3> GetWheelsPositions(Vehicle vehicle)
         {
             return new List<Vector3>
@@ -613,11 +619,22 @@ namespace FusionLibrary
                     };
         }
 
+        /// <summary>
+        /// Checks if <paramref name="vehicle"/> is on rail tracks.
+        /// </summary>
+        /// <param name="vehicle">Instance of <see cref="Vehicle"/>.</param>
+        /// <returns><c>true</c> if <paramref name="vehicle"/> is on rail tracks; otherwise <c>false</c>.</returns>
         public static bool IsVehicleOnTracks(Vehicle vehicle)
         {
             return GetWheelsPositions(vehicle).TrueForAll(x => IsWheelOnTracks(x, vehicle));
         }
 
+        /// <summary>
+        /// Checks if wheel at <paramref name="pos"/> of <paramref name="vehicle"/> is on rail tracks.
+        /// </summary>
+        /// <param name="pos"><see cref="Vector3"/> of the wheel.</param>
+        /// <param name="vehicle">Instance of a <see cref="Vector3"/>.</param>
+        /// <returns><c>true</c> wheel is on rail tracks; otherwise <c>false</c>.</returns>
         public static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
         {
             // What it basicly does is drawing circle around that "pos" so we can

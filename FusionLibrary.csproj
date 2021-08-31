@@ -54,8 +54,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LemonUI.SHVDN3, Version=1.4.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>packages\LemonUI.SHVDN3.1.4.0\lib\net48\LemonUI.SHVDN3.dll</HintPath>
+    <Reference Include="LemonUI.SHVDN3, Version=1.5.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>packages\LemonUI.SHVDN3.1.5.0\lib\net48\LemonUI.SHVDN3.dll</HintPath>
     </Reference>
     <Reference Include="ScriptHookVDotNet3, Version=3.1.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>packages\ScriptHookVDotNet3.3.1.0\lib\net48\ScriptHookVDotNet3.dll</HintPath>

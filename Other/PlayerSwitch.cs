@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.Native;
+using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -12,14 +13,6 @@ namespace FusionLibrary
         public static bool IsInProgress => Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS);
         public static bool IsManualInProgress => IsInProgress && PlayerSwitch.IsSwitching;
         public static bool Disable { get; set; } = false;
-
-        public enum SwitchTypes
-        {
-            SWITCH_TYPE_AUTO,
-            SWITCH_TYPE_LONG,
-            SWITCH_TYPE_MEDIUM,
-            SWITCH_TYPE_SHORT
-        };
 
         public static SwitchTypes SwitchType { get; private set; }
         public static bool IsSwitching { get; private set; }
@@ -53,7 +46,7 @@ namespace FusionLibrary
             IsSwitching = true;
 
             if (ForceShort)
-                SwitchType = SwitchTypes.SWITCH_TYPE_SHORT;
+                SwitchType = SwitchTypes.Short;
             else
                 SwitchType = (SwitchTypes)Function.Call<int>(Hash.GET_IDEAL_PLAYER_SWITCH_TYPE, Game.Player.Character.Position.X, Game.Player.Character.Position.Y, Game.Player.Character.Position.Z, to.Position.X, to.Position.Y, to.Position.Z);
 

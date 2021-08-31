@@ -51,7 +51,7 @@ namespace FusionLibrary
         public int GetButtonIdFromControl(Control control)
         {
             string controlName = Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, control, true).Substring(2);
-            
+
             return int.Parse(controlName);
         }
 

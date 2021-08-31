@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -10,8 +9,6 @@ namespace FusionLibrary
     public class Animation
     {
         public List<AnimationSettings> AnimationSettings { get; } = new List<AnimationSettings>();
-
-        private static BinaryFormatter formatter = new BinaryFormatter();
 
         public Animation()
         {
@@ -23,11 +20,11 @@ namespace FusionLibrary
         {
             MemoryStream stream = new MemoryStream();
 
-            formatter.Serialize(stream, this);
+            FusionUtils.BinaryFormatter.Serialize(stream, this);
 
             MemoryStream stream2 = new MemoryStream(stream.ToArray());
 
-            return (Animation)formatter.Deserialize(stream2);
+            return (Animation)FusionUtils.BinaryFormatter.Deserialize(stream2);
         }
 
         public AnimationSettings this[AnimationType animationType] => AnimationSettings[(int)animationType];
