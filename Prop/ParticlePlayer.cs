@@ -117,6 +117,11 @@ namespace FusionLibrary
         public EntityBone Bone { get; }
 
         /// <summary>
+        /// Name of the <see cref="Bone"/>.
+        /// </summary>
+        public string BoneName { get; }
+
+        /// <summary>
         /// If particle is spawned attached to an entity's bone.
         /// </summary>
         public bool ToBone { get; }
@@ -208,6 +213,7 @@ namespace FusionLibrary
         /// <param name="size">Size.</param>
         public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
+            BoneName = boneName;
             Bone = Entity.Bones[boneName];
             ToBone = true;
         }

@@ -375,20 +375,43 @@ namespace FusionLibrary.Extensions
         //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, 0, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);
         //}
 
-        //public static void AttachToPhysically(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation)
-        //{
-        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, 0, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
-        //}
+        /// <summary>
+        /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
+        /// <param name="offset">Offset of attach point.</param>
+        /// <param name="rotation">Rotation for attach.</param>
+        public static void AttachToPhysically(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation)
+        {
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, 0, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
+        }
 
-        //public static void AttachToPhysically(this Entity entity1, Entity toEntity, int boneIndex, Vector3 offset, Vector3 rotation)
-        //{
-        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, boneIndex, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
-        //}
+        /// <summary>
+        /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
+        /// <param name="boneIndex">Bone index of <paramref name="toEntity"/>.</param>
+        /// <param name="offset">Offset of attach point.</param>
+        /// <param name="rotation">Rotation for attach.</param>
+        public static void AttachToPhysically(this Entity entity1, Entity toEntity, int boneIndex, Vector3 offset, Vector3 rotation)
+        {
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY, entity1, toEntity, boneIndex, 0, offset.X, offset.Y, offset.Z, 0, 0, 0, rotation.X, rotation.Y, rotation.Z, 1000000.0f, true, true, false, false, 2);
+        }
 
-        //public static void AttachToPhysically(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
-        //{
-        //    AttachToPhysically(entity1, toEntity, toEntity.Bones[boneName].Index, offset, rotation);
-        //}
+        /// <summary>
+        /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
+        /// <param name="boneName">Bone name of <paramref name="toEntity"/>.</param>
+        /// <param name="offset">Offset of attach point.</param>
+        /// <param name="rotation">Rotation for attach.</param>
+        public static void AttachToPhysically(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
+        {
+            AttachToPhysically(entity1, toEntity, toEntity.Bones[boneName].Index, offset, rotation);
+        }
 
         /// <summary>
         /// Checks if <paramref name="entity"/> is entirely inside the <paramref name="garage"/>.
