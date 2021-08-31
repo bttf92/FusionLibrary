@@ -2,6 +2,7 @@
 using GTA.Math;
 using GTA.Native;
 using System.Collections.Generic;
+using System.Drawing;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -36,25 +37,69 @@ namespace FusionLibrary
         /// </summary>
         public ParticleType ParticleType { get; }
 
+        private Vector3 _position;
         /// <summary>
         /// World position or offset of the particle.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector3 Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
 
+                if (!Exists())
+                    return;
+
+                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_OFFSETS, Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z);
+            }
+        }
+
+        private Vector3 _rotation;
         /// <summary>
         /// Rotation of the particle.
         /// </summary>
-        public Vector3 Rotation { get; set; }
+        public Vector3 Rotation
+        {
+            get => _rotation;
+            set
+            {
+                _rotation = value;
 
+                if (!Exists())
+                    return;
+
+                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_OFFSETS, Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z);
+            }
+        }
+
+        private float _size;
         /// <summary>
         /// Size of the particle.
         /// </summary>
-        public float Size { get; set; }
+        public float Size
+        {
+            get => _size;
+            set
+            {
+                _size = value;
+
+                if (!Exists())
+                    return;
+
+                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_SCALE, Handle, Size);
+            }
+        }
 
         /// <summary>
         /// Interval between particle spawns.
         /// </summary>
-        public int Interval { get; set; }
+        public int Interval { get; set; } = 30;
+
+        /// <summary>
+        /// Gets or sets the duration of the particle.
+        /// </summary>
+        public int Duration { get; set; } = -1;
 
         /// <summary>
         /// List of evolution parameters.
@@ -86,27 +131,48 @@ namespace FusionLibrary
         /// </summary>
         public bool IsPlaying { get; private set; }
 
+        /// <summary>
+        /// Gets or sets if color of particle needs to be setted.
+        /// </summary>
+        public bool SetColor { get; set; }
+
+        private Color _color;
+        /// <summary>
+        /// Color of the particle.
+        /// </summary>
+        public Color Color
+        {
+            get => _color;
+            set
+            {
+                _color = value;
+                SetColor = true;
+
+                setColor();
+            }
+        }
+
         private int gameTime;
+        private int durationTime;
 
         /// <summary>
         /// Creates a new particle.
         /// </summary>
-        /// <param name="assetName">Asset name</param>
-        /// <param name="effectName">Effect name</param>
-        /// <param name="particleType"><see cref="ParticleType"/></param>
-        /// <param name="position">Position</param>
-        /// <param name="rotation">Rotation</param>
-        /// <param name="size">Size</param>
+        /// <param name="assetName">Asset name.</param>
+        /// <param name="effectName">Effect name.</param>
+        /// <param name="particleType"><see cref="ParticleType"/>.</param>
+        /// <param name="position">Position.</param>
+        /// <param name="rotation">Rotation.</param>
+        /// <param name="size">Size.</param>
         public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Vector3 position, Vector3 rotation, float size)
         {
             AssetName = assetName;
             EffectName = effectName;
             ParticleType = particleType;
-            Position = position;
-            Rotation = rotation;
-            Size = size;
-            AssetName = assetName;
-            EffectName = effectName;
+
+            _position = position;
+            _rotation = rotation;
+            _size = size;
 
             Request();
 
@@ -116,13 +182,13 @@ namespace FusionLibrary
         /// <summary>
         /// Creates a new particle attached to an <paramref name="entity"/>.
         /// </summary>
-        /// <param name="assetName">Asset name</param>
-        /// <param name="effectName">Effect name</param>
-        /// <param name="particleType"><see cref="ParticleType"/></param>
-        /// <param name="entity"></param>
-        /// <param name="offset">Offset</param>
-        /// <param name="rotation">Rotation</param>
-        /// <param name="size">Size</param>
+        /// <param name="assetName">Asset name.</param>
+        /// <param name="effectName">Effect name.</param>
+        /// <param name="particleType"><see cref="ParticleType"/>.</param>
+        /// <param name="entity"><see cref="Entity"/> instance.</param>
+        /// <param name="offset">Offset.</param>
+        /// <param name="rotation">Rotation.</param>
+        /// <param name="size">Size.</param>
         public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, offset, rotation, size)
         {
             Entity = entity;
@@ -132,14 +198,14 @@ namespace FusionLibrary
         /// <summary>
         /// Creates a new particle attached to <paramref name="boneName"/> of <paramref name="entity"/>.
         /// </summary>
-        /// <param name="assetName">Asset name</param>
-        /// <param name="effectName">Effect name</param>
-        /// <param name="particleType"><see cref="ParticleType"/></param>
-        /// <param name="entity"><see cref="Entity"/> instance</param>
+        /// <param name="assetName">Asset name.</param>
+        /// <param name="effectName">Effect name.</param>
+        /// <param name="particleType"><see cref="ParticleType"/>.</param>
+        /// <param name="entity"><see cref="Entity"/> instance.</param>
         /// <param name="boneName">Bone's name of <paramref name="entity"/>.</param>
-        /// <param name="offset">Offset</param>
-        /// <param name="rotation">Rotation</param>
-        /// <param name="size">Size</param>
+        /// <param name="offset">Offset.</param>
+        /// <param name="rotation">Rotation.</param>
+        /// <param name="size">Size.</param>
         public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
             Bone = Entity.Bones[boneName];
@@ -149,14 +215,14 @@ namespace FusionLibrary
         /// <summary>
         /// Creates a new particle attached to <paramref name="boneIndex"/> of <paramref name="entity"/>.
         /// </summary>
-        /// <param name="assetName">Asset name</param>
-        /// <param name="effectName">Effect name</param>
-        /// <param name="particleType"><see cref="ParticleType"/></param>
-        /// <param name="entity"><see cref="Entity"/></param>
+        /// <param name="assetName">Asset name.</param>
+        /// <param name="effectName">Effect name.</param>
+        /// <param name="particleType"><see cref="ParticleType"/>.</param>
+        /// <param name="entity"><see cref="Entity"/> instance.</param>
         /// <param name="boneIndex">Bone's index of <paramref name="entity"/>.</param>
-        /// <param name="offset">Offset</param>
-        /// <param name="rotation">Rotation</param>
-        /// <param name="size">Size</param>
+        /// <param name="offset">Offset.</param>
+        /// <param name="rotation">Rotation.</param>
+        /// <param name="size">Size.</param>
         public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, int boneIndex, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
             Bone = Entity.Bones[boneIndex];
@@ -176,7 +242,17 @@ namespace FusionLibrary
 
         internal void Tick()
         {
-            if (!IsPlaying || ParticleType != ParticleType.LoopedManually || Game.GameTime < gameTime)
+            if (!IsPlaying)
+                return;
+
+            if (Duration > -1 && Game.GameTime >= durationTime)
+            {
+                Stop();
+                
+                return;
+            }
+
+            if (ParticleType != ParticleType.ForceLooped || Game.GameTime < gameTime)
                 return;
 
             Spawn();
@@ -191,9 +267,13 @@ namespace FusionLibrary
         /// <param name="value">Value of the parameter.</param>
         public void SetEvolutionParam(string key, float value)
         {
+            if (ParticleType != ParticleType.Looped)
+                return;
+
             EvolutionParams[key] = value;
 
-            Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, key, value, true);
+            if (Exists())
+                Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, key, value, true);
         }
 
         /// <summary>
@@ -216,8 +296,11 @@ namespace FusionLibrary
         {
             Spawn();
 
-            if (ParticleType == ParticleType.SingleSpawn)
+            if (ParticleType == ParticleType.NonLooped)
                 return;
+
+            if (Duration > -1)
+                durationTime = Game.GameTime + Duration;
 
             IsPlaying = true;
         }
@@ -226,7 +309,7 @@ namespace FusionLibrary
         /// Stops looping the particle.
         /// </summary>
         /// <param name="instant"><c>true</c> particle will be instantly removed from game's world.</param>
-        public void Stop(bool instant)
+        public void Stop(bool instant = false)
         {
             IsPlaying = false;
 
@@ -261,10 +344,7 @@ namespace FusionLibrary
             GlobalParticlePlayerList.Remove(this);
         }
 
-        /// <summary>
-        /// Spawns manually a copy of the particle.
-        /// </summary>
-        public void Spawn()
+        internal void Spawn()
         {
             Request();
 
@@ -272,32 +352,34 @@ namespace FusionLibrary
 
             switch (ParticleType)
             {
-                case ParticleType.SingleSpawn:
-                case ParticleType.LoopedManually:
+                case ParticleType.NonLooped:
+                case ParticleType.ForceLooped:
 
                     if (!ToEntity && !ToBone)
-                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
+                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     else if (ToEntity && !ToBone)
-                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
+                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     else
                     {
                         Vector3 position = Bone.GetRelativeOffsetPosition(Position);
 
-                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, position.X, position.Y, position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
+                        Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, position.X, position.Y, position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     }
 
                     break;
                 case ParticleType.Looped:
 
                     if (!ToEntity && !ToBone)
-                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
+                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     else if (ToEntity && !ToBone)
-                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, false, false, false);
+                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     else
-                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Bone.Index, Size, false, false, false);
+                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Bone.Index, Size, 0, 0, 0);
 
                     break;
             }
+
+            setColor();
 
             if (ParticleType != ParticleType.Looped)
                 return;
@@ -306,12 +388,22 @@ namespace FusionLibrary
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, entry.Key, entry.Value, true);
         }
 
-        public void Color(float r, float g, float b)
+        internal void setColor()
         {
-            if (ParticleType == ParticleType.Looped)
-                Function.Call(Hash.SET_​PARTICLE_​FX_​LOOPED_​COLOUR, Handle, r, g, b, 0);
+            if (!SetColor || !IsPlaying)
+                return;
+
+            if (ParticleType == ParticleType.Looped && Exists())
+            {
+                Function.Call(Hash.SET_​PARTICLE_​FX_​LOOPED_​COLOUR, Handle, Color.R / 255f, Color.G / 255f, Color.B / 255f, 0);
+                Function.Call(Hash.SET_​PARTICLE_​FX_​LOOPED_​ALPHA, Handle, Color.A / 255f);
+            }                
             else
-                Function.Call(Hash.SET_PARTICLE_FX_NON_LOOPED_COLOUR, r, g, b);
+            {
+                Function.Call(Hash.SET_PARTICLE_FX_NON_LOOPED_COLOUR, Color.R / 255f, Color.G / 255f, Color.B / 255f);
+                Function.Call(Hash.SET_​PARTICLE_​FX_​NON_​LOOPED_​ALPHA, Color.A / 255f);
+            }                
         }
+
     }
 }

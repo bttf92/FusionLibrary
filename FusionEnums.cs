@@ -9,9 +9,9 @@ namespace FusionLibrary
         /// </summary>
         public enum ParticleType
         {
-            SingleSpawn,
+            NonLooped,
             Looped,
-            LoopedManually
+            ForceLooped
         }
 
         /// <summary>
