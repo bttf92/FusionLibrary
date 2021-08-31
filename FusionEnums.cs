@@ -94,7 +94,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Lights modes for <see cref="Light"/>.
+        /// Lights modes of <see cref="GTA.Vehicle"/>.
         /// </summary>
         public enum LightsMode
         {

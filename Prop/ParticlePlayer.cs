@@ -164,7 +164,7 @@ namespace FusionLibrary
         /// <param name="position">Position.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Vector3 position, Vector3 rotation, float size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Vector3 position, Vector3 rotation, float size = 1f)
         {
             AssetName = assetName;
             EffectName = effectName;
@@ -189,7 +189,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, offset, rotation, size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, offset, rotation, size)
         {
             Entity = entity;
             ToEntity = true;
@@ -206,7 +206,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, entity, offset, rotation, size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, string boneName, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
             Bone = Entity.Bones[boneName];
             ToBone = true;
@@ -223,7 +223,7 @@ namespace FusionLibrary
         /// <param name="offset">Offset.</param>
         /// <param name="rotation">Rotation.</param>
         /// <param name="size">Size.</param>
-        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, int boneIndex, Vector3 offset, Vector3 rotation, float size) : this(assetName, effectName, particleType, entity, offset, rotation, size)
+        public ParticlePlayer(string assetName, string effectName, ParticleType particleType, Entity entity, int boneIndex, Vector3 offset, Vector3 rotation, float size = 1f) : this(assetName, effectName, particleType, entity, offset, rotation, size)
         {
             Bone = Entity.Bones[boneIndex];
             ToBone = true;
@@ -248,7 +248,7 @@ namespace FusionLibrary
             if (Duration > -1 && Game.GameTime >= durationTime)
             {
                 Stop();
-                
+
                 return;
             }
 
@@ -397,13 +397,12 @@ namespace FusionLibrary
             {
                 Function.Call(Hash.SET_​PARTICLE_​FX_​LOOPED_​COLOUR, Handle, Color.R / 255f, Color.G / 255f, Color.B / 255f, 0);
                 Function.Call(Hash.SET_​PARTICLE_​FX_​LOOPED_​ALPHA, Handle, Color.A / 255f);
-            }                
+            }
             else
             {
                 Function.Call(Hash.SET_PARTICLE_FX_NON_LOOPED_COLOUR, Color.R / 255f, Color.G / 255f, Color.B / 255f);
                 Function.Call(Hash.SET_​PARTICLE_​FX_​NON_​LOOPED_​ALPHA, Color.A / 255f);
-            }                
+            }
         }
-
     }
 }
