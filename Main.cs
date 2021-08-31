@@ -15,12 +15,6 @@ namespace FusionLibrary
             System.IO.File.AppendAllText($"./ScriptHookVDotNet.log", $"FusionLibrary - {Version} ({buildDate})" + Environment.NewLine);
 
             Tick += Main_Tick;
-            Aborted += Main_Aborted;
-        }
-
-        private void Main_Aborted(object sender, EventArgs e)
-        {
-
         }
 
         private void Main_Tick(object sender, EventArgs e)

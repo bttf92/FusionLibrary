@@ -156,7 +156,7 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, PointAtOffset);
                 }
                 else
-                    Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+                    Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
             }
 
             World.RenderingCamera = Camera;
@@ -192,7 +192,7 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, PointAtOffset);
                 }
                 else
-                    Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+                    Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
             }
 
             if (OldCamera == null || OldCamera.Camera == null || OldCamera.Camera.Exists() == false)
@@ -251,7 +251,7 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, CurrentPointAtOffset);
                 }
                 else
-                    Camera.AttachTo((Vehicle)Entity, "", CurrentPositionOffset, CurrentPointAtOffset);
+                    Camera.AttachToVehicle((Vehicle)Entity, "", CurrentPositionOffset, CurrentPointAtOffset);
 
                 Camera.FieldOfView = CurrentFieldOfView;
             }
@@ -273,7 +273,7 @@ namespace FusionLibrary
                 Camera.PointAt(Entity, PointAtOffset);
             }
             else
-                Camera.AttachTo((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+                Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
 
             Camera.FieldOfView = FieldOfView;
 

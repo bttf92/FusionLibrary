@@ -8,10 +8,10 @@ namespace FusionLibrary
 {
     public class Decorator
     {
-        public const string dDoNotDelete = "FusionProp_DoNotDelete";
+        private const string dDoNotDelete = "FusionProp_DoNotDelete";
 
-        public const string dInteractableEntity = "InteractableEntity";
-        public const string dInteractableId = "InteractableId";
+        private const string dInteractableEntity = "FusionProp_InteractableEntity";
+        private const string dInteractableId = "FusionProp_InteractableId";
 
         internal static void Initialize()
         {

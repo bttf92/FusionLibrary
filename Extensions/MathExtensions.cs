@@ -9,7 +9,6 @@ namespace FusionLibrary.Extensions
 {
     public static class MathExtensions
     {
-
         /// <summary>
         /// Returns a random <see cref="double"/> between <paramref name="minValue"/> and <paramref name="maxValue"/>.
         /// </summary>
@@ -79,21 +78,41 @@ namespace FusionLibrary.Extensions
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
+        /// <summary>
+        /// Converts <paramref name="value"/> from m/s (game's unit) to mph.
+        /// </summary>
+        /// <param name="value">Speed value in m/s.</param>
+        /// <returns>Speed in mph.</returns>
         public static float ToMPH(this float value)
         {
             return value * 2.23694f;
         }
 
+        /// <summary>
+        /// Converts <paramref name="value"/> from mph to m/s (game's unit).
+        /// </summary>
+        /// <param name="value">Speed value in mph.</param>
+        /// <returns>Speed in m/s</returns>
         public static float ToMS(this float value)
         {
             return value * 0.44704f;
         }
 
+        /// <summary>
+        /// Converts degrees in radiants.
+        /// </summary>
+        /// <param name="value">Angle in degrees.</param>
+        /// <returns>Radiants.</returns>
         public static float ToDeg(this float value)
         {
             return value * (180 / (float)Math.PI);
         }
 
+        /// <summary>
+        /// Converts radiants in degrees.
+        /// </summary>
+        /// <param name="value">Angle in radiants.</param>
+        /// <returns>Degrees.</returns>
         public static float ToRad(this float value)
         {
             return value * ((float)Math.PI / 180);
@@ -129,6 +148,12 @@ namespace FusionLibrary.Extensions
             return position;
         }
 
+        /// <summary>
+        /// Transfers Z offset from <paramref name="src"/> to <paramref name="dst"/>.
+        /// </summary>
+        /// <param name="src">Original point.</param>
+        /// <param name="dst">Destination point.</param>
+        /// <returns><paramref name="dst"/> with Z axis offsetted of <paramref name="src"/> Z.</returns>
         public static Vector3 TransferHeight(this Vector3 src, Vector3 dst)
         {
             dst.Z += src.Z - World.GetGroundHeight(src);
@@ -150,6 +175,12 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
+        /// <summary>
+        /// Gets the most free direction given a <paramref name="position"/> in the world.
+        /// </summary>
+        /// <param name="position">World position.</param>
+        /// <param name="ignoreEntity">An <see cref="Entity"/> to ignore.</param>
+        /// <returns>Most free direction.</returns>
         public static float GetMostFreeDirection(this Vector3 position, Entity ignoreEntity)
         {
             float ret = 0;
@@ -197,6 +228,11 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
+        /// <summary>
+        /// Gets the corresponding positive angle of a positive one.
+        /// </summary>
+        /// <param name="value">Negative angle.</param>
+        /// <returns>Positive angle.</returns>
         public static float PositiveAngle(this float value)
         {
             if (value < 0)
@@ -205,6 +241,11 @@ namespace FusionLibrary.Extensions
             return value;
         }
 
+        /// <summary>
+        /// Wraps an angle between 0 and 360.
+        /// </summary>
+        /// <param name="value">Angle in degrees.</param>
+        /// <returns>Wrapped angle.</returns>
         public static float WrapAngle(this float value)
         {
             value = value % 360;
@@ -215,18 +256,13 @@ namespace FusionLibrary.Extensions
             return value;
         }
 
-        public static float AngularSpeed(this float linearSpeed, float wheelRadius, float currentRotation, bool vehDirection, float modifier = 1)
-        {
-            float angVel = ((linearSpeed.ToDeg() / Math.Abs(wheelRadius)) / Game.FPS) / modifier;
-
-            if (vehDirection)
-                currentRotation -= angVel;
-            else
-                currentRotation += angVel;
-
-            return currentRotation.WrapAngle();
-        }
-
+        /// <summary>
+        /// Converts a linear speed to angular applied to a wheel.
+        /// </summary>
+        /// <param name="wheelSpeed">Linear speed of the wheel.</param>
+        /// <param name="wheelLength">Circumference of the wheel.</param>
+        /// <param name="currentAngle">Current angle of the wheel.</param>
+        /// <returns>Angular speed of the wheel.</returns>
         public static float AngularSpeed(this float wheelSpeed, float wheelLength, float currentAngle)
         {
             float newAngle = ((wheelSpeed / wheelLength) * 360) / Game.FPS;
@@ -234,26 +270,60 @@ namespace FusionLibrary.Extensions
             return (currentAngle - newAngle).WrapAngle();
         }
 
-        public static double ArcCos(this double X)
+        /// <summary>
+        /// Gets the arccosine of <paramref name="angle"/>.
+        /// </summary>
+        /// <param name="angle">Angle in degrees.</param>
+        /// <returns>Arccosine of <paramref name="angle"/>.</returns>
+        public static double ArcCos(this double angle)
         {
-            return Math.Atan(-X / Math.Sqrt(-X * X + 1)) + 2 * Math.Atan(1);
+            return Math.Atan(-angle / Math.Sqrt(-angle * angle + 1)) + 2 * Math.Atan(1);
         }
 
+        /// <summary>
+        /// Checks if two values are near enough.
+        /// </summary>
+        /// <param name="src">First value.</param>
+        /// <param name="to">Second value.</param>
+        /// <param name="by">Max difference accepted.</param>
+        /// <returns><c>true</c> if the two values are near; otherwise <c>false</c>.</returns>
         public static bool Near(this float src, float to, float by = 5)
         {
             return (to - by) <= src && src <= (to + by);
         }
 
+        /// <summary>
+        /// Checks if two values are near enough.
+        /// </summary>
+        /// <param name="src">First value.</param>
+        /// <param name="to">Second value.</param>
+        /// <param name="by">Max difference accepted.</param>
+        /// <param name="onlyFromLeft">Checks only if <paramref name="src"/> is minor or equal than <paramref name="to"/>.</param>
+        /// <returns><c>true</c> if the two values are near; otherwise <c>false</c>.</returns>
         public static bool Near(this DateTime src, DateTime to, TimeSpan by, bool onlyFromLeft = false)
         {
             return to.Subtract(by) <= src && ((onlyFromLeft && src <= to) || (!onlyFromLeft && src <= to.Add(by)));
         }
 
+        /// <summary>
+        /// Checks if a <see cref="DateTime"/> is between <paramref name="start"/> and <paramref name="end"/> values.
+        /// </summary>
+        /// <param name="src">Evalueted <see cref="DateTime"/>.</param>
+        /// <param name="start">Start of range.</param>
+        /// <param name="end">End of range.</param>
+        /// <returns><c>true</c> if <paramref name="src"/> is between; otherwise <c>false</c>.</returns>
         public static bool Between(this DateTime src, DateTime start, DateTime end)
         {
             return src >= start && src <= end;
         }
 
+        /// <summary>
+        /// Checks if a <see cref="DateTime"/> is between <paramref name="start"/> and <paramref name="end"/> values. It evaluates only the time expressed in 12 hour format.
+        /// </summary>
+        /// <param name="src">Evalueted <see cref="DateTime"/>.</param>
+        /// <param name="start">Start of range.</param>
+        /// <param name="end">End of range.</param>
+        /// <returns><c>true</c> if <paramref name="src"/> is between; otherwise <c>false</c>.</returns>
         public static bool BetweenHours(this DateTime src, DateTime start, DateTime end)
         {
             int hour = int.Parse(src.ToString("hh"));
@@ -285,41 +355,54 @@ namespace FusionLibrary.Extensions
 
             return vector3_1;
         }
-
-        public static Vector3 GetSingleOffset(this Vector3 vect3, Coordinate coord, float value)
+        
+        /// <summary>
+        /// Returns <paramref name="vector3"/> offsetted by <paramref name="value"/> in <paramref name="coordinate"/> axis.
+        /// </summary>
+        /// <param name="vector3">Original <see cref="Vector3"/>.</param>
+        /// <param name="coordinate"><see cref="Coordinate"/> of the axis.</param>
+        /// <param name="value">Offset.</param>
+        /// <returns></returns>
+        public static Vector3 GetSingleOffset(this Vector3 vector3, Coordinate coordinate, float value)
         {
-            switch (coord)
+            switch (coordinate)
             {
                 case Coordinate.X:
-                    vect3.X += value;
+                    vector3.X += value;
                     break;
                 case Coordinate.Y:
-                    vect3.Y += value;
+                    vector3.Y += value;
                     break;
                 default:
-                    vect3.Z += value;
+                    vector3.Z += value;
                     break;
             }
 
-            return vect3;
+            return vector3;
         }
 
-        public static Vector3 InvertCoordinate(this Vector3 vect3, Coordinate coord)
+        /// <summary>
+        /// Inverts the sign of <paramref name="coordinate"/> of <paramref name="vector3"/>.
+        /// </summary>
+        /// <param name="vector3">Original <see cref="Vector3"/>.</param>
+        /// <param name="coordinate"><see cref="Coordinate"/> of the axis.</param>
+        /// <returns>Original <paramref name="vector3"/> with the inverted axis.</returns>
+        public static Vector3 InvertCoordinate(this Vector3 vector3, Coordinate coordinate)
         {
-            switch (coord)
+            switch (coordinate)
             {
                 case Coordinate.X:
-                    vect3.X = -vect3.X;
+                    vector3.X = -vector3.X;
                     break;
                 case Coordinate.Y:
-                    vect3.Y = -vect3.Y;
+                    vector3.Y = -vector3.Y;
                     break;
                 default:
-                    vect3.Z = -vect3.Z;
+                    vector3.Z = -vector3.Z;
                     break;
             }
 
-            return vect3;
+            return vector3;
         }
     }
 }

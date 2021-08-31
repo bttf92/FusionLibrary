@@ -263,7 +263,6 @@ namespace FusionLibrary.Extensions
                 Function.Call(Hash.GET_STREET_NAME_AT_COORD, vehicle.Position.X, vehicle.Position.Y, vehicle.Position.Z, &street, &cross);
             }
 
-
             string streetName = World.GetStreetName(vehicle.Position, out string crossName);
 
             return (street, streetName, cross, crossName);
@@ -274,6 +273,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="vehicle"></param>
         /// <returns></returns>
+        [Obsolete]
         public static Hash GetStreetHash(this Vehicle vehicle)
         {
             Hash street;
@@ -292,6 +292,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="vehicle"></param>
         /// <returns></returns>
+        [Obsolete]
         public static Hash GetCrossingHash(this Vehicle vehicle)
         {
             Hash street;
@@ -305,21 +306,46 @@ namespace FusionLibrary.Extensions
             return cross;
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="FusionLibrary.TaskDrive"/> of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>New <see cref="FusionLibrary.TaskDrive"/> instance.</returns>
         public static TaskDrive TaskDrive(this Vehicle vehicle)
         {
             return new TaskDrive(vehicle);
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="FusionLibrary.TaskDrive"/> of <paramref name="ped"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <returns>New <see cref="FusionLibrary.TaskDrive"/> instance.</returns>
         public static TaskDrive TaskDrive(this Ped ped)
         {
             return new TaskDrive(ped);
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="FusionLibrary.TaskDrive"/> of <paramref name="ped"/> with <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>New <see cref="FusionLibrary.TaskDrive"/> instance.</returns>
         public static TaskDrive TaskDrive(this Ped ped, Vehicle vehicle)
         {
             return new TaskDrive(ped, vehicle);
         }
 
+        /// <summary>
+        /// Tasks <paramref name="ped"/> to go to <paramref name="position"/>.
+        /// </summary>
+        /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
+        /// <param name="position">Destination of the task.</param>
+        /// <param name="speed">Speed.</param>
+        /// <param name="heading">End heading of the <paramref name="ped"/>.</param>
+        /// <param name="timeout">Timeout of the task. -1 is without timeout.</param>
+        /// <param name="distanceToSlide">Margin accepted for arrival at <paramref name="position"/>.</param>
         public static void TaskGoStraightTo(this Ped ped, Vector3 position, float speed, float heading, int timeout = -1, float distanceToSlide = 0)
         {
             Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped, position.X, position.Y, position.Z, speed, timeout, heading, distanceToSlide);
@@ -660,6 +686,9 @@ namespace FusionLibrary.Extensions
         /// <returns><c>true</c> if <paramref name="vehicle"/> is a train; otherwise <c>false</c></returns>
         public static bool IsTrain(this Vehicle vehicle)
         {
+            if (!vehicle.NotNullAndExists())
+                return false;
+
             return Function.Call<bool>(Hash.IS_THIS_MODEL_A_TRAIN, vehicle.Model.Hash);
         }
 
@@ -748,42 +777,82 @@ namespace FusionLibrary.Extensions
         /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
         public static void SetTrainPosition(this Vehicle train, Vector3 position)
         {
+            if (!train.IsTrain())
+                return;
+
             Function.Call(Hash.SET_MISSION_TRAIN_COORDS, train, position.X, position.Y, position.Z);
         }
 
-        public static unsafe Vector3 GetBoneOriginalTranslation(this Vehicle vehicle, int index)
+        /// <summary>
+        /// Gets the original translation of the bone with <paramref name="index"/> in <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="index">Bone's index.</param>
+        /// <returns><see cref="Vector3"/> translation of the bone.</returns>
+        public static Vector3 GetBoneOriginalTranslation(this Vehicle vehicle, int index)
         {
-            CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
-            NativeVector3 v = veh->inst->archetype->skeleton->skeletonData->bones[index].translation;
-            return v;
+            if (!vehicle.NotNullAndExists())
+                return Vector3.Zero;
+
+            unsafe
+            {
+                CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
+                NativeVector3 v = veh->inst->archetype->skeleton->skeletonData->bones[index].translation;
+                return v;
+            }
         }
 
-        public static unsafe Quaternion GetBoneOriginalRotation(this Vehicle vehicle, int index)
+        /// <summary>
+        /// Gets the original rotation of the bone with <paramref name="index"/> in <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="index">Bone's index.</param>
+        /// <returns><see cref="Vector3"/> rotation of the bone.</returns>
+        public static Quaternion GetBoneOriginalRotation(this Vehicle vehicle, int index)
         {
-            CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
-            NativeVector4 v = veh->inst->archetype->skeleton->skeletonData->bones[index].rotation;
-            return v;
+            if (!vehicle.NotNullAndExists())
+                return Quaternion.Zero;
+
+            unsafe
+            {
+                CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
+                NativeVector4 v = veh->inst->archetype->skeleton->skeletonData->bones[index].rotation;
+                return v;
+            }
+
         }
 
-        public static unsafe int GetBoneIndex(this Vehicle vehicle, string boneName)
+        /// <summary>
+        /// Returns index of <paramref name="bone"/> in <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="bone">Name of the bone.</param>
+        /// <returns>Bone's index.</returns>
+        public static int GetBoneIndex(this Vehicle vehicle, string bone)
         {
-            if (vehicle == null)
+            if (!vehicle.NotNullAndExists())
                 return -1;
 
-            CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
-            crSkeletonData* skelData = veh->inst->archetype->skeleton->skeletonData;
-            uint boneCount = skelData->bonesCount;
-
-            for (uint i = 0; i < boneCount; i++)
+            unsafe
             {
-                if (skelData->GetBoneNameForIndex(i) == boneName)
-                    return unchecked((int)i);
+                CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
+                crSkeletonData* skelData = veh->inst->archetype->skeleton->skeletonData;
+                uint boneCount = skelData->bonesCount;
+
+                for (uint i = 0; i < boneCount; i++)
+                    if (skelData->GetBoneNameForIndex(i) == bone)
+                        return unchecked((int)i);
             }
 
             return -1;
         }
 
-        public static Dictionary<string, Vector3> GetWheelPositions(this Vehicle vehicle)
+        /// <summary>
+        /// Gets wheels position of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>List of wheels position</returns>
+        public static Dictionary<string, Vector3> GetWheelsPosition(this Vehicle vehicle)
         {
             Dictionary<string, Vector3> ret = new Dictionary<string, Vector3>();
 

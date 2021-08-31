@@ -55,13 +55,6 @@ namespace FusionLibrary
 
     public class CustomModelHandler
     {
-        protected static CustomModel PreloadModel(CustomModel customModel)
-        {
-            customModel.Request();
-
-            return customModel;
-        }
-
         protected static List<CustomModel> GetAllModels(Type type)
         {
             System.Reflection.FieldInfo[] fields = type.GetFields();

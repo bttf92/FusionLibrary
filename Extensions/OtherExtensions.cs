@@ -10,19 +10,32 @@ namespace FusionLibrary.Extensions
 {
     public static class OtherExtensions
     {
+        /// <summary>
+        /// Checks if <paramref name="camera"/> is not null and <see cref="Camera.Exists"/>.
+        /// </summary>
+        /// <param name="camera">Instance of a <see cref="Camera"/>.</param>
+        /// <returns><c>true</c> if <paramref name="camera"/> is not null and <see cref="Camera.Exists"/>; otherwise <c>false</c>.</returns>
         public static bool NotNullAndExists(this Camera camera)
         {
             return camera != null && camera.Exists();
         }
 
-        public static bool IsCameraValid(this Camera camera)
+        /// <summary>
+        /// Attaches <paramref name="camera"/> to <paramref name="bone"/> of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="camera">Instance of a <see cref="Camera"/>.</param>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="bone">Bone's name.</param>
+        /// <param name="offset">Offset relative to <paramref name="bone"/>.</param>
+        /// <param name="rotation">Rotation of the <see cref="Camera"/>.</param>
+        /// <param name="relativeRotation">Sets if rotation is relative to <paramref name="bone"/>.</param>
+        /// <param name="fixedDirection">Sets if direction is relative to <paramref name="vehicle"/>.</param>
+        public static void AttachToVehicle(this Camera camera, Vehicle vehicle, string bone, Vector3 offset, Vector3 rotation, bool relativeRotation = true, bool fixedDirection = true)
         {
-            return camera.NotNullAndExists() && camera.Position != Vector3.Zero;
-        }
+            if (!camera.NotNullAndExists() || !vehicle.NotNullAndExists())
+                return;
 
-        public static void AttachTo(this Camera camera, Vehicle vehicle, string bone, Vector3 position, Vector3 rotation)
-        {
-            Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, true, rotation.X, rotation.Y, rotation.Z, position.X, position.Y, position.Z, true);
+            Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, relativeRotation, rotation.X, rotation.Y, rotation.Z, offset.X, offset.Y, offset.Z, fixedDirection);
         }
 
         /// <summary>
@@ -65,6 +78,12 @@ namespace FusionLibrary.Extensions
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));
         }
 
+        /// <summary>
+        /// Returns a random element from an <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <typeparam name="T"><see cref="Type"/> of the element.</typeparam>
+        /// <param name="sequence"><see cref="IEnumerable{T}"/></param>
+        /// <returns>Random <typeparamref name="T"/> element from <paramref name="sequence"/>.</returns>
         public static T SelectRandomElement<T>(this IEnumerable<T> sequence) where T : class
         {
             if (sequence.Count() != 0)
@@ -73,10 +92,17 @@ namespace FusionLibrary.Extensions
             return null;
         }
 
-        public static T SelectRandomElement<T>(this IDictionary<int, T> dictionnary) where T : class
+        /// <summary>
+        /// Returns a random element from <see cref="IDictionary{TKey, TValue}"/>.
+        /// </summary>
+        /// <typeparam name="R"><see cref="Type"/> of key of <paramref name="dictionary"/>.</typeparam>
+        /// <typeparam name="T"><see cref="Type"/> of value of <paramref name="dictionary"/>.</typeparam>
+        /// <param name="dictionary">Instance of a <see cref="IDictionary{TKey, TValue}"/>.</param>
+        /// <returns></returns>
+        public static T SelectRandomElement<R, T>(this IDictionary<R, T> dictionary) where T : class
         {
-            if (dictionnary.Count != 0)
-                return dictionnary[FusionUtils.Random.Next(0, dictionnary.Count)];
+            if (dictionary.Count != 0)
+                return dictionary.ElementAt(FusionUtils.Random.Next(0, dictionary.Count)).Value;
 
             return null;
         }
