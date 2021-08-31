@@ -365,15 +365,32 @@ namespace FusionLibrary.Extensions
             return !IsFullyOutVehicle(ped) && ped.IsTaskActive(TaskType.ExitVehicle);
         }
 
-        //public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation)
-        //{
-        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);
-        //}
+        /// <summary>
+        /// Attaches <paramref name="entity1"/> to <paramref name="boneName"/> of <paramref name="toEntity"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
+        /// <param name="boneName">Bone's name.</param>
+        /// <param name="offset">Offset of attach point.</param>
+        /// <param name="rotation">Rotation for attach.</param>
+        /// <param name="useFixedRot">If <c>false</c> it ignores <paramref name="toEntity"/> vector.</param>
+        public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation, bool useFixedRot = true)
+        {
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, useFixedRot);
+        }
 
-        //public static void AttachTo(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation)
-        //{
-        //    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, 0, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, true);
-        //}
+        /// <summary>
+        /// Attaches <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// </summary>
+        /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
+        /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
+        /// <param name="offset">Offset of attach point.</param>
+        /// <param name="rotation">Rotation for attach.</param>
+        /// <param name="useFixedRot">If <c>false</c> it ignores <paramref name="toEntity"/> vector.</param>
+        public static void AttachTo(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation, bool useFixedRot = true)
+        {
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, 0, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, useFixedRot);
+        }
 
         /// <summary>
         /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
@@ -388,7 +405,7 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
-        /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// Attaches physically <paramref name="entity1"/> to <paramref name="boneIndex"/> of <paramref name="toEntity"/>.
         /// </summary>
         /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
         /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
@@ -401,7 +418,7 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
-        /// Attaches physically <paramref name="entity1"/> to <paramref name="toEntity"/>.
+        /// Attaches physically <paramref name="entity1"/> to <paramref name="boneName"/> of <paramref name="toEntity"/>.
         /// </summary>
         /// <param name="entity1">Instance of an <see cref="Entity"/>.</param>
         /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
