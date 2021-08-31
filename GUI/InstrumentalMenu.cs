@@ -6,15 +6,14 @@ namespace FusionLibrary
 {
     public class InstrumentalButton
     {
+        public Control Control { get; }
+        public string Title { get; }
 
         public InstrumentalButton(Control control, string title)
         {
             Control = control;
             Title = title;
         }
-
-        public Control Control { get; }
-        public string Title { get; }
     }
 
     public class InstrumentalMenu : ScaleformGui
@@ -28,9 +27,9 @@ namespace FusionLibrary
             CallFunction("SET_DATA_SLOT_EMPTY");
         }
 
-        public void AddControl(Control control, string tittle)
+        public void AddControl(Control control, string title)
         {
-            _buttonList.Add(new InstrumentalButton(control, tittle));
+            _buttonList.Add(new InstrumentalButton(control, title));
         }
 
         public void RemoveControls()
@@ -42,18 +41,17 @@ namespace FusionLibrary
         public void UpdatePanel()
         {
             ClearPanel();
+
             foreach (InstrumentalButton button in _buttonList)
-            {
                 CallFunction("SET_DATA_SLOT", _buttonList.IndexOf(button), GetButtonIdFromControl(button.Control), button.Title);
-            }
+
             SetButtons();
         }
 
         public int GetButtonIdFromControl(Control control)
         {
-            string controlName = Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, control, true);
-            controlName = controlName.Substring(2);
-
+            string controlName = Function.Call<string>(Hash.GET_CONTROL_INSTRUCTIONAL_BUTTON, 2, control, true).Substring(2);
+            
             return int.Parse(controlName);
         }
 
