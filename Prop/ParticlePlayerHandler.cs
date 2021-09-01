@@ -143,6 +143,15 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Toggles play/stop state.
+        /// </summary>
+        /// <param name="state">State of the particles.</param>
+        public void SetState(bool state)
+        {
+            ParticlePlayers.ForEach(x => x.SetState(state));
+        }
+
+        /// <summary>
         /// Disposes the particles.
         /// </summary>
         public void Dispose()

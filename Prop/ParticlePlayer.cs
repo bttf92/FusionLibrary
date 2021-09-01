@@ -300,6 +300,9 @@ namespace FusionLibrary
         /// </summary>
         public void Play()
         {
+            if (IsPlaying)
+                return;
+
             Spawn();
 
             if (ParticleType == ParticleType.NonLooped)
@@ -326,6 +329,18 @@ namespace FusionLibrary
                 Function.Call(Hash.REMOVE_PARTICLE_FX, Handle, 0);
             else
                 Function.Call(Hash.STOP_PARTICLE_FX_LOOPED, Handle, 0);
+        }
+
+        /// <summary>
+        /// Toggles play/stop state.
+        /// </summary>
+        /// <param name="state">State of the particle.</param>
+        public void SetState(bool state)
+        {
+            if (state)
+                Play();
+            else
+                Stop();
         }
 
         /// <summary>
