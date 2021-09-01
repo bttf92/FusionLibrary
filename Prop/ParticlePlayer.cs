@@ -320,7 +320,8 @@ namespace FusionLibrary
         /// <param name="instant"><c>true</c> particle will be instantly removed from game's world.</param>
         public void Stop(bool instant = false)
         {
-            IsPlaying = false;
+            if (!IsPlaying)
+                return;
 
             if (ParticleType != ParticleType.Looped)
                 return;
@@ -329,6 +330,8 @@ namespace FusionLibrary
                 Function.Call(Hash.REMOVE_PARTICLE_FX, Handle, 0);
             else
                 Function.Call(Hash.STOP_PARTICLE_FX_LOOPED, Handle, 0);
+
+            IsPlaying = false;
         }
 
         /// <summary>
