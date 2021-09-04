@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FusionLibrary.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using static FusionLibrary.FusionEnums;
@@ -149,15 +150,19 @@ namespace FusionLibrary
         public AnimationType Type { get; }
         public AnimationStep AnimationStep { get; }
 
-        public bool Update;
-        public bool IsIncreasing;
-        public float Minimum = 0;
-        public float Maximum = 0;
-        public float MaxMinRatio = 1;
-        public float Step = 0;
-        public float StepRatio = 1;
-        public bool Stop;
-        public bool DoNotInvert;
+        public bool Update { get; set; }
+        public bool IsIncreasing { get; set; }
+        public float Minimum { get; set; } = 0;
+        public float Maximum { get; set; } = 0;
+        public float MaxMinRatio { get; set; } = 1;
+        public float Step { get; set; } = 0;
+        public float StepRatio { get; set; } = 1;
+        public bool Stop { get; set; }
+        public bool DoNotInvert { get; set; }
+        public bool SmoothEnd { get; set; }
+
+        public float EndValue => (IsIncreasing ? Maximum : Minimum) * MaxMinRatio;
+        public float StepValue => Step * StepRatio;
 
         public CoordinateSetting(Coordinate coordinate, AnimationType type, AnimationStep animationStep)
         {
@@ -166,7 +171,7 @@ namespace FusionLibrary
             AnimationStep = animationStep;
         }
 
-        public void Setup(bool stop, bool isIncreasing, float minimum, float maximum, float maxMinRatio, float step, float stepRatio)
+        public void Setup(bool stop, bool isIncreasing, float minimum, float maximum, float maxMinRatio, float step, float stepRatio, bool smoothEnd)
         {
             IsSetted = true;
 
@@ -177,6 +182,22 @@ namespace FusionLibrary
             Step = step;
             StepRatio = stepRatio;
             Stop = stop;
+            SmoothEnd = smoothEnd;
+        }
+
+        public float Clamp(float value)
+        {
+            return value.Clamp(Minimum * MaxMinRatio, Maximum * MaxMinRatio);
+        }
+
+        public float Progress(float value)
+        {
+            float ret = value / ((Maximum - Minimum) * MaxMinRatio);
+
+            if (ret < 0)
+                return -ret;
+
+            return 1 - ret;
         }
     }
 }

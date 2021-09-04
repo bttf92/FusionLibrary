@@ -85,7 +85,6 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="triggerControl">Which <see cref="Control"/> triggers the interaction.</param>
         /// <param name="lockCamera">If camera should be locked while interacting with <see cref="InteractiveProp"/>.</param>
-        /// <param name="smoothRelease">if release of a lever should be smoothed.</param>
         public InteractiveController(Control triggerControl = Control.Attack, bool lockCamera = false)
         {
             TriggerControl = triggerControl;
@@ -109,11 +108,11 @@ namespace FusionLibrary
         /// <param name="startValue">Starting value.</param>
         /// <param name="sensitivityMultiplier">Sensitivity multiplier for <paramref name="control"/> value.</param>        
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue = 0f, float sensitivityMultiplier = 1f)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, float min, float max, float startValue = 0f, float sensitivityMultiplier = 1f)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier, false));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, InteractionType.Lever, movementType, coordinateInteraction, control, invert, min, max, startValue, sensitivityMultiplier));
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);
@@ -138,13 +137,13 @@ namespace FusionLibrary
         /// <param name="isIncreasing">If value must go from min to max.</param>        
         /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
         /// <returns>New instance of <see cref="InteractiveProp"/>.</returns>
-        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, bool toggle, int min, int max, float startValue, float step, float stepRatio, bool isIncreasing, bool smoothEnd = false)
+        public InteractiveProp Add(CustomModel model, Entity entity, string boneName, AnimationType movementType, Coordinate coordinateInteraction, bool toggle, float min, float max, float startValue, float step, float stepRatio, bool isIncreasing, bool smoothEnd = false)
         {
             InteractiveProp interactionProp;
 
-            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, toggle ? InteractionType.Toggle : InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f, smoothEnd));
+            InteractiveProps.Add(interactionProp = new InteractiveProp(this, model, entity, boneName, toggle ? InteractionType.Toggle : InteractionType.Button, movementType, coordinateInteraction, Control.Aim, false, min, max, startValue, 1f));
 
-            interactionProp.SetupAnimation(step, stepRatio, isIncreasing);
+            interactionProp.SetupAnimation(step, stepRatio, isIncreasing, smoothEnd);
 
             interactionProp.AnimateProp.Prop.Decorator().InteractableEntity = true;
             interactionProp.AnimateProp.Prop.Decorator().InteractableId = InteractiveProps.IndexOf(interactionProp);

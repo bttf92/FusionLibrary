@@ -99,7 +99,7 @@ namespace FusionLibrary
         private InteractiveController _controller;
         private CoordinateSetting _coordinateSetting => AnimateProp[MovementType][AnimationStep.First][Coordinate];
 
-        internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, int min, int max, float startValue, float sensitivityMultiplier, bool smoothEnd)
+        internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, float min, float max, float startValue, float sensitivityMultiplier)
         {
             InteractionType = interactionType;
             Coordinate = coordinateInteraction;
@@ -112,7 +112,7 @@ namespace FusionLibrary
             _toValue = startValue;
             _sensitivity *= sensitivityMultiplier;
 
-            AnimateProp = new AnimateProp(model, entity, boneName, smoothEnd);
+            AnimateProp = new AnimateProp(model, entity, boneName);
 
             Min = min;
             Max = max;
@@ -131,9 +131,10 @@ namespace FusionLibrary
         /// <param name="step">Step of the animation.</param>
         /// <param name="stepRatio">Step ratio of the animation.</param>
         /// <param name="isIncreasing">If new value should increase or not.</param>
-        internal void SetupAnimation(float step, float stepRatio, bool isIncreasing)
+        /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
+        internal void SetupAnimation(float step, float stepRatio, bool isIncreasing, bool smoothEnd)
         {
-            _coordinateSetting.Setup(true, isIncreasing, Min, Max, 1, step, stepRatio);
+            _coordinateSetting.Setup(true, isIncreasing, Min, Max, 1, step, stepRatio, smoothEnd);
 
             AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }

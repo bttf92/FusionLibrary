@@ -57,9 +57,13 @@ namespace FusionLibrary
         public Vector3 SavedOffset { get; private set; } = new Vector3();
         public Vector3 SavedRotation { get; private set; } = new Vector3();
 
-        public bool SmoothEnd { get; set; }
+        public bool PlayNextSteps { get; set; }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation, bool smoothEnd = false)
+        private AnimationStep _lastStep;
+        private bool _playReverse;
+        public bool PlayReverse { get; set; }
+
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, Vector3 pOffset, Vector3 pRotation)
         {
             Model = pModel;
             Entity = pEntity;
@@ -67,38 +71,36 @@ namespace FusionLibrary
             Offset = pOffset;
             Rotation = pRotation;
             ToBone = true;
-            SmoothEnd = smoothEnd;
-
+            
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone, bool smoothEnd = false) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero, smoothEnd)
+        public AnimateProp(CustomModel pModel, Entity pEntity, EntityBone entityBone) : this(pModel, pEntity, entityBone, Vector3.Zero, Vector3.Zero)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, bool smoothEnd = false) : this(pModel, pEntity, pEntity.Bones[boneName], Vector3.Zero, Vector3.Zero, smoothEnd)
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName) : this(pModel, pEntity, pEntity.Bones[boneName], Vector3.Zero, Vector3.Zero)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation, bool smoothEnd = false) : this(pModel, pEntity, pEntity.Bones[boneName], pOffset, pRotation, smoothEnd)
+        public AnimateProp(CustomModel pModel, Entity pEntity, string boneName, Vector3 pOffset, Vector3 pRotation) : this(pModel, pEntity, pEntity.Bones[boneName], pOffset, pRotation)
         {
 
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation, bool smoothEnd = false)
+        public AnimateProp(CustomModel pModel, Entity pEntity, Vector3 pOffset, Vector3 pRotation)
         {
             Model = pModel;
             Entity = pEntity;
             Offset = pOffset;
             Rotation = pRotation;
-            SmoothEnd = smoothEnd;
 
             GlobalAnimatePropList.Add(this);
         }
 
-        public AnimateProp(CustomModel pModel, Entity pEntity, bool smoothEnd = false) : this(pModel, pEntity, Vector3.Zero, Vector3.Zero, smoothEnd)
+        public AnimateProp(CustomModel pModel, Entity pEntity) : this(pModel, pEntity, Vector3.Zero, Vector3.Zero)
         {
 
         }
@@ -284,12 +286,12 @@ namespace FusionLibrary
 
         public void Play()
         {
-            Play(AnimationStep.First);
+            Play(_playReverse ? _lastStep : AnimationStep.First);
         }
 
         public void Play(bool instant = false, bool spawnAndRestore = false)
         {
-            Play(AnimationStep.First, instant, false, spawnAndRestore);
+            Play(_playReverse ? _lastStep : AnimationStep.First, instant, false, spawnAndRestore);
         }
 
         public void Play(AnimationStep animationStep, bool instant = false, bool playInstantPreviousSteps = false, bool spawnAndRestore = false)
@@ -355,7 +357,29 @@ namespace FusionLibrary
 
                 if (rotationSettings.Count == 0 && offsetSettings.Count == 0)
                 {
+                    if (PlayNextSteps && ((!_playReverse && AnimationStep != AnimationStep.Seventh) || (_playReverse && AnimationStep != AnimationStep.First)))
+                    {
+                        AnimationStep nextStep = AnimationStep;
+
+                        if (_playReverse)
+                            nextStep--;
+                        else
+                            nextStep++;
+
+                        Animation[AnimationType.Offset][nextStep].setAllUpdate(true);
+                        Animation[AnimationType.Rotation][nextStep].setAllUpdate(true);
+                        AnimationStep = nextStep;
+
+                        return;
+                    }
+
                     IsPlaying = false;
+
+                    if (PlayNextSteps && PlayReverse)
+                    {
+                        _playReverse = !_playReverse;
+                        _lastStep = AnimationStep;
+                    }                        
 
                     AnimationStep animationStep = AnimationStep;
                     AnimationStep = AnimationStep.Off;
@@ -382,58 +406,41 @@ namespace FusionLibrary
                 current = CurrentOffset[i];
             else
                 current = CurrentRotation[i];
+            
+            float newValue = current;
 
-            if (SmoothEnd)
-            {
-                float newValue = coordinateSetting.IsIncreasing ? coordinateSetting.Maximum : coordinateSetting.Minimum;
-
-                newValue *= coordinateSetting.MaxMinRatio;
-
-                current = FusionUtils.Lerp(current, newValue, Game.LastFrameTime * coordinateSetting.Step * coordinateSetting.StepRatio);
-
-                if (coordinateSetting.Type == AnimationType.Offset)
-                    SecondOffset[i] = current - Offset[i];
-                else
-                    SecondRotation[i] = current - Rotation[i];
-
-                if (Math.Abs(current).Near(Math.Abs(newValue), 0.1f))
-                {
-                    if (!coordinateSetting.DoNotInvert)
-                        coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
-
-                    if (coordinateSetting.Stop)
-                        coordinateSetting.Update = false;
-                }
-            }
+            if (coordinateSetting.IsIncreasing)
+                newValue += coordinateSetting.StepValue;
             else
+                newValue -= coordinateSetting.StepValue;
+
+            float modifier = 1;
+
+            if (coordinateSetting.SmoothEnd)
             {
-                float newValue = current;
-                float step = coordinateSetting.Step * coordinateSetting.StepRatio;
+                float progress = coordinateSetting.Progress(current);
 
-                if (coordinateSetting.IsIncreasing)
-                    newValue += step;
-                else
-                    newValue -= step;
+                if (coordinateSetting.IsIncreasing && progress <= 0.25f)
+                    modifier = progress.Remap(0.25f, 0, 1, 0.05f);
 
-                float endValue = coordinateSetting.IsIncreasing ? coordinateSetting.Maximum : coordinateSetting.Minimum;
+                if (!coordinateSetting.IsIncreasing && progress >= 0.75f)
+                    modifier = progress.Remap(0.75f, 1f, 1, 0.05f);
+            }
 
-                endValue *= coordinateSetting.MaxMinRatio;
+            current = coordinateSetting.Clamp(FusionUtils.Lerp(current, newValue, Game.LastFrameTime * modifier));
 
-                current = FusionUtils.Lerp(current, newValue, Game.LastFrameTime).Clamp(coordinateSetting.Minimum * coordinateSetting.MaxMinRatio, coordinateSetting.Maximum * coordinateSetting.MaxMinRatio);
+            if (coordinateSetting.Type == AnimationType.Offset)
+                SecondOffset[i] = current - Offset[i];
+            else
+                SecondRotation[i] = current - Rotation[i];
 
-                if (coordinateSetting.Type == AnimationType.Offset)
-                    SecondOffset[i] = current - Offset[i];
-                else
-                    SecondRotation[i] = current - Rotation[i];
+            if (current == coordinateSetting.EndValue)
+            {
+                if (!coordinateSetting.DoNotInvert)
+                    coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
 
-                if (current == endValue)
-                {
-                    if (!coordinateSetting.DoNotInvert)
-                        coordinateSetting.IsIncreasing = !coordinateSetting.IsIncreasing;
-
-                    if (coordinateSetting.Stop)
-                        coordinateSetting.Update = false;
-                }
+                if (coordinateSetting.Stop)
+                    coordinateSetting.Update = false;
             }
         }
 
