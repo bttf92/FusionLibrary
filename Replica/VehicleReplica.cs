@@ -56,12 +56,16 @@ namespace FusionLibrary
             WheelsCompressions = VehicleControl.GetWheelCompressions(vehicle);
 
             if (spawnFlags.HasFlag(SpawnFlags.NoOccupants))
+            {
                 return;
+            }
 
             Occupants = new List<PedReplica>();
 
             foreach (Ped x in vehicle.Occupants)
+            {
                 Occupants.Add(new PedReplica(x));
+            }
         }
 
         public Vehicle Spawn(SpawnFlags spawnFlags, Vector3 position = default, float heading = default)
@@ -69,12 +73,16 @@ namespace FusionLibrary
             Vehicle veh = null;
 
             if (spawnFlags.HasFlag(SpawnFlags.CheckExists))
+            {
                 veh = World.GetClosestVehicle(Position, 1.0f, Model);
+            }
 
             if (spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
                 if (veh == null)
+                {
                     veh = World.CreateVehicle(Model, position, heading);
+                }
                 else
                 {
                     veh.Position = position;
@@ -84,7 +92,9 @@ namespace FusionLibrary
             else
             {
                 if (veh == null)
+                {
                     veh = World.CreateVehicle(Model, Position, Heading);
+                }
                 else
                 {
                     veh.Position = Position;
@@ -118,10 +128,14 @@ namespace FusionLibrary
             vehicle.CurrentGear = Gear;
 
             if (noOccupants)
+            {
                 return;
+            }
 
             foreach (PedReplica pedReplica in Occupants)
+            {
                 pedReplica.Spawn(vehicle);
+            }
         }
 
         public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
@@ -136,7 +150,9 @@ namespace FusionLibrary
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.SetRotation))
+            {
                 vehicle.Rotation = Rotation;
+            }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
@@ -145,7 +161,9 @@ namespace FusionLibrary
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.NoWheels))
+            {
                 return;
+            }
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {
@@ -159,7 +177,9 @@ namespace FusionLibrary
             ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants));
 
             if (nextReplica == default || nextReplica == null)
+            {
                 nextReplica = this;
+            }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
@@ -169,7 +189,9 @@ namespace FusionLibrary
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.SetRotation))
+            {
                 vehicle.Rotation = FusionUtils.Lerp(Rotation, nextReplica.Rotation, adjustedRatio, -180, 180);
+            }
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoVelocity))
             {
@@ -178,7 +200,9 @@ namespace FusionLibrary
             }
 
             if (spawnFlags.HasFlag(SpawnFlags.NoWheels))
+            {
                 return;
+            }
 
             for (int i = 0; i < WheelsRotations.Length; i++)
             {

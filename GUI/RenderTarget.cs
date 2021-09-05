@@ -15,10 +15,14 @@ namespace FusionLibrary
             Function.Call(Hash.RELEASE_NAMED_RENDERTARGET, renderTargetName);
 
             if (!Function.Call<bool>(Hash.IS_NAMED_RENDERTARGET_REGISTERED, renderTargetName))
+            {
                 Function.Call(Hash.REGISTER_NAMED_RENDERTARGET, renderTargetName, 0);
+            }
 
             if (!Function.Call<bool>(Hash.IS_NAMED_RENDERTARGET_LINKED, propModel.Hash))
+            {
                 Function.Call(Hash.LINK_NAMED_RENDERTARGET, propModel.Hash);
+            }
 
             ID = Function.Call<int>(Hash.GET_NAMED_RENDERTARGET_RENDER_ID, renderTargetName);
         }

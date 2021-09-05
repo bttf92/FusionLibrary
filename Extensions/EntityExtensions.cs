@@ -152,16 +152,24 @@ namespace FusionLibrary.Extensions
             int value = Function.Call<int>(Hash.GET_ENTITY_ALPHA, entity);
 
             if (value < (int)AlphaLevel.L1)
+            {
                 return AlphaLevel.L0;
+            }
 
             if (value < (int)AlphaLevel.L2)
+            {
                 return AlphaLevel.L1;
+            }
 
             if (value < (int)AlphaLevel.L3)
+            {
                 return AlphaLevel.L2;
+            }
 
             if (value < (int)AlphaLevel.L4)
+            {
                 return AlphaLevel.L4;
+            }
 
             return AlphaLevel.L5;
         }
@@ -195,8 +203,12 @@ namespace FusionLibrary.Extensions
         public static bool IsAnyTaskActive(this Ped ped)
         {
             foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
+            {
                 if (ped.IsTaskActive(taskType))
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -211,8 +223,12 @@ namespace FusionLibrary.Extensions
             List<TaskType> ret = new List<TaskType>();
 
             foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
+            {
                 if (ped.IsTaskActive(taskType))
+                {
                     ret.Add(taskType);
+                }
+            }
 
             return ret;
         }
@@ -613,9 +629,15 @@ namespace FusionLibrary.Extensions
         public static void DeleteCompletely(this Vehicle vehicle)
         {
             if (vehicle.NotNullAndExists())
+            {
                 foreach (Ped x in vehicle.Occupants)
+                {
                     if (x != FusionUtils.PlayerPed)
+                    {
                         x?.Delete();
+                    }
+                }
+            }
 
             vehicle?.Delete();
         }
@@ -672,7 +694,9 @@ namespace FusionLibrary.Extensions
             Vector3 vel = vehicle.RelativeVelocity();
 
             if (vel.Y >= -2 && vel.Y <= 2)
+            {
                 return true;
+            }
 
             vehicle.Speed -= by * Game.LastFrameTime;
 
@@ -687,7 +711,9 @@ namespace FusionLibrary.Extensions
         public static bool IsTrain(this Vehicle vehicle)
         {
             if (!vehicle.NotNullAndExists())
+            {
                 return false;
+            }
 
             return Function.Call<bool>(Hash.IS_THIS_MODEL_A_TRAIN, vehicle.Model.Hash);
         }
@@ -700,7 +726,9 @@ namespace FusionLibrary.Extensions
         public static void SetTrainCruiseSpeed(this Vehicle train, float speed)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             Function.Call(Hash.SET_TRAIN_CRUISE_SPEED, train, speed);
         }
@@ -713,7 +741,9 @@ namespace FusionLibrary.Extensions
         public static void SetTrainCruiseMPHSpeed(this Vehicle train, float speed)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             train.SetTrainCruiseSpeed(speed.ToMS());
         }
@@ -726,7 +756,9 @@ namespace FusionLibrary.Extensions
         public static void SetTrainSpeed(this Vehicle train, float speed)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             Function.Call(Hash.SET_TRAIN_SPEED, train, speed);
         }
@@ -739,7 +771,9 @@ namespace FusionLibrary.Extensions
         public static void SetTrainMPHSpeed(this Vehicle train, float speed)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             train.SetTrainSpeed(speed.ToMS());
         }
@@ -751,7 +785,9 @@ namespace FusionLibrary.Extensions
         public static void Derail(this Vehicle train)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             Function.Call(Hash.SET_RENDER_TRAIN_AS_DERAILED, train, true);
         }
@@ -765,7 +801,9 @@ namespace FusionLibrary.Extensions
         public static Vehicle GetTrainCarriage(this Vehicle train, int index)
         {
             if (!train.IsTrain())
+            {
                 return null;
+            }
 
             return Function.Call<Vehicle>(Hash.GET_TRAIN_CARRIAGE, train, index);
         }
@@ -778,7 +816,9 @@ namespace FusionLibrary.Extensions
         public static void SetTrainPosition(this Vehicle train, Vector3 position)
         {
             if (!train.IsTrain())
+            {
                 return;
+            }
 
             Function.Call(Hash.SET_MISSION_TRAIN_COORDS, train, position.X, position.Y, position.Z);
         }
@@ -792,7 +832,9 @@ namespace FusionLibrary.Extensions
         public static Vector3 GetBoneOriginalTranslation(this Vehicle vehicle, int index)
         {
             if (!vehicle.NotNullAndExists())
+            {
                 return Vector3.Zero;
+            }
 
             unsafe
             {
@@ -811,7 +853,9 @@ namespace FusionLibrary.Extensions
         public static Quaternion GetBoneOriginalRotation(this Vehicle vehicle, int index)
         {
             if (!vehicle.NotNullAndExists())
+            {
                 return Quaternion.Zero;
+            }
 
             unsafe
             {
@@ -831,7 +875,9 @@ namespace FusionLibrary.Extensions
         public static int GetBoneIndex(this Vehicle vehicle, string bone)
         {
             if (!vehicle.NotNullAndExists())
+            {
                 return -1;
+            }
 
             unsafe
             {
@@ -840,8 +886,12 @@ namespace FusionLibrary.Extensions
                 uint boneCount = skelData->bonesCount;
 
                 for (uint i = 0; i < boneCount; i++)
+                {
                     if (skelData->GetBoneNameForIndex(i) == bone)
+                    {
                         return unchecked((int)i);
+                    }
+                }
             }
 
             return -1;
@@ -857,8 +907,12 @@ namespace FusionLibrary.Extensions
             Dictionary<string, Vector3> ret = new Dictionary<string, Vector3>();
 
             foreach (string wheel in FusionUtils.WheelsBonesNames)
+            {
                 if (vehicle.Bones[wheel].Index > 0)
+                {
                     ret.Add(wheel, vehicle.Bones[wheel].RelativePosition.GetSingleOffset(Coordinate.Z, -0.05f));
+                }
+            }
 
             return ret;
         }

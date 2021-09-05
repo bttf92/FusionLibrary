@@ -150,7 +150,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Animation types for <see cref="AnimationSettings"/>.
+        /// Animation types for <see cref="AnimationTypeSettings"/>.
         /// </summary>
         public enum AnimationType
         {

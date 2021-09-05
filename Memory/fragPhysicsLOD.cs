@@ -5,7 +5,7 @@
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct fragPhysicsLOD
     {
-        [FieldOffset(0x00C0)] private char** groupNames;
+        [FieldOffset(0x00C0)] private readonly char** groupNames;
         [FieldOffset(0x00C8)] public Group** Groups;
 
         [FieldOffset(0x011A)] public byte GroupsCount;

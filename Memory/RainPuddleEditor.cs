@@ -5,7 +5,7 @@ namespace FusionLibrary
     // Credits to Dot. for this!!
     public static unsafe class RainPuddleEditor
     {
-        private static float* pPuddleLevel;
+        private static readonly float* pPuddleLevel;
 
         static RainPuddleEditor()
         {

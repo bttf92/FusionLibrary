@@ -29,7 +29,9 @@ namespace FusionLibrary
                     foreach (UnicastIPAddressInformation ua in adapterProperties.UnicastAddresses)
                     {
                         if (ua.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
                             broadcastAddress.Add(GetBroadcastAddress(ua.Address, ua.IPv4Mask));
+                        }
                     }
                 }
                 catch { }

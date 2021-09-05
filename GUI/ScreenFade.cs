@@ -19,7 +19,9 @@ namespace FusionLibrary
         internal static void Tick()
         {
             if (gameTime == 0 || Game.GameTime < gameTime)
+            {
                 return;
+            }
 
             Screen.FadeIn(_fadeInTime);
             gameTime = 0;

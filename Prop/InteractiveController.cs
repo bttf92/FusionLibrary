@@ -15,7 +15,9 @@ namespace FusionLibrary
         internal static void TickAll()
         {
             for (int i = 0; i < GlobalInteractiveControllerList.Count; i++)
+            {
                 GlobalInteractiveControllerList[i].Tick();
+            }
         }
 
         /// <summary>
@@ -56,7 +58,9 @@ namespace FusionLibrary
             get
             {
                 if (CurrentInteractiveID == -1)
+                {
                     return null;
+                }
 
                 return InteractiveProps[CurrentInteractiveID];
             }
@@ -71,7 +75,9 @@ namespace FusionLibrary
             set
             {
                 for (int i = 0; i < InteractiveProps.Count; i++)
+                {
                     InteractiveProps[i].UseAltControl = value;
+                }
             }
         }
 
@@ -157,7 +163,9 @@ namespace FusionLibrary
         public void Dispose()
         {
             for (int i = 0; i < InteractiveProps.Count; i++)
+            {
                 InteractiveProps[i].Dispose();
+            }
 
             GlobalInteractiveControllerList.Remove(this);
         }
@@ -184,12 +192,16 @@ namespace FusionLibrary
         internal void Tick()
         {
             if (!IsPlaying)
+            {
                 return;
+            }
 
             UpdateInteraction();
 
             for (int i = 0; i < InteractiveProps.Count; i++)
+            {
                 InteractiveProps[i].Tick();
+            }
         }
 
         private void UpdateInteraction()
@@ -206,9 +218,13 @@ namespace FusionLibrary
                 RaycastResult raycast;
 
                 if (GameplayCamera.IsRendering)
+                {
                     raycast = World.Raycast(GameplayCamera.Position, GameplayCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
+                }
                 else
+                {
                     raycast = World.Raycast(World.RenderingCamera.Position, World.RenderingCamera.Direction, 10, IntersectFlags.Objects, FusionUtils.PlayerPed);
+                }
 
                 if (!raycast.DidHit || !raycast.HitEntity.NotNullAndExists() || raycast.HitEntity.Decorator().InteractableEntity == false)
                 {
@@ -229,7 +245,9 @@ namespace FusionLibrary
                 raycast.HitEntity.SetAlpha(AlphaLevel.L4);
 
                 if (_hoverId != id)
+                {
                     InteractiveProps[id].HoverStart();
+                }
 
                 _hoverId = id;
 
@@ -241,16 +259,22 @@ namespace FusionLibrary
                     CurrentInteractiveProp?.Play();
                 }
                 else if (Game.IsControlJustReleased(TriggerControl))
+                {
                     StopHover();
+                }
             }
             else if (Game.IsControlJustReleased(TriggerControl) || FusionUtils.PlayerPed.Weapons.Current.Model != 0 || (IgnoreGamepadInput && Game.LastInputMethod == InputMethod.GamePad))
+            {
                 StopInteraction();
+            }
         }
 
         private void StopInteraction()
         {
             if (CurrentInteractiveID == -1)
+            {
                 return;
+            }
 
             CurrentInteractiveProp?.Stop();
             CurrentInteractiveID = -1;
@@ -259,7 +283,9 @@ namespace FusionLibrary
         private void StopHover()
         {
             if (_hoverId == -1)
+            {
                 return;
+            }
 
             InteractiveProps[_hoverId].HoverStop();
             InteractiveProps[_hoverId].AnimateProp.Prop.SetAlpha(AlphaLevel.L5);

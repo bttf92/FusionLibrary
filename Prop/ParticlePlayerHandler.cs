@@ -120,7 +120,9 @@ namespace FusionLibrary
         public float GetEvolutionParam(string key)
         {
             if (EvolutionParams.TryGetValue(key, out float value))
+            {
                 return value;
+            }
 
             return -1f;
         }

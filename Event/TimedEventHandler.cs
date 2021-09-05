@@ -7,7 +7,7 @@ namespace FusionLibrary
 {
     public class TimedEventHandler
     {
-        private List<TimedEvent> _timedEvents = new List<TimedEvent>();
+        private readonly List<TimedEvent> _timedEvents = new List<TimedEvent>();
         private int _newStep = 0;
 
         public int EventsCount => _timedEvents.Count;
@@ -73,7 +73,9 @@ namespace FusionLibrary
         public void RunEvents()
         {
             if (Pause)
+            {
                 return;
+            }
 
             CurrentTime = CurrentTime.Add(TimeSpan.FromSeconds(Game.LastFrameTime));
             RunEvents(CurrentTime);
@@ -87,19 +89,27 @@ namespace FusionLibrary
         public void RunEvents(TimeSpan tCurrentTime)
         {
             if (Pause)
+            {
                 return;
+            }
 
             List<TimedEvent> runningEvents = _timedEvents.Where(x => x.Run(tCurrentTime, ManageCamera)).ToList();
 
             if (runningEvents.Count > 0)
             {
                 if (runningEvents.Where(x => x.IsSettingCamera).Count() == 0)
+                {
                     ResetCamera();
+                }
                 else if (!IsCustomCameraActive)
+                {
                     IsCustomCameraActive = true;
+                }
             }
             else
+            {
                 ResetCamera();
+            }
         }
 
         public void ResetExecution()

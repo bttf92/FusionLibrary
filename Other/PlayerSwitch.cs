@@ -35,7 +35,9 @@ namespace FusionLibrary
                 Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
 
                 if (_ragdoll)
+                {
                     Game.Player.Character.Ragdoll(1);
+                }
 
                 OnSwitchingComplete?.Invoke();
                 return;
@@ -46,9 +48,13 @@ namespace FusionLibrary
             IsSwitching = true;
 
             if (ForceShort)
+            {
                 SwitchType = SwitchTypes.Short;
+            }
             else
+            {
                 SwitchType = (SwitchTypes)Function.Call<int>(Hash.GET_IDEAL_PLAYER_SWITCH_TYPE, Game.Player.Character.Position.X, Game.Player.Character.Position.Y, Game.Player.Character.Position.Z, to.Position.X, to.Position.Y, to.Position.Z);
+            }
 
             Function.Call(Hash.START_PLAYER_SWITCH, Game.Player.Character, To, 1024, SwitchType);
             Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, To, false, false);
@@ -72,14 +78,18 @@ namespace FusionLibrary
         internal static void Tick()
         {
             if (!IsSwitching)
+            {
                 return;
+            }
 
             if (!Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS))
             {
                 Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
 
                 if (_ragdoll)
+                {
                     Game.Player.Character.Ragdoll(1);
+                }
 
                 OnSwitchingComplete?.Invoke();
                 IsSwitching = false;

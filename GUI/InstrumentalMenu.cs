@@ -43,7 +43,9 @@ namespace FusionLibrary
             ClearPanel();
 
             foreach (InstrumentalButton button in _buttonList)
+            {
                 CallFunction("SET_DATA_SLOT", _buttonList.IndexOf(button), GetButtonIdFromControl(button.Control), button.Title);
+            }
 
             SetButtons();
         }

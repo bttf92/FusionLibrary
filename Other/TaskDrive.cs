@@ -15,7 +15,7 @@ namespace FusionLibrary
 
         public int Count => DriveActions.Count;
 
-        private List<DriveAction> DriveActions = new List<DriveAction>();
+        private readonly List<DriveAction> DriveActions = new List<DriveAction>();
 
         public bool IsPlaying => Ped.TaskSequenceProgress > -1;
 
@@ -47,7 +47,9 @@ namespace FusionLibrary
         public TaskDrive Add(DriveAction driveAction, int time)
         {
             if (TaskSequence == null || TaskSequence.IsClosed)
+            {
                 Create();
+            }
 
             Function.Call(Hash.TASK_VEHICLE_TEMP_ACTION, Ped, Vehicle, (int)driveAction, time);
 
@@ -59,7 +61,9 @@ namespace FusionLibrary
         public DriveAction Current()
         {
             if (!IsPlaying || Ped.TaskSequenceProgress >= Count)
+            {
                 return DriveAction.None;
+            }
 
             return DriveActions[Ped.TaskSequenceProgress];
         }

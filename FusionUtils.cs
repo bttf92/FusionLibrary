@@ -75,7 +75,9 @@ namespace FusionLibrary
                 Function.Call(Hash.SET_RANDOM_TRAINS, value);
 
                 if (!value)
+                {
                     Function.Call(Hash.DELETE_ALL_TRAINS);
+                }
 
                 randomTrains = value;
             }
@@ -92,15 +94,21 @@ namespace FusionLibrary
             if (!model.IsInCdImage || !model.IsValid)
             {
                 if (name == default)
+                {
                     throw new Exception(model + " not present!");
+                }
                 else
+                {
                     throw new Exception(name + " not present!");
+                }
             }
 
             model.Request();
 
             while (!model.IsLoaded)
+            {
                 Script.Yield();
+            }
 
             return model;
         }
@@ -284,7 +292,9 @@ namespace FusionLibrary
             x = (x + max) % delta;
 
             if (x < 0)
+            {
                 x += delta;
+            }
 
             return x + min;
         }
@@ -549,7 +559,9 @@ namespace FusionLibrary
         public static Vector3 GetWaypointPosition()
         {
             if (!Game.IsWaypointActive)
+            {
                 return Vector3.Zero;
+            }
 
             Vector3 position = World.WaypointPosition;
 
@@ -571,8 +583,12 @@ namespace FusionLibrary
         public static bool IsAnyDoorOpen(Vehicle vehicle)
         {
             foreach (VehicleDoor door in vehicle.Doors)
+            {
                 if (door.IsOpen)
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -681,7 +697,9 @@ namespace FusionLibrary
                 };
 
                 if (allowedSurfaces.Contains(surface.MaterialHash))
+                {
                     return true;
+                }
             }
             return false;
         }

@@ -14,7 +14,9 @@ namespace FusionLibrary
         internal static void TickAll()
         {
             for (int i = 0; i < GlobalParticlePlayerList.Count; i++)
+            {
                 GlobalParticlePlayerList[i].Tick();
+            }
         }
 
         /// <summary>
@@ -49,7 +51,9 @@ namespace FusionLibrary
                 _position = value;
 
                 if (!Exists())
+                {
                     return;
+                }
 
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_OFFSETS, Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z);
             }
@@ -67,7 +71,9 @@ namespace FusionLibrary
                 _rotation = value;
 
                 if (!Exists())
+                {
                     return;
+                }
 
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_OFFSETS, Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z);
             }
@@ -85,7 +91,9 @@ namespace FusionLibrary
                 _size = value;
 
                 if (!Exists())
+                {
                     return;
+                }
 
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_SCALE, Handle, Size);
             }
@@ -243,13 +251,17 @@ namespace FusionLibrary
             Function.Call(Hash.REQUEST_NAMED_PTFX_ASSET, AssetName);
 
             while (!Function.Call<bool>(Hash.HAS_NAMED_PTFX_ASSET_LOADED, AssetName))
+            {
                 Script.Yield();
+            }
         }
 
         internal void Tick()
         {
             if (!IsPlaying)
+            {
                 return;
+            }
 
             if (Duration > -1 && Game.GameTime >= durationTime)
             {
@@ -259,7 +271,9 @@ namespace FusionLibrary
             }
 
             if (ParticleType != ParticleType.ForceLooped || Game.GameTime < gameTime)
+            {
                 return;
+            }
 
             Spawn();
 
@@ -274,12 +288,16 @@ namespace FusionLibrary
         public void SetEvolutionParam(string key, float value)
         {
             if (ParticleType != ParticleType.Looped)
+            {
                 return;
+            }
 
             EvolutionParams[key] = value;
 
             if (Exists())
+            {
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, key, value, true);
+            }
         }
 
         /// <summary>
@@ -290,7 +308,9 @@ namespace FusionLibrary
         public float GetEvolutionParam(string key)
         {
             if (EvolutionParams.TryGetValue(key, out float value))
+            {
                 return value;
+            }
 
             return -1f;
         }
@@ -301,15 +321,21 @@ namespace FusionLibrary
         public void Play()
         {
             if (IsPlaying)
+            {
                 return;
+            }
 
             Spawn();
 
             if (ParticleType == ParticleType.NonLooped)
+            {
                 return;
+            }
 
             if (Duration > -1)
+            {
                 durationTime = Game.GameTime + Duration;
+            }
 
             IsPlaying = true;
         }
@@ -321,15 +347,23 @@ namespace FusionLibrary
         public void Stop(bool instant = false)
         {
             if (!IsPlaying)
+            {
                 return;
+            }
 
             if (ParticleType != ParticleType.Looped)
+            {
                 return;
+            }
 
             if (instant)
+            {
                 Function.Call(Hash.REMOVE_PARTICLE_FX, Handle, 0);
+            }
             else
+            {
                 Function.Call(Hash.STOP_PARTICLE_FX_LOOPED, Handle, 0);
+            }
 
             IsPlaying = false;
         }
@@ -341,9 +375,13 @@ namespace FusionLibrary
         public void SetState(bool state)
         {
             if (state)
+            {
                 Play();
+            }
             else
+            {
                 Stop();
+            }
         }
 
         /// <summary>
@@ -353,7 +391,9 @@ namespace FusionLibrary
         public bool Exists()
         {
             if (ParticleType != ParticleType.Looped)
+            {
                 return false;
+            }
 
             return Function.Call<bool>(Hash.DOES_PARTICLE_FX_LOOPED_EXIST, Handle);
         }
@@ -380,9 +420,13 @@ namespace FusionLibrary
                 case ParticleType.ForceLooped:
 
                     if (!ToEntity && !ToBone)
+                    {
                         Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
+                    }
                     else if (ToEntity && !ToBone)
+                    {
                         Function.Call(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
+                    }
                     else
                     {
                         Vector3 position = Bone.GetRelativeOffsetPosition(Position);
@@ -394,11 +438,17 @@ namespace FusionLibrary
                 case ParticleType.Looped:
 
                     if (!ToEntity && !ToBone)
+                    {
                         Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_AT_COORD, EffectName, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
+                    }
                     else if (ToEntity && !ToBone)
+                    {
                         Handle = Function.Call<int>(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
+                    }
                     else
+                    {
                         Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY_BONE, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Bone.Index, Size, 0, 0, 0);
+                    }
 
                     break;
             }
@@ -406,16 +456,22 @@ namespace FusionLibrary
             setColor();
 
             if (ParticleType != ParticleType.Looped)
+            {
                 return;
+            }
 
             foreach (KeyValuePair<string, float> entry in EvolutionParams)
+            {
                 Function.Call(Hash.SET_PARTICLE_FX_LOOPED_EVOLUTION, Handle, entry.Key, entry.Value, true);
+            }
         }
 
         internal void setColor()
         {
             if (!SetColor || !IsPlaying)
+            {
                 return;
+            }
 
             if (ParticleType == ParticleType.Looped && Exists())
             {

@@ -89,14 +89,14 @@ namespace FusionLibrary
 
         private bool _altSetup;
         private bool _altInvert;
-        private bool _invert;
+        private readonly bool _invert;
         private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
         private float _currentValue;
         private float _toValue;
-        private float _sensitivity = 10;
+        private readonly float _sensitivity = 10;
         private bool _roundTrip;
         private bool _waitRelease;
-        private InteractiveController _controller;
+        private readonly InteractiveController _controller;
         private CoordinateSetting _coordinateSetting => AnimateProp[MovementType][AnimationStep.First][Coordinate];
 
         internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, float min, float max, float startValue, float sensitivityMultiplier)
@@ -118,9 +118,13 @@ namespace FusionLibrary
             Max = max;
 
             if (movementType == AnimationType.Offset)
+            {
                 AnimateProp.setOffset(Coordinate, startValue);
+            }
             else
+            {
                 AnimateProp.setRotation(Coordinate, startValue);
+            }
 
             AnimateProp.SpawnProp();
         }
@@ -163,16 +167,20 @@ namespace FusionLibrary
                 _roundTrip = false;
 
                 if (!_waitRelease)
+                {
                     AnimateProp.Play();
+                }
             }
         }
 
         public void Play()
         {
             if (InteractionType == InteractionType.Lever)
+            {
                 UpdateLeverAnimation();
+            }
             else
-            {                
+            {
                 if (AnimateProp.IsPlaying)
                 {
                     _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
@@ -182,7 +190,7 @@ namespace FusionLibrary
                 {
                     _roundTrip = InteractionType == InteractionType.Button;
                     AnimateProp.Play();
-                }                                    
+                }
             }
 
             IsPlaying = true;
@@ -196,7 +204,9 @@ namespace FusionLibrary
         public void SetValue(float value)
         {
             if (InteractionType != InteractionType.Lever)
+            {
                 return;
+            }
 
             _toValue = value.Clamp(0, 1).Remap(0, 1, Min, Max);
 
@@ -212,15 +222,21 @@ namespace FusionLibrary
                 Vector3 value;
 
                 if (MovementType == AnimationType.Offset)
+                {
                     value = AnimateProp.CurrentOffset;
+                }
                 else
+                {
                     value = AnimateProp.CurrentRotation;
+                }
 
                 _currentValue = value[(int)Coordinate];
-            }                
+            }
 
             if (InteractionType == InteractionType.Lever)
+            {
                 UpdateLeverAnimation();
+            }
 
             if (_waitRelease && !IsPlaying)
             {
@@ -244,12 +260,18 @@ namespace FusionLibrary
                 int _control = _altSetup && UseAltControl ? (int)AltControl : (int)Control;
 
                 if (_controller.LockCamera && ((_control >= 1 && _control <= 6) || (_control >= 270 && _control <= 273)))
+                {
                     controlInput = Game.GetDisabledControlValueNormalized((Control)_control);
+                }
                 else
+                {
                     controlInput = Game.GetControlValueNormalized((Control)_control);
+                }
 
                 if ((!UseAltControl && _invert) || (UseAltControl && _altSetup && _altInvert))
+                {
                     controlInput *= -1;
+                }
 
                 _toValue += controlInput * _sensitivity;
                 _toValue = _toValue.Clamp(Min, Max);

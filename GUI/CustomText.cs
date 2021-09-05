@@ -42,7 +42,9 @@ namespace FusionLibrary
             string[] ret = new string[entries.Length];
 
             for (int i = 0; i < entries.Length; i++)
+            {
                 ret[i] = GetLocalizedText(entries[i]);
+            }
 
             return ret;
         }

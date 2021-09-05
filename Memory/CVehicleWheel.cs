@@ -50,9 +50,13 @@ namespace FusionLibrary
             set
             {
                 if (value)
+                {
                     Vehicle.Wheels[(int)WheelID].Burst();
+                }
                 else
+                {
                     Vehicle.Wheels[(int)WheelID].Fix();
+                }
             }
         }
 
@@ -107,8 +111,12 @@ namespace FusionLibrary
         public CVehicleWheels(Vehicle vehicle)
         {
             foreach (string wheel in FusionUtils.WheelsBonesNames)
+            {
                 if (vehicle.Bones[wheel].Index > 0)
+                {
                     Wheels.Add(new CVehicleWheel(vehicle, wheel, FusionUtils.ConvertWheelNameToID(wheel)));
+                }
+            }
         }
 
         public CVehicleWheel this[WheelId wheelId] => Wheels.Single(x => x.WheelID == wheelId);
@@ -130,7 +138,7 @@ namespace FusionLibrary
 
     public class CVehicleWheelCollection : IEnumerator
     {
-        private CVehicleWheel[] cVehicleWheels;
+        private readonly CVehicleWheel[] cVehicleWheels;
 
         private int position = -1;
 

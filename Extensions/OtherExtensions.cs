@@ -33,7 +33,9 @@ namespace FusionLibrary.Extensions
         public static void AttachToVehicle(this Camera camera, Vehicle vehicle, string bone, Vector3 offset, Vector3 rotation, bool relativeRotation = true, bool fixedDirection = true)
         {
             if (!camera.NotNullAndExists() || !vehicle.NotNullAndExists())
+            {
                 return;
+            }
 
             Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, relativeRotation, rotation.X, rotation.Y, rotation.Z, offset.X, offset.Y, offset.Z, fixedDirection);
         }
@@ -70,12 +72,19 @@ namespace FusionLibrary.Extensions
         public static IEnumerable<string> SplitInParts(this string s, int partLength)
         {
             if (s == null)
+            {
                 throw new ArgumentNullException(nameof(s));
+            }
+
             if (partLength <= 0)
+            {
                 throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+            }
 
             for (int i = 0; i < s.Length; i += partLength)
+            {
                 yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+            }
         }
 
         /// <summary>
@@ -87,7 +96,9 @@ namespace FusionLibrary.Extensions
         public static T SelectRandomElement<T>(this IEnumerable<T> sequence) where T : class
         {
             if (sequence.Count() != 0)
+            {
                 return sequence.ElementAt(FusionUtils.Random.Next(0, sequence.Count()));
+            }
 
             return null;
         }
@@ -102,7 +113,9 @@ namespace FusionLibrary.Extensions
         public static T SelectRandomElement<R, T>(this IDictionary<R, T> dictionary) where T : class
         {
             if (dictionary.Count != 0)
+            {
                 return dictionary.ElementAt(FusionUtils.Random.Next(0, dictionary.Count)).Value;
+            }
 
             return null;
         }

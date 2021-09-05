@@ -54,9 +54,13 @@ namespace FusionLibrary
             get
             {
                 if (CurrentCameraIndex == -1)
+                {
                     return null;
+                }
                 else
+                {
                     return Cameras[CurrentCameraIndex];
+                }
             }
         }
 
@@ -123,7 +127,9 @@ namespace FusionLibrary
         public void Show(int index, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant, int duration = -1)
         {
             if (Cameras.Count == 0)
+            {
                 return;
+            }
 
             if (index == -1 && CurrentCameraIndex > -1)
             {
@@ -132,10 +138,14 @@ namespace FusionLibrary
             }
 
             if (index > Cameras.Count - 1 || index < 0)
+            {
                 return;
+            }
 
             if (duration != -1)
+            {
                 _duration = Game.GameTime + duration;
+            }
 
             CustomCamera customCamera = CurrentCamera;
 
@@ -150,10 +160,14 @@ namespace FusionLibrary
         public void ShowNext(CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Cameras.Count == 0)
+            {
                 return;
+            }
 
             if (CurrentCameraIndex == Cameras.Count - 1)
+            {
                 Abort();
+            }
             else
             {
                 CustomCamera customCamera = CurrentCamera;
@@ -170,10 +184,14 @@ namespace FusionLibrary
         public void ShowPrevious(CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
         {
             if (Cameras.Count == 0)
+            {
                 return;
+            }
 
             if (CurrentCameraIndex <= 0)
+            {
                 Abort();
+            }
             else
             {
                 CustomCamera customCamera = CurrentCamera;
@@ -227,13 +245,19 @@ namespace FusionLibrary
             }
 
             if (CurrentCameraIndex > -1)
+            {
                 CurrentCamera.Tick();
+            }
 
             if (_duration > -1 && Game.GameTime >= _duration)
+            {
                 Stop();
+            }
 
             if (CurrentCameraIndex > -1 && !CurrentCamera.Camera.IsActive)
+            {
                 Stop();
+            }
         }
     }
 }

@@ -24,7 +24,9 @@ namespace FusionLibrary
             CustomNativeMenus.ForEach(x =>
             {
                 if (x.Visible)
+                {
                     x.Tick();
+                }
             });
         }
 
@@ -35,7 +37,7 @@ namespace FusionLibrary
 
         public string InternalName { get; protected set; }
 
-        private static I2Dimensional defaultBanner = new ScaledTexture(PointF.Empty, new SizeF(0, 108), "commonmenu", "interaction_bgd");
+        private static readonly I2Dimensional defaultBanner = new ScaledTexture(PointF.Empty, new SizeF(0, 108), "commonmenu", "interaction_bgd");
 
         public CustomNativeMenu(string title) : this(title, "", "", defaultBanner)
         {
@@ -135,7 +137,9 @@ namespace FusionLibrary
         private void NativeCheckboxItem_CheckboxChanged(object sender, EventArgs e)
         {
             if (!Game.IsControlJustPressed(Control.PhoneSelect))
+            {
                 return;
+            }
 
             OnItemCheckboxChanged?.Invoke((NativeCheckboxItem)sender, e, ((NativeCheckboxItem)sender).Checked);
         }
@@ -183,7 +187,9 @@ namespace FusionLibrary
             string[] ret = new string[valueNames.Length];
 
             for (int i = 0; i < valueNames.Length; i++)
+            {
                 ret[i] = GetItemValueTitle(itemName, valueNames[i]);
+            }
 
             return ret;
         }
@@ -198,7 +204,9 @@ namespace FusionLibrary
             string[] ret = new string[valueNames.Length];
 
             for (int i = 0; i < valueNames.Length; i++)
+            {
                 ret[i] = GetItemValueDescription(itemName, valueNames[i]);
+            }
 
             return ret;
         }

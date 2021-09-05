@@ -38,7 +38,7 @@ namespace FusionLibrary
             useBones = true;
         }
 
-        private bool useBones;
+        private readonly bool useBones;
 
         public string SourceBone { get; set; }
         public string DirectionBone { get; set; }
@@ -57,7 +57,9 @@ namespace FusionLibrary
         public void Draw(Entity Entity, float shadowId)
         {
             if (!IsEnabled)
+            {
                 return;
+            }
 
             Vector3 pos;
             Vector3 dir;
@@ -67,9 +69,13 @@ namespace FusionLibrary
                 pos = Entity.Bones[SourceBone].Position;
 
                 if (DirectionBone != null)
+                {
                     dir = Entity.Bones[SourceBone].Position.GetDirectionTo(Entity.Bones[DirectionBone].Position);
+                }
                 else
+                {
                     dir = Direction;
+                }
             }
             else
             {

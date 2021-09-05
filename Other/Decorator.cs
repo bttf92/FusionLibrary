@@ -21,7 +21,7 @@ namespace FusionLibrary
             Lock();
         }
 
-        private Entity Entity;
+        private readonly Entity Entity;
 
         public Decorator(Entity entity)
         {
@@ -54,7 +54,9 @@ namespace FusionLibrary
         public bool Remove(string propertyName)
         {
             if (IsLocked.HasValue && IsLocked.Value)
+            {
                 Unlock();
+            }
 
             return Function.Call<bool>(Hash.DECOR_REMOVE, Entity, propertyName);
         }
@@ -102,18 +104,22 @@ namespace FusionLibrary
         public static bool Register(string propertyName, DecorType decorType)
         {
             if (IsRegistered(propertyName, decorType))
+            {
                 return true;
+            }
 
             if (IsLocked.HasValue && IsLocked.Value)
+            {
                 Unlock();
+            }
 
             Function.Call(Hash.DECOR_REGISTER, propertyName, (int)decorType);
 
             return IsRegistered(propertyName, decorType);
         }
 
-        private static IntPtr lockAddress;
-        private static unsafe byte* g_bIsDecorRegisterLockedPtr;
+        private static readonly IntPtr lockAddress;
+        private static readonly unsafe byte* g_bIsDecorRegisterLockedPtr;
 
         public static bool? IsLocked
         {
@@ -122,7 +128,9 @@ namespace FusionLibrary
                 unsafe
                 {
                     if (lockAddress == IntPtr.Zero)
+                    {
                         return null;
+                    }
 
                     return Convert.ToBoolean(*g_bIsDecorRegisterLockedPtr);
                 }
@@ -141,7 +149,9 @@ namespace FusionLibrary
                 lockAddress = (IntPtr)MemoryFunctions.FindPattern("\x40\x53\x48\x83\xEC\x20\x80\x3D\x00\x00\x00\x00\x00\x8B\xDA\x75\x29", "xxxxxxxx????xxxxx");
 
                 if (lockAddress != IntPtr.Zero)
+                {
                     g_bIsDecorRegisterLockedPtr = (byte*)(lockAddress + *(int*)(lockAddress + 8) + 13);
+                }
             }
         }
 
@@ -150,7 +160,9 @@ namespace FusionLibrary
             unsafe
             {
                 if (lockAddress != IntPtr.Zero)
+                {
                     *g_bIsDecorRegisterLockedPtr = 0;
+                }
             }
         }
 
@@ -159,7 +171,9 @@ namespace FusionLibrary
             unsafe
             {
                 if (lockAddress != IntPtr.Zero)
+                {
                     *g_bIsDecorRegisterLockedPtr = 1;
+                }
             }
         }
 

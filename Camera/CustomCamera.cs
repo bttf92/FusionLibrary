@@ -71,7 +71,7 @@ namespace FusionLibrary
 
         private int waitTime;
         private int gameTime;
-        private bool isVehicle;
+        private readonly bool isVehicle;
 
         /// <summary>
         /// 
@@ -130,9 +130,13 @@ namespace FusionLibrary
             PositionEndOffset = positionOffset;
 
             if (isVehicle)
+            {
                 PointAtEndOffset = FusionUtils.DirectionToRotation(positionOffset, pointAtOffset, 0);
+            }
             else
+            {
                 PointAtEndOffset = pointAtOffset;
+            }
 
             FieldOfViewEnd = fieldOfView;
             Wait = wait;
@@ -156,18 +160,26 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, PointAtOffset);
                 }
                 else
+                {
                     Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+                }
             }
 
             World.RenderingCamera = Camera;
 
             if (Duration > -1)
+            {
                 gameTime = Game.GameTime + Duration;
+            }
             else
+            {
                 gameTime = -1;
+            }
 
             if (!Moving)
+            {
                 return;
+            }
 
             CurrentPositionOffset = PositionOffset;
             CurrentPointAtOffset = PointAtOffset;
@@ -192,29 +204,43 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, PointAtOffset);
                 }
                 else
+                {
                     Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+                }
             }
 
             if (OldCamera == null || OldCamera.Camera == null || OldCamera.Camera.Exists() == false)
+            {
                 World.RenderingCamera = Camera;
+            }
             else
             {
                 Camera.IsActive = true;
                 OldCamera.Camera.IsActive = false;
 
                 if (cameraSwitchType == CameraSwitchType.Animated)
+                {
                     OldCamera.Camera.InterpTo(Camera, 900, 1, 1);
+                }
                 else
+                {
                     World.RenderingCamera = Camera;
+                }
             }
 
             if (Duration > -1)
+            {
                 gameTime = Game.GameTime + Duration;
+            }
             else
+            {
                 gameTime = -1;
+            }
 
             if (!Moving)
+            {
                 return;
+            }
 
             CurrentPositionOffset = PositionOffset;
             CurrentPointAtOffset = PointAtOffset;
@@ -230,10 +256,14 @@ namespace FusionLibrary
         internal void Tick()
         {
             if (Camera == null || !Camera.IsActive)
+            {
                 return;
+            }
 
             if (gameTime > -1 && Game.GameTime > gameTime)
+            {
                 Stop();
+            }
 
             if (Game.GameTime >= waitTime && Game.GameTime <= (waitTime + SwitchDuration))
             {
@@ -251,7 +281,9 @@ namespace FusionLibrary
                     Camera.PointAt(Entity, CurrentPointAtOffset);
                 }
                 else
+                {
                     Camera.AttachToVehicle((Vehicle)Entity, "", CurrentPositionOffset, CurrentPointAtOffset);
+                }
 
                 Camera.FieldOfView = CurrentFieldOfView;
             }
@@ -263,7 +295,9 @@ namespace FusionLibrary
         public void Stop()
         {
             if (Camera == null || !Camera.IsActive)
+            {
                 return;
+            }
 
             Camera.IsActive = false;
 
@@ -273,7 +307,9 @@ namespace FusionLibrary
                 Camera.PointAt(Entity, PointAtOffset);
             }
             else
+            {
                 Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
+            }
 
             Camera.FieldOfView = FieldOfView;
 

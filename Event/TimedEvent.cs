@@ -154,15 +154,22 @@ namespace FusionLibrary
             {
                 case CameraType.Entity:
                     if (CustomCamera == null)
+                    {
                         CustomCamera = World.CreateCamera(CameraOnEntity.GetOffsetPosition(CameraPosition), Vector3.Zero, FieldOfView == -1 ? GameplayCamera.FieldOfView : FieldOfView);
+                    }
 
                     CustomCamera.AttachTo(CameraOnEntity, CameraPosition);
                     break;
                 case CameraType.Position:
                     if (CustomCamera == null)
+                    {
                         CustomCamera = World.CreateCamera(CameraPosition, Vector3.Zero, FieldOfView == -1 ? GameplayCamera.FieldOfView : FieldOfView);
+                    }
                     else
+                    {
                         CustomCamera.Position = CameraPosition;
+                    }
+
                     break;
             }
 
@@ -177,9 +184,13 @@ namespace FusionLibrary
             }
 
             if (_cameraType == CameraType.Custom && _lookAtType == CameraType.Custom)
+            {
                 _customCameraManager.Show(_customCameraIndex);
+            }
             else
+            {
                 World.RenderingCamera = CustomCamera;
+            }
 
             //Disable fake shake of the cars.
             Function.Call((Hash)0x84FD40F56075E816, 0);
@@ -192,16 +203,24 @@ namespace FusionLibrary
             if (ret)
             {
                 if (_executionCount < 2)
+                {
                     _executionCount += 1;
+                }
 
                 if (_setSpeed)
+                {
                     CalculateCurrentSpeed();
+                }
 
                 if (_setFloat)
+                {
                     CalculateCurrentFloat();
+                }
 
                 if (tManageCamera && IsSettingCamera && FirstExecution)
+                {
                     PlaceCamera();
+                }
 
                 OnExecute?.Invoke(this);
             }

@@ -9,7 +9,7 @@ namespace FusionLibrary
 {
     public static class GameScreen
     {
-        private static IntPtr handle;
+        private static readonly IntPtr handle;
 
         static GameScreen()
         {

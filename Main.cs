@@ -20,10 +20,14 @@ namespace FusionLibrary
         private void Main_Tick(object sender, EventArgs e)
         {
             if (Game.IsLoading)
+            {
                 return;
+            }
 
             if (FusionUtils.FirstTick)
+            {
                 Decorator.Initialize();
+            }
 
             AnimatePropsHandler.TickAll();
             AnimateProp.TickAll();
@@ -38,10 +42,14 @@ namespace FusionLibrary
             ScreenFade.Tick();
 
             if (PlayerSwitch.Disable)
+            {
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);
+            }
 
             if (FusionUtils.HideGUI)
+            {
                 Function.Call(Hash.HIDE_HUD_AND_RADAR_THIS_FRAME);
+            }
 
             if (FusionUtils.HelpText != null)
             {
@@ -62,7 +70,9 @@ namespace FusionLibrary
             }
 
             if (FusionUtils.FirstTick)
+            {
                 FusionUtils.FirstTick = false;
+            }
         }
     }
 }

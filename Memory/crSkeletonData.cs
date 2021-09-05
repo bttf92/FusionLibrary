@@ -15,7 +15,9 @@
         public string GetBoneNameForIndex(uint index)
         {
             if (index >= bonesCount)
+            {
                 return null;
+            }
 
             return bones[index].GetName();
         }

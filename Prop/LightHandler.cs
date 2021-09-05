@@ -10,9 +10,9 @@ namespace FusionLibrary
     {
         public List<Light> Lights = new List<Light>();
 
-        private Entity Entity;
+        private readonly Entity Entity;
 
-        private int ShadowMulti;
+        private readonly int ShadowMulti;
 
         public LightHandler(Entity entity, int shadowMulti)
         {

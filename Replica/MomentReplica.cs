@@ -35,8 +35,12 @@ namespace FusionLibrary
         public static MomentReplica SearchForMoment()
         {
             foreach (MomentReplica momentReplica in MomentReplicas)
+            {
                 if (momentReplica.IsNow())
+                {
                     return momentReplica;
+                }
+            }
 
             return null;
         }
@@ -44,7 +48,9 @@ namespace FusionLibrary
         public bool IsNow()
         {
             if (CurrentDate.Between(FusionUtils.CurrentTime.AddMinutes(-10), FusionUtils.CurrentTime.AddMinutes(10)))
+            {
                 return true;
+            }
 
             return false;
         }
@@ -113,7 +119,9 @@ namespace FusionLibrary
             TimeHandler.UsedVehiclesByPlayer.ForEach(x =>
             {
                 if (x != FusionUtils.PlayerVehicle)
+                {
                     VehicleReplicas.Add(new VehicleReplica(x));
+                }
             });
         }
     }

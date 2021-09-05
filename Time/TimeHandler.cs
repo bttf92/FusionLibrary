@@ -13,7 +13,7 @@ namespace FusionLibrary
     public class TimeHandler
     {
         public static List<Vehicle> UsedVehiclesByPlayer { get; } = new List<Vehicle>();
-        private static List<Vehicle> RemoveUsedVehicle = new List<Vehicle>();
+        private static readonly List<Vehicle> RemoveUsedVehicle = new List<Vehicle>();
 
         public static OnTimeChanged OnTimeChanged;
         public static OnDayNightChange OnDayNightChange;
@@ -61,7 +61,9 @@ namespace FusionLibrary
             UsedVehiclesByPlayer.ForEach(x =>
             {
                 if (!x.IsFunctioning() || x.IsDMC12TimeMachine())
+                {
                     RemoveUsedVehicle.Add(x);
+                }
             });
 
             if (RemoveUsedVehicle.Count > 0)
@@ -71,7 +73,9 @@ namespace FusionLibrary
             }
 
             if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine() && !FusionUtils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
+            {
                 UsedVehiclesByPlayer.Add(FusionUtils.PlayerVehicle);
+            }
 
             bool isNight = FusionUtils.CurrentTime.Hour >= 20 || (FusionUtils.CurrentTime.Hour >= 0 && FusionUtils.CurrentTime.Hour <= 5);
 
@@ -82,7 +86,9 @@ namespace FusionLibrary
             }
 
             if (!TrafficVolumeYearBased)
+            {
                 return;
+            }
 
             float vehDensity = 1;
 
@@ -95,10 +101,14 @@ namespace FusionLibrary
                 vehDensity = year / 50f;
             }
             else if (year <= 1900)
+            {
                 vehDensity = 0;
+            }
 
             if (vehDensity >= 1)
+            {
                 return;
+            }
 
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
             Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
@@ -110,9 +120,13 @@ namespace FusionLibrary
             MomentReplica momentReplica = MomentReplica.SearchForMoment();
 
             if (momentReplica == null)
+            {
                 MomentReplica.MomentReplicas.Add(new MomentReplica());
+            }
             else
+            {
                 momentReplica.Update();
+            }
 
             FusionUtils.ClearWorld();
 
@@ -123,9 +137,13 @@ namespace FusionLibrary
             momentReplica = MomentReplica.SearchForMoment();
 
             if (momentReplica == null)
+            {
                 MomentReplica.Randomize();
+            }
             else
+            {
                 momentReplica.Apply();
+            }
 
             OnTimeChanged?.Invoke(destinationTime);
         }

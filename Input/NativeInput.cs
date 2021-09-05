@@ -10,7 +10,7 @@ namespace FusionLibrary
 
     public class NativeInput
     {
-        private static List<NativeInput> nativeInputs = new List<NativeInput>();
+        private static readonly List<NativeInput> nativeInputs = new List<NativeInput>();
 
         internal static void TickAll()
         {
@@ -43,7 +43,9 @@ namespace FusionLibrary
         internal void Tick()
         {
             if (DisableControl)
+            {
                 Game.DisableControlThisFrame(Input);
+            }
 
             if (Game.IsControlJustPressed(Input))
             {
@@ -68,7 +70,9 @@ namespace FusionLibrary
                 OnControlPressed?.Invoke();
 
                 if (pressedFor >= 100 && DisableLongpressControl)
+                {
                     Game.DisableControlThisFrame(Input);
+                }
             }
 
             if (pressedFor >= 500)

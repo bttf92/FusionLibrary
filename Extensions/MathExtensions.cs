@@ -63,9 +63,18 @@ namespace FusionLibrary.Extensions
 
         public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
         {
-            if (val.CompareTo(min) < 0) return min;
-            else if (val.CompareTo(max) > 0) return max;
-            else return val;
+            if (val.CompareTo(min) < 0)
+            {
+                return min;
+            }
+            else if (val.CompareTo(max) > 0)
+            {
+                return max;
+            }
+            else
+            {
+                return val;
+            }
         }
 
         public static float Lerp(this float firstFloat, float secondFloat, float by)
@@ -236,7 +245,9 @@ namespace FusionLibrary.Extensions
         public static float PositiveAngle(this float value)
         {
             if (value < 0)
+            {
                 value = 360 - Math.Abs(value);
+            }
 
             return value;
         }
@@ -251,7 +262,9 @@ namespace FusionLibrary.Extensions
             value = value % 360;
 
             if (value < 0)
+            {
                 value += 360;
+            }
 
             return value;
         }
@@ -355,7 +368,7 @@ namespace FusionLibrary.Extensions
 
             return vector3_1;
         }
-        
+
         /// <summary>
         /// Returns <paramref name="vector3"/> offsetted by <paramref name="value"/> in <paramref name="coordinate"/> axis.
         /// </summary>

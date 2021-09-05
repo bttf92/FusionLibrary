@@ -15,23 +15,23 @@ namespace FusionLibrary.Memory
 
     public unsafe class VehicleControl
     {
-        private static int throttlePOffset;
-        private static int brakePOffset;
-        private static int handbrakeOffset;
-        private static int steeringAngleOffset;
-        private static int handlingOffset;
-        private static int fuelLevelOffset;
+        private static readonly int throttlePOffset;
+        private static readonly int brakePOffset;
+        private static readonly int handbrakeOffset;
+        private static readonly int steeringAngleOffset;
+        private static readonly int handlingOffset;
+        private static readonly int fuelLevelOffset;
 
-        private static int wheelsPtrOffset;
-        private static int numWheelsOffset;
+        private static readonly int wheelsPtrOffset;
+        private static readonly int numWheelsOffset;
 
-        private static int wheelSteeringAngleOffset;
-        private static int wheelAngularVelocityOffset;
-        private static int wheelSuspensionCompressionOffset;
-        private static int wheelAngleOffset;
+        private static readonly int wheelSteeringAngleOffset;
+        private static readonly int wheelAngularVelocityOffset;
+        private static readonly int wheelSuspensionCompressionOffset;
+        private static readonly int wheelAngleOffset;
 
-        private static int deluxoTransformationOffset;
-        private static int deluxoFlyModeOffset;
+        private static readonly int deluxoTransformationOffset;
+        private static readonly int deluxoFlyModeOffset;
 
         static VehicleControl()
         {
@@ -71,13 +71,17 @@ namespace FusionLibrary.Memory
             IntPtr? address = vehicle?.MemoryAddress;
 
             if (address == IntPtr.Zero)
+            {
                 return;
+            }
 
             ulong CVeh_0x48 = *(ulong*)(address + 0x48);
             ulong CVeh_0x48_0x370 = *(ulong*)(CVeh_0x48 + 0x370);
 
             if ((UIntPtr)CVeh_0x48_0x370 == UIntPtr.Zero)
+            {
                 return;
+            }
 
             *(float*)(CVeh_0x48_0x370 + 0x8) = size;
         }
@@ -87,20 +91,28 @@ namespace FusionLibrary.Memory
             IntPtr? address = vehicle?.MemoryAddress;
 
             if (address == IntPtr.Zero)
+            {
                 return 1.0f;
+            }
 
             ulong CVeh_0x48 = *(ulong*)(address + 0x48);
             ulong CVeh_0x48_0x370 = *(ulong*)(CVeh_0x48 + 0x370);
 
             if ((UIntPtr)CVeh_0x48_0x370 == UIntPtr.Zero)
+            {
                 return 1.0f;
+            }
 
             return *(float*)(CVeh_0x48_0x370 + 0x8);
         }
 
         public static ulong GetHandlingPtr(Vehicle vehicle)
         {
-            if (handlingOffset == 0) return 0;
+            if (handlingOffset == 0)
+            {
+                return 0;
+            }
+
             ulong address = (ulong)vehicle.MemoryAddress;
             return *(ulong*)(address + (ulong)handlingOffset);
         }
@@ -119,112 +131,176 @@ namespace FusionLibrary.Memory
 
         public static ulong GetWheelsPtr(Vehicle vehicle)
         {
-            if (wheelsPtrOffset == 0) return 0;
+            if (wheelsPtrOffset == 0)
+            {
+                return 0;
+            }
+
             ulong address = (ulong)vehicle.MemoryAddress;
             return *(ulong*)(address + (ulong)wheelsPtrOffset);
         }
 
         public static sbyte GetNumWheels(Vehicle vehicle)
         {
-            if (numWheelsOffset == 0) return 0;
+            if (numWheelsOffset == 0)
+            {
+                return 0;
+            }
+
             sbyte* address = (sbyte*)((ulong)vehicle.MemoryAddress + (ulong)numWheelsOffset);
             return *address;
         }
 
         public static void SetThrottle(Vehicle vehicle, float throttle)
         {
-            if (throttlePOffset == 0) return;
+            if (throttlePOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
             *address = throttle;
         }
 
         public static float GetThrottle(Vehicle vehicle)
         {
-            if (throttlePOffset == 0) return -1f;
+            if (throttlePOffset == 0)
+            {
+                return -1f;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
             return *address;
         }
 
         public static void SetBrake(Vehicle vehicle, float brake)
         {
-            if (brakePOffset == 0) return;
+            if (brakePOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
             *address = brake;
         }
 
         public static float GetBrake(Vehicle vehicle)
         {
-            if (brakePOffset == 0) return 0.0f;
+            if (brakePOffset == 0)
+            {
+                return 0.0f;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
             return *address;
         }
 
         public static void SetHandbrake(Vehicle vehicle, float brake)
         {
-            if (handbrakeOffset == 0) return;
+            if (handbrakeOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             *address = brake;
         }
 
         public static float GetHandbrake(Vehicle vehicle)
         {
-            if (handbrakeOffset == 0) return 0.0f;
+            if (handbrakeOffset == 0)
+            {
+                return 0.0f;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             return *address;
         }
 
         public static void SetFuelLevel(Vehicle vehicle, float fuelLevel)
         {
-            if (fuelLevelOffset == 0) return;
+            if (fuelLevelOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)fuelLevelOffset);
             *address = fuelLevel;
         }
 
         public static float GetFuelLevel(Vehicle vehicle)
         {
-            if (fuelLevelOffset == 0) return 0;
+            if (fuelLevelOffset == 0)
+            {
+                return 0;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)fuelLevelOffset);
             return *address;
         }
 
         public static void SetSteeringAngle(Vehicle vehicle, float angle)
         {
-            if (steeringAngleOffset == 0) return;
+            if (steeringAngleOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
             *address = angle;
         }
 
         public static float GetSteeringAngle(Vehicle vehicle)
         {
-            if (steeringAngleOffset == 0) return -999f;
+            if (steeringAngleOffset == 0)
+            {
+                return -999f;
+            }
+
             float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
             return *address;
         }
 
         public static void SetDeluxoTransformation(Vehicle v, float transformation)
         {
-            if (deluxoTransformationOffset == 0) return;
+            if (deluxoTransformationOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)v.MemoryAddress + (ulong)deluxoTransformationOffset);
             *address = transformation;
         }
 
         public static float GetDeluxoTransformation(Vehicle v)
         {
-            if (deluxoTransformationOffset == 0) return -1f;
+            if (deluxoTransformationOffset == 0)
+            {
+                return -1f;
+            }
+
             float* address = (float*)((ulong)v.MemoryAddress + (ulong)deluxoTransformationOffset);
             return *address;
         }
 
         public static void SetDeluxoFlyMode(Vehicle v, float mode)
         {
-            if (deluxoFlyModeOffset == 0) return;
+            if (deluxoFlyModeOffset == 0)
+            {
+                return;
+            }
+
             float* address = (float*)((ulong)v.MemoryAddress + (ulong)deluxoFlyModeOffset);
             *address = mode;
         }
 
         public static float GetDeluxoFlyMode(Vehicle v)
         {
-            if (deluxoFlyModeOffset == 0) return -1f;
+            if (deluxoFlyModeOffset == 0)
+            {
+                return -1f;
+            }
+
             float* address = (float*)((ulong)v.MemoryAddress + (ulong)deluxoFlyModeOffset);
             return *address;
         }
@@ -232,7 +308,11 @@ namespace FusionLibrary.Memory
         public static float GetMaxSteeringAngle(Vehicle vehicle)
         {
             ulong handlingAddr = GetHandlingPtr(vehicle);
-            if (handlingAddr == 0) return 0f;
+            if (handlingAddr == 0)
+            {
+                return 0f;
+            }
+
             float* addr = (float*)(handlingAddr + 0x0080);
             return *addr;
         }
@@ -250,7 +330,10 @@ namespace FusionLibrary.Memory
 
             float[] speeds = new float[numWheels];
 
-            if (wheelAngularVelocityOffset == 0) return speeds;
+            if (wheelAngularVelocityOffset == 0)
+            {
+                return speeds;
+            }
 
             for (sbyte i = 0; i < numWheels; i++)
             {
@@ -265,7 +348,10 @@ namespace FusionLibrary.Memory
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
 
-            if (wheelAngularVelocityOffset == 0) return;
+            if (wheelAngularVelocityOffset == 0)
+            {
+                return;
+            }
 
             for (sbyte i = 0; i < numWheels; i++)
             {
@@ -281,7 +367,10 @@ namespace FusionLibrary.Memory
 
             float[] speeds = new float[numWheels];
 
-            if (wheelAngleOffset == 0) return speeds;
+            if (wheelAngleOffset == 0)
+            {
+                return speeds;
+            }
 
             for (sbyte i = 0; i < numWheels; i++)
             {
@@ -296,7 +385,10 @@ namespace FusionLibrary.Memory
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
 
-            if (wheelAngleOffset == 0) return;
+            if (wheelAngleOffset == 0)
+            {
+                return;
+            }
 
             ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);
             *(float*)(wheelAddr + (ulong)wheelAngleOffset) = rotation;
@@ -309,7 +401,10 @@ namespace FusionLibrary.Memory
 
             float[] speeds = new float[numWheels];
 
-            if (wheelSuspensionCompressionOffset == 0) return speeds;
+            if (wheelSuspensionCompressionOffset == 0)
+            {
+                return speeds;
+            }
 
             for (sbyte i = 0; i < numWheels; i++)
             {
@@ -324,7 +419,10 @@ namespace FusionLibrary.Memory
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
 
-            if (wheelSuspensionCompressionOffset == 0) return;
+            if (wheelSuspensionCompressionOffset == 0)
+            {
+                return;
+            }
 
             ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)index);
             *(float*)(wheelAddr + (ulong)wheelSuspensionCompressionOffset + 4) = rotation;
@@ -378,7 +476,10 @@ namespace FusionLibrary.Memory
 
             float[] array = new float[numWheels];
 
-            if (wheelSteeringAngleOffset == 0) return array;
+            if (wheelSteeringAngleOffset == 0)
+            {
+                return array;
+            }
 
             for (sbyte i = 0; i < numWheels; i++)
             {
@@ -446,9 +547,14 @@ namespace FusionLibrary.Memory
                 correction = 2.0f * (float)Math.Atan2(Math.Sin(travelDir - steerDir), (float)Math.Cos(travelDir - steerDir));
             }
             if (correction > steeringMax)
+            {
                 correction = steeringMax;
+            }
+
             if (correction < -steeringMax)
+            {
                 correction = -steeringMax;
+            }
 
             return correction;
         }

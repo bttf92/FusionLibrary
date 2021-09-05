@@ -31,7 +31,7 @@ namespace FusionLibrary
         public string Name { get; }
 
         private static Camera LocationCamera;
-        private SpawnLocationHandler SpawnLocationHandler;
+        private readonly SpawnLocationHandler SpawnLocationHandler;
 
         public SpawnLocation(SpawnLocationHandler spawnLocationHandler, Vector3 position, bool direction)
         {
