@@ -11,23 +11,26 @@ namespace FusionLibrary
     public class CustomCameraHandler
     {
         /// <summary>
-        /// 
+        /// <see cref="CustomCamera"/> handled by this <see cref="CustomCameraHandler"/>.
         /// </summary>
         public List<CustomCamera> Cameras { get; private set; } = new List<CustomCamera>();
+
         /// <summary>
-        /// 
+        /// Current <see cref="CustomCamera"/> index being showed. Return <c>-1</c> if no camera is active.
         /// </summary>
         public int CurrentCameraIndex { get; private set; } = -1;
+
         /// <summary>
-        /// 
+        /// Gets or sets whether the cameras are cycled.
         /// </summary>
         public bool CycleCameras { get; set; } = false;
 
         private int _cycleInterval = 10000;
 
         private int _duration = -1;
+
         /// <summary>
-        /// 
+        /// Interval between two cameras being showed.
         /// </summary>
         public int CycleInterval
         {
@@ -47,7 +50,7 @@ namespace FusionLibrary
         private int nextChange = 0;
 
         /// <summary>
-        /// 
+        /// Current active <see cref="Camera"/>.
         /// </summary>
         public CustomCamera CurrentCamera
         {

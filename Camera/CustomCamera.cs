@@ -11,20 +11,22 @@ namespace FusionLibrary
     public class CustomCamera
     {
         /// <summary>
-        /// 
+        /// <see cref="GTA.Entity"/> at which the <see cref="Camera"/> is attached.
         /// </summary>
         public Entity Entity { get; private set; }
 
         /// <summary>
-        /// 
+        /// Offset relative to <see cref="Entity"/> where <see cref="Camera"/> is attached.
         /// </summary>
         public Vector3 PositionOffset { get; private set; }
+
         /// <summary>
-        /// 
+        /// Offset relative to <see cref="Entity"/> at which <see cref="Camera"/> points.
         /// </summary>
         public Vector3 PointAtOffset { get; private set; }
+
         /// <summary>
-        /// 
+        /// Field of view of <see cref="Camera"/>.
         /// </summary>
         public float FieldOfView { get; private set; }
 
@@ -36,36 +38,42 @@ namespace FusionLibrary
         private float fovSpeed;
 
         /// <summary>
-        /// 
+        /// Offset relative to <see cref="Entity"/>. End position of <see cref="Camera"/>.
         /// </summary>
         public Vector3 PositionEndOffset { get; private set; }
+
         /// <summary>
-        /// 
+        /// Offset relative to <see cref="Entity"/>. End point-at of <see cref="Camera"/>.
         /// </summary>
         public Vector3 PointAtEndOffset { get; private set; }
+
         /// <summary>
-        /// 
+        /// End value of field of view of <see cref="Camera"/>.
         /// </summary>
         public float FieldOfViewEnd { get; private set; }
 
         /// <summary>
-        /// 
+        /// Wait time before start moving the <see cref="Camera"/>.
         /// </summary>
         public int Wait { get; private set; }
+
         /// <summary>
-        /// 
+        /// Duration of the movement of the <see cref="Camera"/>.
         /// </summary>
         public int SwitchDuration { get; private set; }
+
         /// <summary>
-        /// 
+        /// Total duration of <see cref="Camera"/> existence.
         /// </summary>
         public int Duration { get; private set; }
+
         /// <summary>
-        /// 
+        /// Whether this <see cref="Camera"/> moves.
         /// </summary>
         public bool Moving { get; private set; }
+
         /// <summary>
-        /// 
+        /// Underlying <see cref="GTA.Camera"/> instance.
         /// </summary>
         public Camera Camera { get; private set; }
 
@@ -73,15 +81,7 @@ namespace FusionLibrary
         private int gameTime;
         private readonly bool isVehicle;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="positionOffset"></param>
-        /// <param name="pointAtOffset"></param>
-        /// <param name="fieldOfView"></param>
-        /// <param name="duration"></param>
-        public CustomCamera(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
+        internal CustomCamera(Entity entity, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1)
         {
             Entity = entity;
             PositionOffset = positionOffset;
@@ -90,35 +90,19 @@ namespace FusionLibrary
             Duration = duration;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <param name="positionOffset"></param>
-        /// <param name="pointAtOffset"></param>
-        /// <param name="fieldOfView"></param>
-        /// <param name="duration"></param>
-        public CustomCamera(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1) : this((Entity)vehicle, positionOffset, pointAtOffset, fieldOfView, duration)
+        internal CustomCamera(Vehicle vehicle, Vector3 positionOffset, Vector3 pointAtOffset, float fieldOfView, int duration = -1) : this((Entity)vehicle, positionOffset, pointAtOffset, fieldOfView, duration)
         {
             isVehicle = true;
             PointAtOffset = FusionUtils.DirectionToRotation(PositionOffset, PointAtOffset, 0);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="vehicle"></param>
-        /// <param name="positionBone"></param>
-        /// <param name="pointAtBone"></param>
-        /// <param name="fieldOfView"></param>
-        /// <param name="duration"></param>
-        public CustomCamera(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView, int duration = -1) : this(vehicle, vehicle.Bones[positionBone].RelativePosition, vehicle.Bones[pointAtBone].RelativePosition, fieldOfView, duration)
+        internal CustomCamera(Vehicle vehicle, string positionBone, string pointAtBone, float fieldOfView, int duration = -1) : this(vehicle, vehicle.Bones[positionBone].RelativePosition, vehicle.Bones[pointAtBone].RelativePosition, fieldOfView, duration)
         {
 
         }
 
         /// <summary>
-        /// 
+        /// Sets end movement properties.
         /// </summary>
         /// <param name="positionOffset"></param>
         /// <param name="pointAtOffset"></param>
@@ -143,53 +127,6 @@ namespace FusionLibrary
             SwitchDuration = switchDuration;
 
             Moving = true;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Show()
-        {
-            if (Camera == null || Camera.Exists() == false)
-            {
-                Camera = World.CreateCamera(Entity.Position, Entity.Rotation, FieldOfView);
-
-                if (!isVehicle)
-                {
-                    Camera.AttachTo(Entity, PositionOffset);
-                    Camera.PointAt(Entity, PointAtOffset);
-                }
-                else
-                {
-                    Camera.AttachToVehicle((Vehicle)Entity, "", PositionOffset, PointAtOffset);
-                }
-            }
-
-            World.RenderingCamera = Camera;
-
-            if (Duration > -1)
-            {
-                gameTime = Game.GameTime + Duration;
-            }
-            else
-            {
-                gameTime = -1;
-            }
-
-            if (!Moving)
-            {
-                return;
-            }
-
-            CurrentPositionOffset = PositionOffset;
-            CurrentPointAtOffset = PointAtOffset;
-            CurrentFieldOfView = FieldOfView;
-
-            positionSpeed = 1000 * PositionOffset.DistanceTo(PositionEndOffset) / SwitchDuration;
-            pointAtSpeed = 1000 * PointAtOffset.DistanceTo(PointAtEndOffset) / SwitchDuration;
-            fovSpeed = 1000 * (FieldOfViewEnd - FieldOfView) / SwitchDuration;
-
-            waitTime = Game.GameTime + Wait;
         }
 
         internal void Show(ref CustomCamera OldCamera, CameraSwitchType cameraSwitchType = CameraSwitchType.Instant)
@@ -289,10 +226,7 @@ namespace FusionLibrary
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Stop()
+        internal void Stop()
         {
             if (Camera == null || !Camera.IsActive)
             {
@@ -316,10 +250,7 @@ namespace FusionLibrary
             World.RenderingCamera = null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Abort()
+        internal void Abort()
         {
             Camera?.Delete();
             Camera = null;

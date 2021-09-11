@@ -137,6 +137,11 @@ namespace FusionLibrary
         /// </summary>
         public bool PlayReverse { get; set; }
 
+        /// <summary>
+        /// Whether <see cref="Prop"/> keeps collision when attached to <see cref="Entity"/>.
+        /// </summary>
+        public bool KeepCollision { get; set; } = true;
+
         private float _currentTime = 0;
         private AnimationStep _lastStep;
         private bool _playReverse;
@@ -151,7 +156,8 @@ namespace FusionLibrary
         /// <param name="entityBone"><see cref="EntityBone"/> of <paramref name="entity"/>.</param>
         /// <param name="offset">Offset relative to <paramref name="entityBone"/>. Default <see cref="Vector3.Zero"/>.</param>
         /// <param name="rotation">Rotation relative to <paramref name="entityBone"/>. Default <see cref="Vector3.Zero"/>.</param>
-        public AnimateProp(CustomModel model, Entity entity, EntityBone entityBone, Vector3 offset = default, Vector3 rotation = default)
+        /// <param name="keepCollision">Whether keep collision when attached to <paramref name="entity"/>.</param>
+        public AnimateProp(CustomModel model, Entity entity, EntityBone entityBone, Vector3 offset = default, Vector3 rotation = default, bool keepCollision = true)
         {
             Model = model;
             Entity = entity;
@@ -159,6 +165,7 @@ namespace FusionLibrary
             Offset = offset;
             Rotation = rotation;
             _toBone = true;
+            KeepCollision = keepCollision;
 
             GlobalAnimatePropList.Add(this);
         }
@@ -171,7 +178,8 @@ namespace FusionLibrary
         /// <param name="boneName">Bone's name of <paramref name="entity"/>.</param>
         /// <param name="offset">Offset relative to <paramref name="boneName"/>. Default <see cref="Vector3.Zero"/>.</param>
         /// <param name="rotation">Rotation relative to <paramref name="boneName"/>. Default <see cref="Vector3.Zero"/>.</param>
-        public AnimateProp(CustomModel model, Entity entity, string boneName, Vector3 offset = default, Vector3 rotation = default) : this(model, entity, entity.Bones[boneName], offset, rotation)
+        /// <param name="keepCollision">>Whether keep collision when attached to <paramref name="entity"/>.</param>
+        public AnimateProp(CustomModel model, Entity entity, string boneName, Vector3 offset = default, Vector3 rotation = default, bool keepCollision = true) : this(model, entity, entity.Bones[boneName], offset, rotation, keepCollision)
         {
 
         }
@@ -181,14 +189,16 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="model"><see cref="CustomModel"/> of the <see cref="GTA.Prop"/>.</param>
         /// <param name="entity"><see cref="GTA.Entity"/> at which the <see cref="GTA.Prop"/> will be attached.</param>
-        /// <param name="offset">Offset relative to <paramref name="boneName"/>. Default <see cref="Vector3.Zero"/>.</param>
-        /// <param name="rotation">Rotation relative to <paramref name="boneName"/>. Default <see cref="Vector3.Zero"/>.</param>
-        public AnimateProp(CustomModel model, Entity entity, Vector3 offset = default, Vector3 rotation = default)
+        /// <param name="offset">Offset relative to <paramref name="entity"/>. Default <see cref="Vector3.Zero"/>.</param>
+        /// <param name="rotation">Rotation relative to <paramref name="entity"/>. Default <see cref="Vector3.Zero"/>.</param>
+        /// <param name="keepCollision">>Whether keep collision when attached to <paramref name="entity"/>.</param>
+        public AnimateProp(CustomModel model, Entity entity, Vector3 offset = default, Vector3 rotation = default, bool keepCollision = true)
         {
             Model = model;
             Entity = entity;
             Offset = offset;
             Rotation = rotation;
+            KeepCollision = keepCollision;
 
             GlobalAnimatePropList.Add(this);
         }
@@ -699,7 +709,7 @@ namespace FusionLibrary
                 }
                 else
                 {
-                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, _bone.Index, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, UseFixedRot);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, _bone.Index, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, KeepCollision, false, 0, UseFixedRot);
                 }
             }
             else
@@ -710,7 +720,7 @@ namespace FusionLibrary
                 }
                 else
                 {
-                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, true, false, 0, UseFixedRot);
+                    Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, Prop.Handle, Entity.Handle, 0, CurrentOffset.X, CurrentOffset.Y, CurrentOffset.Z, CurrentRotation.X, CurrentRotation.Y, CurrentRotation.Z, false, false, KeepCollision, false, 0, UseFixedRot);
                 }
             }
         }
