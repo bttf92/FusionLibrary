@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Math;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using static FusionLibrary.FusionEnums;
 
@@ -98,6 +99,69 @@ namespace FusionLibrary
             ParticlePlayers.Add(particlePlayer);
 
             return particlePlayer;
+        }
+
+        /// <summary>
+        /// World position or offset of the particles.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => ParticlePlayers[0].Position;
+            set => ParticlePlayers.ForEach(x => x.Position = value);
+        }
+
+        /// <summary>
+        /// Rotation of the particles.
+        /// </summary>
+        public Vector3 Rotation
+        {
+            get => ParticlePlayers[0].Rotation;
+            set => ParticlePlayers.ForEach(x => x.Rotation = value);
+        }
+
+        /// <summary>
+        /// Size of the particles.
+        /// </summary>
+        public float Size
+        {
+            get => ParticlePlayers[0].Size;
+            set => ParticlePlayers.ForEach(x => x.Size = value);
+        }
+
+        /// <summary>
+        /// Gets or sets if color of particles needs to be setted.
+        /// </summary>
+        public bool SetColor
+        {
+            get => ParticlePlayers[0].SetColor;
+            set => ParticlePlayers.ForEach(x => x.SetColor = value);
+        }
+
+        /// <summary>
+        /// Color of the particles.
+        /// </summary>
+        public Color Color
+        {
+            get => ParticlePlayers[0].Color;
+            set => ParticlePlayers.ForEach(x => x.Color = value);
+        }
+
+        /// <summary>
+        /// Interval between particles spawns.
+        /// </summary>
+        public int Interval
+        {
+            get => ParticlePlayers[0].Interval;
+            set => ParticlePlayers.ForEach(x => x.Interval = value);
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of the particles.
+        /// </summary>
+        public int Duration
+        {
+            get => ParticlePlayers[0].Duration;
+            set => ParticlePlayers.ForEach(x => x.Duration = value);
         }
 
         /// <summary>
