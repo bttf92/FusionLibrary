@@ -683,6 +683,17 @@ namespace FusionLibrary.Extensions
             highbeamsOn = _highbeamsOn;
         }
 
+
+        /// <summary>
+        /// Sets if <paramref name="vehicle"/> lights should appear as if player is inside.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="state">State of the lights.</param>
+        public static void SetPlayerLights(this Vehicle vehicle, bool state)
+        {
+            Function.Call((Hash)0xC45C27EF50F36ADC, vehicle, state);
+        }
+
         /// <summary>
         /// Decreases speed of <paramref name="vehicle"/> of <paramref name="by"/> value.
         /// </summary>
