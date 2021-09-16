@@ -102,12 +102,12 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// <c>true</c> if all the <see cref="Props"/> are spawned.
+        /// <see langword="true"/> if all the <see cref="Props"/> are spawned.
         /// </summary>
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);
 
         /// <summary>
-        /// <c>true</c> if at least one of the <see cref="Props"/> is playing.
+        /// <see langword="true"/> if at least one of the <see cref="Props"/> is playing.
         /// </summary>
         public bool IsPlaying => Props.Any(x => x.IsPlaying);
 
@@ -313,7 +313,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
-        /// <param name="currentOffset">If <c>true</c> is applied to <see cref="AnimateProp.CurrentOffset"/> otherwise to <see cref="AnimateProp.SecondOffset"/>.</param>
+        /// <param name="currentOffset">If <see langword="true"/> is applied to <see cref="AnimateProp.CurrentOffset"/> otherwise to <see cref="AnimateProp.SecondOffset"/>.</param>
         public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
         {
             Props.ForEach(x => x.setOffset(coordinate, value, currentOffset));
@@ -324,7 +324,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
-        /// <param name="currentRotation">If <c>true</c> is applied to <see cref="AnimateProp.CurrentRotation"/> otherwise to <see cref="AnimateProp.SecondRotation"/>.</param>
+        /// <param name="currentRotation">If <see langword="true"/> is applied to <see cref="AnimateProp.CurrentRotation"/> otherwise to <see cref="AnimateProp.SecondRotation"/>.</param>
         public void setRotation(Coordinate coordinate, float value, bool currentRotation = false)
         {
             Props.ForEach(x => x.setRotation(coordinate, value, currentRotation));
@@ -336,7 +336,7 @@ namespace FusionLibrary
         /// <param name="animationType">Wanted <see cref="FusionEnums.AnimationType"/>.</param>
         /// <param name="animationStep"><see cref="FusionEnums.AnimationStep"/> of <paramref name="animationType"/>.</param>
         /// <param name="coordinate"><see cref="FusionEnums.Coordinate"/> of <paramref name="animationStep"/>.</param>
-        /// <param name="maximum"><c>true</c> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
+        /// <param name="maximum"><see langword="true"/> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
         public void setCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
         {
             Props.ForEach(x => x.setCoordinateAt(animationType, animationStep, coordinate, maximum));

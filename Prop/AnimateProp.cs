@@ -53,7 +53,7 @@ namespace FusionLibrary
         public bool UsePhysicalAttach { get; set; }
 
         /// <summary>
-        /// If <c>false</c> the <see cref="Entity"/> vector is ignored.
+        /// If <see langword="false"/> the <see cref="Entity"/> vector is ignored.
         /// </summary>
         public bool UseFixedRot { get; set; } = true;
 
@@ -279,7 +279,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
-        /// <param name="isCurrent">If <c>true</c> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
+        /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
         public void setOffset(Coordinate coordinate, float value, bool isCurrent = false)
         {
             if (isCurrent)
@@ -296,7 +296,7 @@ namespace FusionLibrary
         /// Sets the offset.
         /// </summary>
         /// <param name="value">New value.</param>
-        /// <param name="isCurrent">if <c>true</c> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
+        /// <param name="isCurrent">if <see langword="true"/> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
         public void setOffset(Vector3 value, bool isCurrent = false)
         {
             if (isCurrent)
@@ -314,7 +314,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
-        /// <param name="isCurrent">If <c>true</c> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
+        /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
         public void setRotation(Coordinate coordinate, float value, bool isCurrent = false)
         {
             if (isCurrent)
@@ -331,7 +331,7 @@ namespace FusionLibrary
         /// Sets the rotation.
         /// </summary>
         /// <param name="value">New value.</param>
-        /// <param name="isCurrent">If <c>true</c> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
+        /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
         public void setRotation(Vector3 value, bool isCurrent = false)
         {
             if (isCurrent)
@@ -349,7 +349,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="offset">New offset.</param>
         /// <param name="rotation">New rotation.</param>
-        /// <param name="isCurrent">If <c>true</c> is applied to "Current" offset and rotation otherwise to "Second".</param>
+        /// <param name="isCurrent">If <see langword="true"/> is applied to "Current" offset and rotation otherwise to "Second".</param>
         public void MoveProp(Vector3 offset, Vector3 rotation, bool isCurrent = true)
         {
             if (isCurrent)
@@ -419,7 +419,7 @@ namespace FusionLibrary
         /// <summary>
         /// Toggles <see cref="Prop"/> spawn status.
         /// </summary>
-        /// <param name="state"><c>true</c> prop is spawned; otherwise deleted.</param>
+        /// <param name="state"><see langword="true"/> prop is spawned; otherwise deleted.</param>
         public void SetState(bool state)
         {
             if (state)
@@ -438,7 +438,7 @@ namespace FusionLibrary
         /// <param name="animationType">Wanted <see cref="FusionEnums.AnimationType"/>.</param>
         /// <param name="animationStep"><see cref="FusionEnums.AnimationStep"/> of <paramref name="animationType"/>.</param>
         /// <param name="coordinate"><see cref="FusionEnums.Coordinate"/> of <paramref name="animationStep"/>.</param>
-        /// <param name="maximum"><c>true</c> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
+        /// <param name="maximum"><see langword="true"/> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
         public void setCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
         {
             CoordinateSetting coordinateSetting = Animation[animationType][animationStep][coordinate];

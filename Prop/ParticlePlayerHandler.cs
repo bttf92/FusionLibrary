@@ -20,7 +20,7 @@ namespace FusionLibrary
         public Dictionary<string, float> EvolutionParams { get; } = new Dictionary<string, float>();
 
         /// <summary>
-        /// <c>true</c> if any particle is playing; otherwise <c>false</c>.
+        /// <see langword="true"/> if any particle is playing; otherwise <see langword="false"/>.
         /// </summary>
         public bool IsPlaying => ParticlePlayers.Any(x => x.IsPlaying);
 
@@ -202,7 +202,7 @@ namespace FusionLibrary
         /// <summary>
         /// Stops looping the particles.
         /// </summary>
-        /// <param name="instant"><c>true</c> particle will be instantly removed from game's world.</param>
+        /// <param name="instant"><see langword="true"/> particle will be instantly removed from game's world.</param>
         public void Stop(bool instant = false)
         {
             ParticlePlayers.ForEach(x => x.Stop(instant));

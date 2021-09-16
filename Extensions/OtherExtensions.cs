@@ -14,7 +14,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="camera"/> is not null and <see cref="Camera.Exists"/>.
         /// </summary>
         /// <param name="camera">Instance of a <see cref="Camera"/>.</param>
-        /// <returns><c>true</c> if <paramref name="camera"/> is not null and <see cref="Camera.Exists"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="camera"/> is not null and <see cref="Camera.Exists"/>; otherwise <see langword="false"/>.</returns>
         public static bool NotNullAndExists(this Camera camera)
         {
             return camera != null && camera.Exists();

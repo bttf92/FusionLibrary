@@ -259,7 +259,7 @@ namespace FusionLibrary
     public class CoordinateSetting
     {
         /// <summary>
-        /// if <c>true</c> this <see cref="CoordinateSetting"/> was setup.
+        /// if <see langword="true"/> this <see cref="CoordinateSetting"/> was setup.
         /// </summary>
         public bool IsSetted { get; private set; }
 

@@ -15,7 +15,7 @@ namespace FusionLibrary.Extensions
         /// Checks if given <paramref name="entity"/> is not <c>null</c> and exists in game's world.
         /// </summary>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
-        /// <returns><c>true</c> if <paramref name="entity"/> is not <c>null</c> and exists; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if <paramref name="entity"/> is not <c>null</c> and exists; otherwise <see langword="false"/></returns>
         public static bool NotNullAndExists(this Entity entity)
         {
             return entity != null && entity.Exists();
@@ -45,7 +45,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="entity"/> is going forward.
         /// </summary>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
-        /// <returns><c>true</c> if <paramref name="entity"/> is going forward or is still; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if <paramref name="entity"/> is going forward or is still; otherwise <see langword="false"/></returns>
         public static bool IsGoingForward(this Entity entity)
         {
             return entity.RelativeVelocity().Y >= 0;
@@ -91,7 +91,7 @@ namespace FusionLibrary.Extensions
         /// <param name="src">Instance of an <see cref="Entity"/>.</param>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
         /// <param name="maxDistance">Max distance allowed.</param>
-        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <see langword="false"/></returns>
         public static bool DistanceToSquared2D(this Entity src, Entity entity, float maxDistance)
         {
             return DistanceToSquared2D(src, entity) <= maxDistance * maxDistance;
@@ -104,7 +104,7 @@ namespace FusionLibrary.Extensions
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
         /// <param name="boneName">Bone's name.</param>
         /// <param name="maxDistance">Max distance allowed.</param>
-        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <see langword="false"/></returns>
         public static bool DistanceToSquared2D(this Entity src, Entity entity, string boneName, float maxDistance)
         {
             return DistanceToSquared2D(src, entity, boneName) <= maxDistance * maxDistance;
@@ -116,7 +116,7 @@ namespace FusionLibrary.Extensions
         /// <param name="src">Instance of an <see cref="Entity"/>.</param>
         /// <param name="worldPosition">Instance of a <see cref="Vector3"/>.</param>
         /// <param name="maxDistance">Max distance allowed.</param>
-        /// <returns><c>true</c> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if distance is less or equal than <paramref name="maxDistance"/>; otherwise <see langword="false"/></returns>
         public static bool DistanceToSquared2D(this Entity src, Vector3 worldPosition, float maxDistance)
         {
             return DistanceToSquared2D(src, worldPosition) <= maxDistance * maxDistance;
@@ -126,7 +126,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> is not <c>null</c>, <seealso cref="Ped.Exists()"/> and also is alive.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> is not <c>null</c>, <seealso cref="Ped.Exists()"/> and also is alive; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> is not <c>null</c>, <seealso cref="Ped.Exists()"/> and also is alive; otherwise <see langword="false"/></returns>
         public static bool ExistsAndAlive(this Ped ped)
         {
             return ped.NotNullAndExists() && ped.IsAlive;
@@ -136,7 +136,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> has been damaged.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> has been damaged; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> has been damaged; otherwise <see langword="false"/></returns>
         public static bool HasBeenDamaged(this Ped ped)
         {
             return Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_OBJECT, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED, ped) || Function.Call<bool>(Hash.HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE, ped);
@@ -189,7 +189,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
         /// <param name="taskType">A <see cref="TaskType"/>.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if <paramref name="taskType"/> is active; otherwise <see langword="false"/>.</returns>
         public static bool IsTaskActive(this Ped ped, TaskType taskType)
         {
             return Function.Call<bool>(Hash.GET_IS_TASK_ACTIVE, ped, (int)taskType);
@@ -199,7 +199,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> has any task active.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if a task is active; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if a task is active; otherwise <see langword="false"/>.</returns>
         public static bool IsAnyTaskActive(this Ped ped)
         {
             foreach (TaskType taskType in Enum.GetValues(typeof(TaskType)).Cast<TaskType>().ToList())
@@ -262,6 +262,17 @@ namespace FusionLibrary.Extensions
         public static Vehicle GetUsingVehicle(this Ped ped)
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
+        }
+        
+        /// <summary>
+        /// Attraches <paramref name="vehicle"/> to <paramref name="trailer"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="trailer">Instance of a trailer <see cref="Vehicle"/>.</param>
+        /// <param name="radius">Radius for the attach.</param>
+        public static void AttachToTrailer(this Vehicle vehicle, Vehicle trailer, float radius)
+        {
+            Function.Call(Hash.ATTACH_VEHICLE_TO_TRAILER, vehicle, trailer, radius);
         }
 
         /// <summary>
@@ -371,7 +382,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> is inside a <see cref="Vehicle"/>, not entering or exiting.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> is inside a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> is inside a <see cref="Vehicle"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsFullyInVehicle(this Ped ped)
         {
             return ped.IsSittingInVehicle() && !ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
@@ -381,7 +392,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> is outside a <see cref="Vehicle"/>, not entering or exiting.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> is outside a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> is outside a <see cref="Vehicle"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsFullyOutVehicle(this Ped ped)
         {
             return ped.CurrentVehicle == null && !ped.IsTaskActive(TaskType.ExitVehicle) && !ped.IsTaskActive(TaskType.EnterVehicle);
@@ -391,7 +402,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> is entering a <see cref="Vehicle"/>.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> is entering a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> is entering a <see cref="Vehicle"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsEnteringVehicle(this Ped ped)
         {
             return !ped.IsSittingInVehicle() && ped.IsTaskActive(TaskType.EnterVehicle) && !ped.IsTaskActive(TaskType.ExitVehicle);
@@ -401,7 +412,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="ped"/> is exiting a <see cref="Vehicle"/>.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
-        /// <returns><c>true</c> if <paramref name="ped"/> is exiting a <see cref="Vehicle"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="ped"/> is exiting a <see cref="Vehicle"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsLeavingVehicle(this Ped ped)
         {
             return !IsFullyOutVehicle(ped) && ped.IsTaskActive(TaskType.ExitVehicle);
@@ -415,7 +426,7 @@ namespace FusionLibrary.Extensions
         /// <param name="boneName">Bone's name.</param>
         /// <param name="offset">Offset of attach point.</param>
         /// <param name="rotation">Rotation for attach.</param>
-        /// <param name="useFixedRot">If <c>false</c> it ignores <paramref name="toEntity"/> vector.</param>
+        /// <param name="useFixedRot">If <see langword="false"/> it ignores <paramref name="toEntity"/> vector.</param>
         public static void AttachTo(this Entity entity1, Entity toEntity, string boneName, Vector3 offset, Vector3 rotation, bool useFixedRot = true)
         {
             Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, toEntity.Bones[boneName].Index, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, useFixedRot);
@@ -428,7 +439,7 @@ namespace FusionLibrary.Extensions
         /// <param name="toEntity">Second instance of an <see cref="Entity"/>.</param>
         /// <param name="offset">Offset of attach point.</param>
         /// <param name="rotation">Rotation for attach.</param>
-        /// <param name="useFixedRot">If <c>false</c> it ignores <paramref name="toEntity"/> vector.</param>
+        /// <param name="useFixedRot">If <see langword="false"/> it ignores <paramref name="toEntity"/> vector.</param>
         public static void AttachTo(this Entity entity1, Entity toEntity, Vector3 offset, Vector3 rotation, bool useFixedRot = true)
         {
             Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, entity1, toEntity, 0, offset.X, offset.Y, offset.Z, rotation.X, rotation.Y, rotation.Z, false, false, true, false, 2, useFixedRot);
@@ -477,7 +488,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
         /// <param name="garage"><see cref="GarageDoor"/> hash.</param>
-        /// <returns><c>true</c> if <paramref name="entity"/> is entirely inside <paramref name="garage"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="entity"/> is entirely inside <paramref name="garage"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsEntirelyInGarage(this Entity entity, GarageDoor garage)
         {
             return Function.Call<bool>(Hash.IS_OBJECT_ENTIRELY_INSIDE_GARAGE, garage, entity, 0, 0);
@@ -488,7 +499,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
         /// <param name="garage"><see cref="GarageDoor"/> hash.</param>
-        /// <returns><c>true</c> if <paramref name="entity"/> is partially inside <paramref name="garage"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="entity"/> is partially inside <paramref name="garage"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsPartiallyInGarage(this Entity entity, GarageDoor garage)
         {
             return Function.Call<bool>(Hash.IS_OBJECT_PARTIALLY_INSIDE_GARAGE, garage, entity, 0);
@@ -560,7 +571,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="vehicle"/> is being driven by <see cref="Player"/>.
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> if <paramref name="vehicle"/> is being driven by <see cref="Player"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is being driven by <see cref="Player"/>; otherwise <see langword="false"/>.</returns>
         public static bool IsPlayerDriving(this Vehicle vehicle)
         {
             return vehicle.IsFunctioning() && FusionUtils.PlayerVehicle == vehicle && FusionUtils.PlayerPed.SeatIndex == VehicleSeat.Driver;
@@ -595,7 +606,7 @@ namespace FusionLibrary.Extensions
         /// Checks if <paramref name="vehicle"/> can theoretically hover transform.
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> if <paramref name="vehicle"/> can theoretically hover transform; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="vehicle"/> can theoretically hover transform; otherwise <see langword="false"/>.</returns>
         public static bool CanHoverTransform(this Vehicle vehicle)
         {
             return (vehicle.Bones["misc_a"].Index != 0 && vehicle.Bones["misc_b"].Index != -1 && vehicle.Bones["misc_c"].Index != 0 && vehicle.Bones["misc_e"].Index != -1 && vehicle.Bones["misc_q"].Index != -1 && vehicle.Bones["misc_s"].Index != -1 && vehicle.Bones["misc_z"].Index != -1);
@@ -616,7 +627,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="vehicle">First instance of a <see cref="Vehicle"/>.</param>
         /// <param name="vehicle1">Second instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> the direction is the same; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> the direction is the same; otherwise <see langword="false"/>.</returns>
         public static bool SameDirection(this Vehicle vehicle, Vehicle vehicle1)
         {
             return vehicle.Rotation.Z.Near(vehicle1.Rotation.Z);
@@ -699,7 +710,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
         /// <param name="by">Value substracted to speed.</param>
-        /// <returns><c>true</c> if speed is almost zero; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if speed is almost zero; otherwise <see langword="false"/>.</returns>
         public static bool DecreaseSpeedAndWait(this Vehicle vehicle, float by = 20)
         {
             Vector3 vel = vehicle.RelativeVelocity();
@@ -718,7 +729,7 @@ namespace FusionLibrary.Extensions
         /// Checks if the given <paramref name="vehicle"/> is a train.
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> if <paramref name="vehicle"/> is a train; otherwise <c>false</c></returns>
+        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is a train; otherwise <see langword="false"/></returns>
         public static bool IsTrain(this Vehicle vehicle)
         {
             if (!vehicle.NotNullAndExists())

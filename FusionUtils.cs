@@ -128,7 +128,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Cleares game's world from every ped and vehicles. Except entities with <see cref="Decorator.DoNotDelete"/> == <c>true</c>.
+        /// Cleares game's world from every ped and vehicles. Except entities with <see cref="Decorator.DoNotDelete"/> == <see langword="true"/>.
         /// </summary>
         public static void ClearWorld()
         {
@@ -579,7 +579,7 @@ namespace FusionLibrary
         /// Check if any door of the <paramref name="vehicle"/> is open.
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> if there is at least a door open; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if there is at least a door open; otherwise <see langword="false"/>.</returns>
         public static bool IsAnyDoorOpen(Vehicle vehicle)
         {
             foreach (VehicleDoor door in vehicle.Doors)
@@ -596,7 +596,7 @@ namespace FusionLibrary
         /// <summary>
         /// Checks if current camera is in first person view.
         /// </summary>
-        /// <returns><c>true</c> if FPV is enabled; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if FPV is enabled; otherwise <see langword="false"/>.</returns>
         public static bool IsCameraInFirstPerson()
         {
             return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);
@@ -639,7 +639,7 @@ namespace FusionLibrary
         /// Checks if <paramref name="vehicle"/> is on rail tracks.
         /// </summary>
         /// <param name="vehicle">Instance of <see cref="Vehicle"/>.</param>
-        /// <returns><c>true</c> if <paramref name="vehicle"/> is on rail tracks; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is on rail tracks; otherwise <see langword="false"/>.</returns>
         public static bool IsVehicleOnTracks(Vehicle vehicle)
         {
             return GetWheelsPositions(vehicle).TrueForAll(x => IsWheelOnTracks(x, vehicle));
@@ -650,7 +650,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="pos"><see cref="Vector3"/> of the wheel.</param>
         /// <param name="vehicle">Instance of a <see cref="Vector3"/>.</param>
-        /// <returns><c>true</c> wheel is on rail tracks; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> wheel is on rail tracks; otherwise <see langword="false"/>.</returns>
         public static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
         {
             // What it basicly does is drawing circle around that "pos" so we can

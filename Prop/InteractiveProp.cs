@@ -53,7 +53,7 @@ namespace FusionLibrary
         public bool UseAltControl { get; set; }
 
         /// <summary>
-        /// Alternate <see cref="GTA.Control"/> used while <see cref="UseAltControl"/> is <c>true</c>.
+        /// Alternate <see cref="GTA.Control"/> used while <see cref="UseAltControl"/> is <see langword="true"/>.
         /// </summary>
         public Control AltControl { get; set; }
 

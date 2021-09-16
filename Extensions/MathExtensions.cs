@@ -299,7 +299,7 @@ namespace FusionLibrary.Extensions
         /// <param name="src">First value.</param>
         /// <param name="to">Second value.</param>
         /// <param name="by">Max difference accepted.</param>
-        /// <returns><c>true</c> if the two values are near; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two values are near; otherwise <see langword="false"/>.</returns>
         public static bool Near(this float src, float to, float by = 5)
         {
             return (to - by) <= src && src <= (to + by);
@@ -312,7 +312,7 @@ namespace FusionLibrary.Extensions
         /// <param name="to">Second value.</param>
         /// <param name="by">Max difference accepted.</param>
         /// <param name="onlyFromLeft">Checks only if <paramref name="src"/> is minor or equal than <paramref name="to"/>.</param>
-        /// <returns><c>true</c> if the two values are near; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two values are near; otherwise <see langword="false"/>.</returns>
         public static bool Near(this DateTime src, DateTime to, TimeSpan by, bool onlyFromLeft = false)
         {
             return to.Subtract(by) <= src && ((onlyFromLeft && src <= to) || (!onlyFromLeft && src <= to.Add(by)));
@@ -324,7 +324,7 @@ namespace FusionLibrary.Extensions
         /// <param name="src">Evalueted <see cref="DateTime"/>.</param>
         /// <param name="start">Start of range.</param>
         /// <param name="end">End of range.</param>
-        /// <returns><c>true</c> if <paramref name="src"/> is between; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="src"/> is between; otherwise <see langword="false"/>.</returns>
         public static bool Between(this DateTime src, DateTime start, DateTime end)
         {
             return src >= start && src <= end;
@@ -336,7 +336,7 @@ namespace FusionLibrary.Extensions
         /// <param name="src">Evalueted <see cref="DateTime"/>.</param>
         /// <param name="start">Start of range.</param>
         /// <param name="end">End of range.</param>
-        /// <returns><c>true</c> if <paramref name="src"/> is between; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <paramref name="src"/> is between; otherwise <see langword="false"/>.</returns>
         public static bool BetweenHours(this DateTime src, DateTime start, DateTime end)
         {
             int hour = int.Parse(src.ToString("hh"));

@@ -343,7 +343,7 @@ namespace FusionLibrary
         /// <summary>
         /// Stops looping the particle.
         /// </summary>
-        /// <param name="instant"><c>true</c> particle will be instantly removed from game's world.</param>
+        /// <param name="instant"><see langword="true"/> particle will be instantly removed from game's world.</param>
         public void Stop(bool instant = false)
         {
             if (!IsPlaying)
@@ -387,7 +387,7 @@ namespace FusionLibrary
         /// <summary>
         /// Checks if the looped particle exists.
         /// </summary>
-        /// <returns><c>true</c> if particle exists; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if particle exists; otherwise <see langword="false"/>.</returns>
         public bool Exists()
         {
             if (ParticleType != ParticleType.Looped)
