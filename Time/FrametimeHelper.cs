@@ -6,14 +6,14 @@ namespace FusionLibrary
     public class FrameTimeHelper
     {
         private double remainder;
-        public float FrameTime { get; }
+        public float FrameTime => 1 / FPS;
+        public float FPS { get; set; }
 
         public int Count { get; private set; }
 
-        public FrameTimeHelper(float frameTime)
+        public FrameTimeHelper(float targetFPS = 60f)
         {
-            FrameTime = frameTime;
-
+            FPS = targetFPS;
             Reset();
         }
 

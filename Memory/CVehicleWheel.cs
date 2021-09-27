@@ -1,11 +1,11 @@
-﻿using GTA;
+﻿using FusionLibrary.Extensions;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
@@ -13,7 +13,7 @@ namespace FusionLibrary
     {
         public Vehicle Vehicle { get; }
 
-        public WheelId WheelID { get; }
+        public VehicleWheelBoneId WheelID { get; }
         public string BoneName { get; }
         public EntityBone Bone { get; }
         public VehicleBone BoneMemory { get; }
@@ -23,15 +23,15 @@ namespace FusionLibrary
         public bool Left { get; }
         public bool Front { get; }
 
-        public CVehicleWheel(Vehicle vehicle, string boneName, WheelId wheelId)
+        public CVehicleWheel(Vehicle vehicle, string boneName, VehicleWheelBoneId wheelId)
         {
             Vehicle = vehicle;
             WheelID = wheelId;
             BoneName = boneName;
             Bone = Vehicle.Bones[BoneName];
 
-            Left = wheelId == WheelId.FrontLeft | wheelId == WheelId.RearLeft;
-            Front = wheelId == WheelId.FrontLeft | wheelId == WheelId.FrontRight;
+            Left = wheelId == VehicleWheelBoneId.WheelLeftFront | wheelId == VehicleWheelBoneId.WheelLeftRear;
+            Front = wheelId == VehicleWheelBoneId.WheelLeftFront | wheelId == VehicleWheelBoneId.WheelRightFront;
 
             VehicleBone.TryGetForVehicle(vehicle, boneName, out VehicleBone vehicleBone);
 
@@ -46,16 +46,16 @@ namespace FusionLibrary
 
         public bool Burst
         {
-            get => Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, (int)WheelID, true);
+            get => Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, Bone.Index, true);
             set
             {
                 if (value)
                 {
-                    Vehicle.Wheels[(int)WheelID].Burst();
+                    Vehicle.Wheels[WheelID].Burst();
                 }
                 else
                 {
-                    Vehicle.Wheels[(int)WheelID].Fix();
+                    Vehicle.Wheels[WheelID].Fix();
                 }
             }
         }
@@ -103,6 +103,9 @@ namespace FusionLibrary
 
         public int Count => Wheels.Count;
 
+        private Vehicle vehicle1;
+        private Decorator decorator;
+
         public int IndexOf(CVehicleWheel wheel)
         {
             return Wheels.IndexOf(wheel);
@@ -110,6 +113,9 @@ namespace FusionLibrary
 
         public CVehicleWheels(Vehicle vehicle)
         {
+            vehicle1 = vehicle;
+            decorator = vehicle.Decorator();
+
             foreach (string wheel in FusionUtils.WheelsBonesNames)
             {
                 if (vehicle.Bones[wheel].Index > 0)
@@ -119,7 +125,7 @@ namespace FusionLibrary
             }
         }
 
-        public CVehicleWheel this[WheelId wheelId] => Wheels.Single(x => x.WheelID == wheelId);
+        public CVehicleWheel this[VehicleWheelBoneId wheelId] => Wheels.Single(x => x.WheelID == wheelId);
         public CVehicleWheel this[string boneName] => Wheels.Single(x => x.BoneName == boneName);
 
         public IEnumerator GetEnumerator()
@@ -133,6 +139,18 @@ namespace FusionLibrary
         {
             get => Wheels.TrueForAll(x => x.Burst);
             set => Wheels.ForEach(x => x.Burst = value);
+        }
+
+        public float ReduceGrip
+        {
+            get => decorator.Grip;
+            set
+            {
+                decorator.Grip = value;
+
+                Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP, vehicle1, value != 0);
+                Function.Call(Hash._SET_VEHICLE_REDUCE_TRACTION, vehicle1, value);
+            }
         }
     }
 

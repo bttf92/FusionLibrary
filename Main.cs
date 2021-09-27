@@ -31,6 +31,7 @@ namespace FusionLibrary
 
             AnimatePropsHandler.TickAll();
             AnimateProp.TickAll();
+            ParticlePlayerHandler.TickAll();
             ParticlePlayer.TickAll();
             InteractiveController.TickAll();
             TimeHandler.Tick();

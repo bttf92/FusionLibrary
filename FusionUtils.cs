@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Text.RegularExpressions;
 using static FusionLibrary.FusionEnums;
 
@@ -376,6 +377,11 @@ namespace FusionLibrary
             return new Vector3() { X = Lerp(a.X, b.X, f, min, max), Y = Lerp(a.Y, b.Y, f, min, max), Z = Lerp(a.Z, b.Z, f, min, max) };
         }
 
+        /// <summary>
+        /// Returns the unit vector of the specified <paramref name="coordinate"/>.
+        /// </summary>
+        /// <param name="coordinate">Desired <see cref="Coordinate"/> of unit vector.</param>
+        /// <returns>Unit vector.</returns>
         public static Vector3 GetUnitVector(Coordinate coordinate)
         {
             switch (coordinate)
@@ -390,9 +396,9 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// List of wheel's bones.
+        /// List of wheels bones names.
         /// </summary>
-        public static readonly string[] WheelsBonesNames = new string[8]
+        public static readonly string[] WheelsBonesNames = new string[10]
         {
             "wheel_lf",
             "wheel_rf",
@@ -401,34 +407,42 @@ namespace FusionLibrary
             "wheel_lm1",
             "wheel_rm1",
             "wheel_lm2",
-            "wheel_lm2"
+            "wheel_rm2",
+            "wheel_lm3",
+            "wheel_rm3"
         };
 
         /// <summary>
-        /// Returns the <see cref="WheelId"/> of the given wheel's <paramref name="name"/>.
+        /// Returns the <see cref="VehicleWheelBoneId"/> of the given wheel's <paramref name="name"/>.
         /// </summary>
         /// <param name="name">Wheel's name.</param>
-        /// <returns><see cref="WheelId"/> of the wheel.</returns>
-        public static WheelId ConvertWheelNameToID(string name)
+        /// <returns><see cref="VehicleWheelBoneId"/> of the wheel.</returns>
+        public static VehicleWheelBoneId ConvertWheelNameToID(string name)
         {
             switch (name)
             {
                 case "wheel_lf":
-                    return WheelId.FrontLeft;
+                    return VehicleWheelBoneId.WheelLeftFront;
                 case "wheel_lr":
-                    return WheelId.RearLeft;
+                    return VehicleWheelBoneId.WheelLeftRear;
                 case "wheel_rf":
-                    return WheelId.FrontRight;
+                    return VehicleWheelBoneId.WheelRightFront;
                 case "wheel_rr":
-                    return WheelId.RearRight;
+                    return VehicleWheelBoneId.WheelRightRear;
                 case "wheel_lm1":
-                    return WheelId.Middle1Left;
+                    return VehicleWheelBoneId.WheelLeftMiddle1;
                 case "wheel_rm1":
-                    return WheelId.Middle1Right;
+                    return VehicleWheelBoneId.WheelRightMiddle1;
                 case "wheel_lm2":
-                    return WheelId.Middle2Left;
+                    return VehicleWheelBoneId.WheelLeftMiddle2;
+                case "wheel_rm2":
+                    return VehicleWheelBoneId.WheelRightMiddle2;
+                case "wheel_lm3":
+                    return VehicleWheelBoneId.WheelLeftMiddle2;
+                case "wheel_rm3":
+                    return VehicleWheelBoneId.WheelRightMiddle2;
                 default:
-                    return WheelId.Middle2Right;
+                    return VehicleWheelBoneId.Invalid;
             }
         }
 
@@ -442,18 +456,6 @@ namespace FusionLibrary
         public static Vehicle CreateMissionTrain(int type, Vector3 position, bool direction)
         {
             return Function.Call<Vehicle>(Hash.CREATE_MISSION_TRAIN, type, position.X, position.Y, position.Z, direction);
-        }
-
-        /// <summary>
-        /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
-        /// </summary>
-        /// <param name="vehicle"><see cref="Vehicle"/> owner of the wheel.</param>
-        /// <param name="id"><see cref="WheelId"/> of the wheel.</param>
-        /// <param name="height">Height of the wheel.</param>
-        public static void LiftUpWheel(Vehicle vehicle, WheelId id, float height)
-        {
-            //_SET_HYDRAULIC_STATE
-            Function.Call((Hash)0x84EA99C62CB3EF0C, vehicle, id, height);
         }
 
         /// <summary>
@@ -576,24 +578,6 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Check if any door of the <paramref name="vehicle"/> is open.
-        /// </summary>
-        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><see langword="true"/> if there is at least a door open; otherwise <see langword="false"/>.</returns>
-        public static bool IsAnyDoorOpen(Vehicle vehicle)
-        {
-            foreach (VehicleDoor door in vehicle.Doors)
-            {
-                if (door.IsOpen)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Checks if current camera is in first person view.
         /// </summary>
         /// <returns><see langword="true"/> if FPV is enabled; otherwise <see langword="false"/>.</returns>
@@ -620,88 +604,26 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Returns the wheel positions of <paramref name="vehicle"/>.
-        /// </summary>
-        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns>List of <see cref="Vector3"/>.</returns>
-        public static List<Vector3> GetWheelsPositions(Vehicle vehicle)
-        {
-            return new List<Vector3>
-                    {
-                        vehicle.Bones["wheel_lf"].Position,
-                        vehicle.Bones["wheel_rf"].Position,
-                        vehicle.Bones["wheel_rr"].Position,
-                        vehicle.Bones["wheel_lr"].Position
-                    };
-        }
-
-        /// <summary>
-        /// Checks if <paramref name="vehicle"/> is on rail tracks.
-        /// </summary>
-        /// <param name="vehicle">Instance of <see cref="Vehicle"/>.</param>
-        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is on rail tracks; otherwise <see langword="false"/>.</returns>
-        public static bool IsVehicleOnTracks(Vehicle vehicle)
-        {
-            return GetWheelsPositions(vehicle).TrueForAll(x => IsWheelOnTracks(x, vehicle));
-        }
-
-        /// <summary>
         /// Checks if wheel at <paramref name="pos"/> of <paramref name="vehicle"/> is on rail tracks.
         /// </summary>
         /// <param name="pos"><see cref="Vector3"/> of the wheel.</param>
         /// <param name="vehicle">Instance of a <see cref="Vector3"/>.</param>
         /// <returns><see langword="true"/> wheel is on rail tracks; otherwise <see langword="false"/>.</returns>
-        public static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
+        internal static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
         {
-            // What it basicly does is drawing circle around that "pos" so we can
-            //  detect if wheel position is near tracks position
+            RaycastResult ret = World.Raycast(pos, pos.GetSingleOffset(Coordinate.Z, -1), IntersectFlags.Map, vehicle);
 
-            //                                 **    **
-            //                            **              **
-            //                                 ||    ||
-            //                        **       ||    ||       **
-            //                                 ||    ||
-            //                      **         ||    ||         **
-            //                                 ||    || 
-            //                      **         ||    ||         **
-            //                                 ||    ||  
-            //                       **        ||    ||        **
-            //                                 ||    || 
-            //                          **                  **
-            //                                 **    ** 
-
-            const float r = 0.15f;
-            for (float i = 0; i <= 360; i += 30)
-            {
-                float angleRad = i * (float)Math.PI / 180;
-
-                double x = r * Math.Cos(angleRad);
-                double y = r * Math.Sin(angleRad);
-
-                Vector3 circlePos = pos;
-                circlePos.X += (float)x;
-                circlePos.Y += (float)y;
-
-                //DrawLine(pos, circlePos, Color.Aqua);
-
-                // Then we check for every pos if it hits tracks material
-                RaycastResult surface = World.Raycast(circlePos, circlePos + new Vector3(0, 0, -10),
-                    IntersectFlags.Everything, vehicle);
-
-                // Tracks materials
-                List<MaterialHash> allowedSurfaces = new List<MaterialHash>
+            // Tracks materials
+            List<MaterialHash> allowedSurfaces = new List<MaterialHash>
                 {
                     MaterialHash.MetalSolidRoadSurface,
                     MaterialHash.MetalSolidSmall,
-                    MaterialHash.MetalSolidMedium
+                    MaterialHash.MetalSolidMedium,
+                    MaterialHash.MetalSolidLarge,
+                    MaterialHash.GravelTrainTrack
                 };
 
-                if (allowedSurfaces.Contains(surface.MaterialHash))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return allowedSurfaces.Contains(ret.MaterialHash);
         }
 
         public static DateTime RandomDate()

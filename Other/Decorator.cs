@@ -13,11 +13,17 @@ namespace FusionLibrary
         private const string dInteractableEntity = "FusionProp_InteractableEntity";
         private const string dInteractableId = "FusionProp_InteractableId";
 
+        private const string dGrip = "FusionProp_Grip";
+
+        private const string dTorque = "FusionProp_Torque";
+
         internal static void Initialize()
         {
             Register(dDoNotDelete, DecorType.Bool);
             Register(dInteractableEntity, DecorType.Bool);
             Register(dInteractableId, DecorType.Int);
+            Register(dGrip, DecorType.Float);
+            Register(dTorque, DecorType.Float);
             Lock();
         }
 
@@ -44,6 +50,18 @@ namespace FusionLibrary
         {
             get => GetInt(dInteractableId);
             set => SetInt(dInteractableId, value);
+        }
+
+        public float Grip
+        {
+            get => GetFloat(dGrip);
+            set => SetFloat(dGrip, value);
+        }
+
+        public float Torque
+        {
+            get => GetFloat(dTorque);
+            set => SetFloat(dTorque, value);
         }
 
         public bool Exists(string propertyName)

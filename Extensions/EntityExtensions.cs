@@ -263,7 +263,66 @@ namespace FusionLibrary.Extensions
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
         }
-        
+
+        /// <summary>
+        /// Returns the wheel positions of <paramref name="vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns>List of <see cref="Vector3"/>.</returns>
+        internal static List<Vector3> GetWheelsPositions(this Vehicle vehicle)
+        {
+            return FusionUtils.WheelsBonesNames.Select(x => vehicle.Bones[x].Position).ToList();
+        }
+
+        /// <summary>
+        /// Checks if <paramref name="vehicle"/> is on rail tracks.
+        /// </summary>
+        /// <param name="vehicle">Instance of <see cref="Vehicle"/>.</param>
+        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is on rail tracks; otherwise <see langword="false"/>.</returns>
+        public static bool IsOnTracks(this Vehicle vehicle)
+        {
+            return vehicle.Wheels.Select(x => x.LastContactPosition).ToList().TrueForAll(x => FusionUtils.IsWheelOnTracks(x, vehicle));
+        }
+
+        /// <summary>
+        /// Check if any door of the <paramref name="vehicle"/> is open.
+        /// </summary>
+        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
+        /// <returns><see langword="true"/> if there is at least a door open; otherwise <see langword="false"/>.</returns>
+        public static bool IsAnyDoorOpen(this Vehicle vehicle)
+        {
+            foreach (VehicleDoor door in vehicle.Doors)
+            {
+                if (door.IsOpen)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
+        /// </summary>
+        /// <param name="vehicle"><see cref="Vehicle"/> owner of the wheel.</param>
+        /// <param name="id"><see cref="VehicleWheelBoneId"/> of the wheel.</param>
+        /// <param name="height">Height of the wheel.</param>
+        public static void LiftUpWheel(this Vehicle vehicle, VehicleWheelBoneId id, float height)
+        {            
+            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicle, vehicle.Wheels[id].Index, height);
+        }
+
+        /// <summary>
+        /// Sets <paramref name="vehicleWheel"/> at given <paramref name="height"/>.
+        /// </summary>        
+        /// <param name="vehicleWheel">Instance of a <see cref="VehicleWheel"/>.</param>
+        /// <param name="height">Height of the wheel.</param>
+        public static void LiftUpWheel(this VehicleWheel vehicleWheel, float height)
+        {
+            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicleWheel.Vehicle, vehicleWheel.Index, height);
+        }
+
         /// <summary>
         /// Attraches <paramref name="vehicle"/> to <paramref name="trailer"/>.
         /// </summary>
@@ -726,28 +785,13 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
-        /// Checks if the given <paramref name="vehicle"/> is a train.
-        /// </summary>
-        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><see langword="true"/> if <paramref name="vehicle"/> is a train; otherwise <see langword="false"/></returns>
-        public static bool IsTrain(this Vehicle vehicle)
-        {
-            if (!vehicle.NotNullAndExists())
-            {
-                return false;
-            }
-
-            return Function.Call<bool>(Hash.IS_THIS_MODEL_A_TRAIN, vehicle.Model.Hash);
-        }
-
-        /// <summary>
         /// Sets <paramref name="train"/>'s cruise <paramref name="speed"/> value (m/s).
         /// </summary>
         /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
         /// <param name="speed">Cruise speed (m/s).</param>
         public static void SetTrainCruiseSpeed(this Vehicle train, float speed)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }
@@ -762,7 +806,7 @@ namespace FusionLibrary.Extensions
         /// <param name="speed">Cruise speed (MPH).</param>
         public static void SetTrainCruiseMPHSpeed(this Vehicle train, float speed)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }
@@ -777,7 +821,7 @@ namespace FusionLibrary.Extensions
         /// <param name="speed">Speed (m/s).</param>
         public static void SetTrainSpeed(this Vehicle train, float speed)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }
@@ -792,7 +836,7 @@ namespace FusionLibrary.Extensions
         /// <param name="speed">Speed (MPH).</param>
         public static void SetTrainMPHSpeed(this Vehicle train, float speed)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }
@@ -806,7 +850,7 @@ namespace FusionLibrary.Extensions
         /// <param name="train">Instance of a <see cref="Vehicle"/>.</param>
         public static void Derail(this Vehicle train)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }
@@ -822,7 +866,7 @@ namespace FusionLibrary.Extensions
         /// <returns><see cref="Vehicle"/> instance of the carriage</returns>
         public static Vehicle GetTrainCarriage(this Vehicle train, int index)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return null;
             }
@@ -837,7 +881,7 @@ namespace FusionLibrary.Extensions
         /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
         public static void SetTrainPosition(this Vehicle train, Vector3 position)
         {
-            if (!train.IsTrain())
+            if (!train.IsTrain)
             {
                 return;
             }

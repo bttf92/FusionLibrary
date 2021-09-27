@@ -61,12 +61,12 @@ namespace FusionLibrary
 
         public void ShowHelp(string entry, bool beep = true)
         {
-            Screen.ShowHelpTextThisFrame(GetLocalizedText(entry), beep);
+            Screen.ShowHelpText(GetLocalizedText(entry), -1, beep);
         }
 
         public void ShowHelp(string entry, bool beep, params object[] values)
         {
-            Screen.ShowHelpTextThisFrame(string.Format(GetLocalizedText(entry), values), beep);
+            Screen.ShowHelpText(string.Format(GetLocalizedText(entry), values), -1, beep);
         }
 
         public void ShowNotification(string entry, bool blinking = false)

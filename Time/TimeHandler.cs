@@ -29,7 +29,7 @@ namespace FusionLibrary
             {
                 realTime = value;
                 realSecond = Game.GameTime + 1000;
-                World.PauseClock(value);
+                World.IsClockPaused = value;
             }
         }
         private static bool realTime;
@@ -49,7 +49,7 @@ namespace FusionLibrary
         {
             if (realTime)
             {
-                World.PauseClock(true);
+                World.IsClockPaused = true;
 
                 if (Game.GameTime > realSecond)
                 {
@@ -72,7 +72,7 @@ namespace FusionLibrary
                 RemoveUsedVehicle.Clear();
             }
 
-            if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine() && !FusionUtils.PlayerVehicle.IsTrain() && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
+            if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine() && !FusionUtils.PlayerVehicle.IsTrain && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
             {
                 UsedVehiclesByPlayer.Add(FusionUtils.PlayerVehicle);
             }

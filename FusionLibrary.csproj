@@ -34,6 +34,28 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\FusionLibrary.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\FusionLibrary.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\FusionLibrary.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +75,7 @@
     <Compile Include="GUI\ScreenFade.cs" />
     <Compile Include="GUI\CustomText.cs" />
     <Compile Include="GUI\InstrumentalMenu.cs" />
+    <Compile Include="Memory\CVehicleWheel.cs" />
     <Compile Include="Other\Decorator.cs" />
     <Compile Include="Other\DoorHandler.cs" />
     <Compile Include="Other\TaskDrive.cs" />
@@ -60,7 +83,6 @@
     <Compile Include="Other\FusionNetwork.cs" />
     <Compile Include="Other\Player.cs" />
     <Compile Include="Other\GameScreen.cs" />
-    <Compile Include="Memory\CVehicleWheel.cs" />
     <Compile Include="Prop\AnimateProp.cs" />
     <Compile Include="Prop\AnimatePropsHandler.cs" />
     <Compile Include="Prop\Animation.cs" />
@@ -122,7 +144,7 @@
       <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="ScriptHookVDotNet3">
-      <Version>3.1.0</Version>
+      <Version>3.3.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

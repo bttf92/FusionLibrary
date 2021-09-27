@@ -7,8 +7,22 @@ using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
+    public delegate void OnParticleSequenceCompleted(bool isStop);
+
     public class ParticlePlayerHandler
     {
+        internal static List<ParticlePlayerHandler> GlobalParticlePlayerHandlerList = new List<ParticlePlayerHandler>();
+
+        internal static void TickAll()
+        {
+            for (int i = 0; i < GlobalParticlePlayerHandlerList.Count; i++)
+            {
+                GlobalParticlePlayerHandlerList[i].Tick();
+            }
+        }
+
+        public event OnParticleSequenceCompleted OnParticleSequenceCompleted;
+
         /// <summary>
         /// List of particles.
         /// </summary>
@@ -23,6 +37,57 @@ namespace FusionLibrary
         /// <see langword="true"/> if any particle is playing; otherwise <see langword="false"/>.
         /// </summary>
         public bool IsPlaying => ParticlePlayers.Any(x => x.IsPlaying);
+
+        /// <summary>
+        /// Interval between each spawn of the sequence. Default <see langword="0"/>.
+        /// </summary>
+        public int SequenceInterval { get; set; } = 0;
+
+        private int _gameTime = 0;
+
+        private bool _stopSequence;
+        private bool _fromFirst;
+
+        private readonly FrameTimeHelper frameTimeHelper = new FrameTimeHelper();
+
+        /// <summary>
+        /// Whether use <see cref="FrameTimeHelper"/> for sequence spawn.
+        /// </summary>
+        public bool UseFrameTimeHelper { get; set; }
+
+        /// <summary>
+        /// <see cref="FrameTimeHelper.FPS"/>.
+        /// </summary>
+        public float TargetFPS 
+        {
+            get => frameTimeHelper.FPS;
+            set => frameTimeHelper.FPS = value;
+        }
+
+        /// <summary>
+        /// Change of single particle spawn during a sequence. Default <see langword="1"/>.
+        /// </summary>
+        public float ChanceOfSpawn { get; set; } = 1f;
+
+        /// <summary>
+        /// How much time wait after spawn sequence.
+        /// </summary>
+        public int WaitForStop { get; set; } = 0;
+
+        /// <summary>
+        /// Current spawned particle.
+        /// </summary>
+        public int CurrentSequenceElement { get; private set; } = -1;
+
+        /// <summary>
+        /// Whether sequence is complete.
+        /// </summary>
+        public bool SequenceComplete { get; private set; }
+
+        public ParticlePlayerHandler()
+        {
+            GlobalParticlePlayerHandlerList.Add(this);
+        }
 
         /// <summary>
         /// Creates a new particle.
@@ -99,6 +164,106 @@ namespace FusionLibrary
             ParticlePlayers.Add(particlePlayer);
 
             return particlePlayer;
+        }
+
+        private bool Spawn()
+        {
+            CurrentSequenceElement++;
+
+            if (FusionUtils.Random.NextDouble() <= ChanceOfSpawn)
+            {
+                ParticlePlayers[CurrentSequenceElement].Play();
+            }
+
+            if (CurrentSequenceElement == ParticlePlayers.Count - 1)
+            {
+                _gameTime = 0;
+                SequenceComplete = true;
+                OnParticleSequenceCompleted?.Invoke(_stopSequence);
+
+                if (WaitForStop > 0)
+                {
+                    _gameTime = Game.GameTime + WaitForStop;
+                    _stopSequence = true;
+                    _fromFirst = true;
+                    SequenceComplete = false;
+                    CurrentSequenceElement = -1;
+                }
+
+                return false;
+            }
+
+            _gameTime = Game.GameTime + SequenceInterval;
+
+            return true;
+        }
+
+        private bool Remove()
+        {
+            if (_fromFirst)
+            {
+                CurrentSequenceElement++;
+            }
+            else
+            {
+                CurrentSequenceElement--;
+            }
+
+            ParticlePlayers[CurrentSequenceElement].Stop();
+
+            if (CurrentSequenceElement == (_fromFirst ? ParticlePlayers.Count - 1 : 0))
+            {
+                _gameTime = 0;
+                SequenceComplete = true;
+                OnParticleSequenceCompleted?.Invoke(true);
+
+                return false;
+            }
+
+            _gameTime = Game.GameTime + SequenceInterval;
+
+            return true;
+        }
+
+        internal void Tick()
+        {
+            //if (WaitForStop != 0)
+            //    GTA.UI.Screen.ShowSubtitle($"{IsPlaying} {WaitForStop} {_stopSequence} {SequenceComplete} {Game.GameTime} {_gameTime} {UseFrameTimeHelper} {CurrentSequenceElement}");
+
+            if (!IsPlaying || SequenceComplete)
+            {
+                return;
+            }
+
+            if (!UseFrameTimeHelper && (_gameTime == 0 || _gameTime > Game.GameTime))
+            {
+                return;
+            }
+
+            if (UseFrameTimeHelper)
+            {
+                frameTimeHelper.Tick();
+
+                for (int i = 0; i < frameTimeHelper.Count; i++)
+                {
+                    if ((_stopSequence && !Remove()) || (!_stopSequence && !Spawn()))
+                    {
+                        frameTimeHelper.Reset();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (_stopSequence)
+                {
+                    Remove();
+                }
+                else
+                {
+                    Spawn();
+                }
+            }
         }
 
         /// <summary>
@@ -194,9 +359,33 @@ namespace FusionLibrary
         /// <summary>
         /// Spawns the particles and loops them if meant to.
         /// </summary>
-        public void Play()
+        public void Play(bool stopFromFirst = true)
         {
-            ParticlePlayers.ForEach(x => x.Play());
+            _fromFirst = stopFromFirst;
+
+            if (SequenceInterval == 0 && !UseFrameTimeHelper)
+            {
+                ParticlePlayers.ForEach(x => x.Play());
+
+                if (WaitForStop > 0)
+                {
+                    CurrentSequenceElement = -1;
+
+                    _stopSequence = true;
+                    _gameTime = Game.GameTime + WaitForStop;
+                }
+            }
+            else
+            {
+                ParticlePlayers[0].Play();
+
+                CurrentSequenceElement = 0;
+
+                _stopSequence = false;
+                _gameTime = Game.GameTime + SequenceInterval;
+            }
+
+            SequenceComplete = false;
         }
 
         /// <summary>
@@ -206,6 +395,28 @@ namespace FusionLibrary
         public void Stop(bool instant = false)
         {
             ParticlePlayers.ForEach(x => x.Stop(instant));
+        }
+
+        /// <summary>
+        /// Starts the remove particle sequence.
+        /// </summary>
+        /// <param name="fromFirst">Whether start removing particles from the first one.</param>
+        public void StopInSequence(bool fromFirst = true)
+        {
+            if (fromFirst)
+            {
+                CurrentSequenceElement = 0;
+            }
+            else
+            {
+                CurrentSequenceElement = ParticlePlayers.Count - 1;
+            }
+
+            ParticlePlayers[CurrentSequenceElement]?.Stop();
+            SequenceComplete = false;
+            _stopSequence = true;
+            _fromFirst = fromFirst;
+            _gameTime = Game.GameTime + SequenceInterval;
         }
 
         /// <summary>
@@ -225,6 +436,8 @@ namespace FusionLibrary
             ParticlePlayers.ForEach(x => x.Dispose());
 
             ParticlePlayers.Clear();
+
+            GlobalParticlePlayerHandlerList.Remove(this);
         }
 
         public ParticlePlayer this[int index] => ParticlePlayers[index];

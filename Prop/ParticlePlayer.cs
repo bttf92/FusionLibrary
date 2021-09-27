@@ -351,18 +351,22 @@ namespace FusionLibrary
                 return;
             }
 
-            if (ParticleType != ParticleType.Looped)
+            switch (ParticleType)
             {
-                return;
-            }
-
-            if (instant)
-            {
-                Function.Call(Hash.REMOVE_PARTICLE_FX, Handle, 0);
-            }
-            else
-            {
-                Function.Call(Hash.STOP_PARTICLE_FX_LOOPED, Handle, 0);
+                case ParticleType.Looped:
+                    if (instant)
+                    {
+                        Function.Call(Hash.REMOVE_PARTICLE_FX, Handle, 0);
+                    }
+                    else
+                    {
+                        Function.Call(Hash.STOP_PARTICLE_FX_LOOPED, Handle, 0);
+                    }
+                    break;
+                case ParticleType.NonLooped:
+                case ParticleType.ForceLooped:
+                    Entity.RemoveParticleEffects();
+                    break;
             }
 
             IsPlaying = false;
@@ -443,7 +447,7 @@ namespace FusionLibrary
                     }
                     else if (ToEntity && !ToBone)
                     {
-                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_NON_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
+                        Handle = Function.Call<int>(Hash.START_PARTICLE_FX_LOOPED_ON_ENTITY, EffectName, Entity.Handle, Position.X, Position.Y, Position.Z, Rotation.X, Rotation.Y, Rotation.Z, Size, 0, 0, 0);
                     }
                     else
                     {
