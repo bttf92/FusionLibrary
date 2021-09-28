@@ -309,7 +309,7 @@ namespace FusionLibrary.Extensions
         /// <param name="id"><see cref="VehicleWheelBoneId"/> of the wheel.</param>
         /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(this Vehicle vehicle, VehicleWheelBoneId id, float height)
-        {            
+        {
             Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicle, vehicle.Wheels[id].Index, height);
         }
 

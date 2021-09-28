@@ -71,7 +71,11 @@ namespace FusionLibrary
         /// </summary>
         public bool UseAltControl
         {
-            get => InteractiveProps[0].UseAltControl;
+            get
+            {
+                return InteractiveProps[0].UseAltControl;
+            }
+
             set
             {
                 for (int i = 0; i < InteractiveProps.Count; i++)
@@ -297,6 +301,12 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public InteractiveProp this[int index] => InteractiveProps[index];
+        public InteractiveProp this[int index]
+        {
+            get
+            {
+                return InteractiveProps[index];
+            }
+        }
     }
 }

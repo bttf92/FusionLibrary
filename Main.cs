@@ -6,7 +6,13 @@ namespace FusionLibrary
 {
     internal class Main : Script
     {
-        public static Version Version => System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        public static Version Version
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
 
         public Main()
         {

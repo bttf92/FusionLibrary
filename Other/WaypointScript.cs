@@ -23,7 +23,10 @@ namespace FusionLibrary
 
                 return tmp;
             }
-            private set => _waypointPos = value;
+            private set
+            {
+                _waypointPos = value;
+            }
         }
 
         public WaypointScript()

@@ -15,8 +15,22 @@ namespace FusionLibrary
         public int Step { get; private set; }
         public TimeSpan StartTime { get; private set; }
         public TimeSpan EndTime { get; private set; }
-        public TimeSpan Duration => EndTime - StartTime;
-        public bool FirstExecution => _executionCount != 2;
+        public TimeSpan Duration
+        {
+            get
+            {
+                return EndTime - StartTime;
+            }
+        }
+
+        public bool FirstExecution
+        {
+            get
+            {
+                return _executionCount != 2;
+            }
+        }
+
         public bool OneShot { get; private set; } = false;
 
         public float CurrentFloat { get; private set; }

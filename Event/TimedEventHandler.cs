@@ -10,7 +10,13 @@ namespace FusionLibrary
         private readonly List<TimedEvent> _timedEvents = new List<TimedEvent>();
         private int _newStep = 0;
 
-        public int EventsCount => _timedEvents.Count;
+        public int EventsCount
+        {
+            get
+            {
+                return _timedEvents.Count;
+            }
+        }
 
         public bool ManageCamera = false;
         public bool IsCustomCameraActive { get; private set; }
@@ -68,7 +74,13 @@ namespace FusionLibrary
             return _timedEvents.TrueForAll(x => !x.FirstExecution && x.EndTime < tCurrentTime);
         }
 
-        public TimedEvent Last => _timedEvents.Last();
+        public TimedEvent Last
+        {
+            get
+            {
+                return _timedEvents.Last();
+            }
+        }
 
         public void RunEvents()
         {

@@ -60,7 +60,13 @@ namespace FusionLibrary
         /// <summary>
         /// Current value of axis <see cref="Coordinate"/> of the <see cref="AnimateProp"/>, remapped between 0 and 1.
         /// </summary>
-        public float CurrentValue => _currentValue.Remap(Min, Max, 0, 1);
+        public float CurrentValue
+        {
+            get
+            {
+                return _currentValue.Remap(Min, Max, 0, 1);
+            }
+        }
 
         /// <summary>
         /// Maximum value.
@@ -75,7 +81,13 @@ namespace FusionLibrary
         /// <summary>
         /// ID of this <see cref="InteractiveProp"/> in the <see cref="InteractiveController"/>.
         /// </summary>
-        public int ID => AnimateProp.Prop.Decorator().InteractableId;
+        public int ID
+        {
+            get
+            {
+                return AnimateProp.Prop.Decorator().InteractableId;
+            }
+        }
 
         /// <summary>
         /// Returns true if this <see cref="AnimateProp"/> is interaction mode.
@@ -90,14 +102,27 @@ namespace FusionLibrary
         private bool _altSetup;
         private bool _altInvert;
         private readonly bool _invert;
-        private Vector3 _axis => FusionUtils.GetUnitVector(Coordinate);
+        private Vector3 _axis
+        {
+            get
+            {
+                return FusionUtils.GetUnitVector(Coordinate);
+            }
+        }
+
         private float _currentValue;
         private float _toValue;
         private readonly float _sensitivity = 10;
         private bool _roundTrip;
         private bool _waitRelease;
         private readonly InteractiveController _controller;
-        private CoordinateSetting _coordinateSetting => AnimateProp[MovementType][AnimationStep.First][Coordinate];
+        private CoordinateSetting _coordinateSetting
+        {
+            get
+            {
+                return AnimateProp[MovementType][AnimationStep.First][Coordinate];
+            }
+        }
 
         internal InteractiveProp(InteractiveController controller, CustomModel model, Entity entity, string boneName, InteractionType interactionType, AnimationType movementType, Coordinate coordinateInteraction, Control control, bool invert, float min, float max, float startValue, float sensitivityMultiplier)
         {

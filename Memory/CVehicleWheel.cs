@@ -18,7 +18,13 @@ namespace FusionLibrary
         public EntityBone Bone { get; }
         public VehicleBone BoneMemory { get; }
 
-        public Vector3 Position => BoneMemory.OriginalTranslation;
+        public Vector3 Position
+        {
+            get
+            {
+                return BoneMemory.OriginalTranslation;
+            }
+        }
 
         public bool Left { get; }
         public bool Front { get; }
@@ -46,7 +52,11 @@ namespace FusionLibrary
 
         public bool Burst
         {
-            get => Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, Bone.Index, true);
+            get
+            {
+                return Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, Bone.Index, true);
+            }
+
             set
             {
                 if (value)
@@ -101,10 +111,16 @@ namespace FusionLibrary
     {
         private List<CVehicleWheel> Wheels { get; } = new List<CVehicleWheel>();
 
-        public int Count => Wheels.Count;
+        public int Count
+        {
+            get
+            {
+                return Wheels.Count;
+            }
+        }
 
-        private Vehicle vehicle1;
-        private Decorator decorator;
+        private readonly Vehicle vehicle1;
+        private readonly Decorator decorator;
 
         public int IndexOf(CVehicleWheel wheel)
         {
@@ -125,25 +141,55 @@ namespace FusionLibrary
             }
         }
 
-        public CVehicleWheel this[VehicleWheelBoneId wheelId] => Wheels.Single(x => x.WheelID == wheelId);
-        public CVehicleWheel this[string boneName] => Wheels.Single(x => x.BoneName == boneName);
+        public CVehicleWheel this[VehicleWheelBoneId wheelId]
+        {
+            get
+            {
+                return Wheels.Single(x => x.WheelID == wheelId);
+            }
+        }
+
+        public CVehicleWheel this[string boneName]
+        {
+            get
+            {
+                return Wheels.Single(x => x.BoneName == boneName);
+            }
+        }
 
         public IEnumerator GetEnumerator()
         {
             return new CVehicleWheelCollection(Wheels.ToArray());
         }
 
-        public bool AnyBurst => Wheels.Any(x => x.Burst == true);
+        public bool AnyBurst
+        {
+            get
+            {
+                return Wheels.Any(x => x.Burst == true);
+            }
+        }
 
         public bool Burst
         {
-            get => Wheels.TrueForAll(x => x.Burst);
-            set => Wheels.ForEach(x => x.Burst = value);
+            get
+            {
+                return Wheels.TrueForAll(x => x.Burst);
+            }
+
+            set
+            {
+                Wheels.ForEach(x => x.Burst = value);
+            }
         }
 
         public float ReduceGrip
         {
-            get => decorator.Grip;
+            get
+            {
+                return decorator.Grip;
+            }
+
             set
             {
                 decorator.Grip = value;
@@ -165,7 +211,13 @@ namespace FusionLibrary
             this.cVehicleWheels = cVehicleWheels;
         }
 
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current
+        {
+            get
+            {
+                return Current;
+            }
+        }
 
         public bool MoveNext()
         {

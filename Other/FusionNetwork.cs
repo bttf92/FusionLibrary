@@ -19,8 +19,10 @@ namespace FusionLibrary
 
             foreach (NetworkInterface adapter in nics)
             {
-                if (adapter.NetworkInterfaceType != NetworkInterfaceType.Ethernet) { continue; }
-                if (adapter.Supports(NetworkInterfaceComponent.IPv4) == false) { continue; }
+                if (adapter.NetworkInterfaceType != NetworkInterfaceType.Ethernet)
+                { continue; }
+                if (adapter.Supports(NetworkInterfaceComponent.IPv4) == false)
+                { continue; }
 
                 try
                 {

@@ -8,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Text.RegularExpressions;
 using static FusionLibrary.FusionEnums;
 
@@ -40,19 +39,38 @@ namespace FusionLibrary
         /// </summary>
         public static DateTime CurrentTime
         {
-            get => GetWorldTime();
-            set => SetWorldTime(value);
+            get
+            {
+                return GetWorldTime();
+            }
+
+            set
+            {
+                SetWorldTime(value);
+            }
         }
 
         /// <summary>
         /// Gets the <see cref="Ped"/> of the current <see cref="GTA.Player"/>.
         /// </summary>
-        public static Ped PlayerPed => Game.Player.Character;
+        public static Ped PlayerPed
+        {
+            get
+            {
+                return Game.Player.Character;
+            }
+        }
 
         /// <summary>
         /// Gets the current driven <see cref="Vehicle"/> by <see cref="GTA.Player"/>.
         /// </summary>
-        public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
+        public static Vehicle PlayerVehicle
+        {
+            get
+            {
+                return PlayerPed.CurrentVehicle;
+            }
+        }
 
         /// <summary>
         /// Toggles visibility state of game's GUI.
@@ -70,7 +88,11 @@ namespace FusionLibrary
         /// </summary>
         public static bool RandomTrains
         {
-            get => randomTrains;
+            get
+            {
+                return randomTrains;
+            }
+
             set
             {
                 Function.Call(Hash.SET_RANDOM_TRAINS, value);
@@ -167,7 +189,13 @@ namespace FusionLibrary
         /// <summary>
         /// Checks if pad is shaking.
         /// </summary>
-        public static bool IsPadShaking => _padShakeStop >= Game.GameTime;
+        public static bool IsPadShaking
+        {
+            get
+            {
+                return _padShakeStop >= Game.GameTime;
+            }
+        }
 
         /// <summary>
         /// Sets pad shake <paramref name="duration"/> and <paramref name="frequency"/>.
@@ -588,14 +616,28 @@ namespace FusionLibrary
 
         public static float RainLevel
         {
-            get => Function.Call<float>((Hash)0x96695E368AD855F3);
-            set => Function.Call((Hash)0x643E26EA6E024D92, value);
+            get
+            {
+                return Function.Call<float>((Hash)0x96695E368AD855F3);
+            }
+
+            set
+            {
+                Function.Call((Hash)0x643E26EA6E024D92, value);
+            }
         }
 
         public static float WindSpeed
         {
-            get => Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
-            set => Function.Call((Hash)0xEE09ECEDBABE47FC, value);
+            get
+            {
+                return Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
+            }
+
+            set
+            {
+                Function.Call((Hash)0xEE09ECEDBABE47FC, value);
+            }
         }
 
         public static float Magnitude(Vector3 vector3)

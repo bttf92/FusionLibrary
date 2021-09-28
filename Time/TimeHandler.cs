@@ -24,7 +24,11 @@ namespace FusionLibrary
 
         public static bool RealTime
         {
-            get => realTime;
+            get
+            {
+                return realTime;
+            }
+
             set
             {
                 realTime = value;

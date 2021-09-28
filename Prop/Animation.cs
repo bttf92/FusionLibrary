@@ -43,14 +43,26 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="animationType">Wanted <see cref="FusionEnums.AnimationType"/>.</param>
         /// <returns><see cref="FusionLibrary.AnimationTypeSettings"/> of <paramref name="animationType"/>.</returns>
-        public AnimationTypeSettings this[AnimationType animationType] => AnimationTypeSettings[(int)animationType];
+        public AnimationTypeSettings this[AnimationType animationType]
+        {
+            get
+            {
+                return AnimationTypeSettings[(int)animationType];
+            }
+        }
 
         /// <summary>
         /// Returns the <see cref="FusionLibrary.AnimationTypeSettings"/> of the <paramref name="animationType"/> type.
         /// </summary>
         /// <param name="animationType">Wanted <see cref="FusionEnums.AnimationType"/>.</param>
         /// <returns><see cref="FusionLibrary.AnimationTypeSettings"/> of <paramref name="animationType"/>.</returns>
-        public AnimationTypeSettings this[int animationType] => AnimationTypeSettings[animationType];
+        public AnimationTypeSettings this[int animationType]
+        {
+            get
+            {
+                return AnimationTypeSettings[animationType];
+            }
+        }
     }
 
     /// <summary>
@@ -81,14 +93,26 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="animationStep">Wanted <see cref="FusionEnums.AnimationStep"/>.</param>
         /// <returns><see cref="FusionLibrary.AnimationStepSettings"/> of the <paramref name="animationStep"/> step.</returns>
-        public AnimationStepSettings this[AnimationStep animationStep] => AnimationStepSettings[(int)animationStep];
+        public AnimationStepSettings this[AnimationStep animationStep]
+        {
+            get
+            {
+                return AnimationStepSettings[(int)animationStep];
+            }
+        }
 
         /// <summary>
         /// Returns the <see cref="FusionLibrary.AnimationStepSettings"/> of the <paramref name="animationStep"/> step.
         /// </summary>
         /// <param name="animationStep">Wanted <see cref="FusionEnums.AnimationStep"/>.</param>
         /// <returns><see cref="FusionLibrary.AnimationStepSettings"/> of the <paramref name="animationStep"/> step.</returns>
-        public AnimationStepSettings this[int animationStep] => AnimationStepSettings[animationStep];
+        public AnimationStepSettings this[int animationStep]
+        {
+            get
+            {
+                return AnimationStepSettings[animationStep];
+            }
+        }
     }
 
     /// <summary>
@@ -245,14 +269,26 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/>.</param>
         /// <returns><see cref="CoordinateSetting"/> of the <paramref name="coordinate"/>.</returns>
-        public CoordinateSetting this[Coordinate coordinate] => CoordinateSettings[(int)coordinate];
+        public CoordinateSetting this[Coordinate coordinate]
+        {
+            get
+            {
+                return CoordinateSettings[(int)coordinate];
+            }
+        }
 
         /// <summary>
         /// Returns the <see cref="CoordinateSetting"/> of the <paramref name="coordinate"/>.
         /// </summary>
         /// <param name="coordinate">Wanted <see cref="Coordinate"/>.</param>
         /// <returns><see cref="CoordinateSetting"/> of the <paramref name="coordinate"/>.</returns>
-        public CoordinateSetting this[int coordinate] => CoordinateSettings[coordinate];
+        public CoordinateSetting this[int coordinate]
+        {
+            get
+            {
+                return CoordinateSettings[coordinate];
+            }
+        }
     }
 
     [Serializable]
@@ -304,8 +340,15 @@ namespace FusionLibrary
         /// </summary>
         public float MaxMinRatio
         {
-            get => _maxMinRatio;
-            set => _maxMinRatio = value.Clamp(0, 1);
+            get
+            {
+                return _maxMinRatio;
+            }
+
+            set
+            {
+                _maxMinRatio = value.Clamp(0, 1);
+            }
         }
 
         /// <summary>
@@ -319,8 +362,15 @@ namespace FusionLibrary
         /// </summary>
         public float StepRatio
         {
-            get => _stepRatio;
-            set => _stepRatio = value.Clamp(0, 1);
+            get
+            {
+                return _stepRatio;
+            }
+
+            set
+            {
+                _stepRatio = value.Clamp(0, 1);
+            }
         }
 
         /// <summary>
@@ -341,12 +391,24 @@ namespace FusionLibrary
         /// <summary>
         /// End value of this <see cref="Coordinate"/> = <c>(IsIncreasing ? Maximum : Minimum) * MaxMinRatio</c>.
         /// </summary>
-        public float EndValue => (IsIncreasing ? Maximum : Minimum) * MaxMinRatio;
+        public float EndValue
+        {
+            get
+            {
+                return (IsIncreasing ? Maximum : Minimum) * MaxMinRatio;
+            }
+        }
 
         /// <summary>
         /// Step value of this <see cref="Coordinate"/> = <c>Step * StepRatio</c>.
         /// </summary>
-        public float StepValue => Step * StepRatio;
+        public float StepValue
+        {
+            get
+            {
+                return Step * StepRatio;
+            }
+        }
 
         internal CoordinateSetting(Coordinate coordinate, AnimationType type, AnimationStep animationStep)
         {
