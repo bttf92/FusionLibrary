@@ -304,7 +304,7 @@ namespace FusionLibrary
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
         /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
-        public void setOffset(Coordinate coordinate, float value, bool isCurrent = false)
+        public void SetOffset(Coordinate coordinate, float value, bool isCurrent = false)
         {
             if (isCurrent)
             {
@@ -321,7 +321,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="value">New value.</param>
         /// <param name="isCurrent">if <see langword="true"/> is applied to <see cref="CurrentOffset"/> otherwise to <see cref="SecondOffset"/>.</param>
-        public void setOffset(Vector3 value, bool isCurrent = false)
+        public void SetOffset(Vector3 value, bool isCurrent = false)
         {
             if (isCurrent)
             {
@@ -339,7 +339,7 @@ namespace FusionLibrary
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
         /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
-        public void setRotation(Coordinate coordinate, float value, bool isCurrent = false)
+        public void SetRotation(Coordinate coordinate, float value, bool isCurrent = false)
         {
             if (isCurrent)
             {
@@ -356,7 +356,7 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="value">New value.</param>
         /// <param name="isCurrent">If <see langword="true"/> is applied to <see cref="CurrentRotation"/> otherwise to <see cref="SecondRotation"/>.</param>
-        public void setRotation(Vector3 value, bool isCurrent = false)
+        public void SetRotation(Vector3 value, bool isCurrent = false)
         {
             if (isCurrent)
             {
@@ -463,7 +463,7 @@ namespace FusionLibrary
         /// <param name="animationStep"><see cref="FusionEnums.AnimationStep"/> of <paramref name="animationType"/>.</param>
         /// <param name="coordinate"><see cref="FusionEnums.Coordinate"/> of <paramref name="animationStep"/>.</param>
         /// <param name="maximum"><see langword="true"/> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
-        public void setCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
+        public void SetCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
         {
             CoordinateSetting coordinateSetting = Animation[animationType][animationStep][coordinate];
 
@@ -483,7 +483,7 @@ namespace FusionLibrary
         /// Plays specified <paramref name="animationStep"/> instantly.
         /// </summary>
         /// <param name="animationStep">Wanted <see cref="FusionEnums.AnimationStep"/>.</param>
-        public void setInstantAnimationStep(AnimationStep animationStep)
+        public void SetInstantAnimationStep(AnimationStep animationStep)
         {
             List<CoordinateSetting> offsetSettings = Animation[AnimationType.Offset][animationStep].CoordinateSettings.Where(x => x.IsSetted).ToList();
             List<CoordinateSetting> rotationSettings = Animation[AnimationType.Rotation][animationStep].CoordinateSettings.Where(x => x.IsSetted).ToList();
@@ -564,18 +564,18 @@ namespace FusionLibrary
             {
                 for (AnimationStep prevStep = AnimationStep.First; prevStep < animationStep; prevStep++)
                 {
-                    setInstantAnimationStep(prevStep);
+                    SetInstantAnimationStep(prevStep);
                 }
             }
 
             if (instant)
             {
-                setInstantAnimationStep(animationStep);
+                SetInstantAnimationStep(animationStep);
                 return;
             }
 
-            Animation[AnimationType.Offset][animationStep].setAllUpdate(true);
-            Animation[AnimationType.Rotation][animationStep].setAllUpdate(true);
+            Animation[AnimationType.Offset][animationStep].SetAllUpdate(true);
+            Animation[AnimationType.Rotation][animationStep].SetAllUpdate(true);
             AnimationStep = animationStep;
             IsPlaying = true;
         }
@@ -634,8 +634,8 @@ namespace FusionLibrary
                             nextStep++;
                         }
 
-                        Animation[AnimationType.Offset][nextStep].setAllUpdate(true);
-                        Animation[AnimationType.Rotation][nextStep].setAllUpdate(true);
+                        Animation[AnimationType.Offset][nextStep].SetAllUpdate(true);
+                        Animation[AnimationType.Rotation][nextStep].SetAllUpdate(true);
                         AnimationStep = nextStep;
 
                         return;
@@ -796,8 +796,8 @@ namespace FusionLibrary
         /// </summary>
         public void Stop()
         {
-            Animation[AnimationType.Offset][AnimationStep].setAllUpdate(false);
-            Animation[AnimationType.Rotation][AnimationStep].setAllUpdate(false);
+            Animation[AnimationType.Offset][AnimationStep].SetAllUpdate(false);
+            Animation[AnimationType.Rotation][AnimationStep].SetAllUpdate(false);
 
             AnimationStep = AnimationStep.Off;
             IsPlaying = false;

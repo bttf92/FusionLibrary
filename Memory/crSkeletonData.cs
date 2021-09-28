@@ -4,9 +4,9 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct crSkeletonData
+    internal unsafe struct CrSkeletonData
     {
-        [FieldOffset(0x0020)] public crSkeletonBoneData* bones;
+        [FieldOffset(0x0020)] public CrSkeletonBoneData* bones;
         [FieldOffset(0x0028)] public NativeMatrix4x4* bonesTransformationsInverted;
         [FieldOffset(0x0030)] public NativeMatrix4x4* bonesTransformations;
         [FieldOffset(0x0038)] public ushort* bonesParentIndices;
@@ -24,7 +24,7 @@
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 0x50)]
-    internal unsafe struct crSkeletonBoneData
+    internal unsafe struct CrSkeletonBoneData
     {
         [FieldOffset(0x0000)] public NativeVector4 rotation;
         [FieldOffset(0x0010)] public NativeVector3 translation;

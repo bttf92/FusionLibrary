@@ -148,7 +148,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.Update"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllUpdate(bool value)
+        public void SetAllUpdate(bool value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -163,7 +163,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.Maximum"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllMaximum(float value)
+        public void SetAllMaximum(float value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -178,7 +178,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.Minimum"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllMinimum(float value)
+        public void SetAllMinimum(float value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -193,7 +193,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.Step"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllStep(float value)
+        public void SetAllStep(float value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -208,7 +208,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.StepRatio"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllStepRatio(float value)
+        public void SetAllStepRatio(float value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -223,7 +223,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.IsIncreasing"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllIncreasing(bool value)
+        public void SetAllIncreasing(bool value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -238,7 +238,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.Stop"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllStop(bool value)
+        public void SetAllStop(bool value)
         {
             CoordinateSettings.ForEach(x =>
             {
@@ -253,7 +253,7 @@ namespace FusionLibrary
         /// Sets <see cref="CoordinateSetting.MaxMinRatio"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>
-        public void setAllMaxMinRatio(float value)
+        public void SetAllMaxMinRatio(float value)
         {
             CoordinateSettings.ForEach(x =>
             {

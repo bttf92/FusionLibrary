@@ -259,7 +259,6 @@ namespace FusionLibrary
         {
             const float ZeroTolerance = 1e-6f;
 
-            rotation = Quaternion.Identity;
             translation = Vector3.Zero;
             scale = Vector3.Zero;
 
@@ -326,19 +325,6 @@ namespace FusionLibrary
             }
 
             return x + min;
-        }
-
-        /// <summary>
-        /// (DO NOT USE) Kept for legacy reasons. Use instead <see cref="MathExtensions.Clamp{T}(T, T, T)"/>.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="max"></param>
-        /// <param name="max2"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public static float Clamp(float value, float max, float max2)
-        {
-            return (value * max2) / max;
         }
 
         /// <summary>
@@ -466,11 +452,40 @@ namespace FusionLibrary
                 case "wheel_rm2":
                     return VehicleWheelBoneId.WheelRightMiddle2;
                 case "wheel_lm3":
-                    return VehicleWheelBoneId.WheelLeftMiddle2;
+                    return VehicleWheelBoneId.WheelLeftMiddle3;
                 case "wheel_rm3":
-                    return VehicleWheelBoneId.WheelRightMiddle2;
+                    return VehicleWheelBoneId.WheelRightMiddle3;
                 default:
                     return VehicleWheelBoneId.Invalid;
+            }
+        }
+
+        public static string ConvertWheelIDToName(VehicleWheelBoneId id)
+        {
+            switch (id)
+            {
+                case VehicleWheelBoneId.WheelLeftFront:
+                    return "wheel_lf";
+                case VehicleWheelBoneId.WheelLeftRear:
+                    return "wheel_lr";
+                case VehicleWheelBoneId.WheelRightFront:
+                    return "wheel_rf";
+                case VehicleWheelBoneId.WheelRightRear:
+                    return "wheel_rr";
+                case VehicleWheelBoneId.WheelLeftMiddle1:
+                    return "wheel_lm1";
+                case VehicleWheelBoneId.WheelRightMiddle1:
+                    return "wheel_rm1";
+                case VehicleWheelBoneId.WheelLeftMiddle2:
+                    return "wheel_lm2";
+                case VehicleWheelBoneId.WheelRightMiddle2:
+                    return "wheel_rm2";
+                case VehicleWheelBoneId.WheelLeftMiddle3:
+                    return "wheel_lm3";
+                case VehicleWheelBoneId.WheelRightMiddle3:
+                    return "wheel_rm3";
+                default:
+                    return "";
             }
         }
 

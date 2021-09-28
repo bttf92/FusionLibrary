@@ -49,25 +49,25 @@ namespace FusionLibrary
             Function.Call(Hash.BEGIN_SCALEFORM_MOVIE_METHOD, Handle, function);
             foreach (object argument in arguments)
             {
-                if (argument is int)
+                if (argument is int @int)
                 {
-                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT, (int)argument);
+                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_INT, @int);
                 }
-                else if (argument is string)
+                else if (argument is string @string)
                 {
-                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING, (string)argument);
+                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING, @string);
                 }
                 else if (argument is char)
                 {
                     Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_PLAYER_NAME_STRING, argument.ToString());
                 }
-                else if (argument is float)
+                else if (argument is float single)
                 {
-                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT, (float)argument);
+                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_FLOAT, single);
                 }
-                else if (argument is bool)
+                else if (argument is bool boolean)
                 {
-                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL, (bool)argument);
+                    Function.Call(Hash.SCALEFORM_MOVIE_METHOD_ADD_PARAM_BOOL, boolean);
                 }
                 else
                 {

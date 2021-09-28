@@ -102,7 +102,7 @@ namespace FusionLibrary
         private bool _altSetup;
         private bool _altInvert;
         private readonly bool _invert;
-        private Vector3 _axis
+        private Vector3 Axis
         {
             get
             {
@@ -116,7 +116,7 @@ namespace FusionLibrary
         private bool _roundTrip;
         private bool _waitRelease;
         private readonly InteractiveController _controller;
-        private CoordinateSetting _coordinateSetting
+        private CoordinateSetting CoordinateSetting
         {
             get
             {
@@ -144,11 +144,11 @@ namespace FusionLibrary
 
             if (movementType == AnimationType.Offset)
             {
-                AnimateProp.setOffset(Coordinate, startValue);
+                AnimateProp.SetOffset(Coordinate, startValue);
             }
             else
             {
-                AnimateProp.setRotation(Coordinate, startValue);
+                AnimateProp.SetRotation(Coordinate, startValue);
             }
 
             AnimateProp.SpawnProp();
@@ -163,7 +163,7 @@ namespace FusionLibrary
         /// <param name="smoothEnd">Sets if end of movement should be smoothed.</param>
         internal void SetupAnimation(float step, float stepRatio, bool isIncreasing, bool smoothEnd)
         {
-            _coordinateSetting.Setup(true, isIncreasing, Min, Max, 1, step, stepRatio, smoothEnd);
+            CoordinateSetting.Setup(true, isIncreasing, Min, Max, 1, step, stepRatio, smoothEnd);
 
             AnimateProp.OnAnimCompleted += AnimateProp_OnAnimCompleted;
         }
@@ -208,7 +208,7 @@ namespace FusionLibrary
             {
                 if (AnimateProp.IsPlaying)
                 {
-                    _coordinateSetting.IsIncreasing = !_coordinateSetting.IsIncreasing;
+                    CoordinateSetting.IsIncreasing = !CoordinateSetting.IsIncreasing;
                     _roundTrip = false;
                 }
                 else
@@ -237,7 +237,7 @@ namespace FusionLibrary
 
             _currentValue = FusionUtils.Lerp(_currentValue, (int)_toValue, 0.1f);
 
-            AnimateProp.SecondRotation = _axis * _currentValue;
+            AnimateProp.SecondRotation = Axis * _currentValue;
         }
 
         internal void Tick()
@@ -304,7 +304,7 @@ namespace FusionLibrary
 
             _currentValue = FusionUtils.Lerp(_currentValue, (int)_toValue, 0.1f);
 
-            AnimateProp.SecondRotation = _axis * _currentValue;
+            AnimateProp.SecondRotation = Axis * _currentValue;
         }
 
         public void Stop()

@@ -177,7 +177,7 @@ namespace FusionLibrary
                 _color = value;
                 SetColor = true;
 
-                setColor();
+                ISetColor();
             }
         }
 
@@ -473,7 +473,7 @@ namespace FusionLibrary
                     break;
             }
 
-            setColor();
+            ISetColor();
 
             if (ParticleType != ParticleType.Looped)
             {
@@ -486,7 +486,7 @@ namespace FusionLibrary
             }
         }
 
-        internal void setColor()
+        internal void ISetColor()
         {
             if (!SetColor || !IsPlaying)
             {

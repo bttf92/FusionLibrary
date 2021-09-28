@@ -310,7 +310,7 @@ namespace FusionLibrary.Extensions
         /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(this Vehicle vehicle, VehicleWheelBoneId id, float height)
         {
-            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicle, vehicle.Wheels[id].Index, height);
+            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicle, vehicle.Bones[FusionUtils.ConvertWheelIDToName(id)].Index, height);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace FusionLibrary.Extensions
         /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(this VehicleWheel vehicleWheel, float height)
         {
-            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicleWheel.Vehicle, vehicleWheel.Index, height);
+            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicleWheel.Vehicle, vehicleWheel.Vehicle.Bones[FusionUtils.ConvertWheelIDToName(vehicleWheel.BoneId)].Index, height);
         }
 
         /// <summary>
@@ -948,7 +948,7 @@ namespace FusionLibrary.Extensions
             unsafe
             {
                 CVehicle* veh = (CVehicle*)vehicle.MemoryAddress;
-                crSkeletonData* skelData = veh->inst->archetype->skeleton->skeletonData;
+                CrSkeletonData* skelData = veh->inst->archetype->skeleton->skeletonData;
                 uint boneCount = skelData->bonesCount;
 
                 for (uint i = 0; i < boneCount; i++)

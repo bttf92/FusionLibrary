@@ -61,19 +61,19 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
-        public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+        public static T Clamp<T>(this T value, T min, T max) where T : IComparable<T>
         {
-            if (val.CompareTo(min) < 0)
+            if (value.CompareTo(min) < 0)
             {
                 return min;
             }
-            else if (val.CompareTo(max) > 0)
+            else if (value.CompareTo(max) > 0)
             {
                 return max;
             }
             else
             {
-                return val;
+                return value;
             }
         }
 
@@ -184,58 +184,58 @@ namespace FusionLibrary.Extensions
             return ret;
         }
 
-        /// <summary>
-        /// Gets the most free direction given a <paramref name="position"/> in the world.
-        /// </summary>
-        /// <param name="position">World position.</param>
-        /// <param name="ignoreEntity">An <see cref="Entity"/> to ignore.</param>
-        /// <returns>Most free direction.</returns>
-        public static float GetMostFreeDirection(this Vector3 position, Entity ignoreEntity)
-        {
-            float ret = 0;
-            float maxDist = -1;
-            Vector3 lastPos = Vector3.Zero;
+        ///// <summary>
+        ///// Gets the most free direction given a <paramref name="position"/> in the world.
+        ///// </summary>
+        ///// <param name="position">World position.</param>
+        ///// <param name="ignoreEntity">An <see cref="Entity"/> to ignore.</param>
+        ///// <returns>Most free direction.</returns>
+        //public static float GetMostFreeDirection(this Vector3 position, Entity ignoreEntity)
+        //{
+        //    float ret = 0;
+        //    float maxDist = -1;
+        //    Vector3 lastPos = Vector3.Zero;
 
-            const float r = 1000f;
+        //    const float r = 1000f;
 
-            position = position.GetSingleOffset(Coordinate.Z, 1);
+        //    position = position.GetSingleOffset(Coordinate.Z, 1);
 
-            for (float i = 0; i <= 360; i += 15)
-            {
-                float angleRad = i * (float)Math.PI / 180;
+        //    for (float i = 0; i <= 360; i += 15)
+        //    {
+        //        float angleRad = i * (float)Math.PI / 180;
 
-                float x = r * (float)Math.Cos(angleRad);
-                float y = r * (float)Math.Sin(angleRad);
+        //        float x = r * (float)Math.Cos(angleRad);
+        //        float y = r * (float)Math.Sin(angleRad);
 
-                Vector3 circlePos = position;
-                circlePos.X += y;
-                circlePos.Y += x;
+        //        Vector3 circlePos = position;
+        //        circlePos.X += y;
+        //        circlePos.Y += x;
 
-                // Then we check for every pos if it hits tracks material
-                RaycastResult raycast = World.Raycast(position, circlePos, IntersectFlags.Everything, ignoreEntity);
+        //        // Then we check for every pos if it hits tracks material
+        //        RaycastResult raycast = World.Raycast(position, circlePos, IntersectFlags.Everything, ignoreEntity);
 
-                if (!raycast.DidHit)
-                {
-                    ret = i;
-                    lastPos = circlePos;
-                    break;
-                }
+        //        if (!raycast.DidHit)
+        //        {
+        //            ret = i;
+        //            lastPos = circlePos;
+        //            break;
+        //        }
 
-                float curDist = raycast.HitPosition.DistanceTo2D(position);
+        //        float curDist = raycast.HitPosition.DistanceTo2D(position);
 
-                if (curDist > maxDist)
-                {
-                    maxDist = curDist;
-                    ret = i;
-                    lastPos = circlePos;
-                }
-            }
+        //        if (curDist > maxDist)
+        //        {
+        //            maxDist = curDist;
+        //            ret = i;
+        //            lastPos = circlePos;
+        //        }
+        //    }
 
-            //if (lastPos != Vector3.Zero)
-            //    CommonUtils.DrawLine(position, lastPos, Color.Aqua);
+        //    //if (lastPos != Vector3.Zero)
+        //    //    CommonUtils.DrawLine(position, lastPos, Color.Aqua);
 
-            return ret;
-        }
+        //    return ret;
+        //}
 
         /// <summary>
         /// Gets the corresponding positive angle of a positive one.
@@ -259,7 +259,7 @@ namespace FusionLibrary.Extensions
         /// <returns>Wrapped angle.</returns>
         public static float WrapAngle(this float value)
         {
-            value = value % 360;
+            value %= 360;
 
             if (value < 0)
             {

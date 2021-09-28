@@ -353,9 +353,9 @@ namespace FusionLibrary
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
         /// <param name="currentOffset">If <see langword="true"/> is applied to <see cref="AnimateProp.CurrentOffset"/> otherwise to <see cref="AnimateProp.SecondOffset"/>.</param>
-        public void setOffset(Coordinate coordinate, float value, bool currentOffset = false)
+        public void SetOffset(Coordinate coordinate, float value, bool currentOffset = false)
         {
-            Props.ForEach(x => x.setOffset(coordinate, value, currentOffset));
+            Props.ForEach(x => x.SetOffset(coordinate, value, currentOffset));
         }
 
         /// <summary>
@@ -364,9 +364,9 @@ namespace FusionLibrary
         /// <param name="coordinate">Wanted <see cref="Coordinate"/></param>
         /// <param name="value">Value of the <paramref name="coordinate"/>.</param>
         /// <param name="currentRotation">If <see langword="true"/> is applied to <see cref="AnimateProp.CurrentRotation"/> otherwise to <see cref="AnimateProp.SecondRotation"/>.</param>
-        public void setRotation(Coordinate coordinate, float value, bool currentRotation = false)
+        public void SetRotation(Coordinate coordinate, float value, bool currentRotation = false)
         {
-            Props.ForEach(x => x.setRotation(coordinate, value, currentRotation));
+            Props.ForEach(x => x.SetRotation(coordinate, value, currentRotation));
         }
 
         /// <summary>
@@ -376,18 +376,18 @@ namespace FusionLibrary
         /// <param name="animationStep"><see cref="FusionEnums.AnimationStep"/> of <paramref name="animationType"/>.</param>
         /// <param name="coordinate"><see cref="FusionEnums.Coordinate"/> of <paramref name="animationStep"/>.</param>
         /// <param name="maximum"><see langword="true"/> sets <paramref name="coordinate"/> to maximum value; otherwise minimum.</param>
-        public void setCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
+        public void SetCoordinateAt(AnimationType animationType, AnimationStep animationStep, Coordinate coordinate, bool maximum)
         {
-            Props.ForEach(x => x.setCoordinateAt(animationType, animationStep, coordinate, maximum));
+            Props.ForEach(x => x.SetCoordinateAt(animationType, animationStep, coordinate, maximum));
         }
 
         /// <summary>
         /// Plays specified <paramref name="animationStep"/> instantly.
         /// </summary>
         /// <param name="animationStep">Wanted <see cref="FusionEnums.AnimationStep"/>.</param>
-        public void setInstantAnimationStep(AnimationStep animationStep)
+        public void SetInstantAnimationStep(AnimationStep animationStep)
         {
-            Props.ForEach(x => x.setInstantAnimationStep(animationStep));
+            Props.ForEach(x => x.SetInstantAnimationStep(animationStep));
         }
 
         /// <summary>

@@ -4,7 +4,7 @@ using Screen = GTA.UI.Screen;
 
 namespace FusionLibrary
 {
-    public interface CustomTextInterface
+    public interface ICustomTextInterface
     {
         string GetLocalizedText(string entry);
 
@@ -23,7 +23,7 @@ namespace FusionLibrary
         void ShowNotification(string entry, bool blinking, params string[] values);
     }
 
-    public class CustomText : CustomTextInterface
+    public class CustomText : ICustomTextInterface
     {
         public string EntryModel { get; }
 
