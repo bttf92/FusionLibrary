@@ -5,6 +5,16 @@ namespace FusionLibrary
     public class FusionEnums
     {
         /// <summary>
+        /// Running direction of an entity.
+        /// </summary>
+        public enum RunningDirection
+        {
+            Forward,
+            Stop,
+            Backward
+        }
+
+        /// <summary>
         /// Switch types for <see cref="PlayerSwitch"/>.
         /// </summary>
         public enum SwitchTypes

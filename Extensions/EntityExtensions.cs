@@ -42,13 +42,24 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
-        /// Checks if <paramref name="entity"/> is going forward.
+        /// Gets the <paramref name="entity"/> running direction.
         /// </summary>
         /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
-        /// <returns><see langword="true"/> if <paramref name="entity"/> is going forward or is still; otherwise <see langword="false"/></returns>
-        public static bool IsGoingForward(this Entity entity)
+        /// <returns><see cref="FusionEnums.RunningDirection"/></returns>
+        public static RunningDirection RunningDirection(this Entity entity)
         {
-            return entity.RelativeVelocity().Y >= 0;
+            float vel = entity.RelativeVelocity().Y;
+
+            if (vel > 0)
+            {
+                return FusionEnums.RunningDirection.Forward;
+            }                
+            else if (vel < 0)
+            {
+                return FusionEnums.RunningDirection.Backward;
+            }
+                
+            return FusionEnums.RunningDirection.Stop;
         }
 
         /// <summary>
@@ -262,6 +273,57 @@ namespace FusionLibrary.Extensions
         public static Vehicle GetUsingVehicle(this Ped ped)
         {
             return Function.Call<Vehicle>(Hash.GET_VEHICLE_PED_IS_USING, ped);
+        }
+
+        /// <summary>
+        /// Whether the vehicle is on front of any other vehicle
+        /// </summary>
+        /// <param name="veh"></param>
+        /// <param name="vehicle"></param>
+        /// <returns><see langword="true"/> if vehicle is on front; otherwise <see langword="false"/>.</returns>
+        public static bool IsBehind(this Vehicle veh, Vehicle vehicle, float by = 5)
+        {
+            bool sameDirection = veh.SameDirection(vehicle, by);
+
+            Vector3 offset = veh.GetPositionOffset(vehicle.Position);
+
+            if (sameDirection)
+            {
+                return offset.Y > 0;
+            }
+            else
+            {
+                return offset.Y < 0;
+            }
+        }
+
+        /// <summary>
+        /// To be used mostly with trains or any vehicles on tracks. Checks if a vehicle is going torwards a second vehicle.
+        /// </summary>
+        /// <param name="veh">First vehicle.</param>
+        /// <param name="vehicle">Second vehicle.</param>
+        /// <param name="by">Delta permitted when checking direction of vehicles.</param>
+        /// <returns><see langword="true"/> if <paramref name="veh"/> is goiung torwards <paramref name="vehicle"/>; otherwise <see langword="false"/>.</returns>
+        public static bool IsGoingTorwards(this Vehicle veh, Vehicle vehicle, float by = 5)
+        {
+            if (veh.SameDirection(vehicle, by))
+            {
+                if (veh.IsBehind(vehicle))
+                {
+                    return veh.RunningDirection() == FusionEnums.RunningDirection.Forward;
+                }
+                else
+                {
+                    return veh.RunningDirection() == FusionEnums.RunningDirection.Backward;
+                }                    
+            }
+
+            if (veh.IsBehind(vehicle))
+            {
+                return veh.RunningDirection() == FusionEnums.RunningDirection.Backward;
+            }
+
+            return veh.RunningDirection() == FusionEnums.RunningDirection.Forward;
         }
 
         /// <summary>
@@ -684,12 +746,12 @@ namespace FusionLibrary.Extensions
         /// <summary>
         /// Checks if two vehicles are pointed in the same direction.
         /// </summary>
-        /// <param name="vehicle">First instance of a <see cref="Vehicle"/>.</param>
-        /// <param name="vehicle1">Second instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="veh">First instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="vehicle">Second instance of a <see cref="Vehicle"/>.</param>
         /// <returns><see langword="true"/> the direction is the same; otherwise <see langword="false"/>.</returns>
-        public static bool SameDirection(this Vehicle vehicle, Vehicle vehicle1)
+        public static bool SameDirection(this Vehicle veh, Vehicle vehicle, float by = 5)
         {
-            return vehicle.Rotation.Z.Near(vehicle1.Rotation.Z);
+            return veh.Rotation.Z.Near(vehicle.Rotation.Z, by);
         }
 
         /// <summary>

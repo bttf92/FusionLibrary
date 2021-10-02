@@ -26,7 +26,7 @@ namespace FusionLibrary
         public float SteeringAngle { get; }
         public bool Lights { get; }
         public bool Headlights { get; }
-        public bool IsGoingForward { get; }
+        public RunningDirection RunningDirection { get; }
 
         public float[] WheelsRotations { get; }
         public float[] WheelsCompressions { get; }
@@ -50,7 +50,7 @@ namespace FusionLibrary
             Lights = vehicle.AreLightsOn;
             Headlights = vehicle.AreHighBeamsOn;
 
-            IsGoingForward = vehicle.IsGoingForward();
+            RunningDirection = vehicle.RunningDirection();
 
             WheelsRotations = VehicleControl.GetWheelRotations(vehicle);
             WheelsCompressions = VehicleControl.GetWheelCompressions(vehicle);
