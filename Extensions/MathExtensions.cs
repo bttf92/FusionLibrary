@@ -79,7 +79,7 @@ namespace FusionLibrary.Extensions
 
         public static float Lerp(this float firstFloat, float secondFloat, float by)
         {
-            return firstFloat * by + secondFloat * (1 - by);
+            return FusionUtils.Lerp(firstFloat, secondFloat, by);
         }
 
         public static float Remap(this float value, float from1, float to1, float from2, float to2)
