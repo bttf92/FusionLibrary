@@ -3,7 +3,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct phBoundComposite
+    public unsafe struct phBoundComposite
     {
         [FieldOffset(0x0010)] public eBoundType type;
         [FieldOffset(0x0014)] public float boundingSphereRadius;
@@ -23,14 +23,14 @@
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 0x20)]
-    internal unsafe struct phBoundAABB
+    public unsafe struct phBoundAABB
     {
         [FieldOffset(0x0000)] public NativeVector3 min;
         [FieldOffset(0x0010)] public NativeVector3 max;
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 0x8)]
-    internal unsafe struct phBoundFlagEntry
+    public unsafe struct phBoundFlagEntry
     {
         [FieldOffset(0x0000)] public uint unk1;
         [FieldOffset(0x0004)] public uint unk2;

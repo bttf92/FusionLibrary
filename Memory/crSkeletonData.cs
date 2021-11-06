@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct CrSkeletonData
+    public unsafe struct CrSkeletonData
     {
         [FieldOffset(0x0020)] public CrSkeletonBoneData* bones;
         [FieldOffset(0x0028)] public NativeMatrix4x4* bonesTransformationsInverted;
@@ -24,7 +24,7 @@
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 0x50)]
-    internal unsafe struct CrSkeletonBoneData
+    public unsafe struct CrSkeletonBoneData
     {
         [FieldOffset(0x0000)] public NativeVector4 rotation;
         [FieldOffset(0x0010)] public NativeVector3 translation;

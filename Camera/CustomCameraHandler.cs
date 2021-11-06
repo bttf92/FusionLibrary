@@ -34,10 +34,7 @@ namespace FusionLibrary
         /// </summary>
         public int CycleInterval
         {
-            get
-            {
-                return _cycleInterval;
-            }
+            get => _cycleInterval;
 
             set
             {

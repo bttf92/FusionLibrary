@@ -53,12 +53,12 @@ namespace FusionLibrary.Extensions
             if (vel > 0)
             {
                 return FusionEnums.RunningDirection.Forward;
-            }                
+            }
             else if (vel < 0)
             {
                 return FusionEnums.RunningDirection.Backward;
             }
-                
+
             return FusionEnums.RunningDirection.Stop;
         }
 
@@ -316,7 +316,7 @@ namespace FusionLibrary.Extensions
                 else
                 {
                     return veh.RunningDirection() == FusionEnums.RunningDirection.Backward;
-                }                    
+                }
             }
 
             if (veh.IsBehind(vehicle))

@@ -72,28 +72,16 @@ namespace FusionLibrary
         /// <summary>
         /// Counts of handled <see cref="AnimateProp"/>.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return Props.Count();
-            }
-        }
+        public int Count => Props.Count();
 
         /// <summary>
         /// Gets or sets <see cref="AnimateProp.Visible"/> of <see cref="Props"/>.
         /// </summary>
         public bool Visible
         {
-            get
-            {
-                return Props[0].Visible;
-            }
+            get => Props[0].Visible;
 
-            set
-            {
-                Props.ForEach(x => x.Visible = value);
-            }
+            set => Props.ForEach(x => x.Visible = value);
         }
 
         /// <summary>
@@ -101,15 +89,9 @@ namespace FusionLibrary
         /// </summary>
         public bool UseFixedRot
         {
-            get
-            {
-                return Props.TrueForAll(x => x.UseFixedRot);
-            }
+            get => Props.TrueForAll(x => x.UseFixedRot);
 
-            set
-            {
-                Props.ForEach(x => x.UseFixedRot = value);
-            }
+            set => Props.ForEach(x => x.UseFixedRot = value);
         }
 
         /// <summary>
@@ -117,38 +99,20 @@ namespace FusionLibrary
         /// </summary>
         public bool UsePhysicalAttach
         {
-            get
-            {
-                return Props.TrueForAll(x => x.UsePhysicalAttach);
-            }
+            get => Props.TrueForAll(x => x.UsePhysicalAttach);
 
-            set
-            {
-                Props.ForEach(x => x.UsePhysicalAttach = value);
-            }
+            set => Props.ForEach(x => x.UsePhysicalAttach = value);
         }
 
         /// <summary>
         /// <see langword="true"/> if all the <see cref="Props"/> are spawned.
         /// </summary>
-        public bool IsSpawned
-        {
-            get
-            {
-                return Props.TrueForAll(x => x.IsSpawned);
-            }
-        }
+        public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);
 
         /// <summary>
         /// <see langword="true"/> if at least one of the <see cref="Props"/> is playing.
         /// </summary>
-        public bool IsPlaying
-        {
-            get
-            {
-                return Props.Any(x => x.IsPlaying);
-            }
-        }
+        public bool IsPlaying => Props.Any(x => x.IsPlaying);
 
         /// <summary>
         /// Adds <see cref="AnimateProp"/> to <see cref="Props"/>.
@@ -434,15 +398,9 @@ namespace FusionLibrary
 
         public AnimateProp this[int propIndex]
         {
-            get
-            {
-                return Props[propIndex];
-            }
+            get => Props[propIndex];
 
-            set
-            {
-                Props[propIndex] = value;
-            }
+            set => Props[propIndex] = value;
         }
     }
 }

@@ -71,10 +71,7 @@ namespace FusionLibrary
         /// </summary>
         public bool UseAltControl
         {
-            get
-            {
-                return InteractiveProps[0].UseAltControl;
-            }
+            get => InteractiveProps[0].UseAltControl;
 
             set
             {
@@ -301,12 +298,6 @@ namespace FusionLibrary
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public InteractiveProp this[int index]
-        {
-            get
-            {
-                return InteractiveProps[index];
-            }
-        }
+        public InteractiveProp this[int index] => InteractiveProps[index];
     }
 }

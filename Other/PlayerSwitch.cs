@@ -10,21 +10,9 @@ namespace FusionLibrary
 
     public class PlayerSwitch
     {
-        public static bool IsInProgress
-        {
-            get
-            {
-                return Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS);
-            }
-        }
+        public static bool IsInProgress => Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS);
 
-        public static bool IsManualInProgress
-        {
-            get
-            {
-                return IsInProgress && PlayerSwitch.IsSwitching;
-            }
-        }
+        public static bool IsManualInProgress => IsInProgress && PlayerSwitch.IsSwitching;
 
         public static bool Disable { get; set; } = false;
 

@@ -45,10 +45,7 @@ namespace FusionLibrary
         /// </summary>
         public Vector3 Position
         {
-            get
-            {
-                return _position;
-            }
+            get => _position;
 
             set
             {
@@ -69,10 +66,7 @@ namespace FusionLibrary
         /// </summary>
         public Vector3 Rotation
         {
-            get
-            {
-                return _rotation;
-            }
+            get => _rotation;
 
             set
             {
@@ -93,10 +87,7 @@ namespace FusionLibrary
         /// </summary>
         public float Size
         {
-            get
-            {
-                return _size;
-            }
+            get => _size;
 
             set
             {
@@ -167,10 +158,7 @@ namespace FusionLibrary
         /// </summary>
         public Color Color
         {
-            get
-            {
-                return _color;
-            }
+            get => _color;
 
             set
             {

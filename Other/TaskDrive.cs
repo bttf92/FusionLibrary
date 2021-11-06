@@ -13,23 +13,11 @@ namespace FusionLibrary
 
         public TaskSequence TaskSequence { get; private set; }
 
-        public int Count
-        {
-            get
-            {
-                return DriveActions.Count;
-            }
-        }
+        public int Count => DriveActions.Count;
 
         private readonly List<DriveAction> DriveActions = new List<DriveAction>();
 
-        public bool IsPlaying
-        {
-            get
-            {
-                return Ped.TaskSequenceProgress > -1;
-            }
-        }
+        public bool IsPlaying => Ped.TaskSequenceProgress > -1;
 
         public TaskDrive(Ped ped, Vehicle vehicle)
         {

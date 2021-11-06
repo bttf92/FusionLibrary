@@ -16,15 +16,9 @@ namespace FusionLibrary
 
         public static float Level
         {
-            set
-            {
-                *pPuddleLevel = value;
-            }
+            set => *pPuddleLevel = value;
 
-            get
-            {
-                return *pPuddleLevel;
-            }
+            get => *pPuddleLevel;
         }
     }
 }

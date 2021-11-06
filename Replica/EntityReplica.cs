@@ -10,15 +10,9 @@ namespace FusionLibrary
         public int ModelHash { get; set; }
         public Model Model
         {
-            get
-            {
-                return new Model(ModelHash);
-            }
+            get => new Model(ModelHash);
 
-            set
-            {
-                ModelHash = value.Hash;
-            }
+            set => ModelHash = value.Hash;
         }
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; }

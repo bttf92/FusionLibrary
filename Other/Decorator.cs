@@ -36,67 +36,37 @@ namespace FusionLibrary
 
         public bool DoNotDelete
         {
-            get
-            {
-                return Exists(dDoNotDelete) && GetBool(dDoNotDelete);
-            }
+            get => Exists(dDoNotDelete) && GetBool(dDoNotDelete);
 
-            set
-            {
-                SetBool(dDoNotDelete, value);
-            }
+            set => SetBool(dDoNotDelete, value);
         }
 
         public bool InteractableEntity
         {
-            get
-            {
-                return Exists(dInteractableEntity) && GetBool(dInteractableEntity);
-            }
+            get => Exists(dInteractableEntity) && GetBool(dInteractableEntity);
 
-            set
-            {
-                SetBool(dInteractableEntity, value);
-            }
+            set => SetBool(dInteractableEntity, value);
         }
 
         public int InteractableId
         {
-            get
-            {
-                return GetInt(dInteractableId);
-            }
+            get => GetInt(dInteractableId);
 
-            set
-            {
-                SetInt(dInteractableId, value);
-            }
+            set => SetInt(dInteractableId, value);
         }
 
         public float Grip
         {
-            get
-            {
-                return GetFloat(dGrip);
-            }
+            get => GetFloat(dGrip);
 
-            set
-            {
-                SetFloat(dGrip, value);
-            }
+            set => SetFloat(dGrip, value);
         }
 
         public float Torque
         {
-            get
-            {
-                return GetFloat(dTorque);
-            }
+            get => GetFloat(dTorque);
 
-            set
-            {
-                SetFloat(dTorque, value);
-            }
+            set => SetFloat(dTorque, value);
         }
 
         public bool Exists(string propertyName)

@@ -39,38 +39,20 @@ namespace FusionLibrary
         /// </summary>
         public static DateTime CurrentTime
         {
-            get
-            {
-                return GetWorldTime();
-            }
+            get => GetWorldTime();
 
-            set
-            {
-                SetWorldTime(value);
-            }
+            set => SetWorldTime(value);
         }
 
         /// <summary>
         /// Gets the <see cref="Ped"/> of the current <see cref="GTA.Player"/>.
         /// </summary>
-        public static Ped PlayerPed
-        {
-            get
-            {
-                return Game.Player.Character;
-            }
-        }
+        public static Ped PlayerPed => Game.Player.Character;
 
         /// <summary>
         /// Gets the current driven <see cref="Vehicle"/> by <see cref="GTA.Player"/>.
         /// </summary>
-        public static Vehicle PlayerVehicle
-        {
-            get
-            {
-                return PlayerPed.CurrentVehicle;
-            }
-        }
+        public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
 
         /// <summary>
         /// Toggles visibility state of game's GUI.
@@ -88,10 +70,7 @@ namespace FusionLibrary
         /// </summary>
         public static bool RandomTrains
         {
-            get
-            {
-                return randomTrains;
-            }
+            get => randomTrains;
 
             set
             {
@@ -189,13 +168,7 @@ namespace FusionLibrary
         /// <summary>
         /// Checks if pad is shaking.
         /// </summary>
-        public static bool IsPadShaking
-        {
-            get
-            {
-                return _padShakeStop >= Game.GameTime;
-            }
-        }
+        public static bool IsPadShaking => _padShakeStop >= Game.GameTime;
 
         /// <summary>
         /// Sets pad shake <paramref name="duration"/> and <paramref name="frequency"/>.
@@ -631,28 +604,16 @@ namespace FusionLibrary
 
         public static float RainLevel
         {
-            get
-            {
-                return Function.Call<float>((Hash)0x96695E368AD855F3);
-            }
+            get => Function.Call<float>((Hash)0x96695E368AD855F3);
 
-            set
-            {
-                Function.Call((Hash)0x643E26EA6E024D92, value);
-            }
+            set => Function.Call((Hash)0x643E26EA6E024D92, value);
         }
 
         public static float WindSpeed
         {
-            get
-            {
-                return Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
-            }
+            get => Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
 
-            set
-            {
-                Function.Call((Hash)0xEE09ECEDBABE47FC, value);
-            }
+            set => Function.Call((Hash)0xEE09ECEDBABE47FC, value);
         }
 
         public static float Magnitude(Vector3 vector3)

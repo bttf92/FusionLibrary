@@ -36,13 +36,7 @@ namespace FusionLibrary
         /// <summary>
         /// <see langword="true"/> if any particle is playing; otherwise <see langword="false"/>.
         /// </summary>
-        public bool IsPlaying
-        {
-            get
-            {
-                return ParticlePlayers.Any(x => x.IsPlaying);
-            }
-        }
+        public bool IsPlaying => ParticlePlayers.Any(x => x.IsPlaying);
 
         /// <summary>
         /// Interval between each spawn of the sequence. Default <see langword="0"/>.
@@ -66,15 +60,9 @@ namespace FusionLibrary
         /// </summary>
         public float TargetFPS
         {
-            get
-            {
-                return frameTimeHelper.FPS;
-            }
+            get => frameTimeHelper.FPS;
 
-            set
-            {
-                frameTimeHelper.FPS = value;
-            }
+            set => frameTimeHelper.FPS = value;
         }
 
         /// <summary>
@@ -284,15 +272,9 @@ namespace FusionLibrary
         /// </summary>
         public Vector3 Position
         {
-            get
-            {
-                return ParticlePlayers[0].Position;
-            }
+            get => ParticlePlayers[0].Position;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Position = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Position = value);
         }
 
         /// <summary>
@@ -300,15 +282,9 @@ namespace FusionLibrary
         /// </summary>
         public Vector3 Rotation
         {
-            get
-            {
-                return ParticlePlayers[0].Rotation;
-            }
+            get => ParticlePlayers[0].Rotation;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Rotation = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Rotation = value);
         }
 
         /// <summary>
@@ -316,15 +292,9 @@ namespace FusionLibrary
         /// </summary>
         public float Size
         {
-            get
-            {
-                return ParticlePlayers[0].Size;
-            }
+            get => ParticlePlayers[0].Size;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Size = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Size = value);
         }
 
         /// <summary>
@@ -332,15 +302,9 @@ namespace FusionLibrary
         /// </summary>
         public bool SetColor
         {
-            get
-            {
-                return ParticlePlayers[0].SetColor;
-            }
+            get => ParticlePlayers[0].SetColor;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.SetColor = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.SetColor = value);
         }
 
         /// <summary>
@@ -348,15 +312,9 @@ namespace FusionLibrary
         /// </summary>
         public Color Color
         {
-            get
-            {
-                return ParticlePlayers[0].Color;
-            }
+            get => ParticlePlayers[0].Color;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Color = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Color = value);
         }
 
         /// <summary>
@@ -364,15 +322,9 @@ namespace FusionLibrary
         /// </summary>
         public int Interval
         {
-            get
-            {
-                return ParticlePlayers[0].Interval;
-            }
+            get => ParticlePlayers[0].Interval;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Interval = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Interval = value);
         }
 
         /// <summary>
@@ -380,15 +332,9 @@ namespace FusionLibrary
         /// </summary>
         public int Duration
         {
-            get
-            {
-                return ParticlePlayers[0].Duration;
-            }
+            get => ParticlePlayers[0].Duration;
 
-            set
-            {
-                ParticlePlayers.ForEach(x => x.Duration = value);
-            }
+            set => ParticlePlayers.ForEach(x => x.Duration = value);
         }
 
         /// <summary>
@@ -502,12 +448,6 @@ namespace FusionLibrary
             GlobalParticlePlayerHandlerList.Remove(this);
         }
 
-        public ParticlePlayer this[int index]
-        {
-            get
-            {
-                return ParticlePlayers[index];
-            }
-        }
+        public ParticlePlayer this[int index] => ParticlePlayers[index];
     }
 }

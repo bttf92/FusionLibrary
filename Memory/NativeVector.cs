@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct NativeVector3
+    public unsafe struct NativeVector3
     {
         public float X;
         public float Y;
@@ -22,7 +22,7 @@
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct NativeVector4
+    public unsafe struct NativeVector4
     {
         public float X;
         public float Y;

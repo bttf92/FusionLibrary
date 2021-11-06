@@ -3,7 +3,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit, Size = 0x70)]
-    internal unsafe struct phBound
+    public unsafe struct phBound
     {
         [FieldOffset(0x0010)] public eBoundType type;
         [FieldOffset(0x0014)] public float boundingSphereRadius;
@@ -13,7 +13,7 @@
         [FieldOffset(0x0050)] public NativeVector3 center;
     }
 
-    internal enum eBoundType : byte
+    public enum eBoundType : byte
     {
         Sphere = 0,
         Capsule = 1,

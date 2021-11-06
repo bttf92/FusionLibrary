@@ -90,24 +90,12 @@ namespace FusionLibrary
         /// <summary>
         /// <see cref="Offset"/> + <see cref="SecondOffset"/>.
         /// </summary>
-        public Vector3 CurrentOffset
-        {
-            get
-            {
-                return Offset + SecondOffset;
-            }
-        }
+        public Vector3 CurrentOffset => Offset + SecondOffset;
 
         /// <summary>
         /// <see cref="Rotation"/> + <see cref="SecondRotation"/>.
         /// </summary>
-        public Vector3 CurrentRotation
-        {
-            get
-            {
-                return Rotation + SecondRotation;
-            }
-        }
+        public Vector3 CurrentRotation => Rotation + SecondRotation;
 
         /// <summary>
         /// Current playing <see cref="FusionEnums.AnimationStep"/>.
@@ -241,24 +229,12 @@ namespace FusionLibrary
         /// <summary>
         /// Gets the position relative to the <see cref="Entity"/>.
         /// </summary>
-        public Vector3 RelativePosition
-        {
-            get
-            {
-                return _toBone ? _bone.GetRelativeOffsetPosition(CurrentOffset) : CurrentOffset;
-            }
-        }
+        public Vector3 RelativePosition => _toBone ? _bone.GetRelativeOffsetPosition(CurrentOffset) : CurrentOffset;
 
         /// <summary>
         /// Gets the position in world coordinates.
         /// </summary>
-        public Vector3 Position
-        {
-            get
-            {
-                return _toBone ? _bone.GetOffsetPosition(CurrentOffset) : Entity.GetOffsetPosition(CurrentOffset);
-            }
-        }
+        public Vector3 Position => _toBone ? _bone.GetOffsetPosition(CurrentOffset) : Entity.GetOffsetPosition(CurrentOffset);
 
         /// <summary>
         /// Gets the position in world coordinates of the <see cref="Prop"/>.
@@ -832,12 +808,6 @@ namespace FusionLibrary
             return animateProp.Prop;
         }
 
-        public AnimationTypeSettings this[AnimationType animationType]
-        {
-            get
-            {
-                return Animation[animationType];
-            }
-        }
+        public AnimationTypeSettings this[AnimationType animationType] => Animation[animationType];
     }
 }

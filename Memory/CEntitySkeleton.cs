@@ -3,7 +3,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct CEntitySkeleton
+    public unsafe struct CEntitySkeleton
     {
         [FieldOffset(0x0000)] public CrSkeletonData* skeletonData;
         [FieldOffset(0x0008)] public NativeMatrix4x4* entityMatrix;

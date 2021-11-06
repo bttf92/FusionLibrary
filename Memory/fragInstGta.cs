@@ -3,7 +3,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct fragInstGta
+    public unsafe struct fragInstGta
     {
         [FieldOffset(0x0010)] public phArchetypeDamp* archetype;
 

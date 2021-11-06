@@ -13,15 +13,9 @@ namespace FusionLibrary
         public int Index { get; }
         public Matrix Matrix
         {
-            get
-            {
-                return archetype->skeleton->desiredBonesMatricesArray[Index];
-            }
+            get => archetype->skeleton->desiredBonesMatricesArray[Index];
 
-            set
-            {
-                archetype->skeleton->desiredBonesMatricesArray[Index] = value;
-            }
+            set => archetype->skeleton->desiredBonesMatricesArray[Index] = value;
         }
 
         public Vector3 OriginalTranslation { get; }

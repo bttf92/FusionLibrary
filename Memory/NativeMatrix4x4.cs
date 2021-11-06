@@ -4,7 +4,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct NativeMatrix4x4
+    public struct NativeMatrix4x4
     {
         public float M11;
         public float M12;

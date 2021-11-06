@@ -16,29 +16,11 @@ namespace FusionLibrary
 
         public string ScaleformId { get; }
 
-        public int Handle
-        {
-            get
-            {
-                return _handle;
-            }
-        }
+        public int Handle => _handle;
 
-        public bool IsValid
-        {
-            get
-            {
-                return Handle != 0;
-            }
-        }
+        public bool IsValid => Handle != 0;
 
-        public bool IsLoaded
-        {
-            get
-            {
-                return Function.Call<bool>(Hash.HAS_SCALEFORM_MOVIE_LOADED, Handle);
-            }
-        }
+        public bool IsLoaded => Function.Call<bool>(Hash.HAS_SCALEFORM_MOVIE_LOADED, Handle);
 
         public bool DrawInPauseMenu { get; set; }
 

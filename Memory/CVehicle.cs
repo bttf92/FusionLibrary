@@ -3,7 +3,7 @@
     using System.Runtime.InteropServices;
 
     [StructLayout(LayoutKind.Explicit)]
-    internal unsafe struct CVehicle
+    public unsafe struct CVehicle
     {
         [FieldOffset(0x0030)] public fragInstGta* inst;
         [FieldOffset(0x0048)] public CEntityCustomization* customization;
