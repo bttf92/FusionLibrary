@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set di attributi. Modificare i valori di questi attributi per modificare le informazioni
 // associate a un assembly.
 [assembly: AssemblyTitle("FusionLibrary")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An helper library for GTAV's ScriptHookVDotNet developers.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("MrFusion, Inc.")]
 [assembly: AssemblyProduct("FusionLibrary")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

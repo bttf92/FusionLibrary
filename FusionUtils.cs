@@ -490,15 +490,15 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Spawns a train of <paramref name="type"/> and <paramref name="direction"/> at <paramref name="position"/>.
+        /// Spawns a train using <paramref name="variation"/> config and <paramref name="direction"/> at <paramref name="position"/>.
         /// </summary>
-        /// <param name="type">Type of train.</param>
-        /// <param name="position">Position of the train.</param>
+        /// <param name="variation">ID of the train configuration. Check trains.xml for available ones.</param>
+        /// <param name="position">Position of the train. Actually it will be used the nearest track to this position.</param>
         /// <param name="direction">Direction of the train.</param>
-        /// <returns><see cref="Vehicle"/> instance of the train.</returns>
-        public static Vehicle CreateMissionTrain(int type, Vector3 position, bool direction)
+        /// <returns><see cref="Vehicle"/> instance of the head of the train.</returns>
+        public static Vehicle CreateMissionTrain(int variation, Vector3 position, bool direction)
         {
-            return Function.Call<Vehicle>(Hash.CREATE_MISSION_TRAIN, type, position.X, position.Y, position.Z, direction);
+            return Function.Call<Vehicle>(Hash.CREATE_MISSION_TRAIN, variation, position.X, position.Y, position.Z, direction);
         }
 
         /// <summary>

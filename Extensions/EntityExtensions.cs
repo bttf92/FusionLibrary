@@ -280,6 +280,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="veh"></param>
         /// <param name="vehicle"></param>
+        /// <param name="by"></param>
         /// <returns><see langword="true"/> if vehicle is on front; otherwise <see langword="false"/>.</returns>
         public static bool IsBehind(this Vehicle veh, Vehicle vehicle, float by = 5)
         {
@@ -748,6 +749,7 @@ namespace FusionLibrary.Extensions
         /// </summary>
         /// <param name="veh">First instance of a <see cref="Vehicle"/>.</param>
         /// <param name="vehicle">Second instance of a <see cref="Vehicle"/>.</param>
+        /// <param name="by"></param>
         /// <returns><see langword="true"/> the direction is the same; otherwise <see langword="false"/>.</returns>
         public static bool SameDirection(this Vehicle veh, Vehicle vehicle, float by = 5)
         {
