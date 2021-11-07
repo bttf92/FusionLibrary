@@ -34,7 +34,7 @@ namespace FusionLibrary
 
         public string GetLocalizedText(string entry)
         {
-            return Game.GetLocalizedString(string.Format(EntryModel, entry));
+            return Game.GetLocalizedString($"{EntryModel}_Text_{entry}"); 
         }
 
         public string[] GetLocalizedText(params string[] entries)
@@ -47,6 +47,11 @@ namespace FusionLibrary
             }
 
             return ret;
+        }
+
+        public string GetOnOff(bool value)
+        {
+            return value ? GetLocalizedText("On") : GetLocalizedText("Off");
         }
 
         public void ShowSubtitle(string entry, int duration = 2500)
@@ -77,6 +82,36 @@ namespace FusionLibrary
         public void ShowNotification(string entry, bool blinking, params string[] values)
         {
             Notification.Show(string.Format(GetLocalizedText(entry), values), blinking);
+        }
+
+        public string GetMenuTitle(string menuName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Title");
+        }
+
+        public string GetMenuDescription(string menuName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Description");
+        }
+
+        public string GetItemTitle(string menuName, string itemName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Item_{itemName}_Title");
+        }
+
+        public string GetItemDescription(string menuName, string itemName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Item_{itemName}_Description");
+        }
+
+        public string GetItemValueTitle(string menuName, string itemName, string valueName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Item_{itemName}_Value_{valueName}_Title");
+        }
+
+        public string GetItemValueDescription(string menuName, string itemName, string valueName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Item_{itemName}_Value_{valueName}_Description");
         }
     }
 }

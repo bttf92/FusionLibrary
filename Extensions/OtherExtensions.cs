@@ -119,5 +119,16 @@ namespace FusionLibrary.Extensions
 
             return null;
         }
+
+        /// <summary>
+        /// Checks if <paramref name="obj"/> implements interface of <typeparamref name="T"/> type.
+        /// </summary>
+        /// <typeparam name="T">Type of interface.</typeparam>
+        /// <param name="obj">Any object.</param>
+        /// <returns><see langword="true"/> if <paramref name="obj"/> impelments <typeparamref name="T"/> interface.</returns>
+        public static bool Implements<T>(this object obj)
+        {
+            return obj.GetType().GetInterfaces().Contains(typeof(T));
+        }
     }
 }

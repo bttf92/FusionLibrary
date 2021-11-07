@@ -66,7 +66,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Change of single particle spawn during a sequence. Default <see langword="1"/>.
+        /// Chance of single particle spawn during a sequence. Default <see langword="1"/>.
         /// </summary>
         public float ChanceOfSpawn { get; set; } = 1f;
 
