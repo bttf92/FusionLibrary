@@ -9,6 +9,8 @@ namespace FusionLibrary
     public class Decorator
     {
         private const string dDoNotDelete = "FusionProp_DoNotDelete";
+        private const string dDrivenByPlayer = "FusionProp_DrivenByPlayer";
+        private const string dRemoveFromUsed = "FusionProp_RemoveFromUsed";
 
         private const string dInteractableEntity = "FusionProp_InteractableEntity";
         private const string dInteractableId = "FusionProp_InteractableId";
@@ -20,6 +22,8 @@ namespace FusionLibrary
         internal static void Initialize()
         {
             Register(dDoNotDelete, DecorType.Bool);
+            Register(dDrivenByPlayer, DecorType.Bool);
+            Register(dRemoveFromUsed, DecorType.Bool);
             Register(dInteractableEntity, DecorType.Bool);
             Register(dInteractableId, DecorType.Int);
             Register(dGrip, DecorType.Float);
@@ -39,6 +43,20 @@ namespace FusionLibrary
             get => Exists(dDoNotDelete) && GetBool(dDoNotDelete);
 
             set => SetBool(dDoNotDelete, value);
+        }
+
+        public bool DrivenByPlayer
+        {
+            get => Exists(dDrivenByPlayer) && GetBool(dDrivenByPlayer);
+
+            set => SetBool(dDrivenByPlayer, value);
+        }
+
+        public bool RemoveFromUsed
+        {
+            get => Exists(dRemoveFromUsed) && GetBool(dRemoveFromUsed);
+
+            set => SetBool(dRemoveFromUsed, value);
         }
 
         public bool InteractableEntity

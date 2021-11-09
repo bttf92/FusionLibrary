@@ -3,6 +3,7 @@ using GTA;
 using GTA.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -61,7 +62,8 @@ namespace FusionLibrary
 
             UsedVehiclesByPlayer.ForEach(x =>
             {
-                if (!x.IsFunctioning() || x.IsDMC12TimeMachine())
+                // || x.IsDMC12TimeMachine()
+                if (!x.IsFunctioning() || x.Decorator().RemoveFromUsed)
                 {
                     RemoveUsedVehicle.Add(x);
                 }
@@ -73,9 +75,11 @@ namespace FusionLibrary
                 RemoveUsedVehicle.Clear();
             }
 
-            if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine() && !FusionUtils.PlayerVehicle.IsTrain && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
+            // && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine()
+            if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsTrain && !FusionUtils.PlayerVehicle.Decorator().DrivenByPlayer && !FusionUtils.PlayerVehicle.Decorator().RemoveFromUsed && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
             {
                 UsedVehiclesByPlayer.Add(FusionUtils.PlayerVehicle);
+                FusionUtils.PlayerVehicle.Decorator().DrivenByPlayer = true;
             }
 
             bool isNight = FusionUtils.CurrentTime.Hour >= 20 || (FusionUtils.CurrentTime.Hour >= 0 && FusionUtils.CurrentTime.Hour <= 5);

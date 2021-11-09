@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Native;
 using System;
+using System.Linq;
 
 namespace FusionLibrary
 {
@@ -28,6 +29,8 @@ namespace FusionLibrary
             {
                 Decorator.Initialize();
             }
+
+            FusionUtils.AllVehicles = World.GetAllVehicles().ToList();
 
             AnimatePropsHandler.TickAll();
             AnimateProp.TickAll();

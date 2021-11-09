@@ -25,7 +25,7 @@ namespace FusionLibrary
         /// </summary>
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
-        internal static Model DMC12 = new Model("dmc12");
+        //internal static Model DMC12 = new Model("dmc12");
 
         /// <summary>
         /// Serializes and deserializes an object, or an entire graph of connected objects, in binary format.
@@ -53,6 +53,8 @@ namespace FusionLibrary
         /// Gets the current driven <see cref="Vehicle"/> by <see cref="GTA.Player"/>.
         /// </summary>
         public static Vehicle PlayerVehicle => PlayerPed.CurrentVehicle;
+
+        public static List<Vehicle> AllVehicles { get; internal set; }
 
         /// <summary>
         /// Toggles visibility state of game's GUI.

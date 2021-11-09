@@ -131,7 +131,7 @@ namespace FusionLibrary.Memory
 
         public static ulong GetWheelsPtr(Vehicle vehicle)
         {
-            if (wheelsPtrOffset == 0)
+            if (wheelsPtrOffset == 0 || !vehicle.NotNullAndExists())
             {
                 return 0;
             }
@@ -142,7 +142,7 @@ namespace FusionLibrary.Memory
 
         public static sbyte GetNumWheels(Vehicle vehicle)
         {
-            if (numWheelsOffset == 0)
+            if (numWheelsOffset == 0 || !vehicle.NotNullAndExists())
             {
                 return 0;
             }
@@ -330,7 +330,7 @@ namespace FusionLibrary.Memory
 
             float[] speeds = new float[numWheels];
 
-            if (wheelAngularVelocityOffset == 0)
+            if (wheelAngularVelocityOffset == 0 || !handle.NotNullAndExists())
             {
                 return speeds;
             }
@@ -348,7 +348,7 @@ namespace FusionLibrary.Memory
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
 
-            if (wheelAngularVelocityOffset == 0)
+            if (wheelAngularVelocityOffset == 0 || !handle.NotNullAndExists())
             {
                 return;
             }
@@ -367,7 +367,7 @@ namespace FusionLibrary.Memory
 
             float[] speeds = new float[numWheels];
 
-            if (wheelAngleOffset == 0)
+            if (wheelAngleOffset == 0 || !handle.NotNullAndExists())
             {
                 return speeds;
             }
@@ -385,7 +385,7 @@ namespace FusionLibrary.Memory
             ulong wheelPtr = GetWheelsPtr(handle);
             sbyte numWheels = GetNumWheels(handle);
 
-            if (wheelAngleOffset == 0)
+            if (wheelAngleOffset == 0 || !handle.NotNullAndExists() || wheelPtr == 0 || numWheels == 0)
             {
                 return;
             }

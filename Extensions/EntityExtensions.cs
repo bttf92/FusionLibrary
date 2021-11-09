@@ -699,10 +699,10 @@ namespace FusionLibrary.Extensions
             return vehicle.IsFunctioning() && FusionUtils.PlayerVehicle == vehicle && FusionUtils.PlayerPed.SeatIndex == VehicleSeat.Driver;
         }
 
-        public static bool IsDMC12TimeMachine(this Vehicle vehicle)
-        {
-            return vehicle.Model == FusionUtils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
-        }
+        //public static bool IsDMC12TimeMachine(this Vehicle vehicle)
+        //{
+        //    return vehicle.Model == FusionUtils.DMC12 && vehicle.Mods[VehicleModType.TrimDesign].Index != 0;
+        //}
 
         /// <summary>
         /// Gets the speed in MPH of the <paramref name="vehicle"/>.
