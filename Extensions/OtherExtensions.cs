@@ -146,5 +146,33 @@ namespace FusionLibrary.Extensions
         {
             return obj.GetType().GetInterfaces().Contains(typeof(T));
         }
+
+        /// <summary>
+        /// Returns a list with <paramref name="count"/> random elements from <paramref name="sequence"/>.
+        /// </summary>
+        /// <typeparam name="T"><see cref="Type"/> of the element.</typeparam>
+        /// <param name="sequence"><see cref="IEnumerable{T}"/></param>
+        /// <param name="count">Number of random elements.</param>
+        /// <returns>List of random elements.</returns>
+        public static List<T> SelectRandomElements<T>(this IEnumerable<T> sequence, int count) where T : class
+        {
+            List<T> ret = new List<T>();
+
+            if (count >= sequence.Count())
+                return sequence.ToList();
+
+            if (count < 1)
+                return null;
+
+            while(ret.Count < count)
+            {
+                var select = sequence.SelectRandomElement();
+
+                if (!ret.Contains(select))
+                    ret.Add(select);
+            }
+
+            return ret;
+        }
     }
 }
