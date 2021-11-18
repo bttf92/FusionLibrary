@@ -19,7 +19,7 @@ namespace FusionLibrary.Other
     /// will return 0.25f.
     /// </para>
     /// </remarks>
-    internal class InterpolationDictionary : Dictionary<int, float>
+    public class InterpolationDictionary : Dictionary<int, float>
     {
         /// <summary>
         /// Creates a new instance of <see cref="InterpolationDictionary"/>.
