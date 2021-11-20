@@ -4,6 +4,8 @@ using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary.Extensions
@@ -173,6 +175,24 @@ namespace FusionLibrary.Extensions
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Returns the SHA-256 hash of <paramref name="text"/>.
+        /// </summary>
+        /// <param name="text">Text to be hashed.</param>
+        /// <returns>SHA-256 hash.</returns>
+        public static string GetSHA256Hash(this string text)
+        {
+            var crypt = new SHA256Managed();
+            var hash = new StringBuilder();
+
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(text));
+
+            foreach (byte theByte in crypto)
+                hash.Append(theByte.ToString("x2"));
+
+            return hash.ToString();
         }
     }
 }

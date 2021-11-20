@@ -31,6 +31,11 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// <seealso cref="FusionLibrary.CustomText"/> object used for localized text.
+        /// </summary>
+        public CustomText CustomText { get; protected set; }
+
+        /// <summary>
         /// Event fired up when an item is activated.
         /// </summary>
         public event OnItemActivated OnItemActivated;
@@ -241,49 +246,67 @@ namespace FusionLibrary
         public abstract void Tick();
 
         /// <summary>
-        /// Abstract method for return the localized menu title.
+        /// Rreturns the localized menu title.
         /// </summary>
         /// <returns>Localized menu title.</returns>
-        public abstract string GetMenuTitle();
+        public string GetMenuTitle()
+        {
+            return CustomText.GetMenuTitle(InternalName);
+        }
 
         /// <summary>
-        /// Abstract method for return the localized menu description.
+        /// Returns the localized menu description.
         /// </summary>
         /// <returns>Localized menu description.</returns>
-        public abstract string GetMenuDescription();
+        public string GetMenuDescription()
+        {
+            return CustomText.GetMenuDescription(InternalName);
+        }
 
         /// <summary>
-        /// Abstract method for return a localized item title.
+        /// Returns a localized item title.
         /// </summary>
         /// <param name="itemName">Item name to be localized.</param>
         /// <returns>Localized item name.</returns>
-        public abstract string GetItemTitle(string itemName);
+        public string GetItemTitle(string itemName)
+        {
+            return CustomText.GetItemTitle(InternalName, itemName);
+        }
 
         /// <summary>
-        /// Abstract method for return a localized item description.
+        /// Returns a localized item description.
         /// </summary>
         /// <param name="itemName">Item name to be description.</param>
         /// <returns>Localized item description.</returns>
-        public abstract string GetItemDescription(string itemName);
+        public string GetItemDescription(string itemName)
+        {
+            return CustomText.GetItemDescription(InternalName, itemName);
+        }
 
         /// <summary>
-        /// Abstract method for return a localized title value of a list item.
+        /// Returns a localized title value of a list item.
         /// </summary>
         /// <param name="itemName">Item name.</param>
         /// <param name="valueName">Value name.</param>
         /// <returns>Localized title value.</returns>
-        public abstract string GetItemValueTitle(string itemName, string valueName);
+        public string GetItemValueTitle(string itemName, string valueName)
+        {
+            return CustomText.GetItemValueTitle(InternalName, itemName, valueName);
+        }
 
         /// <summary>
-        /// Abstract method for return a localized description value of a list item.
+        /// Returns a localized description value of a list item.
         /// </summary>
         /// <param name="itemName">Item name.</param>
         /// <param name="valueName">Value name.</param>
         /// <returns>Localized description value.</returns>
-        public abstract string GetItemValueDescription(string itemName, string valueName);
+        public string GetItemValueDescription(string itemName, string valueName)
+        {
+            return CustomText.GetItemValueDescription(InternalName, itemName, valueName);
+        }
 
         /// <summary>
-        /// Abstract method for return a localized title value of a <see cref="NativeItem"/>.
+        /// Returns a localized title value of a <see cref="NativeItem"/>.
         /// </summary>
         /// <param name="sender">Instance of a <see cref="NativeItem"/>.</param>
         /// <param name="valueName">Value name.</param>
@@ -294,7 +317,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Abstract method for return a localized title value of a <see cref="NativeItem"/>.
+        /// Returns a localized title value of a <see cref="NativeItem"/>.
         /// </summary>
         /// <param name="itemName">Item name.</param>
         /// <param name="valueNames">List of value names.</param>
@@ -312,7 +335,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Abstract method for return a localized description value of a <see cref="NativeItem"/>.
+        /// Returns a localized description value of a <see cref="NativeItem"/>.
         /// </summary>
         /// <param name="sender">Instance of a <see cref="NativeItem"/>.</param>
         /// <param name="valueName">Value name.</param>
@@ -323,7 +346,7 @@ namespace FusionLibrary
         }
 
         /// <summary>
-        /// Abstract method for return a localized description value of a <see cref="NativeItem"/>.
+        /// Returns a localized description value of a <see cref="NativeItem"/>.
         /// </summary>
         /// <param name="itemName">Item name.</param>
         /// <param name="valueNames">List of value names.</param>
