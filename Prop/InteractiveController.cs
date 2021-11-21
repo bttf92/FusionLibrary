@@ -243,7 +243,7 @@ namespace FusionLibrary
                     return;
                 }
 
-                raycast.HitEntity.SetAlpha(AlphaLevel.L4);
+                InteractiveProps[id].Hover();
 
                 if (_hoverId != id)
                 {
