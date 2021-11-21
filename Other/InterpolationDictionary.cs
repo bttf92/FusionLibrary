@@ -15,11 +15,11 @@ namespace FusionLibrary.Other
     /// 2000 - 0.5f
     /// </para>
     /// <para>
-    /// <see cref="GetInterpolatedValue(int)"/> with 1500 passed as key argument
+    /// <see cref="GetInterpolatedValue(float)"/> with 1500 passed as key argument
     /// will return 0.25f.
     /// </para>
     /// </remarks>
-    public class InterpolationDictionary : Dictionary<int, float>
+    public class InterpolationDictionary : Dictionary<float, float>
     {
         /// <summary>
         /// Creates a new instance of <see cref="InterpolationDictionary"/>.
@@ -36,18 +36,18 @@ namespace FusionLibrary.Other
         /// <returns>
         /// Interpolated value. If dictionary is empty, returns -1f.
         /// </returns>
-        public float GetInterpolatedValue(int key)
+        public float GetInterpolatedValue(float key)
         {
             if (Count == 0)
                 return -1f;
 
-            int bottomKey = -1;
+            float bottomKey = -1;
             float bottomKeyValue = -1;
 
-            KeyValuePair<int, float> previousKeyPair = default;
-            foreach (KeyValuePair<int, float> keyValuePair in this)
+            KeyValuePair<float, float> previousKeyPair = default;
+            foreach (KeyValuePair<float, float> keyValuePair in this)
             {
-                int currentKey = keyValuePair.Key;
+                float currentKey = keyValuePair.Key;
 
                 if (key >= currentKey)
                 {
@@ -63,7 +63,7 @@ namespace FusionLibrary.Other
             {
                 return bottomKeyValue;
             }
-            int topKey = previousKeyPair.Key;
+            float topKey = previousKeyPair.Key;
             float topKeyValue = previousKeyPair.Value;
 
             // if key value is below than lowest key of dictionary
