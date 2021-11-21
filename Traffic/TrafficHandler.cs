@@ -9,8 +9,6 @@ namespace FusionLibrary
     {
         public static ModelSwaps ModelSwaps { get; } = new ModelSwaps();
 
-        public static TrafficEras TrafficEras { get; } = new TrafficEras();
-
         public static bool Enabled { get; set; }
 
         public TrafficHandler()
@@ -25,9 +23,6 @@ namespace FusionLibrary
 
             foreach (ModelSwap modelSwap in ModelSwaps)
                 modelSwap.Process();
-
-            foreach (TrafficEra trafficEras in TrafficEras)
-                trafficEras.Process();
         }
 
         public static void Save(string path = "ModelSwaps.xml")

@@ -164,7 +164,7 @@ namespace FusionLibrary.Extensions
                 return sequence.ToList();
 
             if (count < 1)
-                return null;
+                return ret;
 
             while (ret.Count < count)
             {

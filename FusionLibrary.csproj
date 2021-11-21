@@ -137,7 +137,6 @@
     <Compile Include="Time\FrameTimeHelper.cs" />
     <Compile Include="Time\TimeHandler.cs" />
     <Compile Include="Traffic\ModelSwap.cs" />
-    <Compile Include="Traffic\TrafficEra.cs" />
     <Compile Include="Traffic\TrafficHandler.cs" />
   </ItemGroup>
   <ItemGroup>

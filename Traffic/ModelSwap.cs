@@ -51,10 +51,11 @@ namespace FusionLibrary
         public bool Enabled { get; set; }
         public string Model { get; set; }
         public VehicleType VehicleType { get; set; }
+        public VehicleClass VehicleClass { get; set; }
         public bool DateBased { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public int Wait { get; set; } = -1;
+        public DateTime StartProductionDate { get; set; }
+        public DateTime EndProductionDate { get; set; }
+        public int WaitBetweenSpawns { get; set; } = -1;
         public float ChanceOfSpawn { get; set; } = 1;
         public int MaxSpawned { get; set; } = -1;
         public int MaxInWorld { get; set; } = -1;
@@ -63,8 +64,10 @@ namespace FusionLibrary
 
         private int gameTime;
         private bool modelInit;
+        private DateTime endTime;
         private CustomModel baseModel;
         private readonly List<CustomModel> swapModels = new List<CustomModel>();
+        private float endSpan;
 
         private void InitModels()
         {
@@ -73,40 +76,62 @@ namespace FusionLibrary
             foreach (string model in ModelsToSwap)
                 swapModels.Add(new CustomModel(model));
 
+            endTime = EndProductionDate.AddYears(5);
+            endSpan = (float)(endTime - EndProductionDate).TotalSeconds;
+
             modelInit = true;
         }
 
-        internal void Process(float chanceMultiplier = 1f)
+        internal void Process()
         {
             if (!modelInit)
                 InitModels();
 
-            if (!Enabled || Game.GameTime < gameTime || (DateBased && !FusionUtils.CurrentTime.Between(StartDate, EndDate)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
+            if (!Enabled || Game.GameTime < gameTime || (DateBased && !FusionUtils.CurrentTime.Between(StartProductionDate, endTime)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
                 return;
 
-            if (FusionUtils.Random.NextDouble() < (ChanceOfSpawn * chanceMultiplier))
+            float chanceMulti = 1f;
+
+            if (FusionUtils.CurrentTime.Between(EndProductionDate, endTime))
             {
-                IEnumerable<Vehicle> vehicles = FusionUtils.AllVehicles.Where(x => FusionUtils.PlayerVehicle != x && x.Type == VehicleType && x.IsAlive && (!SwapOnlyDesiredModels || swapModels.Contains(x.Model)) && !x.Decorator().DrivenByPlayer && !x.Decorator().IgnoreForSwap);
+                chanceMulti = (float)(endTime - FusionUtils.CurrentTime).TotalSeconds;
+                chanceMulti = chanceMulti.Remap(0, endSpan, 0, 1);
+                chanceMulti = Math.Max(chanceMulti, 0.02f);
+            }
+
+            float chance = (float)Math.Round(FusionUtils.Random.NextDouble(), 2);
+
+            //GTA.UI.Screen.ShowSubtitle($"{chance} {ChanceOfSpawn * chanceMulti}");
+
+            if (chance < (ChanceOfSpawn * chanceMulti))
+            {
+                IEnumerable<Vehicle> vehicles = FusionUtils.AllVehicles.Where(x => FusionUtils.PlayerVehicle != x && x.IsAlive && !x.Decorator().DrivenByPlayer && !x.Decorator().IgnoreForSwap);
 
                 int count = vehicles.Count(x => x.Model == baseModel);
 
-                if (count >= MaxSpawned)
-                    return;
+                vehicles = vehicles.Where(x => (SwapOnlyDesiredModels && swapModels.Contains(x.Model)) || (!SwapOnlyDesiredModels && x.Type == VehicleType && x.ClassType == VehicleClass));
 
-                vehicles = vehicles.Where(x => !x.Decorator().ModelSwapped).SelectRandomElements(MaxSpawned - count);
+                int tempMax = (int)Math.Round(Math.Max(MaxSpawned * chanceMulti, 1));
 
-                foreach (Vehicle vehicle in vehicles)
+                //GTA.UI.Screen.ShowSubtitle($"{chanceMulti} {count} {tempMax} {vehicles.Count()}");
+
+                if (count < tempMax)
                 {
-                    float dist = vehicle.DistanceToSquared2D(FusionUtils.PlayerPed);
+                    var vehPool = vehicles.Where(x => x.Model != baseModel && !x.Decorator().ModelSwapped).SelectRandomElements(tempMax - count);
 
-                    if (dist < 100 * 100)
-                        break;
+                    foreach (Vehicle vehicle in vehPool)
+                    {
+                        float dist = vehicle.DistanceToSquared2D(FusionUtils.PlayerPed);
 
-                    vehicle.Replace(baseModel).Decorator().ModelSwapped = true;
+                        if (dist < 50 * 50)
+                            break;
+
+                        vehicle.Replace(baseModel).Decorator().ModelSwapped = true;
+                    }
                 }
             }
 
-            gameTime = Game.GameTime + Wait;
+            gameTime = Game.GameTime + WaitBetweenSpawns;
         }
     }
 }
