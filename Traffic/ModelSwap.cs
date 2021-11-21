@@ -109,17 +109,15 @@ namespace FusionLibrary
 
                 int count = vehicles.Count(x => x.Model == baseModel);
 
-                vehicles = vehicles.Where(x => (SwapOnlyDesiredModels && swapModels.Contains(x.Model)) || (!SwapOnlyDesiredModels && x.Type == VehicleType && x.ClassType == VehicleClass));
-
                 int tempMax = (int)Math.Round(Math.Max(MaxSpawned * chanceMulti, 1));
-
-                //GTA.UI.Screen.ShowSubtitle($"{chanceMulti} {count} {tempMax} {vehicles.Count()}");
 
                 if (count < tempMax)
                 {
-                    var vehPool = vehicles.Where(x => x.Model != baseModel && !x.Decorator().ModelSwapped).SelectRandomElements(tempMax - count);
+                    vehicles = vehicles.Where(x => x.Model != baseModel && !x.Decorator().ModelSwapped && ((SwapOnlyDesiredModels && swapModels.Contains(x.Model)) || (!SwapOnlyDesiredModels && x.Type == VehicleType && x.ClassType == VehicleClass))).SelectRandomElements(tempMax - count);
 
-                    foreach (Vehicle vehicle in vehPool)
+                    //GTA.UI.Screen.ShowSubtitle($"{chanceMulti} {count} {tempMax} {vehicles.Count()}");
+
+                    foreach (Vehicle vehicle in vehicles)
                     {
                         float dist = vehicle.DistanceToSquared2D(FusionUtils.PlayerPed);
 
