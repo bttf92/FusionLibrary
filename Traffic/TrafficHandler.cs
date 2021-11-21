@@ -9,15 +9,28 @@ namespace FusionLibrary
     {
         public static ModelSwaps ModelSwaps { get; } = new ModelSwaps();
 
-        public static bool Enabled { get; set; }
+        public static bool Enabled { get; set; } = true;
+
+        private const string ModelSwapFile = "ModelSwaps.xml";
+
+        private static XmlSerializer xmlSerializer = new XmlSerializer(typeof(ModelSwaps));
 
         public TrafficHandler()
         {
             Tick += TrafficHandler_Tick;
         }
 
+        internal static void Init()
+        {
+            if (File.Exists(ModelSwapFile))
+                Load();
+        }
+
         private void TrafficHandler_Tick(object sender, EventArgs e)
         {
+            if (Game.WasCheatStringJustEntered("savetraffic"))
+                Save();
+
             if (!Enabled)
                 return;
 
@@ -25,19 +38,20 @@ namespace FusionLibrary
                 modelSwap.Process();
         }
 
-        public static void Save(string path = "ModelSwaps.xml")
+        public static void Save(string path = ModelSwapFile)
         {
-            XmlSerializer x = new XmlSerializer(typeof(ModelSwaps));
+            if (File.Exists(path))
+                File.Move(path, path.Replace(".xml", $"_{DateTime.Now:dd_MM_yyyy_HH_mm_ss}.xml"));
+
             TextWriter writer = new StreamWriter(path);
-            x.Serialize(writer, ModelSwaps);
+            xmlSerializer.Serialize(writer, ModelSwaps);
             writer.Close();
         }
 
-        public static void Load(string path = "ModelSwaps.xml")
-        {
-            XmlSerializer x = new XmlSerializer(typeof(ModelSwaps));
+        public static void Load(string path = ModelSwapFile)
+        {           
             TextReader reader = new StreamReader(path);
-            ModelSwaps modelSwaps = (ModelSwaps)x.Deserialize(reader);
+            ModelSwaps modelSwaps = (ModelSwaps)xmlSerializer.Deserialize(reader);
             reader.Close();
 
             foreach (ModelSwap modelSwap in modelSwaps)

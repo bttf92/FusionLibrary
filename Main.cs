@@ -28,6 +28,7 @@ namespace FusionLibrary
             if (FusionUtils.FirstTick)
             {
                 Decorator.Initialize();
+                TrafficHandler.Init();
             }
 
             FusionUtils.AllVehicles = World.GetAllVehicles().ToList();
