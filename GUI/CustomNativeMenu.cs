@@ -502,16 +502,16 @@ namespace FusionLibrary
             try
             {
                 ((NativeSliderItem)nativeItem).ValueChanged -= NativeSliderItem_ValueChanged;
-            } 
+            }
             catch
             {
 
             }
-            
+
             try
             {
                 ((NativeCheckboxItem)nativeItem).CheckboxChanged -= NativeCheckboxItem_CheckboxChanged;
-            } 
+            }
             catch
             {
 

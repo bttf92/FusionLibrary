@@ -166,9 +166,9 @@ namespace FusionLibrary.Extensions
             if (count < 1)
                 return null;
 
-            while(ret.Count < count)
+            while (ret.Count < count)
             {
-                var select = sequence.SelectRandomElement();
+                T select = sequence.SelectRandomElement();
 
                 if (!ret.Contains(select))
                     ret.Add(select);
@@ -184,8 +184,8 @@ namespace FusionLibrary.Extensions
         /// <returns>SHA-256 hash.</returns>
         public static string GetSHA256Hash(this string text)
         {
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
+            SHA256Managed crypt = new SHA256Managed();
+            StringBuilder hash = new StringBuilder();
 
             byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(text));
 
