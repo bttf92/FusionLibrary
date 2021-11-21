@@ -366,6 +366,40 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
+        /// Replaces the <paramref name="vehicle"/>'s <see cref="Model"/> with new <paramref name="model"/>. WARNING: It does a looped <see cref="Script.Yield"/> in order to wait the new spawned <see cref="Vehicle"/>.
+        /// </summary>
+        /// <param name="vehicle">Instace of an existing vehicle</param>
+        /// <param name="model">Target model.</param>
+        /// <returns>Instance of the new spawned <see cref="Vehicle"/>.</returns>
+        public static Vehicle Replace(this Vehicle vehicle, Model model)
+        {
+            VehicleReplica vehicleReplica = new VehicleReplica(vehicle);
+
+            vehicle.DeleteCompletely();
+
+            vehicleReplica.Model = model;
+
+            Vehicle newVehicle = vehicleReplica.Spawn(SpawnFlags.Default | SpawnFlags.NoWheels);
+
+            while (!newVehicle.NotNullAndExists())
+                Script.Yield();
+
+            newVehicle.PlaceOnGround();
+
+            //newVehicle.AddBlip();
+
+            if (newVehicle.Driver.NotNullAndExists())
+                newVehicle.Driver.Task.CruiseWithVehicle(newVehicle, 30);
+
+            foreach (Ped ped in newVehicle.Occupants)
+                ped?.MarkAsNoLongerNeeded();
+
+            newVehicle.MarkAsNoLongerNeeded();
+
+            return newVehicle;
+        }
+
+        /// <summary>
         /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
         /// </summary>
         /// <param name="vehicle"><see cref="Vehicle"/> owner of the wheel.</param>

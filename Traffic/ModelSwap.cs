@@ -55,6 +55,7 @@ namespace FusionLibrary
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Wait { get; set; } = -1;
+        public float ChanceOfSpawn { get; set; } = 1;
         public int MaxSpawned { get; set; } = -1;
         public int MaxInWorld { get; set; } = -1;
         public bool SwapOnlyDesiredModels { get; set; }
@@ -75,7 +76,7 @@ namespace FusionLibrary
             modelInit = true;
         }
 
-        public void Process()
+        internal void Process(float chanceMultiplier = 1f)
         {
             if (!modelInit)
                 InitModels();
@@ -83,45 +84,26 @@ namespace FusionLibrary
             if (!Enabled || Game.GameTime < gameTime || (DateBased && !FusionUtils.CurrentTime.Between(StartDate, EndDate)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
                 return;
 
-            IEnumerable<Vehicle> vehicles = FusionUtils.AllVehicles.Where(x => FusionUtils.PlayerVehicle != x && x.Type == VehicleType && x.IsAlive && (!SwapOnlyDesiredModels || swapModels.Contains(x.Model)) && !x.Decorator().DrivenByPlayer && !x.Decorator().IgnoreForSwap);
-
-            int count = vehicles.Count(x => x.Model == baseModel);
-
-            if (count >= MaxSpawned)
-                return;
-
-            vehicles = vehicles.Where(x => !x.Decorator().ModelSwapped).SelectRandomElements(MaxSpawned - count);
-
-            foreach (Vehicle vehicle in vehicles)
+            if (FusionUtils.Random.NextDouble() < (ChanceOfSpawn * chanceMultiplier))
             {
-                float dist = vehicle.DistanceToSquared2D(FusionUtils.PlayerPed);
+                IEnumerable<Vehicle> vehicles = FusionUtils.AllVehicles.Where(x => FusionUtils.PlayerVehicle != x && x.Type == VehicleType && x.IsAlive && (!SwapOnlyDesiredModels || swapModels.Contains(x.Model)) && !x.Decorator().DrivenByPlayer && !x.Decorator().IgnoreForSwap);
 
-                if (dist < 100 * 100)
-                    break;
+                int count = vehicles.Count(x => x.Model == baseModel);
 
-                VehicleReplica vehicleReplica = new VehicleReplica(vehicle);
+                if (count >= MaxSpawned)
+                    return;
 
-                vehicle.DeleteCompletely();
+                vehicles = vehicles.Where(x => !x.Decorator().ModelSwapped).SelectRandomElements(MaxSpawned - count);
 
-                vehicleReplica.Model = baseModel;
+                foreach (Vehicle vehicle in vehicles)
+                {
+                    float dist = vehicle.DistanceToSquared2D(FusionUtils.PlayerPed);
 
-                Vehicle newVehicle = vehicleReplica.Spawn(FusionEnums.SpawnFlags.Default | FusionEnums.SpawnFlags.NoWheels);
+                    if (dist < 100 * 100)
+                        break;
 
-                while (!newVehicle.NotNullAndExists())
-                    Script.Yield();
-
-                newVehicle.PlaceOnGround();
-                newVehicle.Decorator().ModelSwapped = true;
-
-                //newVehicle.AddBlip();
-
-                if (newVehicle.Driver.NotNullAndExists())
-                    newVehicle.Driver.Task.CruiseWithVehicle(newVehicle, 30);
-
-                foreach (Ped ped in newVehicle.Occupants)
-                    ped?.MarkAsNoLongerNeeded();
-
-                newVehicle.MarkAsNoLongerNeeded();
+                    vehicle.Replace(baseModel).Decorator().ModelSwapped = true;
+                }
             }
 
             gameTime = Game.GameTime + Wait;
