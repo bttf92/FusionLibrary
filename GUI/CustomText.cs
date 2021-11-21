@@ -30,7 +30,7 @@ namespace FusionLibrary
         /// <returns>Localized text.</returns>
         public string GetLocalizedText(string entry)
         {
-            return Game.GetLocalizedString($"{EntryModel}_Text_{entry}"); 
+            return Game.GetLocalizedString($"{EntryModel}_Text_{entry}");
         }
 
         /// <summary>

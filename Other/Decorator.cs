@@ -11,6 +11,8 @@ namespace FusionLibrary
         private const string dDoNotDelete = "FusionProp_DoNotDelete";
         private const string dDrivenByPlayer = "FusionProp_DrivenByPlayer";
         private const string dRemoveFromUsed = "FusionProp_RemoveFromUsed";
+        private const string dModelSwapped = "FusionProp_ModelSwapped";
+        private const string dIgnoreForSwap = "FusionProp_IgnoreForSwap";
 
         private const string dInteractableEntity = "FusionProp_InteractableEntity";
         private const string dInteractableId = "FusionProp_InteractableId";
@@ -24,6 +26,8 @@ namespace FusionLibrary
             Register(dDoNotDelete, DecorType.Bool);
             Register(dDrivenByPlayer, DecorType.Bool);
             Register(dRemoveFromUsed, DecorType.Bool);
+            Register(dModelSwapped, DecorType.Bool);
+            Register(dIgnoreForSwap, DecorType.Bool);
             Register(dInteractableEntity, DecorType.Bool);
             Register(dInteractableId, DecorType.Int);
             Register(dGrip, DecorType.Float);
@@ -57,6 +61,20 @@ namespace FusionLibrary
             get => Exists(dRemoveFromUsed) && GetBool(dRemoveFromUsed);
 
             set => SetBool(dRemoveFromUsed, value);
+        }
+
+        public bool ModelSwapped
+        {
+            get => Exists(dModelSwapped) && GetBool(dModelSwapped);
+
+            set => SetBool(dModelSwapped, value);
+        }
+
+        public bool IgnoreForSwap
+        {
+            get => Exists(dIgnoreForSwap) && GetBool(dIgnoreForSwap);
+
+            set => SetBool(dIgnoreForSwap, value);
         }
 
         public bool InteractableEntity
