@@ -79,6 +79,7 @@
     <Compile Include="Other\Decorator.cs" />
     <Compile Include="Other\DoorHandler.cs" />
     <Compile Include="Other\InterpolationDictionary.cs" />
+    <Compile Include="Other\VehicleModelInfo.cs" />
     <Compile Include="Other\TaskDrive.cs" />
     <Compile Include="Other\CustomModelHandler.cs" />
     <Compile Include="Other\FusionNetwork.cs" />

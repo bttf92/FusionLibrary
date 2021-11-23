@@ -57,8 +57,8 @@ namespace FusionLibrary
         public DateTime EndProductionDate { get; set; }
         public int WaitBetweenSpawns { get; set; } = -1;
         public float ChanceOfSpawn { get; set; } = 1;
-        public int MaxSpawned { get; set; } = -1;
-        public int MaxInWorld { get; set; } = -1;
+        public int MaxSpawned { get; set; } = 1;
+        public int MaxInWorld { get; set; } = 10;
         public bool SwapOnlyDesiredModels { get; set; }
         public List<string> ModelsToSwap { get; set; } = new List<string>();
 
@@ -80,6 +80,26 @@ namespace FusionLibrary
             endSpan = (float)(endTime - EndProductionDate).TotalSeconds;
 
             modelInit = true;
+        }
+
+        public ModelSwap()
+        {
+
+        }
+
+        internal ModelSwap(VehicleModelInfo vehicleModelInfo, int year)
+        {
+            Enabled = true;
+
+            Model = vehicleModelInfo.Name;
+            VehicleType = vehicleModelInfo.VehicleType;
+            VehicleClass = vehicleModelInfo.VehicleClass;
+
+            DateBased = true;
+            StartProductionDate = new DateTime(year, 1, 1, 0, 0, 0);
+            EndProductionDate = new DateTime(year + 5, 1, 1, 0, 0, 0);
+
+            MaxSpawned = FusionUtils.Random.Next(1, 3);
         }
 
         internal void Process()

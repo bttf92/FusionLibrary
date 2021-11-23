@@ -56,6 +56,10 @@ namespace FusionLibrary
 
         public static List<Vehicle> AllVehicles { get; internal set; }
 
+        public static int NumDlcVehicles { get; } = Function.Call<int>(Hash.GET_NUM_DLC_VEHICLES);
+
+        public static List<VehicleModelInfo> AllVehiclesModels { get; internal set; } = new List<VehicleModelInfo>();
+
         /// <summary>
         /// Toggles visibility state of game's GUI.
         /// </summary>
@@ -85,6 +89,11 @@ namespace FusionLibrary
 
                 randomTrains = value;
             }
+        }
+
+        public static Hash GetDlcVehicleModel(int dlcIndex)
+        {
+            return Function.Call<Hash>(Hash.GET_DLC_VEHICLE_MODEL, dlcIndex);
         }
 
         /// <summary>
