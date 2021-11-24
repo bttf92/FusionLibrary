@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
+using FusionLibrary.Extensions;
+using System.Collections.Generic;
 
 namespace FusionLibrary
 {
@@ -29,24 +31,10 @@ namespace FusionLibrary
             if (File.Exists(ModelSwapFile))
                 Load();
 
-            string pattern = @"\d{4}";
-            Regex rgx = new Regex(pattern);
-
             var models = Vehicle.GetAllModelValues();
 
             for (int i = 0; i < models.Length; i++)
-            {
-                var v = new VehicleModelInfo((Hash)models[i]);
-
-                FusionUtils.AllVehiclesModels.Add(v);
-
-                var matches = rgx.Matches(v.DisplayName);
-
-                if (matches.Count == 1)
-                    ModelSwaps.Add(new ModelSwap(v, int.Parse(matches[0].Value)));
-            }
-
-            GTA.UI.Screen.ShowSubtitle($"{ModelSwaps.Count}");
+                FusionUtils.AllVehiclesModels.Add(new VehicleModelInfo((Hash)models[i]));
         }
 
         private void TrafficHandler_Tick(object sender, EventArgs e)

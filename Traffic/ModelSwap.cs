@@ -69,10 +69,11 @@ namespace FusionLibrary
         private readonly List<CustomModel> swapModels = new List<CustomModel>();
         private float endSpan;
 
-        private void InitModels()
+        public void Init()
         {
             baseModel = new CustomModel(Model);
 
+            swapModels.Clear();
             foreach (string model in ModelsToSwap)
                 swapModels.Add(new CustomModel(model));
 
@@ -82,30 +83,30 @@ namespace FusionLibrary
             modelInit = true;
         }
 
-        public ModelSwap()
-        {
+        //public ModelSwap()
+        //{
 
-        }
+        //}
 
-        internal ModelSwap(VehicleModelInfo vehicleModelInfo, int year)
-        {
-            Enabled = true;
+        //internal ModelSwap(VehicleModelInfo vehicleModelInfo, int year)
+        //{
+        //    Enabled = false;
 
-            Model = vehicleModelInfo.Name;
-            VehicleType = vehicleModelInfo.VehicleType;
-            VehicleClass = vehicleModelInfo.VehicleClass;
+        //    Model = vehicleModelInfo.Name;
+        //    VehicleType = vehicleModelInfo.VehicleType;
+        //    VehicleClass = vehicleModelInfo.VehicleClass;
 
-            DateBased = true;
-            StartProductionDate = new DateTime(year, 1, 1, 0, 0, 0);
-            EndProductionDate = new DateTime(year + 5, 1, 1, 0, 0, 0);
+        //    DateBased = true;
+        //    StartProductionDate = new DateTime(year, 1, 1, 0, 0, 0);
+        //    EndProductionDate = new DateTime(year + 5, 1, 1, 0, 0, 0);
 
-            MaxSpawned = FusionUtils.Random.Next(1, 3);
-        }
+        //    MaxSpawned = FusionUtils.Random.Next(1, 3);
+        //}
 
         internal void Process()
         {
             if (!modelInit)
-                InitModels();
+                Init();
 
             if (!Enabled || Game.GameTime < gameTime || (DateBased && !FusionUtils.CurrentTime.Between(StartProductionDate, endTime)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
                 return;
@@ -150,6 +151,21 @@ namespace FusionLibrary
             }
 
             gameTime = Game.GameTime + WaitBetweenSpawns;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Model == ((ModelSwap)obj).Model;
+        }
+
+        public override int GetHashCode()
+        {
+            return Model.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Model;
         }
     }
 }

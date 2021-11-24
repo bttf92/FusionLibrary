@@ -369,7 +369,8 @@ namespace FusionLibrary
                     break;
                 case ParticleType.NonLooped:
                 case ParticleType.ForceLooped:
-                    Entity.RemoveParticleEffects();
+                    if (instant)
+                        Entity.RemoveParticleEffects();
                     break;
             }
 
