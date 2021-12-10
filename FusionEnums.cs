@@ -64,7 +64,8 @@ namespace FusionLibrary
             Bool,
             Int,
             Unk,
-            Time
+            Time,
+            Vector3
         }
 
         /// <summary>

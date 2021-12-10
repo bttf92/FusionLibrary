@@ -1,5 +1,6 @@
 ﻿using FusionLibrary.Memory;
 using GTA;
+using GTA.Math;
 using GTA.Native;
 using System;
 using static FusionLibrary.FusionEnums;
@@ -155,13 +156,41 @@ namespace FusionLibrary
             return Function.Call<bool>(Hash.DECOR_GET_BOOL, Entity, propertyName);
         }
 
+        public bool SetVector3(string propertyName, Vector3 value)
+        {
+            bool ret = false;
+
+            for(int i = 0; i < 3; i++)
+            {
+                ret = SetFloat(propertyName + i.ToString(), value[i]);
+
+                if (!ret)
+                    break;
+            }
+                
+            return ret;
+        }
+
+        public Vector3 GetVector3(string propertyName)
+        {
+            Vector3 ret = new Vector3();
+
+            for (int i = 0; i < 3; i++)
+                ret[i] = GetFloat(propertyName + i.ToString());
+
+            return ret;
+        }
+
         public static bool IsRegistered(string propertyName, DecorType decorType)
         {
+            if (decorType == DecorType.Vector3)
+                return Function.Call<bool>(Hash.DECOR_IS_REGISTERED_AS_TYPE, propertyName, 1);
+
             return Function.Call<bool>(Hash.DECOR_IS_REGISTERED_AS_TYPE, propertyName, (int)decorType);
         }
 
         public static bool Register(string propertyName, DecorType decorType)
-        {
+        {            
             if (IsRegistered(propertyName, decorType))
             {
                 return true;
@@ -172,7 +201,17 @@ namespace FusionLibrary
                 Unlock();
             }
 
-            Function.Call(Hash.DECOR_REGISTER, propertyName, (int)decorType);
+            if (decorType == DecorType.Vector3)
+            {
+                Register(propertyName, DecorType.Float);
+
+                for (int i = 0; i < 3; i++)
+                    Register(propertyName + i.ToString(), DecorType.Float);                    
+            } 
+            else
+            {
+                Function.Call(Hash.DECOR_REGISTER, propertyName, (int)decorType);
+            }
 
             return IsRegistered(propertyName, decorType);
         }
