@@ -222,10 +222,11 @@ namespace FusionLibrary
             }
             catch (Exception)
             {
-                Function.Call(Hash.SET_CLOCK_DATE, 1985, 9, 21);
-            }
+                Function.Call(Hash.SET_CLOCK_DATE, 1985, 8, 21);
+                Function.Call(Hash.SET_CLOCK_TIME, 8, 0, 0);
 
-            return DateTime.MinValue;
+                return new DateTime(1985, 9, 21, 8, 0, 0);
+            }            
         }
 
         /// <summary>
