@@ -63,6 +63,40 @@ namespace FusionLibrary
         private static readonly I2Dimensional defaultBanner = new ScaledTexture(PointF.Empty, new SizeF(0, 108), "commonmenu", "interaction_bgd");
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customText"></param>
+        /// <param name="internalName"></param>
+        public CustomNativeMenu(CustomText customText, string internalName) : this()
+        {
+            CustomText = customText;
+            InternalName = internalName;
+
+            Title = GetMenuTitleInScaledText();
+            Subtitle = GetMenuSubtitle();
+            Description = GetMenuDescription();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="customText"></param>
+        /// <param name="internalName"></param>
+        /// <param name="banner"></param>
+        public CustomNativeMenu(CustomText customText, string internalName, I2Dimensional banner) : this(customText, internalName)
+        {
+            Banner = banner;
+        }
+
+        /// <summary>
+        /// Instances a new menu.
+        /// </summary>
+        public CustomNativeMenu() : this("", "", "", defaultBanner)
+        {
+
+        }
+
+        /// <summary>
         /// Instances a new menu with <paramref name="title"/>.
         /// </summary>
         /// <param name="title">Title of the menu.</param>
@@ -255,12 +289,33 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Rreturns the localized menu title in scaled text.
+        /// </summary>
+        /// <returns>Localized menu title in scaled text.</returns>
+        public ScaledText GetMenuTitleInScaledText()
+        {
+            return new ScaledText(PointF.Empty, GetMenuTitle(), 1.02f, GTA.UI.Font.HouseScript)
+            {
+                Alignment = GTA.UI.Alignment.Center
+            };
+        }
+
+        /// <summary>
         /// Returns the localized menu description.
         /// </summary>
         /// <returns>Localized menu description.</returns>
         public string GetMenuDescription()
         {
             return CustomText.GetMenuDescription(InternalName);
+        }
+
+        /// <summary>
+        /// Returns the localized menu subtitle.
+        /// </summary>
+        /// <returns>Localized menu subtitle.</returns>
+        public string GetMenuSubtitle()
+        {
+            return CustomText.GetMenuSubtitle(InternalName);
         }
 
         /// <summary>
@@ -372,10 +427,26 @@ namespace FusionLibrary
         public NativeSubmenuItem NewSubmenu(NativeMenu menu, string menuName)
         {
             NativeSubmenuItem item = AddSubMenu(menu);
-            item.Title = GetItemTitle(menuName);
-            item.Description = GetItemDescription(menuName);
+            //item.Title = GetItemTitle(menuName);
+            //item.Description = GetItemDescription(menuName);
 
             item.Tag = menuName;
+
+            return item;
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="NativeSubmenuItem"/> using text localization system.
+        /// </summary>
+        /// <param name="menu">Instance of a<see cref="CustomNativeMenu"/>.</param>
+        /// <returns>Instance of the new <see cref="NativeSubmenuItem"/>.</returns>
+        public NativeSubmenuItem NewSubmenu(CustomNativeMenu menu)
+        {
+            NativeSubmenuItem item = AddSubMenu(menu);
+            //item.Title = GetItemTitle(menuName);
+            //item.Description = GetItemDescription(menuName);
+
+            item.Tag = menu.InternalName;
 
             return item;
         }

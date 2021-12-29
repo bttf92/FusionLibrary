@@ -142,6 +142,16 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Returns the localized menu subtitle.
+        /// </summary>
+        /// <param name="menuName">Name of the menu.</param>
+        /// <returns>Localized menu subtitle.</returns>
+        public string GetMenuSubtitle(string menuName)
+        {
+            return Game.GetLocalizedString($"{EntryModel}_Menu_{menuName}_Subtitle");
+        }
+
+        /// <summary>
         /// Returns the localized item tile of the specified menu.
         /// </summary>
         /// <param name="menuName">Name of the menu.</param>
