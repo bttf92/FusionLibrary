@@ -142,10 +142,15 @@ namespace FusionLibrary
         /// </summary>
         public bool KeepCollision { get; set; } = true;
 
+        /// <summary>
+        /// Can be anything.
+        /// </summary>
+        public object Tag { get; set; }
+
         private float _currentTime = 0;
         private AnimationStep _lastStep;
         private bool _playReverse;
-        private readonly bool _toBone;
+        private bool _toBone;
         private EntityBone _bone;
 
         /// <summary>
@@ -391,6 +396,7 @@ namespace FusionLibrary
         public void TransferTo(Entity entity)
         {
             Entity = entity;
+            _toBone = false;
             Attach();
         }
 
@@ -401,7 +407,9 @@ namespace FusionLibrary
         /// <param name="boneName">Bone's name.</param>
         public void TransferTo(Entity entity, string boneName)
         {
+            Entity = entity;
             _bone = entity.Bones[boneName];
+            _toBone = true;
             TransferTo(entity);
         }
 
@@ -412,7 +420,9 @@ namespace FusionLibrary
         /// <param name="entityBone"><see cref="EntityBone"/> of <paramref name="entity"/>.</param>
         public void TransferTo(Entity entity, EntityBone entityBone)
         {
+            Entity = entity;
             _bone = entityBone;
+            _toBone = true;
             TransferTo(entity);
         }
 

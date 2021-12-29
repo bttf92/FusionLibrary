@@ -85,7 +85,21 @@ namespace FusionLibrary
         /// <summary>
         /// ID for hover <see cref="InteractiveProp"/>.
         /// </summary>
-        private int _hoverId = -1;
+        public int CurrentHoverID { get; private set; } = -1;
+
+        /// <summary>
+        /// Returns the current hovered <see cref="InteractiveProp"/>.
+        /// </summary>
+        public InteractiveProp CurrentHoverProp 
+        { 
+            get
+            {
+                if (CurrentHoverID == -1)
+                    return null;
+
+                return InteractiveProps[CurrentHoverID];
+            } 
+        }
 
         /// <summary>
         /// Creates a new instance of <see cref="InteractiveController"/>.
@@ -243,14 +257,12 @@ namespace FusionLibrary
                     return;
                 }
 
-                InteractiveProps[id].Hover();
-
-                if (_hoverId != id)
+                if (CurrentHoverID != id)
                 {
                     InteractiveProps[id].HoverStart();
                 }
 
-                _hoverId = id;
+                CurrentHoverID = id;
 
                 if (Game.IsControlPressed(TriggerControl))
                 {
@@ -283,14 +295,13 @@ namespace FusionLibrary
 
         private void StopHover()
         {
-            if (_hoverId == -1)
+            if (CurrentHoverID == -1)
             {
                 return;
             }
 
-            InteractiveProps[_hoverId].HoverStop();
-            InteractiveProps[_hoverId].AnimateProp.Prop.SetAlpha(AlphaLevel.L5);
-            _hoverId = -1;
+            InteractiveProps[CurrentHoverID].HoverStop();
+            CurrentHoverID = -1;
         }
 
         /// <summary>

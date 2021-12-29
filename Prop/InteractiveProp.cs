@@ -12,19 +12,24 @@ namespace FusionLibrary
     public class InteractiveProp
     {
         /// <summary>
-        /// This event is invoked when the <see cref="InteractiveProp"/> is completed.
+        /// This event is invoked when the interaction is completed.
         /// </summary>
         public event EventHandler<InteractiveProp> OnInteractionEnded;
 
+        /// <summary>
+        /// This event is invoked when the interaction has started.
+        /// </summary>
         public event EventHandler<InteractiveProp> OnInteractionStarted;
 
-        public event EventHandler<InteractiveProp> OnInteraction;
-
+        /// <summary>
+        /// This event is invoked when user is hovering over the prop.
+        /// </summary>
         public event EventHandler<InteractiveProp> OnHoverStarted;
 
+        /// <summary>
+        /// This event is invoked when user stops hovering over the prop.
+        /// </summary>
         public event EventHandler<InteractiveProp> OnHoverEnded;
-
-        public event EventHandler<InteractiveProp> OnHover;
 
         /// <summary>
         /// Interactive <see cref="FusionLibrary.AnimateProp"/>.
@@ -62,9 +67,13 @@ namespace FusionLibrary
         public Control AltControl { get; set; }
 
         /// <summary>
-        /// Could be anything.
+        /// Can be anything.
         /// </summary>
-        public object Tag { get; set; }
+        public object Tag
+        {
+            get => AnimateProp.Tag;
+            set => AnimateProp.Tag = value;
+        }
 
         /// <summary>
         /// Current value of axis <see cref="Coordinate"/> of the <see cref="AnimateProp"/>, remapped between 0 and 1.
@@ -259,8 +268,6 @@ namespace FusionLibrary
         {
             if (IsPlaying && !Blocked)
             {
-                OnInteraction?.Invoke(_controller, this);
-
                 if (_controller.LockCamera)
                 {
                     Game.DisableControlThisFrame(Control.LookUpDown);
@@ -303,10 +310,6 @@ namespace FusionLibrary
         internal void Dispose()
         {
             AnimateProp?.Dispose();
-        }
-        internal void Hover()
-        {
-            OnHover?.Invoke(_controller, this);
         }
 
         internal void HoverStart()

@@ -1,7 +1,7 @@
 ﻿using FusionLibrary.Extensions;
 using System.Collections.Generic;
 
-namespace FusionLibrary.Other
+namespace FusionLibrary
 {
     /// <summary>
     /// Dictionary for usages like torque table with ability to get interpolated value by key.
