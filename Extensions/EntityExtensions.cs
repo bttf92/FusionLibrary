@@ -398,7 +398,7 @@ namespace FusionLibrary.Extensions
 
             return newVehicle;
         }
-
+        
         /// <summary>
         /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
         /// </summary>

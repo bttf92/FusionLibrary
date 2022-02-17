@@ -27,6 +27,22 @@ namespace FusionLibrary
 
             if (FusionUtils.FirstTick)
             {
+                // Bypass models check
+                IntPtr addr = Game.FindPattern("48 85 C0 0F 84 ? ? ? ? 8B 48 50");
+
+                if (addr != IntPtr.Zero)
+                {
+                    for (int i = 0; i < 24; i++)
+                    {
+                        unsafe
+                        {
+                            byte* val = (byte*)(addr + i);
+
+                            *val = 0x90;
+                        }
+                    }
+                }
+
                 Decorator.Initialize();
                 TrafficHandler.Init();
             }

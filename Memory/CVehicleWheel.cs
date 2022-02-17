@@ -46,7 +46,7 @@ namespace FusionLibrary
 
         public bool Burst
         {
-            get => Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, Vehicle, Bone.Index, true);
+            get => Vehicle.Wheels[WheelID].IsBursted;
 
             set
             {
