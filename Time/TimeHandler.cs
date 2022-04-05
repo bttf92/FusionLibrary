@@ -21,6 +21,8 @@ namespace FusionLibrary
         public static bool IsNight { get; internal set; }
 
         public static bool TrafficVolumeYearBased { get; set; }
+        
+        public static bool MissionTraffic = false;
 
         public static bool RealTime
         {
@@ -89,7 +91,7 @@ namespace FusionLibrary
                 OnDayNightChange?.Invoke();
             }
 
-            if (!TrafficVolumeYearBased)
+            if (!TrafficVolumeYearBased || MissionTraffic)
             {
                 return;
             }
