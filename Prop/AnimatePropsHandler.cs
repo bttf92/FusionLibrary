@@ -1,5 +1,6 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.FusionEnums;
@@ -8,7 +9,7 @@ namespace FusionLibrary
 {
     public delegate void OnSequenceCompleted(bool isLooped);
 
-    public class AnimatePropsHandler
+    public class AnimatePropsHandler : IDisposable
     {
         internal static List<AnimatePropsHandler> GlobalAnimatePropsHandlerList = new List<AnimatePropsHandler>();
 
@@ -394,6 +395,11 @@ namespace FusionLibrary
             Props.Clear();
 
             GlobalAnimatePropsHandlerList.Remove(this);
+        }
+
+        public void Dispose()
+        {
+            Dispose(false);
         }
 
         public AnimateProp this[int propIndex]

@@ -125,6 +125,35 @@ namespace FusionLibrary
 
             return model;
         }
+                
+        public static bool IsTrafficAlive
+        {
+            get => _trafficAlive;
+            set => SetTrafficAlive(value);
+        }
+
+        private static bool _trafficAlive;
+
+        private static void SetTrafficAlive(bool state)
+        {
+            Function.Call(Hash.SET_CREATE_RANDOM_COPS, state);
+            Function.Call(Hash.SET_GARBAGE_TRUCKS, state);
+
+            if (state)
+                Function.Call(Hash.SET_ROADS_BACK_TO_ORIGINAL, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f);
+            else
+                Function.Call(Hash.SET_ROADS_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
+
+            if (state)
+                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE); 
+            else
+                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
+
+            Function.Call((Hash)0xF796359A959DF65D, state);
+            Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, !state);
+
+            _trafficAlive = state;
+        }
 
         /// <summary>
         /// Given a <paramref name="position"/> returns the nearest roadside point.

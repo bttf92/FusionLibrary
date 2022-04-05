@@ -1,13 +1,14 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
 {
-    public class ParticlePlayer
+    public class ParticlePlayer : IDisposable
     {
         internal static List<ParticlePlayer> GlobalParticlePlayerList = new List<ParticlePlayer>();
 

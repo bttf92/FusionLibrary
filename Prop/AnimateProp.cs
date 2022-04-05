@@ -2,6 +2,7 @@
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.FusionEnums;
@@ -10,7 +11,7 @@ namespace FusionLibrary
 {
     public delegate void OnAnimCompleted(AnimationStep animationStep);
 
-    public class AnimateProp
+    public class AnimateProp : IDisposable
     {
         /// <summary>
         /// This event is fired up when an <see cref="Animation"/> is completed.

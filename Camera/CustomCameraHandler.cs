@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using System;
 using System.Collections.Generic;
 using static FusionLibrary.FusionEnums;
 
@@ -7,9 +8,17 @@ namespace FusionLibrary
 {
     /// <summary>
     /// 
-    /// </summary>
-    public class CustomCameraHandler
+    /// </summary>    
+    public class CustomCameraHandler : IDisposable
     {
+        private static List<CustomCameraHandler> GlobalCustomCameraHandlers = new List<CustomCameraHandler>();
+
+        internal static void TickAll()
+        {
+            for (int i = 0; i < GlobalCustomCameraHandlers.Count; i++)
+                GlobalCustomCameraHandlers[i].Tick();
+        }
+
         /// <summary>
         /// <see cref="CustomCamera"/> handled by this <see cref="CustomCameraHandler"/>.
         /// </summary>
@@ -19,6 +28,8 @@ namespace FusionLibrary
         /// Current <see cref="CustomCamera"/> index being showed. Return <c>-1</c> if no camera is active.
         /// </summary>
         public int CurrentCameraIndex { get; private set; } = -1;
+
+        public bool IsCameraActive => CurrentCameraIndex > -1;
 
         /// <summary>
         /// Gets or sets whether the cameras are cycled.
@@ -66,6 +77,11 @@ namespace FusionLibrary
                     return Cameras[CurrentCameraIndex];
                 }
             }
+        }
+
+        public CustomCameraHandler()
+        {
+            GlobalCustomCameraHandlers.Add(this);
         }
 
         /// <summary>
@@ -234,10 +250,7 @@ namespace FusionLibrary
             World.DestroyAllCameras();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Tick()
+        private void Tick()
         {
             if (CycleCameras)
             {
@@ -262,6 +275,12 @@ namespace FusionLibrary
             {
                 Stop();
             }
+        }
+
+        public void Dispose()
+        {
+            Abort();
+            GlobalCustomCameraHandlers.Remove(this);
         }
     }
 }

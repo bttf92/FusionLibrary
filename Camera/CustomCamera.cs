@@ -1,6 +1,7 @@
 ﻿using FusionLibrary.Extensions;
 using GTA;
 using GTA.Math;
+using System;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -8,7 +9,7 @@ namespace FusionLibrary
     /// <summary>
     /// 
     /// </summary>
-    public class CustomCamera
+    public class CustomCamera : IDisposable
     {
         /// <summary>
         /// <see cref="GTA.Entity"/> at which the <see cref="Camera"/> is attached.
@@ -254,6 +255,11 @@ namespace FusionLibrary
         {
             Camera?.Delete();
             Camera = null;
+        }
+
+        public void Dispose()
+        {
+            Abort();
         }
     }
 }

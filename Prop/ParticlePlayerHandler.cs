@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace FusionLibrary
 {
     public delegate void OnParticleSequenceCompleted(bool isStop);
 
-    public class ParticlePlayerHandler
+    public class ParticlePlayerHandler : IDisposable
     {
         internal static List<ParticlePlayerHandler> GlobalParticlePlayerHandlerList = new List<ParticlePlayerHandler>();
 

@@ -21,7 +21,6 @@ namespace FusionLibrary
         public static bool IsNight { get; internal set; }
 
         public static bool TrafficVolumeYearBased { get; set; }
-        public static bool zeroDensity;
 
         public static bool RealTime
         {
@@ -102,45 +101,25 @@ namespace FusionLibrary
             if (year > 1900 && year < 1950)
             {
                 year -= 1900;
-                if (zeroDensity)
-                {
-                    Function.Call(Hash.SET_CREATE_RANDOM_COPS, true);
-                    Function.Call(Hash.SET_GARBAGE_TRUCKS, true);
-                    Function.Call(Hash.SET_ROADS_BACK_TO_ORIGINAL, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f);
-                    Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE);
-                    Function.Call((Hash)0xF796359A959DF65D, true);
-                    Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, false);
-                    zeroDensity = false;
-                }
+
+                if (!FusionUtils.IsTrafficAlive)
+                    FusionUtils.IsTrafficAlive = true;
+
                 vehDensity = year / 50f;
             }
             else if (year <= 1900)
             {
                 vehDensity = 0;
-                if (!zeroDensity)
-                {
-                    Function.Call(Hash.SET_CREATE_RANDOM_COPS, false);
-                    Function.Call(Hash.SET_GARBAGE_TRUCKS, false);
-                    Function.Call(Hash.SET_ROADS_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
-                    Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
-                    Function.Call((Hash)0xF796359A959DF65D, false);
-                    Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, true);
-                    zeroDensity = true;
-                }
+
+                if (FusionUtils.IsTrafficAlive)
+                    FusionUtils.IsTrafficAlive = false;
             }
 
             if (vehDensity >= 1)
             {
-                if (zeroDensity)
-                {
-                    Function.Call(Hash.SET_CREATE_RANDOM_COPS, true);
-                    Function.Call(Hash.SET_GARBAGE_TRUCKS, true);
-                    Function.Call(Hash.SET_ROADS_BACK_TO_ORIGINAL, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f);
-                    Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE);
-                    Function.Call((Hash)0xF796359A959DF65D, true);
-                    Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, false);
-                    zeroDensity = false;
-                }
+                if (!FusionUtils.IsTrafficAlive)
+                    FusionUtils.IsTrafficAlive = true;
+
                 return;
             }
 

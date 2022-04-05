@@ -53,6 +53,7 @@ namespace FusionLibrary
             AnimateProp.TickAll();
             ParticlePlayerHandler.TickAll();
             ParticlePlayer.TickAll();
+            CustomCameraHandler.TickAll();
             InteractiveController.TickAll();
             TimeHandler.Tick();
             CustomNativeMenu.ObjectPool.Process();
