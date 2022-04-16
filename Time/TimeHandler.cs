@@ -21,7 +21,7 @@ namespace FusionLibrary
         public static bool IsNight { get; internal set; }
 
         public static bool TrafficVolumeYearBased { get; set; }
-        
+
         public static bool MissionTraffic = false;
 
         public static bool RealTime
@@ -132,16 +132,7 @@ namespace FusionLibrary
 
         public static void TimeTravelTo(DateTime destinationTime)
         {
-            MomentReplica momentReplica = MomentReplica.SearchForMoment();
-
-            if (momentReplica == null)
-            {
-                MomentReplica.MomentReplicas.Add(new MomentReplica());
-            }
-            else
-            {
-                momentReplica.Update();
-            }
+            new MomentReplica();
 
             FusionUtils.ClearWorld();
 
@@ -149,7 +140,7 @@ namespace FusionLibrary
 
             FusionUtils.CurrentTime = destinationTime;
 
-            momentReplica = MomentReplica.SearchForMoment();
+            MomentReplica momentReplica = MomentReplica.SearchForMoment();
 
             if (momentReplica == null)
             {
@@ -157,6 +148,10 @@ namespace FusionLibrary
             }
             else
             {
+                MomentReplica.MomentReplicas?.ForEach(x =>
+                {
+                    x.Applied = false;
+                });
                 momentReplica.Apply();
             }
 
