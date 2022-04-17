@@ -139,6 +139,11 @@ namespace FusionLibrary
             UsedVehiclesByPlayer.Clear();
 
             FusionUtils.CurrentTime = destinationTime;
+            
+            MomentReplica.MomentReplicas?.ForEach(x =>
+                {
+                    x.Applied = false;
+                });
 
             MomentReplica momentReplica = MomentReplica.SearchForMoment();
 
@@ -148,10 +153,6 @@ namespace FusionLibrary
             }
             else
             {
-                MomentReplica.MomentReplicas?.ForEach(x =>
-                {
-                    x.Applied = false;
-                });
                 momentReplica.Apply();
             }
 
