@@ -23,7 +23,7 @@ namespace FusionLibrary
 
         public bool Applied = false;
 
-        public double MomentDuration { get; set; } = 1;
+        public double MomentDuration { get; set; } = 10;
 
         public MomentReplica(DateTime dateTime)
         {
