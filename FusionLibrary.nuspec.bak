@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>FusionLibrary.SHVDN3</id>
-    <version>1.5.0</version>
+    <version>1.4.2</version>
     <authors>MrFusion92</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
@@ -13,7 +13,7 @@
     <dependencies>
       <group targetFramework=".NETFramework4.8">
         <dependency id="ScriptHookVDotNet3" version="3.4.0" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
-		<dependency id="LemonUI.SHVDN3" version="1.7.0" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
+		<dependency id="LemonUI.SHVDN3" version="1.6.0" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
       </group>
     </dependencies>
   </metadata>
