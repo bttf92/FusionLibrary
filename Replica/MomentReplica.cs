@@ -19,7 +19,11 @@ namespace FusionLibrary
         public DateTime CurrentDate { get; set; }
         public List<VehicleReplica> VehicleReplicas { get; set; }
 
-        public bool LockWeather { get; set; }
+        public bool TransitionWeather { get; set; } = false;
+
+        public bool Applied = false;
+
+        public double MomentDuration { get; set; } = 10;
 
         public MomentReplica(DateTime dateTime)
         {
@@ -29,7 +33,24 @@ namespace FusionLibrary
 
         public MomentReplica()
         {
-            Update();
+            CurrentDate = FusionUtils.CurrentTime;
+
+            Weather = World.Weather;
+            RainLevel = FusionUtils.RainLevel;
+            PuddleLevel = RainPuddleEditor.Level;
+
+            WantedLevel = Game.Player.WantedLevel;
+
+            VehicleReplicas = new List<VehicleReplica>();
+
+            TimeHandler.UsedVehiclesByPlayer.ForEach(x =>
+            {
+                if (x != FusionUtils.PlayerVehicle)
+                {
+                    VehicleReplicas.Add(new VehicleReplica(x));
+                }
+            });
+            MomentReplicas.Add(this);
         }
 
         public static MomentReplica SearchForMoment()
@@ -47,7 +68,7 @@ namespace FusionLibrary
 
         public bool IsNow()
         {
-            if (CurrentDate.Between(FusionUtils.CurrentTime.AddMinutes(-10), FusionUtils.CurrentTime.AddMinutes(10)))
+            if (CurrentDate.Between(FusionUtils.CurrentTime.AddMinutes(-MomentDuration), FusionUtils.CurrentTime.AddMinutes(MomentDuration)))
             {
                 return true;
             }
@@ -93,36 +114,26 @@ namespace FusionLibrary
 
         public void Apply()
         {
-            World.Weather = Weather;
-            RainPuddleEditor.Level = PuddleLevel;
-            FusionUtils.RainLevel = RainLevel;
-            Game.Player.WantedLevel = WantedLevel;
-
-            VehicleReplicas?.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
-        }
-
-        public void Update()
-        {
-            CurrentDate = FusionUtils.CurrentTime;
-
-            if (!LockWeather)
+            if (!Applied)
             {
-                Weather = World.Weather;
-                RainLevel = FusionUtils.RainLevel;
-                PuddleLevel = RainPuddleEditor.Level;
-            }
-
-            WantedLevel = Game.Player.WantedLevel;
-
-            VehicleReplicas = new List<VehicleReplica>();
-
-            TimeHandler.UsedVehiclesByPlayer.ForEach(x =>
-            {
-                if (x != FusionUtils.PlayerVehicle)
+                if (TransitionWeather)
                 {
-                    VehicleReplicas.Add(new VehicleReplica(x));
+                    World.TransitionToWeather(Weather, 2);
+                    RainPuddleEditor.Level = PuddleLevel;
+                    FusionUtils.RainLevel = RainLevel;
                 }
-            });
+                else
+                {
+                    World.Weather = Weather;
+                    RainPuddleEditor.Level = PuddleLevel;
+                    FusionUtils.RainLevel = RainLevel;
+                }
+
+                Game.Player.WantedLevel = WantedLevel;
+
+                VehicleReplicas?.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
+                Applied = true;
+            }
         }
     }
 }
