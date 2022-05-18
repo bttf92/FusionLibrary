@@ -1,13 +1,8 @@
-﻿using GTA;
+using GTA;
 using GTA.Native;
 using System;
-using System.Linq;
 using System.IO;
-using System.Text;
 using System.Xml.Serialization;
-using System.Text.RegularExpressions;
-using FusionLibrary.Extensions;
-using System.Collections.Generic;
 
 namespace FusionLibrary
 {
@@ -19,7 +14,7 @@ namespace FusionLibrary
 
         private const string ModelSwapFile = "ModelSwaps.xml";
 
-        private static XmlSerializer xmlSerializer = new XmlSerializer(typeof(ModelSwaps));
+        private static readonly XmlSerializer xmlSerializer = new XmlSerializer(typeof(ModelSwaps));
 
         public TrafficHandler()
         {
