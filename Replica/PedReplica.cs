@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 using System;
@@ -11,6 +11,10 @@ namespace FusionLibrary
     {
         public int Type { get; }
         public VehicleSeat Seat { get; }
+        public float Armor { get; }
+        public int[,] Components { get; private set; } = new int[12, 3];
+        public int[,] Props { get; private set; } = new int[5, 2];
+        public int Money { get; }
         public List<WeaponReplica> Weapons { get; }
 
         private static readonly Array WeaponsHash = Enum.GetValues(typeof(WeaponHash));
@@ -21,6 +25,31 @@ namespace FusionLibrary
             Type = Function.Call<int>(Hash.GET_PED_TYPE, ped);
 
             Seat = ped.SeatIndex;
+
+            Armor = ped.ArmorFloat;
+
+            for (int x = 0; x <= 11; x++)
+            {
+                Components[x, 0] = Function.Call<int>(Hash.GET_PED_DRAWABLE_VARIATION, ped, x);
+                Components[x, 1] = Function.Call<int>(Hash.GET_PED_TEXTURE_VARIATION, ped, x);
+                Components[x, 2] = Function.Call<int>(Hash.GET_PED_PALETTE_VARIATION, ped, x);
+            }
+
+            for (int x = 0; x <= 4; x++)
+            {
+                if (x <= 2)
+                {
+                    Props[x,0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
+                    Props[x,1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
+                }
+                else
+                {
+                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x + 3);
+                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x + 3);
+                }
+            }
+
+            Money = ped.Money;
 
             Weapons = new List<WeaponReplica>();
 
@@ -42,6 +71,8 @@ namespace FusionLibrary
             ped.Speed = Speed;
             ped.Velocity = Velocity;
             ped.HealthFloat = Health;
+            ped.ArmorFloat = Armor;
+            ped.Money = Money;
         }
 
         public Ped Spawn()
@@ -55,6 +86,23 @@ namespace FusionLibrary
                 x.Give(ped);
             }
 
+            for (int x = 0; x <= 11; x++)
+            {
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
+            }
+
+            for (int x = 0; x <= 4; x++)
+            {
+                if (x <= 2)
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x,0], Props[x,1], true);
+                }
+                else
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
+                }
+            }
+
             return ped;
         }
 
@@ -65,6 +113,23 @@ namespace FusionLibrary
             foreach (WeaponReplica x in Weapons)
             {
                 x.Give(ped);
+            }
+
+            for (int x = 0; x <= 11; x++)
+            {
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
+            }
+
+            for (int x = 0; x <= 4; x++)
+            {
+                if (x <= 2)
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x, 0], Props[x, 1], true);
+                }
+                else
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
+                }
             }
 
             return ped;
@@ -91,6 +156,23 @@ namespace FusionLibrary
                 x.Give(ped);
             }
 
+            for (int x = 0; x <= 11; x++)
+            {
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
+            }
+
+            for (int x = 0; x <= 4; x++)
+            {
+                if (x <= 2)
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x, 0], Props[x, 1], true);
+                }
+                else
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
+                }
+            }
+
             return ped;
         }
 
@@ -111,6 +193,23 @@ namespace FusionLibrary
             foreach (WeaponReplica x in Weapons)
             {
                 x.Give(ped);
+            }
+
+            for (int x = 0; x <= 11; x++)
+            {
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
+            }
+
+            for (int x = 0; x <= 4; x++)
+            {
+                if (x <= 2)
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x, 0], Props[x, 1], true);
+                }
+                else
+                {
+                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
+                }
             }
 
             return ped;
