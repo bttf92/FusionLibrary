@@ -81,27 +81,7 @@ namespace FusionLibrary
 
             ped.Rotation = Rotation;
 
-            foreach (WeaponReplica x in Weapons)
-            {
-                x.Give(ped);
-            }
-
-            for (int x = 0; x <= 11; x++)
-            {
-                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
-            }
-
-            for (int x = 0; x <= 4; x++)
-            {
-                if (x <= 2)
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x,0], Props[x,1], true);
-                }
-                else
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
-                }
-            }
+            CommonSpawn(ped);
 
             return ped;
         }
@@ -110,27 +90,7 @@ namespace FusionLibrary
         {
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, position.X, position.Y, position.Z, heading, false, false);
 
-            foreach (WeaponReplica x in Weapons)
-            {
-                x.Give(ped);
-            }
-
-            for (int x = 0; x <= 11; x++)
-            {
-                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
-            }
-
-            for (int x = 0; x <= 4; x++)
-            {
-                if (x <= 2)
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x, 0], Props[x, 1], true);
-                }
-                else
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
-                }
-            }
+            CommonSpawn(ped);
 
             return ped;
         }
@@ -151,27 +111,7 @@ namespace FusionLibrary
 
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, seat, false, false);
 
-            foreach (WeaponReplica x in Weapons)
-            {
-                x.Give(ped);
-            }
-
-            for (int x = 0; x <= 11; x++)
-            {
-                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
-            }
-
-            for (int x = 0; x <= 4; x++)
-            {
-                if (x <= 2)
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x, Props[x, 0], Props[x, 1], true);
-                }
-                else
-                {
-                    Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
-                }
-            }
+            CommonSpawn(ped);
 
             return ped;
         }
@@ -190,6 +130,15 @@ namespace FusionLibrary
 
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED_INSIDE_VEHICLE, vehicle, Type, Model, vehicleSeat, false, false);
 
+            CommonSpawn(ped);
+
+            return ped;
+        }
+
+        private void CommonSpawn(Ped ped)
+        {
+            ApplyTo(ped);
+
             foreach (WeaponReplica x in Weapons)
             {
                 x.Give(ped);
@@ -211,8 +160,6 @@ namespace FusionLibrary
                     Function.Call(Hash.SET_PED_PROP_INDEX, ped, x + 3, Props[x, 0], Props[x, 1], true);
                 }
             }
-
-            return ped;
         }
     }
 }
