@@ -137,8 +137,6 @@ namespace FusionLibrary
 
         private void CommonSpawn(Ped ped)
         {
-            ApplyTo(ped);
-
             foreach (WeaponReplica x in Weapons)
             {
                 x.Give(ped);
