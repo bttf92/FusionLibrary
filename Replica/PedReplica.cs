@@ -73,7 +73,7 @@ namespace FusionLibrary
         public Ped Spawn()
         {
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, Position.X, Position.Y, Position.Z, Heading, false, false);
-            
+
             ped.Rotation = Rotation;
             ped.Speed = Speed;
             ped.Velocity = Velocity;
