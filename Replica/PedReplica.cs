@@ -39,8 +39,8 @@ namespace FusionLibrary
             {
                 if (x <= 2)
                 {
-                    Props[x,0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
-                    Props[x,1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
+                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
+                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
                 }
                 else
                 {
@@ -65,11 +65,6 @@ namespace FusionLibrary
         public void ApplyTo(Ped ped)
         {
             ped.IsVisible = IsVisible;
-            ped.PositionNoOffset = Position;
-            ped.Heading = Heading;
-            ped.Rotation = Rotation;
-            ped.Speed = Speed;
-            ped.Velocity = Velocity;
             ped.HealthFloat = Health;
             ped.ArmorFloat = Armor;
             ped.Money = Money;
@@ -80,6 +75,8 @@ namespace FusionLibrary
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, Position.X, Position.Y, Position.Z, Heading, false, false);
 
             ped.Rotation = Rotation;
+            ped.Speed = Speed;
+            ped.Velocity = Velocity;
 
             CommonSpawn(ped);
 
