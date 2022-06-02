@@ -70,24 +70,15 @@ namespace FusionLibrary
             ped.Money = Money;
         }
 
-        public void ApplyPos(Ped ped)
-        {
-            ped.PositionNoOffset = Position;
-            ped.Heading = Heading;
-            ped.Rotation = Rotation;
-            ped.Speed = Speed;
-            ped.Velocity = Velocity;
-        }
-
         public Ped Spawn()
         {
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, Position.X, Position.Y, Position.Z, Heading, false, false);
-
+            
             ped.Rotation = Rotation;
+            ped.Speed = Speed;
+            ped.Velocity = Velocity;
 
             CommonSpawn(ped);
-
-            ApplyPos(ped);
 
             return ped;
         }
@@ -97,8 +88,6 @@ namespace FusionLibrary
             Ped ped = Function.Call<Ped>(Hash.CREATE_PED, Type, Model, position.X, position.Y, position.Z, heading, false, false);
 
             CommonSpawn(ped);
-
-            ApplyPos(ped);
 
             return ped;
         }
