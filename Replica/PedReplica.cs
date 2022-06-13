@@ -13,7 +13,7 @@ namespace FusionLibrary
         public VehicleSeat Seat { get; }
         public float Armor { get; }
         public int[,] Components { get; private set; } = new int[12, 3];
-        public int[,] Props { get; private set; } = new int[5, 2];
+        public int[,] Props { get; private set; } = new int[13, 2];
         public int Money { get; }
         public List<WeaponReplica> Weapons { get; }
 
@@ -35,18 +35,10 @@ namespace FusionLibrary
                 Components[x, 2] = Function.Call<int>(Hash.GET_PED_PALETTE_VARIATION, ped, x);
             }
 
-            for (int x = 0; x <= 4; x++)
+            for (int x = 0; x <= 12; x++)
             {
-                if (x <= 2)
-                {
-                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
-                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
-                }
-                else
-                {
-                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x + 3);
-                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x + 3);
-                }
+                Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
+                Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
             }
 
             Money = ped.Money;
