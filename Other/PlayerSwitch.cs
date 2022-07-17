@@ -26,7 +26,7 @@ namespace FusionLibrary
         private static int _health;
         private static bool _ragdoll;
 
-        public static void Switch(Ped to, bool forceShort, bool instant = false, bool fullHealth = false)
+        public static void Switch(Ped to, bool forceShort, bool instant = false)
         {
             _health = Function.Call<int>(Hash.GET_ENTITY_HEALTH, to);
             _ragdoll = to.IsRagdoll;
@@ -34,10 +34,7 @@ namespace FusionLibrary
             if (instant)
             {
                 Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, to, false, false);
-                if (!fullHealth)
-                {
-                    Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
-                }
+                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
 
                 if (_ragdoll)
                 {
