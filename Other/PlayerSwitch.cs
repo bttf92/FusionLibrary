@@ -26,7 +26,7 @@ namespace FusionLibrary
         private static int _health;
         private static bool _ragdoll;
 
-        public static void Switch(Ped to, bool forceShort, bool instant = false)
+        public static void Switch(Ped to, bool forceShort, bool instant = false, bool fullHealth = false)
         {
             _health = Function.Call<int>(Hash.GET_ENTITY_HEALTH, to);
             _ragdoll = to.IsRagdoll;
@@ -34,7 +34,10 @@ namespace FusionLibrary
             if (instant)
             {
                 Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, to, false, false);
-                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+                if (!fullHealth)
+                {
+                    Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+                }
 
                 if (_ragdoll)
                 {
@@ -60,15 +63,24 @@ namespace FusionLibrary
 
             Function.Call(Hash.START_PLAYER_SWITCH, Game.Player.Character, To, 1024, SwitchType);
             Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, To, false, false);
+            if (!fullHealth)
+            {
+                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+            }
 
             OnSwitchingStart?.Invoke();
         }
 
-        public static Ped CreatePedAndSwitch(out Ped originalPed, Vector3 pos, float heading, bool forceShort, bool instant = false)
+        public static Ped CreatePedAndSwitch(out Ped originalPed, Vector3 pos, float heading, bool forceShort, bool instant = false, bool fullHealth = false)
         {
             originalPed = Game.Player.Character;
 
             Ped clone = World.CreatePed(Game.Player.Character.Model, pos, heading);
+
+            if (!fullHealth)
+            {
+                clone.Health = originalPed.Health;
+            }
 
             Function.Call(Hash.CLONE_PED_TO_TARGET, Game.Player.Character, clone);
 
