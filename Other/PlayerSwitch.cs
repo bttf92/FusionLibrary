@@ -26,7 +26,7 @@ namespace FusionLibrary
         private static int _health;
         private static bool _ragdoll;
 
-        public static void Switch(Ped to, bool forceShort, bool instant = false)
+        public static void Switch(Ped to, bool forceShort, bool instant = false, bool fullHealth = false)
         {
             _health = Function.Call<int>(Hash.GET_ENTITY_HEALTH, to);
             _ragdoll = to.IsRagdoll;
