@@ -136,7 +136,7 @@ namespace FusionLibrary
                 {
                     vehicles = vehicles.Where(x => x.Model != baseModel && !x.Decorator().ModelSwapped && ((SwapOnlyDesiredModels && swapModels.Contains(x.Model)) || (!SwapOnlyDesiredModels && x.Type == VehicleType && x.ClassType == VehicleClass))).SelectRandomElements(tempMax - count);
 
-                    //GTA.UI.Screen.ShowSubtitle($"{chanceMulti} {count} {tempMax} {vehicles.Count()}");
+                    //GTA.UI.Screen.ShowSubtitle($"{chanceMulti} {count} {tempMax} {vehicles.Count()} {endTime} {DateBased}");
 
                     foreach (Vehicle vehicle in vehicles)
                     {
