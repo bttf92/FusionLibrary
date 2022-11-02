@@ -21,6 +21,8 @@ namespace FusionLibrary
 
         public bool TransitionWeather { get; set; } = false;
 
+        public bool ResetWanted { get; set; } = true;
+
         public bool Applied = false;
 
         public double MomentDuration { get; set; } = 10;
@@ -129,7 +131,10 @@ namespace FusionLibrary
                     FusionUtils.RainLevel = RainLevel;
                 }
 
-                Game.Player.WantedLevel = WantedLevel;
+                if (ResetWanted)
+                {
+                    Game.Player.WantedLevel = WantedLevel;
+                }
 
                 VehicleReplicas?.ForEach(x => TimeHandler.UsedVehiclesByPlayer.Add(x.Spawn(SpawnFlags.Default)));
                 Applied = true;
