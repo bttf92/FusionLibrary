@@ -186,6 +186,7 @@ namespace FusionLibrary
         public enum DriveAction
         {
             None = -1,
+            BrakeWeak = 1,
             BrakeAndReverse = 3,
             TurnLeft90AndBraking = 4,
             TurnRight90AndBraking = 5,
@@ -202,6 +203,7 @@ namespace FusionLibrary
             BrakeWeakAndTurnRightThenTurnLeft = 21,
             BrakeAndReverse2 = 22,
             AccelerateFast = 23,
+            BrakeStrong = 24,
             BrakeThenTurnLeftWhenStopping = 25,
             BrakeThenTurnRightWhenStopping = 26,
             BrakeUntilTimeEndsOrCarStops = 27,
