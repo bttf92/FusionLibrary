@@ -117,12 +117,6 @@ namespace FusionLibrary
             }
 
             model.Request();
-
-            while (!model.IsLoaded)
-            {
-                Script.Yield();
-            }
-
             return model;
         }
                 
