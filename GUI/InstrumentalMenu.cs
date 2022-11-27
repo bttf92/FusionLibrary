@@ -60,6 +60,9 @@ namespace FusionLibrary
         public void ClearPanel()
         {
             CallFunction("SET_DATA_SLOT_EMPTY");
+            CallFunction("CLEAR_ALL");
+            CallFunction("TOGGLE_MOUSE_BUTTONS", 0);
+            CallFunction("CREATE_CONTAINER");
         }
 
         private void SetButtons()
