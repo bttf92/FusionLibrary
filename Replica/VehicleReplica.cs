@@ -15,7 +15,15 @@ namespace FusionLibrary
         public bool EngineRunning { get; }
         public VehicleColor PrimaryColor { get; }
         public VehicleColor SecondaryColor { get; }
+        public VehicleColor InteriorColor { get; }
+        public VehicleColor DashboardColor { get; }
+        public VehicleColor WheelColor { get; }
+        public VehicleWheelType WheelType { get; }
+        public LicensePlateStyle PlateStyle { get; }
+        public string PlateNumber { get; }
+        public VehicleWindowTint WindowTint { get; }
         public int Livery { get; }
+        public List<bool> Extras { get; }
         public List<PedReplica> Occupants { get; }
 
         public float Handbrake { get; }
@@ -35,9 +43,23 @@ namespace FusionLibrary
         {
             EngineHealth = vehicle.EngineHealth;
             EngineRunning = vehicle.IsEngineRunning;
+            WheelType = vehicle.Mods.WheelType;
             PrimaryColor = vehicle.Mods.PrimaryColor;
             SecondaryColor = vehicle.Mods.SecondaryColor;
+            InteriorColor = vehicle.Mods.TrimColor;
+            DashboardColor = vehicle.Mods.DashboardColor;
+            WheelColor = vehicle.Mods.RimColor;
+            PlateStyle = vehicle.Mods.LicensePlateStyle;
+            PlateNumber = vehicle.Mods.LicensePlate;
+            WindowTint = vehicle.Mods.WindowTint;
             Livery = vehicle.Mods.Livery;
+
+            Extras = new List<bool>();
+
+            for (int x = 1; x <= 13; x++)
+            {
+                Extras.Add(vehicle.IsExtraOn(x));
+            }
 
             RPM = vehicle.CurrentRPM;
             Gear = vehicle.CurrentGear;
@@ -118,9 +140,21 @@ namespace FusionLibrary
 
             vehicle.HealthFloat = Health;
             vehicle.EngineHealth = EngineHealth;
+            vehicle.Mods.WheelType = WheelType;
             vehicle.Mods.PrimaryColor = PrimaryColor;
             vehicle.Mods.SecondaryColor = SecondaryColor;
+            vehicle.Mods.TrimColor = InteriorColor;
+            vehicle.Mods.DashboardColor = DashboardColor;
+            vehicle.Mods.RimColor = WheelColor;
+            vehicle.Mods.LicensePlateStyle = PlateStyle;
+            vehicle.Mods.LicensePlate = PlateNumber;
+            vehicle.Mods.WindowTint = WindowTint;
             vehicle.Mods.Livery = Livery;
+
+            for (int x = 0; x < 13; x++)
+            {
+                vehicle.ToggleExtra(x+1, Extras[x]);
+            }
 
             vehicle.IsEngineRunning = EngineRunning;
 

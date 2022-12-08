@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static FusionLibrary.FusionEnums;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace FusionLibrary.Extensions
 {
