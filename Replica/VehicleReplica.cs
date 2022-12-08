@@ -24,6 +24,7 @@ namespace FusionLibrary
         public VehicleWindowTint WindowTint { get; }
         public int Livery { get; }
         public List<bool> Extras { get; }
+        public List<int> Mods { get; }
         public List<PedReplica> Occupants { get; }
 
         public float Handbrake { get; }
@@ -59,6 +60,13 @@ namespace FusionLibrary
             for (int x = 1; x <= 13; x++)
             {
                 Extras.Add(vehicle.IsExtraOn(x));
+            }
+
+            Mods = new List<int>();
+
+            foreach (VehicleModType x in (VehicleModType[])Enum.GetValues(typeof(VehicleModType)))
+            {
+                Mods.Add(vehicle.Mods[x].Index);
             }
 
             RPM = vehicle.CurrentRPM;
@@ -154,6 +162,11 @@ namespace FusionLibrary
             for (int x = 0; x < 13; x++)
             {
                 vehicle.ToggleExtra(x+1, Extras[x]);
+            }
+
+            for (int x = 0; x < Mods.Count; x++)
+            {
+                vehicle.Mods[(VehicleModType)x].Index = Mods[x];
             }
 
             vehicle.IsEngineRunning = EngineRunning;
