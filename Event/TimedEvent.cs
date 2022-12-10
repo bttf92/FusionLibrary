@@ -99,6 +99,8 @@ namespace FusionLibrary
             StartFloat = tStartFloat;
             EndFloat = tEndFloat;
 
+            CurrentFloat = StartFloat;
+
             _setFloat = true;
         }
 
@@ -146,8 +148,8 @@ namespace FusionLibrary
         }
 
         private void CalculateCurrentFloat()
-        {
-            CurrentFloat = ((EndFloat - StartFloat) / (float)Duration.TotalSeconds) * Game.LastFrameTime;
+        {            
+            CurrentFloat += ((EndFloat - StartFloat) / (float)Duration.TotalSeconds) * Game.LastFrameTime;
         }
 
         private void PlaceCamera()
