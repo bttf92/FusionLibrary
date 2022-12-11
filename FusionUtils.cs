@@ -91,6 +91,11 @@ namespace FusionLibrary
             }
         }
 
+        public static void Log(string message)
+        {
+            File.AppendAllText($"./ScriptHookVDotNet.log", $"[{DateTime.Now:HH:mm:ss}] [DEBUG] {message}" + Environment.NewLine);
+        }
+
         public static Hash GetDlcVehicleModel(int dlcIndex)
         {
             return Function.Call<Hash>(Hash.GET_DLC_VEHICLE_MODEL, dlcIndex);
@@ -119,9 +124,7 @@ namespace FusionLibrary
             model.Request();
 
             while (!model.IsLoaded)
-            {
                 Script.Yield();
-            }
 
             return model;
         }

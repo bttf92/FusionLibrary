@@ -8,7 +8,7 @@ namespace FusionLibrary
     public delegate void OnSwitchingComplete();
     public delegate void OnSwitchingStart();
 
-    public class PlayerSwitch
+    public static class PlayerSwitch
     {
         public static bool IsInProgress => Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS);
 

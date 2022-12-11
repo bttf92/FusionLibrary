@@ -2,9 +2,11 @@
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTA.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using static FusionLibrary.FusionEnums;
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -180,9 +182,14 @@ namespace FusionLibrary.Extensions
 
             if (value < (int)AlphaLevel.L4)
             {
-                return AlphaLevel.L4;
+                return AlphaLevel.L3;
             }
 
+            if (value < (int)AlphaLevel.L5)
+            {
+                return AlphaLevel.L4;
+            }
+                
             return AlphaLevel.L5;
         }
 
@@ -194,6 +201,34 @@ namespace FusionLibrary.Extensions
         public static void SetAlpha(this Entity entity, AlphaLevel level)
         {
             Function.Call(Hash.SET_ENTITY_ALPHA, entity, (int)level);
+        }
+
+        public static AlphaLevel DecreaseAlpha(this Entity entity)
+        {
+            AlphaLevel alpha = entity.GetAlpha();
+
+            if (alpha == AlphaLevel.L0)
+                return alpha;
+
+            alpha = alpha.Prev();
+
+            entity.SetAlpha(alpha);
+
+            return alpha;
+        }
+
+        public static AlphaLevel IncreaseAlpha(this Entity entity)
+        {
+            AlphaLevel alpha = entity.GetAlpha();
+
+            if (alpha == AlphaLevel.L5)
+                return alpha;
+
+            alpha = alpha.Next();
+
+            entity.SetAlpha(alpha);
+
+            return alpha;
         }
 
         /// <summary>
