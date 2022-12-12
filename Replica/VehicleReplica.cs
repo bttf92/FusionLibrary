@@ -40,7 +40,7 @@ namespace FusionLibrary
         public float[] WheelsRotations { get; }
         public float[] WheelsCompressions { get; }
 
-        public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default) : base(vehicle)
+        public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, bool exemptMods = false) : base(vehicle)
         {
             EngineHealth = vehicle.EngineHealth;
             EngineRunning = vehicle.IsEngineRunning;
@@ -55,18 +55,21 @@ namespace FusionLibrary
             WindowTint = vehicle.Mods.WindowTint;
             Livery = vehicle.Mods.Livery;
 
-            Extras = new List<bool>();
-
-            for (int x = 1; x <= 13; x++)
+            if (!exemptMods)
             {
-                Extras.Add(vehicle.IsExtraOn(x));
-            }
+                Extras = new List<bool>();
 
-            Mods = new List<int>();
+                for (int x = 1; x <= 13; x++)
+                {
+                    Extras.Add(vehicle.IsExtraOn(x));
+                }
 
-            foreach (VehicleModType x in (VehicleModType[])Enum.GetValues(typeof(VehicleModType)))
-            {
-                Mods.Add(vehicle.Mods[x].Index);
+                Mods = new List<int>();
+
+                foreach (VehicleModType x in (VehicleModType[])Enum.GetValues(typeof(VehicleModType)))
+                {
+                    Mods.Add(vehicle.Mods[x].Index);
+                }
             }
 
             RPM = vehicle.CurrentRPM;
@@ -159,14 +162,23 @@ namespace FusionLibrary
             vehicle.Mods.WindowTint = WindowTint;
             vehicle.Mods.Livery = Livery;
 
-            for (int x = 0; x < 13; x++)
+            if (Extras != null)
             {
-                vehicle.ToggleExtra(x+1, Extras[x]);
-            }
+                for (int x = 0; x < 13; x++)
+                {
+                    if (vehicle.IsExtraOn(x + 1) != Extras[x])
+                    {
+                        vehicle.ToggleExtra(x + 1, Extras[x]);
+                    }
+                }
 
-            for (int x = 0; x < Mods.Count; x++)
-            {
-                vehicle.Mods[(VehicleModType)x].Index = Mods[x];
+                for (int x = 0; x < Mods.Count; x++)
+                {
+                    if (vehicle.Mods[(VehicleModType)x].Index != Mods[x])
+                    {
+                        vehicle.Mods[(VehicleModType)x].Index = Mods[x];
+                    }
+                }
             }
 
             vehicle.IsEngineRunning = EngineRunning;
