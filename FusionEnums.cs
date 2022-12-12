@@ -104,7 +104,8 @@ namespace FusionLibrary
             NoVelocity = 128,
             New = 256,
             SetRotation = 512,
-            NoWheels = 1024
+            NoWheels = 1024,
+            NoMods = 2048
         }
 
         /// <summary>
