@@ -25,8 +25,6 @@ namespace FusionLibrary
         /// </summary>
         public static Random Random = new Random(DateTime.Now.Millisecond);
 
-        //internal static Model DMC12 = new Model("dmc12");
-
         /// <summary>
         /// Serializes and deserializes an object, or an entire graph of connected objects, in binary format.
         /// </summary>
@@ -128,7 +126,38 @@ namespace FusionLibrary
 
             return model;
         }
-                
+
+        /// <summary>
+        /// Gets whether a bullet has impacted within the specified radius of a given <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
+        /// <param name="radius">Instance of a <see cref="float"/>.</param>
+        public static bool DidBulletHit(Vector3 position, float radius) => Function.Call<bool>(Hash.HAS_BULLET_IMPACTED_IN_AREA, position.X, position.Y, position.Z, radius);
+
+        /// <summary>
+        /// Gets whether a bullet is present within the specified radius of a given <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">Instance of a <see cref="Vector3"/>.</param>
+        /// <param name="radius">Instance of a <see cref="float"/>.</param>
+        public static bool IsBulletPresent(Vector3 position, float radius)
+        {
+            if (Function.Call<bool>(Hash.IS_BULLET_IN_AREA, position.X, position.Y, position.Z, radius, false))
+            {
+                return true;
+            }
+            else if (Function.Call<bool>(Hash.IS_BULLET_IN_AREA, position.X, position.Y, position.Z, radius, true))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether ambient world traffic generators are active.
+        /// </summary>
         public static bool IsTrafficAlive
         {
             get => _trafficAlive;
