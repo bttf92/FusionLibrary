@@ -148,7 +148,7 @@ namespace FusionLibrary
         }
 
         private void CalculateCurrentFloat()
-        {            
+        {
             CurrentFloat += ((EndFloat - StartFloat) / (float)Duration.TotalSeconds) * Game.LastFrameTime;
         }
 
