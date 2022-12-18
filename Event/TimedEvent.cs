@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using GTA.Native;
 using System;
@@ -84,6 +84,7 @@ namespace FusionLibrary
         public void ResetExecution()
         {
             _executionCount = 0;
+            CurrentFloat = StartFloat;
         }
 
         public void SetSpeed(int tStartSpeedMPH, int tEndSpeedMPH)
@@ -144,12 +145,12 @@ namespace FusionLibrary
 
         private void CalculateCurrentSpeed()
         {
-            CurrentSpeed = (((EndSpeed - StartSpeed + 1) * 0.44704f) / Duration.TotalSeconds) * Game.LastFrameTime;
+            CurrentSpeed = (EndSpeed - StartSpeed + 1) * 0.44704f / Duration.TotalSeconds * Game.LastFrameTime;
         }
 
         private void CalculateCurrentFloat()
         {
-            CurrentFloat += ((EndFloat - StartFloat) / (float)Duration.TotalSeconds) * Game.LastFrameTime;
+            CurrentFloat += (EndFloat - StartFloat) / (float)Duration.TotalSeconds * Game.LastFrameTime;
         }
 
         private void PlaceCamera()
