@@ -105,7 +105,8 @@ namespace FusionLibrary
             New = 256,
             SetRotation = 512,
             NoWheels = 1024,
-            NoMods = 2048
+            NoMods = 2048,
+            NoDriver = 4096
         }
 
         /// <summary>

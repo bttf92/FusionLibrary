@@ -98,6 +98,9 @@ namespace FusionLibrary
 
             foreach (Ped x in vehicle.Occupants)
             {
+                if (x.SeatIndex == VehicleSeat.Driver && spawnFlags.HasFlag(SpawnFlags.NoDriver))
+                    continue;
+
                 Occupants.Add(new PedReplica(x));
             }
         }
@@ -141,7 +144,7 @@ namespace FusionLibrary
             return veh;
         }
 
-        private void ApplyTo2(Vehicle vehicle, bool noOccupants, bool noMods)
+        private void ApplyToPrivate(Vehicle vehicle, SpawnFlags spawnFlags)
         {
             vehicle.ThrottlePower = Throttle;
             vehicle.BrakePower = Brake;
@@ -163,13 +166,13 @@ namespace FusionLibrary
             vehicle.Mods.WindowTint = WindowTint;
             vehicle.Mods.Livery = Livery;
 
-            if (!noMods)
+            if (!spawnFlags.HasFlag(SpawnFlags.NoMods))
             {
                 if (Extras != null)
                 {
-                    for (int i = 1; i <= Extras.Count; i++)
+                    for (int i = 0; i < Extras.Count; i++)
                     {
-                        vehicle.ToggleExtra(i, Extras[i]);
+                        vehicle.ToggleExtra(i+1, Extras[i]);
                     }
                 }
 
@@ -189,20 +192,23 @@ namespace FusionLibrary
             vehicle.CurrentRPM = RPM;
             vehicle.CurrentGear = Gear;
 
-            if (noOccupants)
+            if (spawnFlags.HasFlag(SpawnFlags.NoOccupants))
             {
                 return;
             }
 
             foreach (PedReplica pedReplica in Occupants)
             {
+                if (pedReplica.Seat == VehicleSeat.Driver && spawnFlags.HasFlag(SpawnFlags.NoDriver))
+                    continue;
+
                 pedReplica.Spawn(vehicle);
             }
         }
 
         public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
         {
-            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants), spawnFlags.HasFlag(SpawnFlags.NoMods));
+            ApplyToPrivate(vehicle, spawnFlags);
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
@@ -236,7 +242,7 @@ namespace FusionLibrary
 
         public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, VehicleReplica nextReplica = default, float adjustedRatio = 0)
         {
-            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants), spawnFlags.HasFlag(SpawnFlags.NoMods));
+            ApplyToPrivate(vehicle, spawnFlags);
 
             if (nextReplica == default || nextReplica == null)
             {
