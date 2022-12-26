@@ -177,7 +177,7 @@ namespace FusionLibrary
                 Function.Call(Hash.SET_ROADS_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
 
             if (state)
-                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE); 
+                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE);
             else
                 Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
 
@@ -287,7 +287,7 @@ namespace FusionLibrary
                 Function.Call(Hash.SET_CLOCK_TIME, 8, 0, 0);
 
                 return new DateTime(1985, 9, 21, 8, 0, 0);
-            }            
+            }
         }
 
         /// <summary>

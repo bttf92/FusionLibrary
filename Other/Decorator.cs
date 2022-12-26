@@ -160,14 +160,14 @@ namespace FusionLibrary
         {
             bool ret = false;
 
-            for(int i = 0; i < 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 ret = SetFloat(propertyName + i.ToString(), value[i]);
 
                 if (!ret)
                     break;
             }
-                
+
             return ret;
         }
 
@@ -190,7 +190,7 @@ namespace FusionLibrary
         }
 
         public static bool Register(string propertyName, DecorType decorType)
-        {            
+        {
             if (IsRegistered(propertyName, decorType))
             {
                 return true;
@@ -206,8 +206,8 @@ namespace FusionLibrary
                 Register(propertyName, DecorType.Float);
 
                 for (int i = 0; i < 3; i++)
-                    Register(propertyName + i.ToString(), DecorType.Float);                    
-            } 
+                    Register(propertyName + i.ToString(), DecorType.Float);
+            }
             else
             {
                 Function.Call(Hash.DECOR_REGISTER, propertyName, (int)decorType);

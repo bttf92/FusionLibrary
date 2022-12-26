@@ -90,15 +90,15 @@ namespace FusionLibrary
         /// <summary>
         /// Returns the current hovered <see cref="InteractiveProp"/>.
         /// </summary>
-        public InteractiveProp CurrentHoverProp 
-        { 
+        public InteractiveProp CurrentHoverProp
+        {
             get
             {
                 if (CurrentHoverID == -1)
                     return null;
 
                 return InteractiveProps[CurrentHoverID];
-            } 
+            }
         }
 
         /// <summary>

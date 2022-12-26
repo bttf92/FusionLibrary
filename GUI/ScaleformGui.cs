@@ -126,7 +126,7 @@ namespace FusionLibrary
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
             Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
-            
+
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE_3D_SOLID, Handle, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, 2.0f, 2.0f, 1.0f, scale.X, scale.Y, scale.Z, 2);
         }
 

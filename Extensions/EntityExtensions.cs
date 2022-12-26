@@ -2,11 +2,9 @@
 using GTA;
 using GTA.Math;
 using GTA.Native;
-using GTA.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using static FusionLibrary.FusionEnums;
 #pragma warning disable CS0618 // Type or member is obsolete
 
@@ -189,7 +187,7 @@ namespace FusionLibrary.Extensions
             {
                 return AlphaLevel.L4;
             }
-                
+
             return AlphaLevel.L5;
         }
 
@@ -434,7 +432,7 @@ namespace FusionLibrary.Extensions
 
             return newVehicle;
         }
-        
+
         /// <summary>
         /// Sets wheel with <paramref name="id"/> of <paramref name="vehicle"/> at given <paramref name="height"/>.
         /// </summary>

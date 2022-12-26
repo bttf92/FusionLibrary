@@ -172,7 +172,7 @@ namespace FusionLibrary
                 {
                     for (int i = 0; i < Extras.Count; i++)
                     {
-                        vehicle.ToggleExtra(i+1, Extras[i]);
+                        vehicle.ToggleExtra(i + 1, Extras[i]);
                     }
                 }
 

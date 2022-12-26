@@ -55,14 +55,16 @@ namespace FusionLibrary
         }
 
         public static void Load(string path = ModelSwapFile)
-        {           
+        {
             TextReader reader = new StreamReader(path);
             ModelSwaps modelSwaps = (ModelSwaps)xmlSerializer.Deserialize(reader);
             reader.Close();
 
             foreach (ModelSwap modelSwap in modelSwaps)
+            {
                 if (!ModelSwaps.Contains(modelSwap))
                     ModelSwaps.Add(modelSwap);
+            }
         }
     }
 }
