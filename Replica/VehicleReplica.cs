@@ -4,6 +4,7 @@ using GTA;
 using GTA.Math;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -24,7 +25,7 @@ namespace FusionLibrary
         public VehicleWindowTint WindowTint { get; }
         public int Livery { get; }
         public List<bool> Extras { get; }
-        public List<int> Mods { get; }
+        public Dictionary<VehicleModType, int> Mods { get; }
         public List<PedReplica> Occupants { get; }
 
         public float Handbrake { get; }
@@ -64,11 +65,11 @@ namespace FusionLibrary
                     Extras.Add(vehicle.IsExtraOn(x));
                 }
 
-                Mods = new List<int>();
+                Mods = new Dictionary<VehicleModType, int>();
 
                 foreach (VehicleModType x in (VehicleModType[])Enum.GetValues(typeof(VehicleModType)))
                 {
-                    Mods.Add(vehicle.Mods[x].Index);
+                    Mods.Add(x, vehicle.Mods[x].Index);
                 }
             }
 
@@ -140,7 +141,7 @@ namespace FusionLibrary
             return veh;
         }
 
-        private void ApplyTo2(Vehicle vehicle, bool noOccupants)
+        private void ApplyTo2(Vehicle vehicle, bool noOccupants, bool noMods)
         {
             vehicle.ThrottlePower = Throttle;
             vehicle.BrakePower = Brake;
@@ -162,21 +163,23 @@ namespace FusionLibrary
             vehicle.Mods.WindowTint = WindowTint;
             vehicle.Mods.Livery = Livery;
 
-            if (Extras != null)
+            if (!noMods)
             {
-                for (int x = 0; x < 13; x++)
+                if (Extras != null)
                 {
-                    if (vehicle.IsExtraOn(x + 1) != Extras[x])
+                    for (int i = 1; i <= Extras.Count; i++)
                     {
-                        vehicle.ToggleExtra(x + 1, Extras[x]);
+                        vehicle.ToggleExtra(i, Extras[i]);
                     }
                 }
 
-                for (int x = 0; x < Mods.Count; x++)
+                if (Mods != null)
                 {
-                    if (vehicle.Mods[(VehicleModType)x].Index != Mods[x])
+                    for (int i = 0; i < Mods.Count; i++)
                     {
-                        vehicle.Mods[(VehicleModType)x].Index = Mods[x];
+                        var x = Mods.ElementAt(i);
+
+                        vehicle.Mods[x.Key].Index = x.Value;
                     }
                 }
             }
@@ -199,7 +202,7 @@ namespace FusionLibrary
 
         public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default)
         {
-            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants));
+            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants), spawnFlags.HasFlag(SpawnFlags.NoMods));
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoPosition))
             {
@@ -233,7 +236,7 @@ namespace FusionLibrary
 
         public void ApplyTo(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default, VehicleReplica nextReplica = default, float adjustedRatio = 0)
         {
-            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants));
+            ApplyTo2(vehicle, spawnFlags.HasFlag(SpawnFlags.NoOccupants), spawnFlags.HasFlag(SpawnFlags.NoMods));
 
             if (nextReplica == default || nextReplica == null)
             {
