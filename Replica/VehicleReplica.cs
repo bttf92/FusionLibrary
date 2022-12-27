@@ -146,6 +146,8 @@ namespace FusionLibrary
 
         private void ApplyToPrivate(Vehicle vehicle, SpawnFlags spawnFlags)
         {
+            vehicle.IsVisible = IsVisible;
+
             vehicle.ThrottlePower = Throttle;
             vehicle.BrakePower = Brake;
             VehicleControl.SetHandbrake(vehicle, Handbrake);
