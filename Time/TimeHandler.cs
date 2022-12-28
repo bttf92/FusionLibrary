@@ -10,7 +10,7 @@ namespace FusionLibrary
     public delegate void OnTimeChanged(DateTime time);
     public delegate void OnDayNightChange();
 
-    public class TimeHandler
+    public class TimeHandler : Script
     {
         public static List<Vehicle> UsedVehiclesByPlayer { get; } = new List<Vehicle>();
         private static readonly List<Vehicle> RemoveUsedVehicle = new List<Vehicle>();
@@ -38,23 +38,18 @@ namespace FusionLibrary
         private static bool realTime;
         private static int realSecond;
 
-        public static void SetTimer(ScriptTimer scriptTimer, int value)
+        public TimeHandler() 
         {
-            Function.Call(scriptTimer == ScriptTimer.A ? Hash.SETTIMERA : Hash.SETTIMERB, value);
+            Tick += TimeHandler_Tick;
         }
 
-        public static int GetTimer(ScriptTimer scriptTimer)
-        {
-            return Function.Call<int>(scriptTimer == ScriptTimer.A ? Hash.TIMERA : Hash.TIMERB);
-        }
-
-        internal static void Tick()
+        private void TimeHandler_Tick(object sender, EventArgs e)
         {
             if (realTime)
             {
                 World.IsClockPaused = true;
 
-                if (Game.GameTime > realSecond)
+                if (Game.GameTime >= realSecond)
                 {
                     Function.Call(Hash.ADD_TO_CLOCK_TIME, 0, 0, 1);
                     realSecond = Game.GameTime + 1000;
@@ -128,6 +123,16 @@ namespace FusionLibrary
             Function.Call(Hash.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
             Function.Call(Hash.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
             Function.Call(Hash.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME, vehDensity);
+        }
+
+        public static void SetTimer(ScriptTimer scriptTimer, int value)
+        {
+            Function.Call(scriptTimer == ScriptTimer.A ? Hash.SETTIMERA : Hash.SETTIMERB, value);
+        }
+
+        public static int GetTimer(ScriptTimer scriptTimer)
+        {
+            return Function.Call<int>(scriptTimer == ScriptTimer.A ? Hash.TIMERA : Hash.TIMERB);
         }
 
         public static void TimeTravelTo(DateTime destinationTime)
