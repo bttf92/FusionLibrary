@@ -83,7 +83,7 @@ namespace FusionLibrary
                 dir = Direction;
             }
 
-            Function.Call(Hash._DRAW_SPOT_LIGHT_WITH_SHADOW, pos.X, pos.Y, pos.Z, dir.X, dir.Y, dir.Z, Color.R, Color.G, Color.B, Distance, Brightness, Roundness, Radius, Fadeout, shadowId);
+            Function.Call(Hash.DRAW_SHADOWED_SPOT_LIGHT, pos.X, pos.Y, pos.Z, dir.X, dir.Y, dir.Z, Color.R, Color.G, Color.B, Distance, Brightness, Roundness, Radius, Fadeout, shadowId);
         }
     }
 }

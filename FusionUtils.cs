@@ -251,7 +251,7 @@ namespace FusionLibrary
         {
             _padShakeStop = Game.GameTime + duration;
 
-            Function.Call(Hash.SET_PAD_SHAKE, 0, duration, frequency);
+            Function.Call(Hash.SET_CONTROL_SHAKE, 0, duration, frequency);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace FusionLibrary
         {
             _padShakeStop = 0;
 
-            Function.Call(Hash.STOP_PAD_SHAKE);
+            Function.Call(Hash.STOP_CONTROL_SHAKE);
         }
 
         /// <summary>

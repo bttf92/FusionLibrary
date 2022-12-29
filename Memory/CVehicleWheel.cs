@@ -153,7 +153,7 @@ namespace FusionLibrary
                 decorator.Grip = value;
 
                 Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP, vehicle1, value != 0);
-                Function.Call(Hash._SET_VEHICLE_REDUCE_TRACTION, vehicle1, value);
+                Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP_LEVEL, vehicle1, value);
             }
         }
     }

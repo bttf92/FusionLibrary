@@ -30,6 +30,9 @@ namespace FusionLibrary
 
             set
             {
+                if (realTime == value) 
+                    return;
+
                 realTime = value;
                 realSecond = Game.GameTime + 1000;
                 World.IsClockPaused = value;
@@ -58,7 +61,6 @@ namespace FusionLibrary
 
             UsedVehiclesByPlayer.ForEach(x =>
             {
-                // || x.IsDMC12TimeMachine()
                 if (!x.IsFunctioning() || x.Decorator().RemoveFromUsed)
                 {
                     RemoveUsedVehicle.Add(x);
@@ -71,7 +73,6 @@ namespace FusionLibrary
                 RemoveUsedVehicle.Clear();
             }
 
-            // && !FusionUtils.PlayerVehicle.IsDMC12TimeMachine()
             if (FusionUtils.PlayerVehicle.IsFunctioning() && !FusionUtils.PlayerVehicle.IsTrain && !FusionUtils.PlayerVehicle.Decorator().DrivenByPlayer && !FusionUtils.PlayerVehicle.Decorator().RemoveFromUsed && !UsedVehiclesByPlayer.Contains(FusionUtils.PlayerVehicle))
             {
                 UsedVehiclesByPlayer.Add(FusionUtils.PlayerVehicle);

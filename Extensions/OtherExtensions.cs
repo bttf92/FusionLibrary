@@ -39,7 +39,7 @@ namespace FusionLibrary.Extensions
                 return;
             }
 
-            Function.Call(Hash._ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, relativeRotation, rotation.X, rotation.Y, rotation.Z, offset.X, offset.Y, offset.Z, fixedDirection);
+            Function.Call(Hash.ATTACH_CAM_TO_VEHICLE_BONE, camera, vehicle, vehicle.Bones[bone].Index, relativeRotation, rotation.X, rotation.Y, rotation.Z, offset.X, offset.Y, offset.Z, fixedDirection);
         }
 
         /// <summary>

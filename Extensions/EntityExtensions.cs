@@ -441,7 +441,7 @@ namespace FusionLibrary.Extensions
         /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(this Vehicle vehicle, VehicleWheelBoneId id, float height)
         {
-            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicle, vehicle.Wheels[id].Index, height);
+            Function.Call(Hash.SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR, vehicle, vehicle.Wheels[id].Index, height);
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace FusionLibrary.Extensions
         /// <param name="height">Height of the wheel.</param>
         public static void LiftUpWheel(this VehicleWheel vehicleWheel, float height)
         {
-            Function.Call(Hash._SET_HYDRAULIC_WHEEL_VALUE, vehicleWheel.Vehicle, vehicleWheel.Index, height);
+            Function.Call(Hash.SET_HYDRAULIC_SUSPENSION_RAISE_FACTOR, vehicleWheel.Vehicle, vehicleWheel.Index, height);
         }
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace FusionLibrary.Extensions
         /// <param name="lightsMode"><see cref="LightsMode"/> to be applied.</param>
         public static void SetLightsMode(this Vehicle vehicle, LightsMode lightsMode)
         {
-            Function.Call(Hash._SET_VEHICLE_LIGHTS_MODE, vehicle, lightsMode);
+            Function.Call(Hash.SET_VEHICLE_HEADLIGHT_SHADOWS, vehicle, lightsMode);
             Function.Call(Hash.SET_VEHICLE_LIGHTS, vehicle, lightsMode);
         }
 
