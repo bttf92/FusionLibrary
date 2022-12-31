@@ -263,7 +263,7 @@ namespace FusionLibrary.Memory
 
         public static void SetDeluxoTransformation(Vehicle v, float transformation)
         {
-            if (deluxoTransformationOffset == 0)
+            if (deluxoTransformationOffset == 0 || !v.NotNullAndExists())
             {
                 return;
             }
@@ -274,7 +274,7 @@ namespace FusionLibrary.Memory
 
         public static float GetDeluxoTransformation(Vehicle v)
         {
-            if (deluxoTransformationOffset == 0)
+            if (deluxoTransformationOffset == 0 || !v.NotNullAndExists())
             {
                 return -1f;
             }
@@ -285,7 +285,7 @@ namespace FusionLibrary.Memory
 
         public static void SetDeluxoFlyMode(Vehicle v, float mode)
         {
-            if (deluxoFlyModeOffset == 0)
+            if (deluxoFlyModeOffset == 0 || !v.NotNullAndExists())
             {
                 return;
             }
@@ -296,7 +296,7 @@ namespace FusionLibrary.Memory
 
         public static float GetDeluxoFlyMode(Vehicle v)
         {
-            if (deluxoFlyModeOffset == 0)
+            if (deluxoFlyModeOffset == 0 || !v.NotNullAndExists())
             {
                 return -1f;
             }
