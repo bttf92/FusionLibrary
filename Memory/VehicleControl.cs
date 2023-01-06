@@ -13,7 +13,7 @@ namespace FusionLibrary.Memory
         public float TyreWidth;
     };
 
-    public unsafe class VehicleControl
+    public unsafe static class VehicleControl
     {
         private static readonly int throttlePOffset;
         private static readonly int brakePOffset;
