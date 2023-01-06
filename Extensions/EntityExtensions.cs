@@ -793,16 +793,6 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
-        /// Checks if <paramref name="vehicle"/> can theoretically hover transform.
-        /// </summary>
-        /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
-        /// <returns><see langword="true"/> if <paramref name="vehicle"/> can theoretically hover transform; otherwise <see langword="false"/>.</returns>
-        public static bool CanHoverTransform(this Vehicle vehicle)
-        {
-            return (vehicle.Bones["misc_a"].Index != 0 && vehicle.Bones["misc_b"].Index != -1 && vehicle.Bones["misc_c"].Index != 0 && vehicle.Bones["misc_e"].Index != -1 && vehicle.Bones["misc_q"].Index != -1 && vehicle.Bones["misc_s"].Index != -1 && vehicle.Bones["misc_z"].Index != -1);
-        }
-
-        /// <summary>
         /// Sets lights brightness of <paramref name="vehicle"/>.
         /// </summary>
         /// <param name="vehicle">Instance of a <see cref="Vehicle"/>.</param>
