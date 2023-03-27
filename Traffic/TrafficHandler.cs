@@ -1,4 +1,4 @@
-using GTA;
+﻿using GTA;
 using GTA.Native;
 using System;
 using System.IO;

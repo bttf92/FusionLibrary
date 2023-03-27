@@ -13,7 +13,12 @@ namespace FusionLibrary
     public class VehicleReplica : EntityReplica
     {
         public float EngineHealth { get; }
+        public float EnginePowerMultiplier { get; }
         public bool EngineRunning { get; }
+        public int HighGear { get; }
+        public bool Turbo { get; }
+        public bool TireSmoke { get; }
+        public bool XenonLights { get; }
         public VehicleColor PrimaryColor { get; }
         public VehicleColor SecondaryColor { get; }
         public VehicleColor InteriorColor { get; }
@@ -44,7 +49,12 @@ namespace FusionLibrary
         public VehicleReplica(Vehicle vehicle, SpawnFlags spawnFlags = SpawnFlags.Default) : base(vehicle)
         {
             EngineHealth = vehicle.EngineHealth;
+            EnginePowerMultiplier = vehicle.EnginePowerMultiplier;
             EngineRunning = vehicle.IsEngineRunning;
+            HighGear = vehicle.HighGear;
+            TireSmoke = vehicle.Mods[VehicleToggleModType.TireSmoke].IsInstalled;
+            Turbo = vehicle.Mods[VehicleToggleModType.Turbo].IsInstalled;
+            XenonLights = vehicle.Mods[VehicleToggleModType.XenonHeadlights].IsInstalled;
             WheelType = vehicle.Mods.WheelType;
             PrimaryColor = vehicle.Mods.PrimaryColor;
             SecondaryColor = vehicle.Mods.SecondaryColor;
@@ -157,6 +167,11 @@ namespace FusionLibrary
 
             vehicle.HealthFloat = Health;
             vehicle.EngineHealth = EngineHealth;
+            vehicle.EnginePowerMultiplier = EnginePowerMultiplier;
+            vehicle.HighGear = HighGear;
+            vehicle.Mods[VehicleToggleModType.TireSmoke].IsInstalled = TireSmoke;
+            vehicle.Mods[VehicleToggleModType.Turbo].IsInstalled = Turbo;
+            vehicle.Mods[VehicleToggleModType.XenonHeadlights].IsInstalled = XenonLights;
             vehicle.Mods.WheelType = WheelType;
             vehicle.Mods.PrimaryColor = PrimaryColor;
             vehicle.Mods.SecondaryColor = SecondaryColor;
@@ -170,6 +185,8 @@ namespace FusionLibrary
 
             if (!spawnFlags.HasFlag(SpawnFlags.NoMods))
             {
+                vehicle.Mods.InstallModKit();
+
                 if (Extras != null)
                 {
                     for (int i = 0; i < Extras.Count; i++)
