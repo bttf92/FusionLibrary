@@ -40,8 +40,8 @@ namespace FusionLibrary.Memory
             brakePOffset = addr == null ? 0 : *(int*)(addr + 6) + 0x14;
             steeringAngleOffset = addr == null ? 0 : *(int*)(addr + 6) + 8;
 
-            addr = MemoryFunctions.FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
-            handbrakeOffset = addr == null ? 0 : *(int*)(addr + 3);
+            addr = MemoryFunctions.FindPattern("\x8A\xC2\x24\x01\xC0\xE0\x04\x08\x81", "xxxxxxxxx");
+            handbrakeOffset = addr == null ? 0 : *(int*)(addr + 19);
 
             addr = MemoryFunctions.FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88", "xxxx????xxxxxxx");
             handlingOffset = addr == null ? 0 : *(int*)(addr + 0x16);
