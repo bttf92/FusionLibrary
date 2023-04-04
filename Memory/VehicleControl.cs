@@ -126,25 +126,25 @@ namespace FusionLibrary.Memory
             return *(ulong*)(address + (ulong)wheelsPtrOffset);
         }
 
-        public static void SetHandbrake(Vehicle vehicle, float brake)
+        public static void SetHandbrake(Vehicle vehicle, bool brake)
         {
             if (handbrakeOffset == 0)
             {
                 return;
             }
 
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
+            bool* address = (bool*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             *address = brake;
         }
 
-        public static float GetHandbrake(Vehicle vehicle)
+        public static bool GetHandbrake(Vehicle vehicle)
         {
             if (handbrakeOffset == 0)
             {
-                return 0.0f;
+                return false;
             }
 
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
+            bool* address = (bool*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             return *address;
         }
 

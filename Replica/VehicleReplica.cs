@@ -33,7 +33,7 @@ namespace FusionLibrary
         public Dictionary<VehicleModType, int> Mods { get; }
         public List<PedReplica> Occupants { get; }
 
-        public float Handbrake { get; }
+        public bool Handbrake { get; }
         public float RPM { get; }
         public int Gear { get; }
         public float Throttle { get; }
