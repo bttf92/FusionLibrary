@@ -15,15 +15,10 @@ namespace FusionLibrary.Memory
 
     public unsafe static class VehicleControl
     {
-        private static readonly int throttlePOffset;
-        private static readonly int brakePOffset;
         private static readonly int handbrakeOffset;
-        private static readonly int steeringAngleOffset;
         private static readonly int handlingOffset;
-        private static readonly int fuelLevelOffset;
 
         private static readonly int wheelsPtrOffset;
-        private static readonly int numWheelsOffset;
 
         private static readonly int wheelSteeringAngleOffset;
         private static readonly int wheelAngularVelocityOffset;
@@ -39,26 +34,17 @@ namespace FusionLibrary.Memory
 
         static VehicleControl()
         {
-            byte* addr = MemoryFunctions.FindPattern("\x74\x0A\xF3\x0F\x11\xB3\x1C\x09\x00\x00\xEB\x25", "xxxxxx????xx");
-            throttlePOffset = addr == null ? 0 : *(int*)(addr + 6) + 0x10;
-            brakePOffset = addr == null ? 0 : *(int*)(addr + 6) + 0x14;
-            steeringAngleOffset = addr == null ? 0 : *(int*)(addr + 6) + 8;
-
-            addr = MemoryFunctions.FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
-            handbrakeOffset = addr == null ? 0 : *(int*)(addr + 3);
+            byte* addr = MemoryFunctions.FindPattern("\x8A\xC2\x24\x01\xC0\xE0\x04\x08\x81", "xxxxxxxxx");
+            handbrakeOffset = addr == null ? 0 : *(int*)(addr + 19);
 
             addr = MemoryFunctions.FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88", "xxxx????xxxxxxx");
             handlingOffset = addr == null ? 0 : *(int*)(addr + 0x16);
 
             addr = MemoryFunctions.FindPattern("\x3B\xB7\x48\x0B\x00\x00\x7D\x0D", "xx????xx");
             wheelsPtrOffset = addr == null ? 0 : *(int*)(addr + 2) - 8;
-            numWheelsOffset = addr == null ? 0 : *(int*)(addr + 2);
 
-            addr = MemoryFunctions.FindPattern("\x0F\x2F\x81\xBC\x01\x00\x00\x0F\x97\xC0\xEB\xDA", "xx???xxxxxxx");
+            addr = MemoryFunctions.FindPattern("\x0F\x2F\x81\xBC\x01\x00\x00\x0F\x97\xC0\xEB\x00\xD1\x00", "xx???xxxxxx?x?");
             wheelSteeringAngleOffset = addr == null ? 0 : *(int*)(addr + 3);
-
-            addr = MemoryFunctions.FindPattern("\x74\x26\x0F\x57\xC9", "xxxxx");
-            fuelLevelOffset = addr == null ? 0 : *(int*)(addr + 8);
 
             addr = MemoryFunctions.FindPattern("\x45\x0f\x57\xc9\xf3\x0f\x11\x83\x60\x01\x00\x00\xf3\x0f\x5c", "xxx?xxx???xxxxx");
             wheelSuspensionCompressionOffset = addr == null ? 0 : *(int*)(addr + 8);
@@ -153,124 +139,25 @@ namespace FusionLibrary.Memory
             return *(ulong*)(address + (ulong)wheelsPtrOffset);
         }
 
-        public static sbyte GetNumWheels(Vehicle vehicle)
-        {
-            if (numWheelsOffset == 0 || !vehicle.NotNullAndExists())
-            {
-                return 0;
-            }
-
-            sbyte* address = (sbyte*)((ulong)vehicle.MemoryAddress + (ulong)numWheelsOffset);
-            return *address;
-        }
-
-        public static void SetThrottle(Vehicle vehicle, float throttle)
-        {
-            if (throttlePOffset == 0)
-            {
-                return;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
-            *address = throttle;
-        }
-
-        public static float GetThrottle(Vehicle vehicle)
-        {
-            if (throttlePOffset == 0)
-            {
-                return -1f;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
-            return *address;
-        }
-
-        public static void SetBrake(Vehicle vehicle, float brake)
-        {
-            if (brakePOffset == 0)
-            {
-                return;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
-            *address = brake;
-        }
-
-        public static float GetBrake(Vehicle vehicle)
-        {
-            if (brakePOffset == 0)
-            {
-                return 0.0f;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
-            return *address;
-        }
-
-        public static void SetHandbrake(Vehicle vehicle, float brake)
+        public static void SetHandbrake(Vehicle vehicle, bool brake)
         {
             if (handbrakeOffset == 0)
             {
                 return;
             }
 
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
+            bool* address = (bool*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             *address = brake;
         }
 
-        public static float GetHandbrake(Vehicle vehicle)
+        public static bool GetHandbrake(Vehicle vehicle)
         {
             if (handbrakeOffset == 0)
             {
-                return 0.0f;
+                return false;
             }
 
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
-            return *address;
-        }
-
-        public static void SetFuelLevel(Vehicle vehicle, float fuelLevel)
-        {
-            if (fuelLevelOffset == 0)
-            {
-                return;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)fuelLevelOffset);
-            *address = fuelLevel;
-        }
-
-        public static float GetFuelLevel(Vehicle vehicle)
-        {
-            if (fuelLevelOffset == 0)
-            {
-                return 0;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)fuelLevelOffset);
-            return *address;
-        }
-
-        public static void SetSteeringAngle(Vehicle vehicle, float angle)
-        {
-            if (steeringAngleOffset == 0)
-            {
-                return;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
-            *address = angle;
-        }
-
-        public static float GetSteeringAngle(Vehicle vehicle)
-        {
-            if (steeringAngleOffset == 0)
-            {
-                return -999f;
-            }
-
-            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
+            bool* address = (bool*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
             return *address;
         }
 
@@ -339,7 +226,7 @@ namespace FusionLibrary.Memory
         public static float[] GetWheelRotationSpeeds(Vehicle handle)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             float[] speeds = new float[numWheels];
 
@@ -348,7 +235,7 @@ namespace FusionLibrary.Memory
                 return speeds;
             }
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 speeds[i] = -*(float*)(wheelAddr + (ulong)wheelAngularVelocityOffset);
@@ -359,14 +246,14 @@ namespace FusionLibrary.Memory
         public static void SetWheelRotationSpeeds(Vehicle handle, float[] rotations)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             if (wheelAngularVelocityOffset == 0 || !handle.NotNullAndExists())
             {
                 return;
             }
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 *(float*)(wheelAddr + (ulong)wheelAngularVelocityOffset) = rotations[i];
@@ -376,7 +263,7 @@ namespace FusionLibrary.Memory
         public static float[] GetWheelRotations(Vehicle handle)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             float[] speeds = new float[numWheels];
 
@@ -385,7 +272,7 @@ namespace FusionLibrary.Memory
                 return speeds;
             }
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 speeds[i] = *(float*)(wheelAddr + (ulong)wheelAngleOffset);
@@ -396,7 +283,7 @@ namespace FusionLibrary.Memory
         public static void SetWheelRotation(Vehicle handle, int index, float rotation)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             if (wheelAngleOffset == 0 || !handle.NotNullAndExists() || wheelPtr == 0 || numWheels == 0)
             {
@@ -410,7 +297,7 @@ namespace FusionLibrary.Memory
         public static float[] GetWheelCompressions(Vehicle handle)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             float[] speeds = new float[numWheels];
 
@@ -419,7 +306,7 @@ namespace FusionLibrary.Memory
                 return speeds;
             }
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 speeds[i] = *(float*)(wheelAddr + (ulong)wheelSuspensionCompressionOffset);
@@ -430,7 +317,6 @@ namespace FusionLibrary.Memory
         public static void SetWheelCompression(Vehicle handle, int index, float rotation)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
 
             if (wheelSuspensionCompressionOffset == 0)
             {
@@ -444,14 +330,14 @@ namespace FusionLibrary.Memory
         public static WheelDimensions[] GetWheelDimensions(Vehicle handle)
         {
             ulong wheelPtr = GetWheelsPtr(handle);
-            sbyte numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
 
             WheelDimensions[] dimensionsSet = new WheelDimensions[numWheels];
             ulong offTyreRadius = 0x110;
             ulong offRimRadius = 0x114;
             ulong offTyreWidth = 0x118;
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
 
@@ -469,7 +355,7 @@ namespace FusionLibrary.Memory
 
         public static float[] GetTyreSpeeds(Vehicle handle)
         {
-            int numWheels = GetNumWheels(handle);
+            int numWheels = handle.Wheels.Count;
             float[] rotationSpeed = GetWheelRotationSpeeds(handle);
             WheelDimensions[] dimensionsSet = GetWheelDimensions(handle);
             float[] wheelSpeeds = new float[numWheels];
@@ -485,7 +371,7 @@ namespace FusionLibrary.Memory
         public static float[] GetWheelSteeringAngles(Vehicle vehicle)
         {
             ulong wheelPtr = GetWheelsPtr(vehicle);
-            sbyte numWheels = GetNumWheels(vehicle);
+            int numWheels = vehicle.Wheels.Count;
 
             float[] array = new float[numWheels];
 
@@ -494,7 +380,7 @@ namespace FusionLibrary.Memory
                 return array;
             }
 
-            for (sbyte i = 0; i < numWheels; i++)
+            for (int i = 0; i < numWheels; i++)
             {
                 ulong wheelAddr = *(ulong*)(wheelPtr + 0x008 * (ulong)i);
                 array[i] = *(float*)(wheelAddr + (ulong)wheelSteeringAngleOffset);

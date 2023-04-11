@@ -13,7 +13,7 @@ namespace FusionLibrary
         public VehicleSeat Seat { get; }
         public float Armor { get; }
         public int[,] Components { get; private set; } = new int[12, 3];
-        public int[,] Props { get; private set; } = new int[13, 2];
+        public int[,] Props { get; private set; } = new int[5, 2];
         public int Money { get; }
         public List<WeaponReplica> Weapons { get; }
 
@@ -28,17 +28,25 @@ namespace FusionLibrary
 
             Armor = ped.ArmorFloat;
 
-            for (int x = 0; x <= 11; x++)
+            for (int x = 0; x < 12; x++)
             {
                 Components[x, 0] = Function.Call<int>(Hash.GET_PED_DRAWABLE_VARIATION, ped, x);
                 Components[x, 1] = Function.Call<int>(Hash.GET_PED_TEXTURE_VARIATION, ped, x);
                 Components[x, 2] = Function.Call<int>(Hash.GET_PED_PALETTE_VARIATION, ped, x);
             }
 
-            for (int x = 0; x <= 12; x++)
+            for (int x = 0; x < 5; x++)
             {
-                Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
-                Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
+                if (x <= 2)
+                {
+                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x);
+                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x);
+                }
+                else
+                {
+                    Props[x, 0] = Function.Call<int>(Hash.GET_PED_PROP_INDEX, ped, x + 3);
+                    Props[x, 1] = Function.Call<int>(Hash.GET_PED_PROP_TEXTURE_INDEX, ped, x + 3);
+                }
             }
 
             Money = ped.Money;
@@ -56,7 +64,6 @@ namespace FusionLibrary
 
         public void ApplyTo(Ped ped)
         {
-            ped.IsVisible = IsVisible;
             ped.HealthFloat = Health;
             ped.ArmorFloat = Armor;
             ped.Money = Money;
@@ -133,12 +140,12 @@ namespace FusionLibrary
                 x.Give(ped);
             }
 
-            for (int x = 0; x <= 11; x++)
+            for (int x = 0; x < 12; x++)
             {
                 Function.Call(Hash.SET_PED_COMPONENT_VARIATION, ped, x, Components[x, 0], Components[x, 1], Components[x, 2]);
             }
 
-            for (int x = 0; x <= 4; x++)
+            for (int x = 0; x < 5; x++)
             {
                 if (x <= 2)
                 {

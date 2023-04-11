@@ -15,6 +15,7 @@ namespace FusionLibrary
         public float EngineHealth { get; }
         public float EnginePowerMultiplier { get; }
         public bool EngineRunning { get; }
+        public float FuelLevel { get; }
         public int HighGear { get; }
         public bool Turbo { get; }
         public bool TireSmoke { get; }
@@ -33,7 +34,7 @@ namespace FusionLibrary
         public Dictionary<VehicleModType, int> Mods { get; }
         public List<PedReplica> Occupants { get; }
 
-        public float Handbrake { get; }
+        public bool Handbrake { get; }
         public float RPM { get; }
         public int Gear { get; }
         public float Throttle { get; }
@@ -51,6 +52,7 @@ namespace FusionLibrary
             EngineHealth = vehicle.EngineHealth;
             EnginePowerMultiplier = vehicle.EnginePowerMultiplier;
             EngineRunning = vehicle.IsEngineRunning;
+            FuelLevel = vehicle.FuelLevel;
             HighGear = vehicle.HighGear;
             TireSmoke = vehicle.Mods[VehicleToggleModType.TireSmoke].IsInstalled;
             Turbo = vehicle.Mods[VehicleToggleModType.Turbo].IsInstalled;
@@ -206,6 +208,7 @@ namespace FusionLibrary
                 }
             }
 
+            vehicle.FuelLevel = FuelLevel;
             vehicle.IsEngineRunning = EngineRunning;
 
             vehicle.CurrentRPM = RPM;
