@@ -33,6 +33,10 @@ namespace FusionLibrary.Memory
         private static readonly int deluxoTransformationOffset;
         private static readonly int deluxoFlyModeOffset;
 
+        private static readonly int drawHandlerPtrOffset;
+        private static readonly int streamRenderGfxPtrOffset;
+        private static readonly int streamRenderWheelWidthOffset;
+
         static VehicleControl()
         {
             byte* addr = MemoryFunctions.FindPattern("\x74\x0A\xF3\x0F\x11\xB3\x1C\x09\x00\x00\xEB\x25", "xxxxxx????xx");
@@ -64,6 +68,15 @@ namespace FusionLibrary.Memory
             addr = MemoryFunctions.FindPattern("\xF3\x0F\x11\xB3\x00\x00\x00\x00\x44\x88\x00\x00\x00\x00\x00\x48\x85\xC9", "xxxx????xx?????xxx");
             deluxoTransformationOffset = addr == null ? 0 : *(int*)(addr + 4);
             deluxoFlyModeOffset = deluxoTransformationOffset == 0 ? 0 : deluxoTransformationOffset + 4;
+
+            addr = MemoryFunctions.FindPattern("\x44\x0F\x2F\x43\x48\x45\x8D", "xxxxxxx");
+            drawHandlerPtrOffset = addr == null ? 0 : *(byte*)(addr + 4);
+
+            addr = MemoryFunctions.FindPattern("\x4C\x8D\x48\x00\x80\xE1\x01", "xxx?xxx");
+            streamRenderGfxPtrOffset = addr == null ? 0 : *(int*)(addr - 4);
+
+            addr = MemoryFunctions.FindPattern("\x48\x89\x01\xB8\x00\x00\x80\x3F\x66\x44\x89\x51", "xxxxxxxxxxxx");
+            streamRenderWheelWidthOffset = addr == null ? 0 : *(int*)(addr + 23);
         }
 
         public static void SetWheelSize(Vehicle vehicle, float size)
@@ -567,6 +580,45 @@ namespace FusionLibrary.Memory
             brake = Game.IsControlJustPressed(Control.MoveDown);
             float left = Game.GetDisabledControlValueNormalized(Control.MoveLeft).Remap(0, 1f, 0, limitRadians);
             steer = -left;
+        }
+
+        // note, visual only.
+        public static void SetWheelWidth(Vehicle vehicle, float width)
+        {
+	        IntPtr? address = vehicle?.MemoryAddress;
+
+	        if (address == IntPtr.Zero)
+	        {
+		        return;
+	        }
+
+	        ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
+			ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
+
+			if (streamRenderGfx != 0 && width != 0.0f)
+			{
+				*(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset) = width;
+			}
+		}
+
+        public static float GetWheelWidth(Vehicle vehicle)
+        {
+	        IntPtr? address = vehicle?.MemoryAddress;
+
+	        if (address == IntPtr.Zero)
+	        {
+		        return 0.0f;
+	        }
+
+	        ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
+	        ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
+
+	        if (streamRenderGfx != 0)
+	        {
+		        return *(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset);
+	        }
+
+            return 0.0f;
         }
     }
 }
