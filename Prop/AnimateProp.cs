@@ -229,7 +229,7 @@ namespace FusionLibrary
                 {
                     Prop.IsVisible = value;
                 }
-                else if(value)
+                else if (value == true)
                 {
                     SpawnProp();
                 }
@@ -388,7 +388,7 @@ namespace FusionLibrary
             Model = model;
             Prop?.Delete();
 
-            if (IsSpawned)
+            if (Visible)
             {
                 SpawnProp();
             }

@@ -144,7 +144,7 @@ namespace FusionLibrary
                     }
                     else
                     {
-                        Delete();
+                        Visible = false;
 
                         OnSequenceCompleted?.Invoke(false);
                         return;
@@ -153,7 +153,7 @@ namespace FusionLibrary
 
                 if (currentSequenceProp > -1)
                 {
-                    Props[currentSequenceProp]?.Delete();
+                    Props[currentSequenceProp].Visible = false;
                 }
 
                 if (playedProps.Count == 0)
@@ -165,7 +165,7 @@ namespace FusionLibrary
                     currentSequenceProp = FusionUtils.Random.NextExcept(0, Count, currentSequenceProp);
                 }
 
-                Props[currentSequenceProp]?.SpawnProp();
+                Props[currentSequenceProp].Visible = true;
 
                 playedProps.Add(currentSequenceProp);
 
@@ -178,14 +178,14 @@ namespace FusionLibrary
             {
                 if (IsSequenceLooped)
                 {
-                    Props[currentSequenceProp]?.Delete();
+                    Props[currentSequenceProp].Visible = false;
 
                     currentSequenceProp = -1;
                     playedProps.Clear();
                 }
                 else
                 {
-                    Delete();
+                    Visible = false;
 
                     OnSequenceCompleted?.Invoke(false);
                     return;
@@ -194,12 +194,12 @@ namespace FusionLibrary
 
             if (currentSequenceProp > -1)
             {
-                Props[currentSequenceProp]?.Delete();
+                Props[currentSequenceProp].Visible = false;
             }
 
             currentSequenceProp++;
 
-            Props[currentSequenceProp]?.SpawnProp();
+            Props[currentSequenceProp].Visible = true;
 
             playedProps.Add(currentSequenceProp);
 
