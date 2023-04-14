@@ -216,7 +216,7 @@ namespace FusionLibrary
         {
             get
             {
-                if (Prop != null && Prop.Exists())
+                if (Prop.NotNullAndExists())
                 {
                     return Prop.IsVisible;
                 }
@@ -225,9 +225,13 @@ namespace FusionLibrary
             }
             set
             {
-                if (Prop != null && Prop.Exists())
+                if (Prop.NotNullAndExists())
                 {
                     Prop.IsVisible = value;
+                }
+                else if(value)
+                {
+                    SpawnProp();
                 }
             }
         }
