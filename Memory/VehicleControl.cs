@@ -56,7 +56,7 @@ namespace FusionLibrary.Memory
             deluxoFlyModeOffset = deluxoTransformationOffset == 0 ? 0 : deluxoTransformationOffset + 4;
 
             addr = MemoryFunctions.FindPattern("\x44\x0F\x2F\x43\x48\x45\x8D", "xxxxxxx");
-            drawHandlerPtrOffset = addr == null ? 0 : *(byte*)(addr + 4);
+            drawHandlerPtrOffset = addr == null ? 0 : *(addr + 4);
 
             addr = MemoryFunctions.FindPattern("\x4C\x8D\x48\x00\x80\xE1\x01", "xxx?xxx");
             streamRenderGfxPtrOffset = addr == null ? 0 : *(int*)(addr - 4);
@@ -103,6 +103,45 @@ namespace FusionLibrary.Memory
             }
 
             return *(float*)(CVeh_0x48_0x370 + 0x8);
+        }
+
+        // note, visual only.
+        public static void SetWheelWidth(Vehicle vehicle, float width)
+        {
+            IntPtr? address = vehicle?.MemoryAddress;
+
+            if (address == IntPtr.Zero)
+            {
+                return;
+            }
+
+            ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
+            ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
+
+            if (streamRenderGfx != 0 && width != 0.0f)
+            {
+                *(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset) = width;
+            }
+        }
+
+        public static float GetWheelWidth(Vehicle vehicle)
+        {
+            IntPtr? address = vehicle?.MemoryAddress;
+
+            if (address == IntPtr.Zero)
+            {
+                return 0.0f;
+            }
+
+            ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
+            ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
+
+            if (streamRenderGfx != 0)
+            {
+                return *(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset);
+            }
+
+            return 0.0f;
         }
 
         public static ulong GetHandlingPtr(Vehicle vehicle)
@@ -466,45 +505,6 @@ namespace FusionLibrary.Memory
             brake = Game.IsControlJustPressed(Control.MoveDown);
             float left = Game.GetDisabledControlValueNormalized(Control.MoveLeft).Remap(0, 1f, 0, limitRadians);
             steer = -left;
-        }
-
-        // note, visual only.
-        public static void SetWheelWidth(Vehicle vehicle, float width)
-        {
-	        IntPtr? address = vehicle?.MemoryAddress;
-
-	        if (address == IntPtr.Zero)
-	        {
-		        return;
-	        }
-
-	        ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
-			ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
-
-			if (streamRenderGfx != 0 && width != 0.0f)
-			{
-				*(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset) = width;
-			}
-		}
-
-        public static float GetWheelWidth(Vehicle vehicle)
-        {
-	        IntPtr? address = vehicle?.MemoryAddress;
-
-	        if (address == IntPtr.Zero)
-	        {
-		        return 0.0f;
-	        }
-
-	        ulong drawHandler = *(ulong*)(address + drawHandlerPtrOffset);
-	        ulong streamRenderGfx = *(ulong*)(drawHandler + (uint)streamRenderGfxPtrOffset);
-
-	        if (streamRenderGfx != 0)
-	        {
-		        return *(float*)(streamRenderGfx + (uint)streamRenderWheelWidthOffset);
-	        }
-
-            return 0.0f;
         }
     }
 }
