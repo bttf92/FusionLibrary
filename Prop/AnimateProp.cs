@@ -229,7 +229,7 @@ namespace FusionLibrary
                 {
                     Prop.IsVisible = value;
                 }
-                else if (value == true)
+                else if (value)
                 {
                     SpawnProp();
                 }
