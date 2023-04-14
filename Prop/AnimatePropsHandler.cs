@@ -106,6 +106,16 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// If <see cref="Visible"/> is set to <see langword="false"/>, the <see cref="Props"/> will be deleted.
+        /// </summary>
+        public bool UseDeleteInsteadOfHide
+        {
+            get => Props.TrueForAll(x => x.UseDeleteInsteadOfHide);
+
+            set => Props.ForEach(x => x.UseDeleteInsteadOfHide = value);
+        }
+
+        /// <summary>
         /// <see langword="true"/> if all the <see cref="Props"/> are spawned.
         /// </summary>
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);

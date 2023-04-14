@@ -144,6 +144,11 @@ namespace FusionLibrary
         public bool KeepCollision { get; set; } = true;
 
         /// <summary>
+        /// If <see cref="Visible"/> is set to <see langword="false"/>, the <see cref="Prop"/> will be deleted.
+        /// </summary>
+        public bool UseDeleteInsteadOfHide { get; set; } = false;
+
+        /// <summary>
         /// Can be anything.
         /// </summary>
         public object Tag { get; set; }
@@ -227,7 +232,10 @@ namespace FusionLibrary
             {
                 if (Prop.NotNullAndExists())
                 {
-                    Prop.IsVisible = value;
+                    if (UseDeleteInsteadOfHide && !value)
+                        Delete();
+                    else
+                        Prop.IsVisible = value;
                 }
                 else if (value)
                 {
