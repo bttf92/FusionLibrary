@@ -193,7 +193,8 @@ namespace FusionLibrary
                 {
                     for (int i = 0; i < Extras.Count; i++)
                     {
-                        vehicle.ToggleExtra(i + 1, Extras[i]);
+                        if (vehicle.IsExtraOn(i + 1) != Extras[i])
+                            vehicle.ToggleExtra(i + 1, Extras[i]);
                     }
                 }
 
@@ -203,7 +204,8 @@ namespace FusionLibrary
                     {
                         var x = Mods.ElementAt(i);
 
-                        vehicle.Mods[x.Key].Index = x.Value;
+                        if (vehicle.Mods[x.Key].Index != x.Value)
+                            vehicle.Mods[x.Key].Index = x.Value;
                     }
                 }
             }

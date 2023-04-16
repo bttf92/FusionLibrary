@@ -30,7 +30,7 @@ namespace FusionLibrary
 
             set
             {
-                if (realTime == value) 
+                if (realTime == value)
                     return;
 
                 realTime = value;
@@ -41,7 +41,7 @@ namespace FusionLibrary
         private static bool realTime;
         private static int realSecond;
 
-        public TimeHandler() 
+        public TimeHandler()
         {
             Tick += TimeHandler_Tick;
         }
