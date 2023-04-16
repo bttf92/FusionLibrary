@@ -158,6 +158,7 @@ namespace FusionLibrary
         private bool _playReverse;
         private bool _toBone;
         private EntityBone _bone;
+        private bool _visible;
 
         /// <summary>
         /// Creates a new <see cref="AnimateProp"/> instance.
@@ -221,15 +222,20 @@ namespace FusionLibrary
         {
             get
             {
-                if (Prop.NotNullAndExists())
+                if (Prop.NotNullAndExists() && Prop.IsVisible != _visible)
                 {
-                    return Prop.IsVisible;
+                    if (Entity.NotNullAndExists() && !Entity.IsVisible)
+                        return _visible;
+
+                    _visible = Prop.IsVisible;
                 }
 
-                return false;
+                return _visible;
             }
             set
             {
+                _visible = value;
+
                 if (Prop.NotNullAndExists())
                 {
                     if (UseDeleteInsteadOfHide && !value)
@@ -237,7 +243,7 @@ namespace FusionLibrary
                     else
                         Prop.IsVisible = value;
                 }
-                else if (value)
+                else if (value && !IsSpawned)
                 {
                     SpawnProp();
                 }
@@ -592,6 +598,16 @@ namespace FusionLibrary
                 return;
             }
 
+            if (!Entity.IsVisible && Prop.IsVisible)
+            {
+                Prop.IsVisible = false;
+            }
+
+            if (Entity.IsVisible && !Prop.IsVisible && _visible)
+            {
+                Prop.IsVisible = true;
+            }
+
             if (Duration > 0)
             {
                 _currentTime += Game.LastFrameTime;
@@ -713,6 +729,7 @@ namespace FusionLibrary
             Prop.IsPersistent = true;
 
             IsSpawned = true;
+            _visible = true;
 
             Attach();
         }
