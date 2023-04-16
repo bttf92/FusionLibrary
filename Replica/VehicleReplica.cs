@@ -5,6 +5,7 @@ using GTA.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using static FusionLibrary.FusionEnums;
 
 namespace FusionLibrary
@@ -102,15 +103,16 @@ namespace FusionLibrary
             WheelsCompressions = VehicleControl.GetWheelCompressions(vehicle);
 
             if (spawnFlags.HasFlag(SpawnFlags.NoOccupants))
-            {
                 return;
-            }
 
             Occupants = new List<PedReplica>();
 
             foreach (Ped x in vehicle.Occupants)
             {
-                if (x.SeatIndex == VehicleSeat.Driver && spawnFlags.HasFlag(SpawnFlags.NoDriver))
+                if (spawnFlags.HasFlag(SpawnFlags.NoDriver) && x.SeatIndex == VehicleSeat.Driver)
+                    continue;
+
+                if (spawnFlags.HasFlag(SpawnFlags.NoPlayer) && x.Handle == FusionUtils.PlayerPed.Handle)
                     continue;
 
                 Occupants.Add(new PedReplica(x));
