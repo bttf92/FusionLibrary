@@ -181,7 +181,7 @@ namespace FusionLibrary
             else
                 Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
 
-            Function.Call((Hash)0xF796359A959DF65D, state);
+            Function.Call(Hash.SET_DISTANT_CARS_ENABLED, state);
             Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, !state);
 
             _trafficAlive = state;
@@ -196,7 +196,7 @@ namespace FusionLibrary
         {
             OutputArgument ret = new OutputArgument();
 
-            Function.Call((Hash)0x16F46FB18C8009E4, position.X, position.Y, position.Z, -1, ret);
+            Function.Call(Hash.GET_POSITION_BY_SIDE_OF_ROAD, position.X, position.Y, position.Z, -1, ret);
 
             return ret.GetResult<Vector3>();
         }
@@ -676,21 +676,21 @@ namespace FusionLibrary
         /// <returns><see langword="true"/> if FPV is enabled; otherwise <see langword="false"/>.</returns>
         public static bool IsCameraInFirstPerson()
         {
-            return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>((Hash)0xF5F1E89A970B7796);
+            return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>(Hash.IS_CINEMATIC_CAM_INPUT_ACTIVE);
         }
 
         public static float RainLevel
         {
-            get => Function.Call<float>((Hash)0x96695E368AD855F3);
+            get => Function.Call<float>(Hash.GET_RAIN_LEVEL);
 
-            set => Function.Call((Hash)0x643E26EA6E024D92, value);
+            set => Function.Call(Hash.SET_RAIN, value);
         }
 
         public static float WindSpeed
         {
-            get => Function.Call<float>((Hash)0xA8CF1CC0AFCD3F12);
+            get => Function.Call<float>(Hash.GET_WIND_SPEED);
 
-            set => Function.Call((Hash)0xEE09ECEDBABE47FC, value);
+            set => Function.Call(Hash.SET_WIND_SPEED, value);
         }
 
         public static float Magnitude(Vector3 vector3)
