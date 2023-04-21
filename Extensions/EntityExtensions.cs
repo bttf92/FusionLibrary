@@ -883,7 +883,7 @@ namespace FusionLibrary.Extensions
         /// <param name="state">State of the lights.</param>
         public static void SetPlayerLights(this Vehicle vehicle, bool state)
         {
-            Function.Call((Hash)0xC45C27EF50F36ADC, vehicle, state);
+            Function.Call(Hash.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS, vehicle, state);
         }
 
         /// <summary>

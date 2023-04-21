@@ -83,10 +83,10 @@ namespace FusionLibrary
             Function.Call(Hash.SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU, DrawInPauseMenu);
 
             // SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT
-            Function.Call((Hash)0x32F34FF7F617643B, Handle, UseLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT, Handle, UseLargeRt);
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
-            Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT, Handle, UseSuperLargeRt);
 
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE_FULLSCREEN, Handle, 255, 255, 255, 255, 0);
         }
@@ -96,10 +96,10 @@ namespace FusionLibrary
             Function.Call(Hash.SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU, DrawInPauseMenu);
 
             // SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT
-            Function.Call((Hash)0x32F34FF7F617643B, Handle, UseLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT, Handle, UseLargeRt);
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
-            Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT, Handle, UseSuperLargeRt);
 
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE, Handle, location.X, location.Y, scale, scale, 255, 255, 255, 255, 0);
         }
@@ -109,10 +109,10 @@ namespace FusionLibrary
             Function.Call(Hash.SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU, DrawInPauseMenu);
 
             // SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT
-            Function.Call((Hash)0x32F34FF7F617643B, Handle, UseLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT, Handle, UseLargeRt);
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
-            Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT, Handle, UseSuperLargeRt);
 
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE, Handle, location.X, location.Y, size.Width, size.Height, 0, 0, 0, 0, 0);
         }
@@ -122,10 +122,10 @@ namespace FusionLibrary
             Function.Call(Hash.SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU, DrawInPauseMenu);
 
             // SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT
-            Function.Call((Hash)0x32F34FF7F617643B, Handle, UseLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT, Handle, UseLargeRt);
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
-            Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT, Handle, UseSuperLargeRt);
 
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE_3D_SOLID, Handle, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, 2.0f, 2.0f, 1.0f, scale.X, scale.Y, scale.Z, 2);
         }
@@ -135,10 +135,10 @@ namespace FusionLibrary
             Function.Call(Hash.SET_SCRIPT_GFX_DRAW_BEHIND_PAUSEMENU, DrawInPauseMenu);
 
             // SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT
-            Function.Call((Hash)0x32F34FF7F617643B, Handle, UseLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_LARGE_RT, Handle, UseLargeRt);
 
             // SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT
-            Function.Call((Hash)0xE6A9F00D4240B519, Handle, UseSuperLargeRt);
+            Function.Call(Hash.SET_SCALEFORM_MOVIE_TO_USE_SUPER_LARGE_RT, Handle, UseSuperLargeRt);
 
             Function.Call(Hash.DRAW_SCALEFORM_MOVIE_3D, Handle, position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, 2.0f, 2.0f, 1.0f, scale.X, scale.Y, scale.Z, 2);
         }

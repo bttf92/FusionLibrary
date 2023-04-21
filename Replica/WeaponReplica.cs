@@ -10,18 +10,18 @@ namespace FusionLibrary
         {
             WeaponHash = weapon.Hash;
             Ammo = weapon.Ammo;
-            IsEquiped = ped.Weapons.Current == weapon;
+            IsEquipped = ped.Weapons.Current == weapon;
             IsAmmoLoaded = weapon.AmmoInClip > 0;
         }
 
         public WeaponHash WeaponHash { get; }
         public int Ammo { get; }
-        public bool IsEquiped { get; }
+        public bool IsEquipped { get; }
         public bool IsAmmoLoaded { get; }
 
         public void Give(Ped ped)
         {
-            ped.Weapons.Give(WeaponHash, Ammo, IsEquiped, IsAmmoLoaded);
+            ped.Weapons.Give(WeaponHash, Ammo, IsEquipped, IsAmmoLoaded);
         }
     }
 }

@@ -18,79 +18,79 @@ namespace FusionLibrary
 
         public static void RemoveDoor(GarageDoor garageDoor)
         {
-            Function.Call((Hash)0x464D8E1427156FE4, garageDoor);
+            Function.Call(Hash.REMOVE_DOOR_FROM_SYSTEM, garageDoor);
         }
 
         public static void RemoveDoor(Hash door)
         {
-            Function.Call((Hash)0x464D8E1427156FE4, door);
+            Function.Call(Hash.REMOVE_DOOR_FROM_SYSTEM, door);
         }
 
         public static bool IsDoorRegistered(GarageDoor garageDoor)
         {
-            return Function.Call<bool>((Hash)0xC153C43EA202C8C1, garageDoor);
+            return Function.Call<bool>(Hash.IS_DOOR_REGISTERED_WITH_SYSTEM, garageDoor);
         }
 
         public static bool IsDoorRegistered(Hash door)
         {
-            return Function.Call<bool>((Hash)0xC153C43EA202C8C1, door);
+            return Function.Call<bool>(Hash.IS_DOOR_REGISTERED_WITH_SYSTEM, door);
         }
 
         public static bool IsDoorClosed(GarageDoor door)
         {
-            return Function.Call<bool>((Hash)0xC531EE8A1145A149, door);
+            return Function.Call<bool>(Hash.IS_DOOR_CLOSED, door);
         }
 
         public static bool IsDoorClosed(Hash door)
         {
-            return Function.Call<bool>((Hash)0xC531EE8A1145A149, door);
+            return Function.Call<bool>(Hash.IS_DOOR_CLOSED, door);
         }
 
         public static float GetDoorOpenRatio(Hash door)
         {
-            return Function.Call<float>((Hash)0x65499865FCA6E5EC, door);
+            return Function.Call<float>(Hash.DOOR_SYSTEM_GET_OPEN_RATIO, door);
         }
 
         public static float GetDoorOpenRatio(GarageDoor garageDoor)
         {
-            return Function.Call<float>((Hash)0x65499865FCA6E5EC, garageDoor);
+            return Function.Call<float>(Hash.DOOR_SYSTEM_GET_OPEN_RATIO, garageDoor);
         }
 
         public static DoorState GetDoorState(GarageDoor garageDoor)
         {
-            return Function.Call<DoorState>((Hash)0x160AA1B32F6139B8, garageDoor);
+            return Function.Call<DoorState>(Hash.DOOR_SYSTEM_GET_DOOR_STATE, garageDoor);
         }
 
         public static DoorState GetDoorState(Hash door)
         {
-            return Function.Call<DoorState>((Hash)0x160AA1B32F6139B8, door);
+            return Function.Call<DoorState>(Hash.DOOR_SYSTEM_GET_DOOR_STATE, door);
         }
 
         public static DoorState GetDoorPendingState(GarageDoor garageDoor)
         {
-            return Function.Call<DoorState>((Hash)0x4BC2854478F3A749, garageDoor);
+            return Function.Call<DoorState>(Hash.DOOR_SYSTEM_GET_DOOR_PENDING_STATE, garageDoor);
         }
 
         public static DoorState GetDoorPendingState(Hash door)
         {
-            return Function.Call<DoorState>((Hash)0x4BC2854478F3A749, door);
+            return Function.Call<DoorState>(Hash.DOOR_SYSTEM_GET_DOOR_PENDING_STATE, door);
         }
 
         public static void SetDoorState(GarageDoor garageDoor, DoorState doorState, bool requestDoor = false, bool forceUpdate = false)
         {
-            Function.Call((Hash)0x6BAB9442830C7F53, garageDoor, doorState, requestDoor, forceUpdate);
+            Function.Call(Hash.DOOR_SYSTEM_SET_DOOR_STATE, garageDoor, doorState, requestDoor, forceUpdate);
         }
 
         public static void SetDoorState(Hash door, DoorState doorState, bool requestDoor = false, bool forceUpdate = false)
         {
-            Function.Call((Hash)0x6BAB9442830C7F53, door, doorState, requestDoor, forceUpdate);
+            Function.Call(Hash.DOOR_SYSTEM_SET_DOOR_STATE, door, doorState, requestDoor, forceUpdate);
         }
 
         public static unsafe Hash FindDoor(Vector3 position, Hash model)
         {
             int ret;
 
-            Function.Call<bool>((Hash)0x589F80B325CC82C5, position.X, position.Y, position.Z, model, &ret);
+            Function.Call<bool>(Hash.DOOR_SYSTEM_FIND_EXISTING_DOOR, position.X, position.Y, position.Z, model, &ret);
 
             return (Hash)ret;
         }
