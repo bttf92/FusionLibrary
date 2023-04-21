@@ -633,7 +633,6 @@ namespace FusionLibrary
         {
             float result = -1;
 
-            position.Z += 2.5f;
             unsafe
             {
                 Function.Call(Hash.GET_GROUND_Z_FOR_3D_COORD, position.X, position.Y, position.Z, &result, false);
@@ -706,7 +705,8 @@ namespace FusionLibrary
         /// <returns><see langword="true"/> wheel is on rail tracks; otherwise <see langword="false"/>.</returns>
         internal static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
         {
-            RaycastResult ret = World.Raycast(pos, pos.GetSingleOffset(Coordinate.Z, -1), IntersectFlags.Map, vehicle);
+            float diff = GetPositionOnGround(pos, 0).Z - pos.Z;
+            RaycastResult ret = World.Raycast(pos, pos.GetSingleOffset(Coordinate.Z, diff), IntersectFlags.Map, vehicle);
 
             // Tracks materials
             List<MaterialHash> allowedSurfaces = new List<MaterialHash>
