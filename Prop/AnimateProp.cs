@@ -773,6 +773,7 @@ namespace FusionLibrary
         {
             IsSpawned = false;
             IsDetached = false;
+            _visible = false;
             _currentTime = 0;
             AnimationStep = AnimationStep.Off;
 

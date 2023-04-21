@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>FusionLibrary.SHVDN3</id>
-    <version>1.6.8</version>
+    <version>1.6.9</version>
     <authors>MrFusion92</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
