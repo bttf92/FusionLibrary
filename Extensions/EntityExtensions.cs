@@ -230,6 +230,24 @@ namespace FusionLibrary.Extensions
         }
 
         /// <summary>
+        /// Checks to see if the given <paramref name="entity"/> is currently out in the open.
+        /// </summary>
+        /// <param name="entity">Instance of an <see cref="Entity"/>.</param>
+        /// <returns><see langword="true"/> if <paramref name="entity"/> is not obscured overhead; otherwise <see langword="false"/>.</returns>
+        public static bool IsOutInTheOpen(this Entity entity)
+        {
+            float height = entity.Position.Z - FusionUtils.GetPositionOnGround(entity.Position, 0).Z;
+            if (entity.Position.Z + height < World.GetGroundHeight(new Vector2(entity.Position.X, entity.Position.Y)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Checks if <paramref name="taskType"/> is running for <paramref name="ped"/>.
         /// </summary>
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
