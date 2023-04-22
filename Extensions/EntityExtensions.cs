@@ -236,8 +236,7 @@ namespace FusionLibrary.Extensions
         /// <returns><see langword="true"/> if <paramref name="entity"/> is not obscured overhead; otherwise <see langword="false"/>.</returns>
         public static bool IsOutInTheOpen(this Entity entity)
         {
-            float height = entity.Position.Z - FusionUtils.GetPositionOnGround(entity.Position, 0).Z;
-            if (entity.Position.Z + height < World.GetGroundHeight(new Vector2(entity.Position.X, entity.Position.Y)))
+            if (entity.Position.Z + entity.HeightAboveGround < World.GetGroundHeight(new Vector2(entity.Position.X, entity.Position.Y)))
             {
                 return false;
             }
