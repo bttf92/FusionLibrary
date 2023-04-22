@@ -181,10 +181,46 @@ namespace FusionLibrary
             return ret;
         }
 
+        public unsafe bool SetDateTime(string propertyName, DateTime value)
+        {
+            bool ret = false;
+
+            long ticks = value.Ticks;
+
+            ulong ticksBytes = *(ulong*)&ticks;
+            uint ticksLow = (uint)ticksBytes & 0xFFFFFFFF;
+            uint ticksHigh = (uint)(ticksBytes >> 32) & 0xFFFFFFFF;
+
+            ret = SetInt(propertyName + "_LOW", (int)ticksLow);
+            if (!ret)
+                return ret;
+
+            ret = SetInt(propertyName + "_HIGH", (int)ticksHigh);
+
+            return ret;
+        }
+
+        public unsafe DateTime GetDateTime(string propertyName)
+        {
+            int ticksLowSigned = GetInt(propertyName + "_LOW");
+            int ticksHighSigned = GetInt(propertyName + "_HIGH");
+
+            uint ticksLow = *(uint*)&ticksLowSigned;
+            uint ticksHigh = *(uint*)&ticksHighSigned;
+
+            ulong ticksBytes = ticksLow | ((ulong)ticksHigh) << 32;
+
+            long ticks = *(long*)&ticksBytes;
+
+            return new DateTime(ticks);
+        }
+
         public static bool IsRegistered(string propertyName, DecorType decorType)
         {
             if (decorType == DecorType.Vector3)
                 return Function.Call<bool>(Hash.DECOR_IS_REGISTERED_AS_TYPE, propertyName, 1);
+            else if (decorType == DecorType.DateTime)
+                return Function.Call<bool>(Hash.DECOR_IS_REGISTERED_AS_TYPE, propertyName, 3);
 
             return Function.Call<bool>(Hash.DECOR_IS_REGISTERED_AS_TYPE, propertyName, (int)decorType);
         }
@@ -203,10 +239,16 @@ namespace FusionLibrary
 
             if (decorType == DecorType.Vector3)
             {
-                Register(propertyName, DecorType.Float);
-
                 for (int i = 0; i < 3; i++)
                     Register(propertyName + i.ToString(), DecorType.Float);
+
+                Register(propertyName, DecorType.Float);
+            }
+            else if (decorType == DecorType.DateTime)
+            {
+                Register(propertyName + "_LOW", DecorType.Int);
+                Register(propertyName + "_HIGH", DecorType.Int);
+                Register(propertyName, DecorType.Int);
             }
             else
             {

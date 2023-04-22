@@ -65,7 +65,8 @@ namespace FusionLibrary
             Int,
             Unk,
             Time,
-            Vector3
+            Vector3,
+            DateTime
         }
 
         /// <summary>
