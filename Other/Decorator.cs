@@ -203,8 +203,8 @@ namespace FusionLibrary
 
         public unsafe DateTime GetDateTime(string propertyName)
         {
-            int ticksLowSigned = GetInt(propertyName + 0.ToString());
-            int ticksHighSigned = GetInt(propertyName + 1.ToString());
+            int ticksLowSigned = GetInt(propertyName + "0");
+            int ticksHighSigned = GetInt(propertyName + "1");
 
             uint ticksLow = *(uint*)&ticksLowSigned;
             uint ticksHigh = *(uint*)&ticksHighSigned;
