@@ -208,6 +208,8 @@ namespace FusionLibrary
         {
             Function.Call(Hash.DELETE_ALL_TRAINS);
 
+            Function.Call(Hash.CLEAR_AREA_OF_COPS, PlayerPed.Position.X, PlayerPed.Position.Y, PlayerPed.Position.Z, 1000f, 0);
+
             Vehicle[] allVehicles = World.GetAllVehicles();
 
             allVehicles.Where(x => x.NotNullAndExists() && !x.Decorator().DoNotDelete).ToList()
