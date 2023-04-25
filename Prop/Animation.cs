@@ -211,6 +211,20 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Inverts the directions of all setted coordinates.
+        /// </summary>
+        public void InvertAll()
+        {
+            CoordinateSettings.ForEach(x =>
+            {
+                if (x.IsSetted && !x.DoNotInvert)
+                {
+                    x.IsIncreasing = !x.IsIncreasing;
+                }
+            });
+        }
+
+        /// <summary>
         /// Sets <see cref="CoordinateSetting.Stop"/> to <paramref name="value"/>.
         /// </summary>
         /// <param name="value">New value.</param>

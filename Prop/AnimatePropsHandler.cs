@@ -116,6 +116,16 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Inverts the direction of the animations when the <see cref="Stop"/> is called.
+        /// </summary>
+        public bool InvertOnStop
+        {
+            get => Props.TrueForAll(x => x.InvertOnStop);
+
+            set => Props.ForEach(x => x.InvertOnStop = value);
+        }
+
+        /// <summary>
         /// <see langword="true"/> if all the <see cref="Props"/> are spawned.
         /// </summary>
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);
@@ -284,13 +294,14 @@ namespace FusionLibrary
         /// <summary>
         /// Stops playing all the <see cref="Props"/>.
         /// </summary>
-        public void Stop()
+        /// <param name="invert">Inverts the direction of the animations.</param>
+        public void Stop(bool invert = false)
         {
             IsSequencePlaying = false;
             //currentSequenceProp = -1;
             //playedProps.Clear();
 
-            Props.ForEach(x => x.Stop());
+            Props.ForEach(x => x.Stop(invert));
         }
 
         /// <summary>

@@ -149,6 +149,11 @@ namespace FusionLibrary
         public bool UseDeleteInsteadOfHide { get; set; } = false;
 
         /// <summary>
+        /// Inverts the direction of the animations when the <see cref="Stop"/> is called.
+        /// </summary>
+        public bool InvertOnStop { get; set; } = false;
+
+        /// <summary>
         /// Can be anything.
         /// </summary>
         public object Tag { get; set; }
@@ -811,10 +816,20 @@ namespace FusionLibrary
         /// <summary>
         /// Stops the current playing <see cref="Animation"/>.
         /// </summary>
-        public void Stop()
+        /// <param name="invert">Inverts the direction of the animations.</param>
+        public void Stop(bool invert = false)
         {
+            if (!IsPlaying)
+                return;
+
             Animation[AnimationType.Offset][AnimationStep].SetAllUpdate(false);
             Animation[AnimationType.Rotation][AnimationStep].SetAllUpdate(false);
+
+            if (invert || InvertOnStop)
+            {
+                Animation[AnimationType.Offset][AnimationStep].InvertAll();
+                Animation[AnimationType.Rotation][AnimationStep].InvertAll();
+            }
 
             AnimationStep = AnimationStep.Off;
             IsPlaying = false;
