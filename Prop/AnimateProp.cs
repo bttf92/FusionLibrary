@@ -256,6 +256,11 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Gets or sets the Alpha level of the <see cref="Prop"/>.
+        /// </summary>
+        public AlphaLevel Alpha { get; set; } = AlphaLevel.L5;
+
+        /// <summary>
         /// Gets the position relative to the <see cref="Entity"/>.
         /// </summary>
         public Vector3 RelativePosition => _toBone ? _bone.GetRelativeOffsetPosition(CurrentOffset) : CurrentOffset;
@@ -601,6 +606,19 @@ namespace FusionLibrary
             {
                 Delete();
                 return;
+            }
+
+            AlphaLevel entityAlpha = Entity.GetAlpha();
+            AlphaLevel propAlpha = Prop.GetAlpha();
+
+            if (entityAlpha != propAlpha && entityAlpha < Alpha)
+            {
+                Prop.SetAlpha(entityAlpha);
+            }
+
+            if (entityAlpha >= Alpha && propAlpha != Alpha)
+            {
+                Prop.SetAlpha(Alpha);
             }
 
             if (!Entity.IsVisible && Prop.IsVisible)

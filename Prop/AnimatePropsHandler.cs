@@ -126,6 +126,16 @@ namespace FusionLibrary
         }
 
         /// <summary>
+        /// Gets or sets the Alpha level of the <see cref="Props"/>.
+        /// </summary>
+        public AlphaLevel Alpha 
+        {
+            get => Props[0].Alpha;
+
+            set => Props.ForEach(x => x.Alpha = value);
+        }
+
+        /// <summary>
         /// <see langword="true"/> if all the <see cref="Props"/> are spawned.
         /// </summary>
         public bool IsSpawned => Props.TrueForAll(x => x.IsSpawned);
