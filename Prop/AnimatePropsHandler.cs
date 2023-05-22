@@ -128,7 +128,7 @@ namespace FusionLibrary
         /// <summary>
         /// Gets or sets the Alpha level of the <see cref="Props"/>.
         /// </summary>
-        public AlphaLevel Alpha 
+        public AlphaLevel Alpha
         {
             get => Props[0].Alpha;
 

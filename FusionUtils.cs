@@ -707,7 +707,7 @@ namespace FusionLibrary
         /// <returns><see langword="true"/> wheel is on rail tracks; otherwise <see langword="false"/>.</returns>
         internal static bool IsWheelOnTracks(Vector3 pos, Vehicle vehicle)
         {
-            float diff = GetPositionOnGround(pos, 0).Z - pos.Z;
+            float diff = GetPositionOnGround(pos, -0.01f).Z - pos.Z;
             RaycastResult ret = World.Raycast(pos, pos.GetSingleOffset(Coordinate.Z, diff), IntersectFlags.Map, vehicle);
 
             // Tracks materials
