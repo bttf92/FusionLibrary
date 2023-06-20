@@ -72,8 +72,8 @@ namespace FusionLibrary
             CustomText = customText;
             InternalName = internalName;
 
-            Title = GetMenuTitleInScaledText();
-            Subtitle = GetMenuSubtitle();
+            BannerText = GetMenuTitleInScaledText();
+            Name = GetMenuSubtitle();
             Description = GetMenuDescription();
         }
 
