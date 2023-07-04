@@ -22,7 +22,7 @@ namespace FusionLibrary
             Name = Function.Call<string>(Hash.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL, hash);
             DisplayName = Function.Call<string>(Hash.GET_FILENAME_FOR_AUDIO_CONVERSATION, Name);
 
-            MakeName = Function.Call<string>(Hash.GET_MAKE_NAME_FROM_VEHICLE_MODEL, hash);
+            MakeName = Vehicle.GetModelMakeName(Model);
             DisplayMakeName = Function.Call<string>(Hash.GET_FILENAME_FOR_AUDIO_CONVERSATION, MakeName);
 
             VehicleClass = Function.Call<VehicleClass>(Hash.GET_VEHICLE_CLASS_FROM_NAME, hash);
