@@ -77,47 +77,31 @@ namespace FusionLibrary
             foreach (string model in ModelsToSwap)
                 swapModels.Add(new CustomModel(model));
 
-            endTime = EndProductionDate.AddYears(5);
-            endSpan = (float)(endTime - EndProductionDate).TotalSeconds;
+            endTime = EndProductionDate.AddYears(10);
+            endSpan = (float)(endTime - EndProductionDate).TotalDays;
 
             modelInit = true;
         }
-
-        //public ModelSwap()
-        //{
-
-        //}
-
-        //internal ModelSwap(VehicleModelInfo vehicleModelInfo, int year)
-        //{
-        //    Enabled = false;
-
-        //    Model = vehicleModelInfo.Name;
-        //    VehicleType = vehicleModelInfo.VehicleType;
-        //    VehicleClass = vehicleModelInfo.VehicleClass;
-
-        //    DateBased = true;
-        //    StartProductionDate = new DateTime(year, 1, 1, 0, 0, 0);
-        //    EndProductionDate = new DateTime(year + 5, 1, 1, 0, 0, 0);
-
-        //    MaxSpawned = FusionUtils.Random.Next(1, 3);
-        //}
 
         internal void Process()
         {
             if (!modelInit)
                 Init();
 
-            if (!Enabled || Game.GameTime < gameTime || (DateBased && !FusionUtils.CurrentTime.Between(StartProductionDate, endTime)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
+            if (!Enabled || Game.GameTime < gameTime || (DateBased && FusionUtils.CurrentTime < StartProductionDate.AddMonths(4)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
                 return;
 
             float chanceMulti = 1f;
 
             if (FusionUtils.CurrentTime.Between(EndProductionDate, endTime))
             {
-                chanceMulti = (float)(endTime - FusionUtils.CurrentTime).TotalSeconds;
-                chanceMulti = chanceMulti.Remap(0, endSpan, 0, 1);
+                chanceMulti = (float)(endTime - FusionUtils.CurrentTime).TotalDays;
+                chanceMulti = chanceMulti.Remap(0, endSpan, 1, 0);
                 chanceMulti = Math.Max(chanceMulti, 0.02f);
+            }
+            else if (FusionUtils.CurrentTime > endTime)
+            {
+                chanceMulti = 0.02f;
             }
 
             float chance = (float)Math.Round(FusionUtils.Random.NextDouble(), 2);
