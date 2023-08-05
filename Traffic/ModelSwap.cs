@@ -91,12 +91,12 @@ namespace FusionLibrary
             if (!Enabled || Game.GameTime < gameTime || (DateBased && FusionUtils.CurrentTime < StartProductionDate.AddMonths(4)) || FusionUtils.AllVehicles.Count(x => x.Model == baseModel) >= MaxInWorld)
                 return;
 
-            float chanceMulti = 0.5f;
+            float chanceMulti = 1f;
 
             if (DateBased && FusionUtils.CurrentTime.Between(EndProductionDate, endTime))
             {
                 chanceMulti = (float)(endTime - FusionUtils.CurrentTime).TotalDays;
-                chanceMulti = chanceMulti.Remap(0, endSpan, 1, 0);
+                chanceMulti = chanceMulti.Remap(0f, endSpan, 1f, 0f);
                 chanceMulti = Math.Max(chanceMulti, 0.02f);
             }
             else if (DateBased && FusionUtils.CurrentTime > endTime)
