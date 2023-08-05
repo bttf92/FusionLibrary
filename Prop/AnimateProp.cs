@@ -34,6 +34,11 @@ namespace FusionLibrary
         public Entity Entity { get; protected set; }
 
         /// <summary>
+        /// Whether this <see cref="AnimateProp"/> should follow the visibility of its associated <see cref="GTA.Entity"/>.
+        /// </summary>
+        public bool InheritsEntityVisibility { get; set; } = true;
+
+        /// <summary>
         /// Whether any animation of this <see cref="AnimateProp"/> is playing.
         /// </summary>
         public bool IsPlaying { get; private set; }
@@ -173,7 +178,7 @@ namespace FusionLibrary
         /// <param name="entityBone"><see cref="EntityBone"/> of <paramref name="entity"/>.</param>
         /// <param name="offset">Offset relative to <paramref name="entityBone"/>. Default <see cref="Vector3.Zero"/>.</param>
         /// <param name="rotation">Rotation relative to <paramref name="entityBone"/>. Default <see cref="Vector3.Zero"/>.</param>
-        /// <param name="keepCollision">Whether keep collision when attached to <paramref name="entity"/>.</param>
+        /// <param name="keepCollision">Whether to keep collision when attached to <paramref name="entity"/>.</param>
         public AnimateProp(CustomModel model, Entity entity, EntityBone entityBone, Vector3 offset = default, Vector3 rotation = default, bool keepCollision = true)
         {
             Model = model;
@@ -229,9 +234,6 @@ namespace FusionLibrary
             {
                 if (Prop.NotNullAndExists() && Prop.IsVisible != _visible)
                 {
-                    if (Entity.NotNullAndExists() && !Entity.IsVisible)
-                        return _visible;
-
                     _visible = Prop.IsVisible;
                 }
 
@@ -621,12 +623,12 @@ namespace FusionLibrary
                 Prop.SetAlpha(Alpha);
             }
 
-            if (!Entity.IsVisible && Prop.IsVisible)
+            if (!Entity.IsVisible && Prop.IsVisible && InheritsEntityVisibility)
             {
                 Prop.IsVisible = false;
             }
 
-            if (Entity.IsVisible && !Prop.IsVisible && _visible)
+            if (Entity.IsVisible && !Prop.IsVisible && _visible && InheritsEntityVisibility)
             {
                 Prop.IsVisible = true;
             }
