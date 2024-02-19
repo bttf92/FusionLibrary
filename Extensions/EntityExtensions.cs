@@ -301,7 +301,7 @@ namespace FusionLibrary.Extensions
         /// <param name="ped">Instance of a <see cref="Ped"/>.</param>
         /// <param name="radius">Radius of the area to check.</param>
         /// <returns>Instance of the closest <see cref="Vehicle"/>.</returns>
-        public static Vehicle GetClosestVehicle(this Ped ped, float radius = 10)
+        public static Vehicle GetClosestVehicle(this Ped ped, float radius = 5f)
         {
             return World.GetClosestVehicle(ped.Position, radius);
         }
@@ -440,7 +440,7 @@ namespace FusionLibrary.Extensions
             //newVehicle.AddBlip();
 
             if (newVehicle.Driver.NotNullAndExists())
-                newVehicle.Driver.Task.CruiseWithVehicle(newVehicle, 30);
+                newVehicle.Driver?.Task?.CruiseWithVehicle(newVehicle, 30);
 
             foreach (Ped ped in newVehicle.Occupants)
                 ped?.MarkAsNoLongerNeeded();

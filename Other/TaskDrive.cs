@@ -70,7 +70,7 @@ namespace FusionLibrary
 
         public void Start()
         {
-            Ped.Task.PerformSequence(TaskSequence);
+            Ped?.Task?.PerformSequence(TaskSequence);
         }
 
         public void Close()

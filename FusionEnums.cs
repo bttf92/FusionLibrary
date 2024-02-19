@@ -60,10 +60,11 @@ namespace FusionLibrary
         /// </summary>
         public enum DecorType
         {
-            Float = 1,
+            Unknown,
+            Float,
             Bool,
             Int,
-            Unk,
+            String,
             Time,
             Vector3,
             DateTime

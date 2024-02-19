@@ -2,6 +2,7 @@
 using GTA.Native;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace FusionLibrary
 {
@@ -27,18 +28,35 @@ namespace FusionLibrary
 
             if (FusionUtils.FirstTick)
             {
-                // Bypass models check
-                IntPtr addr = Game.FindPattern("48 85 C0 0F 84 ? ? ? ? 8B 48 50");
+                // Bypass model checks
+                IntPtr addr = Game.FindPattern("74 12 48 8B 10 48 8B C8 FF 52 30 84 C0 74 05 48 8B C3");
+                addr = addr != IntPtr.Zero ? (addr + 11) : IntPtr.Zero;
 
-                if (addr != IntPtr.Zero)
+                unsafe
                 {
-                    for (int i = 0; i < 24; i++)
+                    if (addr != IntPtr.Zero && *(byte*)addr != 0x90)
                     {
-                        unsafe
-                        {
-                            byte* val = (byte*)(addr + i);
+                        const int bytesToWriteInstructions = 4;
+                        byte[] nopBytes = Enumerable.Repeat((byte)0x90, bytesToWriteInstructions).ToArray();
+                        Marshal.Copy(nopBytes, 0, addr, bytesToWriteInstructions);
+                    }
+                }
 
-                            *val = 0x90;
+                // Bypass prop checks
+                addr = Game.FindPattern("40 84 ?? 74 13 E8 ?? ?? ?? ?? 48 85 C0 75 09 38 45 57 0F 84");
+
+                unsafe
+                {
+                    if (addr != IntPtr.Zero)
+                    {
+                        addr = Game.FindPattern("33 C1 48 8D 4D 6F", new IntPtr((byte*)addr + 0x3A));
+                        addr = addr != IntPtr.Zero ? (addr + 0x16) : IntPtr.Zero;
+
+                        if (addr != IntPtr.Zero && *(byte*)addr != 0x90)
+                        {
+                            const int bytesToWriteInstructions = 0x18;
+                            byte[] nopBytes = Enumerable.Repeat((byte)0x90, bytesToWriteInstructions).ToArray();
+                            Marshal.Copy(nopBytes, 0, addr, bytesToWriteInstructions);
                         }
                     }
                 }
@@ -64,7 +82,7 @@ namespace FusionLibrary
 
             if (PlayerSwitch.Disable)
             {
-                Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);
+                Game.DisableControlThisFrame(Control.CharacterWheel);
             }
 
             if (FusionUtils.HideGUI)

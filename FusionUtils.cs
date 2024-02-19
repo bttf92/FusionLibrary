@@ -174,12 +174,12 @@ namespace FusionLibrary
             if (state)
                 Function.Call(Hash.SET_ROADS_BACK_TO_ORIGINAL, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f);
             else
-                Function.Call(Hash.SET_ROADS_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
+                Function.Call(Hash.SET_ROADS_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, false, false);
 
             if (state)
                 Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE);
             else
-                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, 0, 1);
+                Function.Call(Hash.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA, -10000.0f, -10000.0f, -1000.0f, 10000.0f, 10000.0f, 1000.0f, false, false);
 
             Function.Call(Hash.SET_DISTANT_CARS_ENABLED, state);
             Function.Call(Hash.DISABLE_VEHICLE_DISTANTLIGHTS, !state);
@@ -677,7 +677,7 @@ namespace FusionLibrary
         /// <returns><see langword="true"/> if FPV is enabled; otherwise <see langword="false"/>.</returns>
         public static bool IsCameraInFirstPerson()
         {
-            return Function.Call<int>(Hash.GET_FOLLOW_PED_CAM_VIEW_MODE) == 4 && !GameplayCamera.IsLookingBehind && !Function.Call<bool>(Hash.IS_CINEMATIC_CAM_INPUT_ACTIVE);
+            return Function.Call<bool>(Hash.IS_CINEMATIC_FIRST_PERSON_VEHICLE_INTERIOR_CAM_RENDERING) || Function.Call<bool>(Hash.IS_BONNET_CINEMATIC_CAM_RENDERING);
         }
 
         public static float RainLevel

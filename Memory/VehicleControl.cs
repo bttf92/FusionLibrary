@@ -15,6 +15,9 @@ namespace FusionLibrary.Memory
 
     public unsafe static class VehicleControl
     {
+        private static readonly int throttlePOffset;
+        private static readonly int brakePOffset;
+        private static readonly int steeringAngleOffset;
         private static readonly int handbrakeOffset;
         private static readonly int handlingOffset;
 
@@ -34,7 +37,12 @@ namespace FusionLibrary.Memory
 
         static VehicleControl()
         {
-            byte* addr = MemoryFunctions.FindPattern("\x8A\xC2\x24\x01\xC0\xE0\x04\x08\x81", "xxxxxxxxx");
+            byte* addr = MemoryFunctions.FindPattern("\x74\x0A\xF3\x0F\x11\xB3\x1C\x09\x00\x00\xEB\x25", "xxxxx?????xx");
+            throttlePOffset = addr == null ? 0 : *(int*)(addr + 6) + 0x10;
+            brakePOffset = addr == null ? 0 : *(int*)(addr + 6) + 0x14;
+            steeringAngleOffset = addr == null ? 0 : *(int*)(addr + 6) + 8;
+
+            addr = MemoryFunctions.FindPattern("\x8A\xC2\x24\x01\xC0\xE0\x04\x08\x81", "xxxxxxxxx");
             handbrakeOffset = addr == null ? 0 : *(int*)(addr + 19);
 
             addr = MemoryFunctions.FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88", "xxxx????xxxxxxx");
@@ -178,6 +186,50 @@ namespace FusionLibrary.Memory
             return *(ulong*)(address + (ulong)wheelsPtrOffset);
         }
 
+        public static void SetThrottle(Vehicle vehicle, float throttle)
+        {
+            if (throttlePOffset == 0)
+            {
+                return;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
+            *address = throttle;
+        }
+
+        public static float GetThrottle(Vehicle vehicle)
+        {
+            if (throttlePOffset == 0)
+            {
+                return -1f;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)throttlePOffset);
+            return *address;
+        }
+
+        public static void SetBrake(Vehicle vehicle, float brake)
+        {
+            if (brakePOffset == 0)
+            {
+                return;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
+            *address = brake;
+        }
+
+        public static float GetBrake(Vehicle vehicle)
+        {
+            if (brakePOffset == 0)
+            {
+                return 0.0f;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)brakePOffset);
+            return *address;
+        }
+
         public static void SetHandbrake(Vehicle vehicle, bool brake)
         {
             if (handbrakeOffset == 0)
@@ -197,6 +249,28 @@ namespace FusionLibrary.Memory
             }
 
             bool* address = (bool*)((ulong)vehicle.MemoryAddress + (ulong)handbrakeOffset);
+            return *address;
+        }
+
+        public static void SetSteeringAngle(Vehicle vehicle, float angle)
+        {
+            if (steeringAngleOffset == 0)
+            {
+                return;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
+            *address = angle;
+        }
+
+        public static float GetSteeringAngle(Vehicle vehicle)
+        {
+            if (steeringAngleOffset == 0)
+            {
+                return -999f;
+            }
+
+            float* address = (float*)((ulong)vehicle.MemoryAddress + (ulong)steeringAngleOffset);
             return *address;
         }
 

@@ -12,7 +12,7 @@ namespace FusionLibrary
     {
         public static bool IsInProgress => Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS);
 
-        public static bool IsManualInProgress => IsInProgress && PlayerSwitch.IsSwitching;
+        public static bool IsManualInProgress => IsInProgress && IsSwitching;
 
         public static bool Disable { get; set; } = false;
 
@@ -28,17 +28,17 @@ namespace FusionLibrary
 
         public static void Switch(Ped to, bool forceShort, bool instant = false, bool fullHealth = false)
         {
-            _health = Function.Call<int>(Hash.GET_ENTITY_HEALTH, to);
+            _health = to.Health;
             _ragdoll = to.IsRagdoll;
 
             if (instant)
             {
                 Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, to, false, false);
-                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+                FusionUtils.PlayerPed.Health = _health;
 
                 if (_ragdoll)
                 {
-                    Game.Player.Character.Ragdoll(1);
+                    FusionUtils.PlayerPed.Ragdoll(1);
                 }
 
                 OnSwitchingComplete?.Invoke();
@@ -55,14 +55,14 @@ namespace FusionLibrary
             }
             else
             {
-                SwitchType = (SwitchTypes)Function.Call<int>(Hash.GET_IDEAL_PLAYER_SWITCH_TYPE, Game.Player.Character.Position.X, Game.Player.Character.Position.Y, Game.Player.Character.Position.Z, to.Position.X, to.Position.Y, to.Position.Z);
+                SwitchType = (SwitchTypes)Function.Call<int>(Hash.GET_IDEAL_PLAYER_SWITCH_TYPE, FusionUtils.PlayerPed.Position.X, FusionUtils.PlayerPed.Position.Y, FusionUtils.PlayerPed.Position.Z, to.Position.X, to.Position.Y, to.Position.Z);
             }
 
-            Function.Call(Hash.START_PLAYER_SWITCH, Game.Player.Character, To, 1024, SwitchType);
+            Function.Call(Hash.START_PLAYER_SWITCH, FusionUtils.PlayerPed, To, 1024, SwitchType);
             Function.Call(Hash.CHANGE_PLAYER_PED, Game.Player, To, false, false);
             if (!fullHealth)
             {
-                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+                FusionUtils.PlayerPed.Health = _health;
             }
 
             OnSwitchingStart?.Invoke();
@@ -70,16 +70,16 @@ namespace FusionLibrary
 
         public static Ped CreatePedAndSwitch(out Ped originalPed, Vector3 pos, float heading, bool forceShort, bool instant = false, bool fullHealth = false)
         {
-            originalPed = Game.Player.Character;
+            originalPed = FusionUtils.PlayerPed;
 
-            Ped clone = World.CreatePed(Game.Player.Character.Model, pos, heading);
+            Ped clone = World.CreatePed(FusionUtils.PlayerPed.Model, pos, heading);
 
             if (!fullHealth)
             {
                 clone.Health = originalPed.Health;
             }
 
-            Function.Call(Hash.CLONE_PED_TO_TARGET, Game.Player.Character, clone);
+            Function.Call(Hash.CLONE_PED_TO_TARGET, FusionUtils.PlayerPed, clone);
 
             Switch(clone, forceShort, instant);
 
@@ -95,11 +95,11 @@ namespace FusionLibrary
 
             if (!Function.Call<bool>(Hash.IS_PLAYER_SWITCH_IN_PROGRESS))
             {
-                Function.Call(Hash.SET_ENTITY_HEALTH, Game.Player.Character, _health);
+                Function.Call(Hash.SET_ENTITY_HEALTH, FusionUtils.PlayerPed, _health);
 
                 if (_ragdoll)
                 {
-                    Game.Player.Character.Ragdoll(1);
+                    FusionUtils.PlayerPed.Ragdoll(1);
                 }
 
                 OnSwitchingComplete?.Invoke();
