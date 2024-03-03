@@ -37,7 +37,7 @@ namespace FusionLibrary
         {
             Lights.ForEach(x =>
             {
-                x.Draw(Entity, (Lights.IndexOf(x) + 1) * ShadowMulti);
+                x.Draw(Entity);
             });
         }
     }

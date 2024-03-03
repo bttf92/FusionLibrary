@@ -144,12 +144,17 @@ namespace FusionLibrary
             set => Wheels.ForEach(x => x.Burst = value);
         }
 
-        public float ReduceGrip
+        public int ReduceGrip
         {
             get => decorator.Grip;
 
             set
             {
+                if (value < 0)
+                    value = 0;
+                else if (value > 3)
+                    value = 3;
+
                 decorator.Grip = value;
 
                 Function.Call(Hash.SET_VEHICLE_REDUCE_GRIP, vehicle1, value != 0);

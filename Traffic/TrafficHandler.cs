@@ -1,5 +1,4 @@
 ﻿using GTA;
-using GTA.Native;
 using System;
 using System.IO;
 using System.Xml.Serialization;
@@ -29,7 +28,7 @@ namespace FusionLibrary
             var models = Vehicle.GetAllModelValues();
 
             for (int i = 0; i < models.Length; i++)
-                FusionUtils.AllVehiclesModels.Add(new VehicleModelInfo((Hash)models[i]));
+                FusionUtils.AllVehiclesModels.Add(new VehicleModelInfo((GTA.Native.Hash)models[i]));
         }
 
         private void TrafficHandler_Tick(object sender, EventArgs e)

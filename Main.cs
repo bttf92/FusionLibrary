@@ -64,7 +64,7 @@ namespace FusionLibrary
 
             if (PlayerSwitch.Disable)
             {
-                Function.Call(Hash.DISABLE_CONTROL_ACTION, 2, 19, true);
+                Game.DisableControlThisFrame(Control.CharacterWheel);
             }
 
             if (FusionUtils.HideGUI)

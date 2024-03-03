@@ -19,13 +19,13 @@ namespace FusionLibrary
             Hash = hash;
             Model = new Model((int)hash);
 
-            Name = Function.Call<string>(Hash.GET_DISPLAY_NAME_FROM_VEHICLE_MODEL, hash);
-            DisplayName = Function.Call<string>(Hash.GET_FILENAME_FOR_AUDIO_CONVERSATION, Name);
+            Name = Vehicle.GetModelDisplayName(Model);
+            DisplayName = Game.GetLocalizedString(Name);
 
             MakeName = Vehicle.GetModelMakeName(Model);
-            DisplayMakeName = Function.Call<string>(Hash.GET_FILENAME_FOR_AUDIO_CONVERSATION, MakeName);
+            DisplayMakeName = Game.GetLocalizedString(MakeName);
 
-            VehicleClass = Function.Call<VehicleClass>(Hash.GET_VEHICLE_CLASS_FROM_NAME, hash);
+            VehicleClass = Vehicle.GetModelClass(Model);
             VehicleType = Vehicle.GetModelType(Model);
         }
 

@@ -92,11 +92,11 @@ namespace FusionLibrary
             set => SetInt(dInteractableId, value);
         }
 
-        public float Grip
+        public int Grip
         {
-            get => GetFloat(dGrip);
+            get => GetInt(dGrip);
 
-            set => SetFloat(dGrip, value);
+            set => SetInt(dGrip, value);
         }
 
         public float Torque
